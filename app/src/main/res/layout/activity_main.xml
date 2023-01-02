@@ -27,6 +27,7 @@
             android:background="@drawable/main_rounded_button"
             android:contentDescription="@string/add_or_update_product"
             android:gravity="center"
+            android:padding="15dp"
             android:src="@drawable/shoopt_add_update_product" />
 
         <TextView
@@ -45,6 +46,7 @@
             android:background="@drawable/main_rounded_button"
             android:contentDescription="@string/track_shopping"
             android:gravity="center"
+            android:padding="15dp"
             android:src="@drawable/shoopt_track_shopping" />
 
         <TextView
@@ -63,6 +65,7 @@
             android:background="@drawable/main_rounded_button"
             android:contentDescription="@string/analyse"
             android:gravity="center"
+            android:padding="15dp"
             android:src="@drawable/shoopt_analyse" />
 
         <TextView
