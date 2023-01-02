@@ -7,27 +7,51 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:backgroundTint="@color/main_palette_rajah"
+        android:background="@drawable/main_rounded_button"
+        android:gravity="center"
+        android:src="@drawable/shoopt_add_update_product"
+        android:text="@string/add_or_update_product" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:gravity="center"
         android:text="@string/add_or_update_product" />
 
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:backgroundTint="@color/main_palette_rajah"
+        android:background="@drawable/main_rounded_button"
+        android:gravity="center"
+        android:src="@drawable/shoopt_track_shopping"
+        android:text="@string/track_shopping" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:gravity="center"
         android:text="@string/track_shopping" />
 
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:backgroundTint="@color/main_palette_rajah"
+        android:background="@drawable/main_rounded_button"
+        android:gravity="center"
+        android:src="@drawable/shoopt_analyse"
+        android:text="@string/analyse" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:gravity="center"
         android:text="@string/analyse" />
 
