@@ -10,6 +10,7 @@
     tools:context=".MainActivity">
 
     <ImageButton
+        android:id="@+id/add_or_update_product_IB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -20,6 +21,7 @@
         android:src="@drawable/shoopt_add_update_product" />
 
     <TextView
+        android:id="@+id/add_or_update_product_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
@@ -29,6 +31,7 @@
         android:textStyle="bold" />
 
     <ImageButton
+        android:id="@+id/track_shopping_IB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -39,6 +42,7 @@
         android:src="@drawable/shoopt_track_shopping" />
 
     <TextView
+        android:id="@+id/track_shopping_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
@@ -48,6 +52,7 @@
         android:textStyle="bold" />
 
     <ImageButton
+        android:id="@+id/analyse_IB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -58,6 +63,7 @@
         android:src="@drawable/shoopt_analyse" />
 
     <TextView
+        android:id="@+id/analyse_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
