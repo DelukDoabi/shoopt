@@ -1,4 +1,4 @@
-package com.dedoware.shoopt
+package com.dedoware.shoopt.activities
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -7,6 +7,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.dedoware.shoopt.R
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
