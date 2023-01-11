@@ -13,8 +13,6 @@ class AddProductActivity : AppCompatActivity() {
     private lateinit var backImageButton: ImageButton
     private lateinit var productPictureImageButton: ImageButton
 
-    private val REQUEST_IMAGE_CAPTURE = 1
-
     // Get your image
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
