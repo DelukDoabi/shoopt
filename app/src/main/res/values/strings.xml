@@ -11,4 +11,5 @@
     <string name="take_picture">Take picture</string>
     <string name="back">back</string>
     <string name="insert_product_unit_price">Insert unit price</string>
+    <string name="insert_product_barcode">Insert barcode</string>
 </resources>

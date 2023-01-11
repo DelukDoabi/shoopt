@@ -44,15 +44,24 @@
         android:textStyle="bold" />
 
     <EditText
-        android:id="@+id/product_name_ET"
+        android:id="@+id/product_barcode_ET"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/take_picture_TV"
         android:layout_centerInParent="true"
         android:layout_margin="5dp"
+        android:hint="@string/insert_product_barcode"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/product_name_ET"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/product_barcode_ET"
+        android:layout_centerInParent="true"
+        android:layout_margin="5dp"
         android:hint="@string/insert_product_name"
-        android:inputType="text"
-        android:padding="15dp" />
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/product_price_ET"
@@ -62,8 +71,7 @@
         android:layout_centerInParent="true"
         android:layout_margin="5dp"
         android:hint="@string/insert_product_price"
-        android:inputType="numberDecimal"
-        android:padding="15dp" />
+        android:inputType="numberDecimal" />
 
     <EditText
         android:id="@+id/product_unit_price_ET"
@@ -73,8 +81,7 @@
         android:layout_centerInParent="true"
         android:layout_margin="5dp"
         android:hint="@string/insert_product_unit_price"
-        android:inputType="numberDecimal"
-        android:padding="15dp" />
+        android:inputType="numberDecimal" />
 
     <EditText
         android:id="@+id/product_shop_ET"
@@ -84,8 +91,7 @@
         android:layout_centerInParent="true"
         android:layout_margin="5dp"
         android:hint="@string/insert_product_shop"
-        android:inputType="text"
-        android:padding="15dp" />
+        android:inputType="text" />
 
     <ImageButton
         android:id="@+id/save_product_IB"
