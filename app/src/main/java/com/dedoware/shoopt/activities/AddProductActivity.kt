@@ -13,8 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.model.Product
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.database.FirebaseDatabase
 
 class AddProductActivity : AppCompatActivity() {
     private lateinit var backImageButton: ImageButton
@@ -48,9 +47,7 @@ class AddProductActivity : AppCompatActivity() {
         setMainVariables()
 
         // Initialize Firebase Realtime Database
-        database =
-            Firebase.database("https://shoopt-9ab47-default-rtdb.europe-west1.firebasedatabase.app/")
-                .reference
+        database = FirebaseDatabase.getInstance().reference
 
         backImageButton.setOnClickListener {
             finish()
