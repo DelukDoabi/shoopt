@@ -21,7 +21,7 @@
         android:src="@drawable/shoopt_back"></ImageButton>
 
     <ImageButton
-        android:id="@+id/product_image_IB"
+        android:id="@+id/product_picture_IB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/back_IB"
@@ -36,7 +36,7 @@
         android:id="@+id/take_picture_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/product_image_IB"
+        android:layout_below="@id/product_picture_IB"
         android:layout_centerInParent="true"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="30dp"
