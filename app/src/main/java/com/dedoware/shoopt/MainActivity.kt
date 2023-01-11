@@ -5,8 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.zxing.integration.android.IntentIntegrator
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanIntentResult
+import com.journeyapps.barcodescanner.ScanOptions
 
 
 class MainActivity : AppCompatActivity() {
@@ -33,7 +36,7 @@ class MainActivity : AppCompatActivity() {
 
             builder.setPositiveButton("Scan barcode") { _, _ ->
                 // Launch the barcode scanner
-                IntentIntegrator(this).initiateScan()
+                barcodeLauncher.launch(ScanOptions())
             }
 
             builder.setNegativeButton("Add product manually") { _, _ ->
@@ -44,6 +47,21 @@ class MainActivity : AppCompatActivity() {
 
             val dialog = builder.create()
             dialog.show()
+        }
+    }
+
+    // Register the launcher and result handler
+    private val barcodeLauncher = registerForActivityResult(
+        ScanContract()
+    ) { result: ScanIntentResult ->
+        if (result.contents == null) {
+            Toast.makeText(this@MainActivity, "Cancelled", Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(
+                this@MainActivity,
+                "Scanned: " + result.contents,
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 
