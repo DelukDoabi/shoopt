@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "838481016105",
+    "project_id": "shoopt-9ab47",
+    "storage_bucket": "shoopt-9ab47.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:838481016105:android:20564737b29b19871af338",
+        "android_client_info": {
+          "package_name": "com.dedoware.shoopt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "838481016105-3u3iiulk73etd1al5m63f8hr5qkeahto.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjjtRWV2oB4qdrHNiXonsGCuqnDjMyGUw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "838481016105-3u3iiulk73etd1al5m63f8hr5qkeahto.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
