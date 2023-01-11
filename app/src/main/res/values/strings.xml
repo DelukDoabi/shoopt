@@ -3,4 +3,11 @@
     <string name="add_or_update_product">Add or update product</string>
     <string name="track_shopping">Track shopping</string>
     <string name="analyse">Analyse</string>
+    <string name="insert_product_name">Insert product name</string>
+    <string name="insert_product_price">Insert product price</string>
+    <string name="insert_product_shop">Insert product shop</string>
+    <string name="save_product">Save product</string>
+    <string name="product_picture">Product picture</string>
+    <string name="take_picture">Take picture</string>
+    <string name="back">back</string>
 </resources>
