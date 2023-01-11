@@ -15,7 +15,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="40dp"
         android:background="@null"
         android:contentDescription="@string/back"
         android:src="@drawable/shoopt_back"></ImageButton>
@@ -45,7 +45,7 @@
 
     <EditText
         android:id="@+id/product_name_ET"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/take_picture_TV"
         android:layout_centerInParent="true"
@@ -56,7 +56,7 @@
 
     <EditText
         android:id="@+id/product_price_ET"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/product_name_ET"
         android:layout_centerInParent="true"
@@ -66,10 +66,21 @@
         android:padding="15dp" />
 
     <EditText
-        android:id="@+id/product_shop_ET"
-        android:layout_width="wrap_content"
+        android:id="@+id/product_unit_price_ET"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/product_price_ET"
+        android:layout_centerInParent="true"
+        android:layout_margin="5dp"
+        android:hint="@string/insert_product_unit_price"
+        android:inputType="numberDecimal"
+        android:padding="15dp" />
+
+    <EditText
+        android:id="@+id/product_shop_ET"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/product_unit_price_ET"
         android:layout_centerInParent="true"
         android:layout_margin="5dp"
         android:hint="@string/insert_product_shop"
