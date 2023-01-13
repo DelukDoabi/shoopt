@@ -8,12 +8,16 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.model.Product
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+
 
 class AddProductActivity : AppCompatActivity() {
     private lateinit var backImageButton: ImageButton
@@ -27,7 +31,8 @@ class AddProductActivity : AppCompatActivity() {
     private lateinit var productShopEditText: EditText
 
     // Firebase Realtime Database
-    private lateinit var database: DatabaseReference
+    private lateinit var firebaseDatabaseReference: DatabaseReference
+    private lateinit var firebaseAuth: FirebaseAuth
 
     // Get your image
     private val resultLauncher =
@@ -46,8 +51,9 @@ class AddProductActivity : AppCompatActivity() {
         // TODO NBE if not working put findViewById methods after setContentView
         setMainVariables()
 
-        // Initialize Firebase Realtime Database
-        database = FirebaseDatabase.getInstance().reference
+        signInAnonymouslyToFirebase()
+
+        initializeFirebaseDatabase()
 
         backImageButton.setOnClickListener {
             finish()
@@ -61,31 +67,73 @@ class AddProductActivity : AppCompatActivity() {
 
         // Save product information to Firebase Realtime Database
         saveProductImageButton.setOnClickListener {
-            val barcode = productBarcodeEditText.text.toString().toInt()
-            val name = productNameEditText.text.toString()
-            val price = productPriceEditText.text.toString().toDouble()
-            val unitPrice = productUnitPriceEditText.text.toString().toDouble()
-            val shop = productShopEditText.text.toString()
-
-            // Check if all fields are filled
-            if (barcode != null && name.isNotEmpty() && !price.isNaN() && !unitPrice.isNaN() && shop.isNotEmpty()) {
-                val productId = database.push().key
-                if (productId != null) {
-                    val product = Product(barcode, name, price, unitPrice, shop)
-
-                    // Save product information to Firebase Realtime Database
-                    database.child("products").child(productId).setValue(product)
-                        .addOnFailureListener { e ->
-                            Log.d("LOG_TAG", e.localizedMessage)
-                        }
-                    // do something here to indicate that the product was saved successfully
-                }
-            } else {
-                // do something here to indicate that some fields are empty
-            }
+            saveProductInFirebaseDatabase()
         }
     }
 
+    private fun saveProductInFirebaseDatabase() {
+        val barcode = productBarcodeEditText.text.toString().toInt()
+        val name = productNameEditText.text.toString()
+        val price = productPriceEditText.text.toString().toDouble()
+        val unitPrice = productUnitPriceEditText.text.toString().toDouble()
+        val shop = productShopEditText.text.toString()
+
+        // Check if all fields are filled
+        if (barcode != null && name.isNotEmpty() && !price.isNaN() && !unitPrice.isNaN() && shop.isNotEmpty()) {
+            val productId = firebaseDatabaseReference.push().key
+            if (productId != null) {
+                val product = Product(barcode, name, price, unitPrice, shop)
+
+                // Save product information to Firebase Realtime Database
+                firebaseDatabaseReference.child("products").child(productId).setValue(product)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            // Data is successfully stored
+                            Log.d("SHOOPT_TAG", "Product saved!")
+                            // do something here to indicate that the product was saved successfully
+                            Toast.makeText(this, "Product saved!", Toast.LENGTH_SHORT).show()
+                        } else {
+                            // Error occurred
+                            Log.d("SHOOPT_TAG", "Error: ${task.exception}")
+                        }
+                    }
+                    .addOnFailureListener { e ->
+                        Log.d("SHOOPT_TAG", e.localizedMessage)
+                        Toast.makeText(this, e.localizedMessage, Toast.LENGTH_SHORT).show()
+                    }
+            }
+        } else {
+            // do something here to indicate that some fields are empty
+            Toast.makeText(
+                this@AddProductActivity,
+                "Fail to add data because empty field found",
+                Toast.LENGTH_SHORT
+            )
+                .show()
+        }
+    }
+
+    private fun initializeFirebaseDatabase() {
+        firebaseDatabaseReference =
+            Firebase.database("https://shoopt-9ab47-default-rtdb.europe-west1.firebasedatabase.app/")
+                .reference
+    }
+
+    private fun signInAnonymouslyToFirebase() {
+        firebaseAuth = FirebaseAuth.getInstance()
+
+        firebaseAuth.signInAnonymously()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d("SHOOPT_TAG", "signInAnonymously:success")
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w("SHOOPT_TAG", "signInAnonymously:failure", task.exception)
+                    Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
 
     private fun setMainVariables() {
         backImageButton = findViewById(R.id.back_IB)
