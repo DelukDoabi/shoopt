@@ -48,6 +48,8 @@ class AddProductActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_product)
 
+        supportActionBar?.hide()
+
         // TODO NBE if not working put findViewById methods after setContentView
         setMainVariables()
 

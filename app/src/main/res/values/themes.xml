@@ -12,9 +12,9 @@
         <item name="colorSecondaryVariant">@color/main_palette_old_lavender_variant</item>
         <item name="colorOnSecondary">@color/main_palette_old_lavender_on</item>
 
-        <!--        TODO NBE remove below once no need -->
         <!-- Status bar color. -->
-        <!--        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>-->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+
         <!-- Customize your theme here. -->
     </style>
 </resources>
