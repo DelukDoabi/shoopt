@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_palette_rajah"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="40dp"
+        android:paddingEnd="30dp"
+        android:text="Shoopt"
+        android:textColor="@color/main_palette_old_lavender"
+        android:textSize="100dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your Shopping Optimizer"
+        android:textColor="@color/main_palette_nickel"
+        android:textSize="25dp" />
+
+    <ImageView
+        android:layout_width="168dp"
+        android:layout_height="128dp"
+        android:elevation="10dp"
+        android:src="@drawable/ic_launcher_foreground" />
+
+</LinearLayout>
