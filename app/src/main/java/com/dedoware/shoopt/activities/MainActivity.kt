@@ -60,11 +60,9 @@ class MainActivity : AppCompatActivity() {
         if (result.contents == null) {
             Toast.makeText(this@MainActivity, "Cancelled", Toast.LENGTH_LONG).show()
         } else {
-            Toast.makeText(
-                this@MainActivity,
-                "Scanned: " + result.contents,
-                Toast.LENGTH_LONG
-            ).show()
+            val addProductIntent = Intent(this@MainActivity, AddProductActivity::class.java)
+            addProductIntent.putExtra("barcode", result.contents)
+            startActivity(addProductIntent)
         }
     }
 
