@@ -11,12 +11,15 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.toBitmap
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.model.Product
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import java.io.ByteArrayOutputStream
 
 
 class AddProductActivity : AppCompatActivity() {
@@ -72,6 +75,27 @@ class AddProductActivity : AppCompatActivity() {
         // Save product information to Firebase Realtime Database
         saveProductImageButton.setOnClickListener {
             saveProductInFirebaseDatabase()
+            saveProductPictureInFirebaseStorage()
+        }
+    }
+
+    private fun saveProductPictureInFirebaseStorage() {
+        val productPictureByteArrayOutputStream = ByteArrayOutputStream()
+        productPictureImageButton.drawable.toBitmap()
+            .compress(Bitmap.CompressFormat.JPEG, 100, productPictureByteArrayOutputStream)
+        val data = productPictureByteArrayOutputStream.toByteArray()
+
+        val storageRef = Firebase.storage.reference
+        val productBarcode = productBarcodeEditText.text.toString().toInt()
+        val productPicturesRef = storageRef.child("product-pictures/$productBarcode.jpg")
+
+        val uploadTask = productPicturesRef.putBytes(data)
+        uploadTask.addOnFailureListener { exception ->
+            Log.d("SHOOPT_TAG", exception.localizedMessage)
+            Toast.makeText(this, exception.localizedMessage, Toast.LENGTH_SHORT).show()
+        }.addOnSuccessListener { taskSnapshot ->
+            Log.d("SHOOPT_TAG", "Product picture saved!")
+            Toast.makeText(this, "Product picture saved!", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -81,7 +105,7 @@ class AddProductActivity : AppCompatActivity() {
     }
 
     private fun saveProductInFirebaseDatabase() {
-        val barcode = productBarcodeEditText.text.toString().toInt()
+        val barcode = productBarcodeEditText.text.toString().toLong()
         val name = productNameEditText.text.toString()
         val price = productPriceEditText.text.toString().toDouble()
         val unitPrice = productUnitPriceEditText.text.toString().toDouble()
