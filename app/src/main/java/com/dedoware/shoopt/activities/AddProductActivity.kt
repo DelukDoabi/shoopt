@@ -57,6 +57,8 @@ class AddProductActivity : AppCompatActivity() {
 
         initializeFirebaseDatabase()
 
+        getScannedBarcode()
+
         backImageButton.setOnClickListener {
             finish()
         }
@@ -71,6 +73,11 @@ class AddProductActivity : AppCompatActivity() {
         saveProductImageButton.setOnClickListener {
             saveProductInFirebaseDatabase()
         }
+    }
+
+    private fun getScannedBarcode() {
+        val scannedBarcode = intent.getStringExtra("barcode")
+        if (scannedBarcode != null) productBarcodeEditText.setText(scannedBarcode)
     }
 
     private fun saveProductInFirebaseDatabase() {
