@@ -86,7 +86,7 @@ class AddProductActivity : AppCompatActivity() {
         val data = productPictureByteArrayOutputStream.toByteArray()
 
         val storageRef = Firebase.storage.reference
-        val productBarcode = productBarcodeEditText.text.toString().toInt()
+        val productBarcode = productBarcodeEditText.text.toString().toLong()
         val productPicturesRef = storageRef.child("product-pictures/$productBarcode.jpg")
 
         val uploadTask = productPicturesRef.putBytes(data)
