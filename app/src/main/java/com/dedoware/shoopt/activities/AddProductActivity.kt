@@ -97,7 +97,7 @@ class AddProductActivity : AppCompatActivity() {
 
         val uploadTask = productPicturesRef.putBytes(data)
         uploadTask.addOnFailureListener { exception ->
-            Log.d("SHOOPT_TAG", exception.localizedMessage)
+            Log.d("SHOOPT_TAG", exception.localizedMessage ?: "Failed to store product picture")
             Toast.makeText(this, exception.localizedMessage, Toast.LENGTH_SHORT).show()
         }.addOnSuccessListener { taskSnapshot ->
             Log.d("SHOOPT_TAG", "Product picture saved!")
@@ -118,7 +118,7 @@ class AddProductActivity : AppCompatActivity() {
         val shop = productShopEditText.text.toString()
 
         // Check if all fields are filled
-        if (barcode != null && name.isNotEmpty() && !price.isNaN() && !unitPrice.isNaN() && shop.isNotEmpty()) {
+        if (name.isNotEmpty() && !price.isNaN() && !unitPrice.isNaN() && shop.isNotEmpty()) {
             val productId = firebaseDatabaseReference.push().key
             if (productId != null) {
                 val product = Product(barcode, name, price, unitPrice, shop)
@@ -127,22 +127,18 @@ class AddProductActivity : AppCompatActivity() {
                 firebaseDatabaseReference.child("products").child(productId).setValue(product)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            // Data is successfully stored
                             Log.d("SHOOPT_TAG", "Product saved!")
-                            // do something here to indicate that the product was saved successfully
                             Toast.makeText(this, "Product saved!", Toast.LENGTH_SHORT).show()
                         } else {
-                            // Error occurred
                             Log.d("SHOOPT_TAG", "Error: ${task.exception}")
                         }
                     }
                     .addOnFailureListener { e ->
-                        Log.d("SHOOPT_TAG", e.localizedMessage)
+                        Log.d("SHOOPT_TAG", e.localizedMessage ?: "Failed to store product")
                         Toast.makeText(this, e.localizedMessage, Toast.LENGTH_SHORT).show()
                     }
             }
         } else {
-            // do something here to indicate that some fields are empty
             Toast.makeText(
                 this@AddProductActivity,
                 "Fail to add data because empty field found",
