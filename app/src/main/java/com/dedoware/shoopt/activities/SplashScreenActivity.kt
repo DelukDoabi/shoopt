@@ -3,6 +3,7 @@ package com.dedoware.shoopt.activities
 import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.dedoware.shoopt.R
 import java.util.concurrent.Executors
@@ -15,20 +16,35 @@ class SplashScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_screen)
 
+        forceFullScreen()
+
+        displayVersion()
+
+        redirectToMainScreen()
+    }
+
+    private fun forceFullScreen() {
         supportActionBar?.hide()
 
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
+    }
 
+    private fun redirectToMainScreen() {
         val executor = Executors.newSingleThreadScheduledExecutor()
         executor.schedule({
-            // Code to redirect to main activity
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
             finish()
-        }, 3000, TimeUnit.MILLISECONDS)  // redirect after 3 seconds
+        }, 2000, TimeUnit.MILLISECONDS)
+    }
+
+    private fun displayVersion() {
+        val versionName = packageManager.getPackageInfo(packageName, 0).versionName
+        val versionTextView: TextView = findViewById(R.id.shoopt_version_TV)
+        versionTextView.text = "Version: $versionName"
     }
 }
