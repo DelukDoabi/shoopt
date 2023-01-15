@@ -99,7 +99,7 @@ class AddProductActivity : AppCompatActivity() {
         uploadTask.addOnFailureListener { exception ->
             Log.d("SHOOPT_TAG", exception.localizedMessage ?: "Failed to store product picture")
             Toast.makeText(this, exception.localizedMessage, Toast.LENGTH_SHORT).show()
-        }.addOnSuccessListener { taskSnapshot ->
+        }.addOnSuccessListener { _ ->
             Log.d("SHOOPT_TAG", "Product picture saved!")
             Toast.makeText(this, "Product picture saved!", Toast.LENGTH_SHORT).show()
         }
