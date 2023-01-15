@@ -86,8 +86,14 @@ class AddProductActivity : AppCompatActivity() {
         val data = productPictureByteArrayOutputStream.toByteArray()
 
         val storageRef = Firebase.storage.reference
+
         val productBarcode = productBarcodeEditText.text.toString().toLong()
-        val productPicturesRef = storageRef.child("product-pictures/$productBarcode.jpg")
+        val productName = productNameEditText.text.toString()
+        val productShop = productShopEditText.text.toString()
+
+
+        val productPicturesRef =
+            storageRef.child("product-pictures/$productBarcode-$productName-$productShop.jpg")
 
         val uploadTask = productPicturesRef.putBytes(data)
         uploadTask.addOnFailureListener { exception ->
