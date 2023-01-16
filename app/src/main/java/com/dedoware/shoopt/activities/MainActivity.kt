@@ -33,24 +33,28 @@ class MainActivity : AppCompatActivity() {
         setMainVariables()
 
         addOrUpdateProductImageButton.setOnClickListener {
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle("Choose an option")
-            builder.setMessage("Scan barcode or add product manually")
-
-            builder.setPositiveButton("Scan barcode") { _, _ ->
-                // Launch the barcode scanner
-                barcodeLauncher.launch(ScanOptions())
-            }
-
-            builder.setNegativeButton("Add product manually") { _, _ ->
-                // Launch the add product manually activity
-                val addProductIntent = Intent(this, AddProductActivity::class.java)
-                startActivity(addProductIntent)
-            }
-
-            val dialog = builder.create()
-            dialog.show()
+            displayAddProductWayUserChoice()
         }
+    }
+
+    private fun displayAddProductWayUserChoice() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Choose an option")
+        builder.setMessage("Scan barcode or add product manually")
+
+        builder.setPositiveButton("Scan barcode") { _, _ ->
+            // Launch the barcode scanner
+            barcodeLauncher.launch(ScanOptions())
+        }
+
+        builder.setNegativeButton("Add product manually") { _, _ ->
+            // Launch the add product manually activity
+            val addProductIntent = Intent(this, AddProductActivity::class.java)
+            startActivity(addProductIntent)
+        }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 
     // Register the launcher and result handler
