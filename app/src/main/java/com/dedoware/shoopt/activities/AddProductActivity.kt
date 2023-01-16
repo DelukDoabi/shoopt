@@ -99,7 +99,7 @@ class AddProductActivity : AppCompatActivity() {
         uploadTask.addOnFailureListener { exception ->
             Log.d("SHOOPT_TAG", exception.localizedMessage ?: "Failed to store product picture")
             Toast.makeText(this, exception.localizedMessage, Toast.LENGTH_SHORT).show()
-        }.addOnSuccessListener { _ ->
+        }.addOnSuccessListener {
             Log.d("SHOOPT_TAG", "Product picture saved!")
             Toast.makeText(this, "Product picture saved!", Toast.LENGTH_SHORT).show()
         }
@@ -111,40 +111,56 @@ class AddProductActivity : AppCompatActivity() {
     }
 
     private fun saveProductInFirebaseDatabase() {
-        val barcode = productBarcodeEditText.text.toString().toLong()
+        val barcode = if (productBarcodeEditText.text.toString()
+                .isEmpty()
+        ) "0".toLong() else productBarcodeEditText.text.toString().toLong()
         val name = productNameEditText.text.toString()
         val price = productPriceEditText.text.toString().toDouble()
         val unitPrice = productUnitPriceEditText.text.toString().toDouble()
         val shop = productShopEditText.text.toString()
+        val id = "$barcode-$name-$shop"
 
-        // Check if all fields are filled
         if (name.isNotEmpty() && !price.isNaN() && !unitPrice.isNaN() && shop.isNotEmpty()) {
-            val productId = firebaseDatabaseReference.push().key
-            if (productId != null) {
-                val product = Product(barcode, name, price, unitPrice, shop)
-
-                // Save product information to Firebase Realtime Database
-                firebaseDatabaseReference.child("products").child(productId).setValue(product)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Log.d("SHOOPT_TAG", "Product saved!")
-                            Toast.makeText(this, "Product saved!", Toast.LENGTH_SHORT).show()
-                        } else {
-                            Log.d("SHOOPT_TAG", "Error: ${task.exception}")
-                        }
-                    }
-                    .addOnFailureListener { e ->
-                        Log.d("SHOOPT_TAG", e.localizedMessage ?: "Failed to store product")
-                        Toast.makeText(this, e.localizedMessage, Toast.LENGTH_SHORT).show()
-                    }
-            }
+            addProductToRTDB(id, barcode, name, shop, price, unitPrice)
         } else {
-            Toast.makeText(
-                this@AddProductActivity,
-                "Fail to add data because empty field found",
-                Toast.LENGTH_SHORT
-            )
-                .show()
+            displayFailedStorage()
+        }
+    }
+
+    private fun displayFailedStorage() {
+        Toast.makeText(
+            this@AddProductActivity,
+            "Fail to add data because empty field found",
+            Toast.LENGTH_SHORT
+        )
+            .show()
+    }
+
+    private fun addProductToRTDB(
+        id: String,
+        barcode: Long,
+        name: String,
+        shop: String,
+        price: Double,
+        unitPrice: Double
+    ) {
+        val productId = firebaseDatabaseReference.push().key
+        if (productId != null) {
+            val product = Product(id, barcode, name, price, unitPrice, shop)
+
+            firebaseDatabaseReference.child("products").child(productId).setValue(product)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d("SHOOPT_TAG", "Product saved!")
+                        Toast.makeText(this, "Product saved!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Log.d("SHOOPT_TAG", "Error: ${task.exception}")
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Log.d("SHOOPT_TAG", e.localizedMessage ?: "Failed to store product")
+                    Toast.makeText(this, e.localizedMessage, Toast.LENGTH_SHORT).show()
+                }
         }
     }
 

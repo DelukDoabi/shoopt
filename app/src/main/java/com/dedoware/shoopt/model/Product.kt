@@ -3,6 +3,7 @@ package com.dedoware.shoopt.model
 import com.google.gson.annotations.SerializedName
 
 class Product(
+    @SerializedName("id") val id: String,
     @SerializedName("barcode") val barcode: Number,
     @SerializedName("name") val name: String,
     @SerializedName("price") val price: Number,
