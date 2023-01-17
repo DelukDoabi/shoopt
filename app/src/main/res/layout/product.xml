@@ -26,4 +26,12 @@
         android:text="Shop Name"
         android:textSize="14sp" />
 
+    <TextView
+        android:id="@+id/product_price_TV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Product Price"
+        android:textSize="16sp" />
+
 </LinearLayout>

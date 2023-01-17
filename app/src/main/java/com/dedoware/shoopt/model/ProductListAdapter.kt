@@ -16,6 +16,7 @@ class ProductListAdapter(private val products: List<Product>) :
         fun bind(product: Product) {
             itemView.findViewById<TextView>(R.id.product_name_TV).text = product.name
             itemView.findViewById<TextView>(R.id.product_shop_TV).text = product.shop
+            itemView.findViewById<TextView>(R.id.product_price_TV).text = product.price.toString()
 
             val imageView = itemView.findViewById<ImageView>(R.id.product_image_IV)
             Glide.with(itemView.context).load(product.pictureUrl).into(imageView)
