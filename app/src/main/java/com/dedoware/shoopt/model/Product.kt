@@ -8,7 +8,8 @@ data class Product(
     @SerializedName("name") val name: String,
     @SerializedName("price") val price: Double,
     @SerializedName("unit_price") val unitPrice: Double,
-    @SerializedName("shop") val shop: String
+    @SerializedName("shop") val shop: String,
+    @SerializedName("picture_url") val pictureUrl: String
 ) {
-    constructor() : this("", 0, "", 0.0, 0.0, "")
+    constructor() : this("", 0, "", 0.0, 0.0, "", "")
 }

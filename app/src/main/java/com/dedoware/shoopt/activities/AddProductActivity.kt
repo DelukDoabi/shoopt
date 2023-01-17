@@ -74,7 +74,6 @@ class AddProductActivity : AppCompatActivity() {
 
         // Save product information to Firebase Realtime Database
         saveProductImageButton.setOnClickListener {
-            saveProductInFirebaseDatabase()
             saveProductPictureInFirebaseStorage()
         }
     }
@@ -102,6 +101,13 @@ class AddProductActivity : AppCompatActivity() {
         }.addOnSuccessListener {
             Log.d("SHOOPT_TAG", "Product picture saved!")
             Toast.makeText(this, "Product picture saved!", Toast.LENGTH_SHORT).show()
+
+            productPicturesRef.downloadUrl.addOnSuccessListener {
+                val downloadUrl = it.toString()
+                Log.d("SHOOPT_TAG", "Download URL: $downloadUrl")
+
+                saveProductInFirebaseDatabase(downloadUrl)
+            }
         }
     }
 
@@ -110,7 +116,7 @@ class AddProductActivity : AppCompatActivity() {
         if (scannedBarcode != null) productBarcodeEditText.setText(scannedBarcode)
     }
 
-    private fun saveProductInFirebaseDatabase() {
+    private fun saveProductInFirebaseDatabase(productPictureUrl: String) {
         val barcode = if (productBarcodeEditText.text.toString()
                 .isEmpty()
         ) "0".toLong() else productBarcodeEditText.text.toString().toLong()
@@ -121,7 +127,7 @@ class AddProductActivity : AppCompatActivity() {
         val id = "$barcode-$name-$shop"
 
         if (name.isNotEmpty() && !price.isNaN() && !unitPrice.isNaN() && shop.isNotEmpty()) {
-            addProductToRTDB(id, barcode, name, shop, price, unitPrice)
+            addProductToRTDB(id, barcode, name, shop, price, unitPrice, productPictureUrl)
         } else {
             displayFailedStorage()
         }
@@ -142,11 +148,12 @@ class AddProductActivity : AppCompatActivity() {
         name: String,
         shop: String,
         price: Double,
-        unitPrice: Double
+        unitPrice: Double,
+        pictureUrl: String
     ) {
         val productId = firebaseDatabaseReference.push().key
         if (productId != null) {
-            val product = Product(id, barcode, name, price, unitPrice, shop)
+            val product = Product(id, barcode, name, price, unitPrice, shop, pictureUrl)
 
             firebaseDatabaseReference.child("products").child(productId).setValue(product)
                 .addOnCompleteListener { task ->

@@ -3,8 +3,10 @@ package com.dedoware.shoopt.model
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.dedoware.shoopt.R
 
 class ProductListAdapter(private val products: List<Product>) :
@@ -14,6 +16,9 @@ class ProductListAdapter(private val products: List<Product>) :
         fun bind(product: Product) {
             itemView.findViewById<TextView>(R.id.product_name_TV).text = product.name
             itemView.findViewById<TextView>(R.id.product_shop_TV).text = product.shop
+
+            val imageView = itemView.findViewById<ImageView>(R.id.product_image_IV)
+            Glide.with(itemView.context).load(product.pictureUrl).into(imageView)
         }
     }
 
