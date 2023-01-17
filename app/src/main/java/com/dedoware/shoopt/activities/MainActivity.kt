@@ -35,6 +35,10 @@ class MainActivity : AppCompatActivity() {
         addOrUpdateProductImageButton.setOnClickListener {
             displayAddProductWayUserChoice()
         }
+
+        analyseImageButton.setOnClickListener {
+            startActivity(Intent(this, AnalyseActivity::class.java))
+        }
     }
 
     private fun displayAddProductWayUserChoice() {
