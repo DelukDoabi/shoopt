@@ -24,7 +24,10 @@ class AnalyseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
         setContentView(R.layout.activity_analyse)
+
+        supportActionBar?.hide()
 
         progressBar = findViewById(R.id.loading_indicator)
 
