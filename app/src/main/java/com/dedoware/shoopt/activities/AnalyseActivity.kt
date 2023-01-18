@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.model.Product
@@ -24,7 +24,7 @@ class AnalyseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+
         setContentView(R.layout.activity_analyse)
 
         supportActionBar?.hide()
@@ -33,7 +33,7 @@ class AnalyseActivity : AppCompatActivity() {
 
 
         productListRecyclerView = findViewById(R.id.product_list_recycler_view)
-        productListRecyclerView.layoutManager = LinearLayoutManager(this)
+        productListRecyclerView.layoutManager = GridLayoutManager(this, 2)
         productListRecyclerView.adapter = ProductListAdapter(emptyList())
 
         ShooptUtils.doAfterInitFirebase(baseContext) { getProductsFromRTDB() }
