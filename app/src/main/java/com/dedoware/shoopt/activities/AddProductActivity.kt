@@ -3,7 +3,11 @@ package com.dedoware.shoopt.activities
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.media.ExifInterface
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.EditText
@@ -11,15 +15,13 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.graphics.drawable.toBitmap
+import androidx.core.content.FileProvider
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.model.Product
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
+import com.dedoware.shoopt.utils.ShooptUtils
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import java.io.ByteArrayOutputStream
+import java.io.File
 
 
 class AddProductActivity : AppCompatActivity() {
@@ -33,17 +35,23 @@ class AddProductActivity : AppCompatActivity() {
     private lateinit var productUnitPriceEditText: EditText
     private lateinit var productShopEditText: EditText
 
-    // Firebase Realtime Database
-    private lateinit var firebaseDatabaseReference: DatabaseReference
-    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var productPictureFile: File
+
 
     // Get your image
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                if (result?.data != null) {
-                    productPictureImageButton.setImageBitmap(result.data?.extras?.get("data") as Bitmap)
-                }
+                val (productPictureOrientation, productPictureBitmap) = getProductPictureBitmap()
+
+                productPictureImageButton.setImageBitmap(
+                    rotateProductPictureBitmap(
+                        productPictureOrientation,
+                        productPictureBitmap
+                    )
+                )
+                
+                productPictureBitmap.recycle()
             }
         }
 
@@ -56,9 +64,12 @@ class AddProductActivity : AppCompatActivity() {
         // TODO NBE if not working put findViewById methods after setContentView
         setMainVariables()
 
-        signInAnonymouslyToFirebase()
+        ShooptUtils.doAfterInitFirebase(baseContext, null)
 
-        initializeFirebaseDatabase()
+        productPictureFile = File(
+            getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+            "temp_shoopt_product_picture.jpg"
+        )
 
         getScannedBarcode()
 
@@ -67,9 +78,7 @@ class AddProductActivity : AppCompatActivity() {
         }
 
         productPictureImageButton.setOnClickListener {
-            // Open camera
-            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            resultLauncher.launch(cameraIntent)
+            launchCamera()
         }
 
         // Save product information to Firebase Realtime Database
@@ -78,11 +87,18 @@ class AddProductActivity : AppCompatActivity() {
         }
     }
 
+    private fun launchCamera() {
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val imageUri =
+            FileProvider.getUriForFile(this, "com.dedoware.shoopt.fileprovider", productPictureFile)
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+
+        resultLauncher.launch(cameraIntent)
+    }
+
     private fun saveProductPictureInFirebaseStorage() {
-        val productPictureByteArrayOutputStream = ByteArrayOutputStream()
-        productPictureImageButton.drawable.toBitmap()
-            .compress(Bitmap.CompressFormat.JPEG, 100, productPictureByteArrayOutputStream)
-        val data = productPictureByteArrayOutputStream.toByteArray()
+        val productPictureUri =
+            FileProvider.getUriForFile(this, "com.dedoware.shoopt.fileprovider", productPictureFile)
 
         val storageRef = Firebase.storage.reference
 
@@ -94,7 +110,7 @@ class AddProductActivity : AppCompatActivity() {
         val productPicturesRef =
             storageRef.child("product-pictures/$productBarcode-$productName-$productShop.jpg")
 
-        val uploadTask = productPicturesRef.putBytes(data)
+        val uploadTask = productPicturesRef.putFile(productPictureUri)
         uploadTask.addOnFailureListener { exception ->
             Log.d("SHOOPT_TAG", exception.localizedMessage ?: "Failed to store product picture")
             Toast.makeText(this, exception.localizedMessage, Toast.LENGTH_SHORT).show()
@@ -151,11 +167,12 @@ class AddProductActivity : AppCompatActivity() {
         unitPrice: Double,
         pictureUrl: String
     ) {
-        val productId = firebaseDatabaseReference.push().key
+        val productId = ShooptUtils.getFirebaseDatabaseReference().push().key
         if (productId != null) {
             val product = Product(id, barcode, name, price, unitPrice, shop, pictureUrl)
 
-            firebaseDatabaseReference.child("products").child(productId).setValue(product)
+            ShooptUtils.getFirebaseDatabaseReference().child("products").child(productId)
+                .setValue(product)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Log.d("SHOOPT_TAG", "Product saved!")
@@ -171,26 +188,33 @@ class AddProductActivity : AppCompatActivity() {
         }
     }
 
-    private fun initializeFirebaseDatabase() {
-        firebaseDatabaseReference =
-            Firebase.database("https://shoopt-9ab47-default-rtdb.europe-west1.firebasedatabase.app/")
-                .reference
+    private fun getProductPictureBitmap(): Pair<Int, Bitmap> {
+        val exif = ExifInterface(productPictureFile.path)
+        val orientation = exif.getAttributeInt(
+            ExifInterface.TAG_ORIENTATION,
+            ExifInterface.ORIENTATION_UNDEFINED
+        )
+
+        val options = BitmapFactory.Options()
+        options.inSampleSize = 10
+
+        val bitmap = BitmapFactory.decodeFile(productPictureFile.path, options)
+        return Pair(orientation, bitmap)
     }
 
-    private fun signInAnonymouslyToFirebase() {
-        firebaseAuth = FirebaseAuth.getInstance()
-
-        firebaseAuth.signInAnonymously()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d("SHOOPT_TAG", "signInAnonymously:success")
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w("SHOOPT_TAG", "signInAnonymously:failure", task.exception)
-                    Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
-                }
+    private fun rotateProductPictureBitmap(
+        orientation: Int,
+        bitmap: Bitmap
+    ): Bitmap? {
+        val matrix = Matrix()
+        when (orientation) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> matrix.postRotate(90F)
+            ExifInterface.ORIENTATION_ROTATE_180 -> matrix.postRotate(180F)
+            ExifInterface.ORIENTATION_ROTATE_270 -> matrix.postRotate(270F)
+            else -> { /* Do nothing */
             }
+        }
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
 
     private fun setMainVariables() {

@@ -11,19 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.model.Product
 import com.dedoware.shoopt.model.ProductListAdapter
-import com.google.firebase.auth.FirebaseAuth
+import com.dedoware.shoopt.utils.ShooptUtils
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 
 class AnalyseActivity : AppCompatActivity() {
     private lateinit var productListRecyclerView: RecyclerView
 
-    private lateinit var firebaseDatabaseReference: DatabaseReference
-    private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var progressBar: ProgressBar
 
 
@@ -38,32 +33,14 @@ class AnalyseActivity : AppCompatActivity() {
         productListRecyclerView.layoutManager = LinearLayoutManager(this)
         productListRecyclerView.adapter = ProductListAdapter(emptyList())
 
-        signInAnonymouslyToFirebasethenGetProducts()
-    }
-
-    private fun signInAnonymouslyToFirebasethenGetProducts() {
-        firebaseAuth = FirebaseAuth.getInstance()
-
-        firebaseAuth.signInAnonymously()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d("SHOOPT_TAG", "signInAnonymously:success")
-
-                    initializeFirebaseDatabase()
-
-                    getProductsFromRTDB()
-                } else {
-                    Log.w("SHOOPT_TAG", "signInAnonymously:failure", task.exception)
-                    Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
-                }
-            }
+        ShooptUtils.doAfterInitFirebase(baseContext) { getProductsFromRTDB() }
     }
 
     private fun getProductsFromRTDB() {
         progressBar.visibility = View.VISIBLE
 
         val productsReference =
-            firebaseDatabaseReference.child("products")
+            ShooptUtils.getFirebaseDatabaseReference().child("products")
 
         productsReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -87,13 +64,6 @@ class AnalyseActivity : AppCompatActivity() {
                     .show()
             }
         })
-    }
-
-
-    private fun initializeFirebaseDatabase() {
-        firebaseDatabaseReference =
-            Firebase.database("https://shoopt-9ab47-default-rtdb.europe-west1.firebasedatabase.app/")
-                .reference
     }
 
 }
