@@ -15,7 +15,8 @@
         android:layout_margin="10dp"
         android:background="@drawable/shoopt_search_view_border"
         android:iconifiedByDefault="false"
-        android:queryHint="Search products by name or shop" />
+        android:queryHint="Search products by name or shop"
+        android:textColorHint="@color/main_palette_rajah" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/product_list_recycler_view"
