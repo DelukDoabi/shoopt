@@ -12,6 +12,8 @@
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/shoopt_search_view_border"
         android:iconifiedByDefault="false"
         android:queryHint="Search products by name or shop" />
 
