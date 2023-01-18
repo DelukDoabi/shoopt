@@ -36,7 +36,8 @@ class AnalyseActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.loading_indicator)
         searchView = findViewById(R.id.search_view)
         productListRecyclerView = findViewById(R.id.product_list_recycler_view)
-
+        
+        progressBar.visibility = View.VISIBLE
         productListRecyclerView.layoutManager = GridLayoutManager(this, 2)
         productListRecyclerView.adapter = ProductListAdapter(emptyList())
 
@@ -67,15 +68,11 @@ class AnalyseActivity : AppCompatActivity() {
     }
 
     private fun getProductsFromRTDB() {
-        progressBar.visibility = View.VISIBLE
-
         val productsReference =
             ShooptUtils.getFirebaseDatabaseReference().child("products")
 
         productsReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                progressBar.visibility = View.GONE
-
                 products = mutableListOf<Product>()
                 dataSnapshot.children.forEach { productData ->
                     val product = productData.getValue(Product::class.java)
@@ -83,6 +80,7 @@ class AnalyseActivity : AppCompatActivity() {
                 }
                 if (products.isNotEmpty()) {
                     productListRecyclerView.adapter = ProductListAdapter(products)
+                    progressBar.visibility = View.GONE
                 } else {
                     Log.d("SHOOPT_TAG", "No product found!")
                 }
