@@ -36,7 +36,7 @@ class AnalyseActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.loading_indicator)
         searchView = findViewById(R.id.search_view)
         productListRecyclerView = findViewById(R.id.product_list_recycler_view)
-        
+
         progressBar.visibility = View.VISIBLE
         productListRecyclerView.layoutManager = GridLayoutManager(this, 2)
         productListRecyclerView.adapter = ProductListAdapter(emptyList())
@@ -60,6 +60,16 @@ class AnalyseActivity : AppCompatActivity() {
                 return true
             }
         })
+
+        searchView.setOnClickListener {
+            searchView.isIconified = false
+        }
+
+        searchView.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                searchView.isIconified = false
+            }
+        }
 
         searchView.setOnCloseListener {
             productListRecyclerView.adapter = ProductListAdapter(products)
