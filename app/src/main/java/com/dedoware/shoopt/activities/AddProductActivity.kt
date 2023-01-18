@@ -128,7 +128,7 @@ class AddProductActivity : AppCompatActivity() {
             productPictureBitmap
         )?.compress(
             Bitmap.CompressFormat.JPEG,
-            50,
+            30,
             productPictureByteArrayOutputStream
         ) // compress image to 50% quality
         return productPictureByteArrayOutputStream.toByteArray()
