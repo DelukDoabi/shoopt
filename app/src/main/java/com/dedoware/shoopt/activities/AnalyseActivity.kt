@@ -34,15 +34,18 @@ class AnalyseActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         progressBar = findViewById(R.id.loading_indicator)
-
-
+        searchView = findViewById(R.id.search_view)
         productListRecyclerView = findViewById(R.id.product_list_recycler_view)
+
         productListRecyclerView.layoutManager = GridLayoutManager(this, 2)
         productListRecyclerView.adapter = ProductListAdapter(emptyList())
 
         ShooptUtils.doAfterInitFirebase(baseContext) { getProductsFromRTDB() }
 
-        searchView = findViewById(R.id.search_view)
+        addSearch()
+    }
+
+    private fun addSearch() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
@@ -61,7 +64,6 @@ class AnalyseActivity : AppCompatActivity() {
             productListRecyclerView.adapter = ProductListAdapter(products)
             false
         }
-
     }
 
     private fun getProductsFromRTDB() {
@@ -79,7 +81,7 @@ class AnalyseActivity : AppCompatActivity() {
                     val product = productData.getValue(Product::class.java)
                     product?.let { (products as MutableList<Product>).add(it) }
                 }
-                if (products.size > 0) {
+                if (products.isNotEmpty()) {
                     productListRecyclerView.adapter = ProductListAdapter(products)
                 } else {
                     Log.d("SHOOPT_TAG", "No product found!")
