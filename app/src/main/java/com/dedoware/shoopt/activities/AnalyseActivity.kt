@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dedoware.shoopt.R
@@ -20,6 +21,9 @@ class AnalyseActivity : AppCompatActivity() {
     private lateinit var productListRecyclerView: RecyclerView
 
     private lateinit var progressBar: ProgressBar
+    private lateinit var searchView: SearchView
+
+    private lateinit var products: List<Product>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +41,27 @@ class AnalyseActivity : AppCompatActivity() {
         productListRecyclerView.adapter = ProductListAdapter(emptyList())
 
         ShooptUtils.doAfterInitFirebase(baseContext) { getProductsFromRTDB() }
+
+        searchView = findViewById(R.id.search_view)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                val filteredProducts = products.filter {
+                    it.name.contains(newText!!, ignoreCase = true)
+                }
+                productListRecyclerView.adapter = ProductListAdapter(filteredProducts)
+                return true
+            }
+        })
+
+        searchView.setOnCloseListener {
+            productListRecyclerView.adapter = ProductListAdapter(products)
+            false
+        }
+
     }
 
     private fun getProductsFromRTDB() {
@@ -49,10 +74,10 @@ class AnalyseActivity : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 progressBar.visibility = View.GONE
 
-                val products = mutableListOf<Product>()
+                products = mutableListOf<Product>()
                 dataSnapshot.children.forEach { productData ->
                     val product = productData.getValue(Product::class.java)
-                    product?.let { products.add(it) }
+                    product?.let { (products as MutableList<Product>).add(it) }
                 }
                 if (products.size > 0) {
                     productListRecyclerView.adapter = ProductListAdapter(products)
