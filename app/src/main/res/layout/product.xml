@@ -7,8 +7,9 @@
     <ImageView
         android:id="@+id/product_image_IV"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="centerCrop" />
+        android:layout_height="250dp"
+        android:layout_marginTop="20dp"
+        android:scaleType="fitCenter" />
 
     <TextView
         android:id="@+id/product_name_TV"
