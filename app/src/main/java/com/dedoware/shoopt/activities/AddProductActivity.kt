@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.BitmapFactory.Options
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.os.Bundle
@@ -21,6 +22,7 @@ import com.dedoware.shoopt.model.Product
 import com.dedoware.shoopt.utils.ShooptUtils
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import java.io.ByteArrayOutputStream
 import java.io.File
 
 
@@ -42,16 +44,7 @@ class AddProductActivity : AppCompatActivity() {
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val (productPictureOrientation, productPictureBitmap) = getProductPictureBitmap()
-
-                productPictureImageButton.setImageBitmap(
-                    rotateProductPictureBitmap(
-                        productPictureOrientation,
-                        productPictureBitmap
-                    )
-                )
-                
-                productPictureBitmap.recycle()
+                displayProductPictureOnImageButton()
             }
         }
 
@@ -89,28 +82,27 @@ class AddProductActivity : AppCompatActivity() {
 
     private fun launchCamera() {
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        val imageUri =
+        val productPictureUri =
             FileProvider.getUriForFile(this, "com.dedoware.shoopt.fileprovider", productPictureFile)
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, productPictureUri)
 
         resultLauncher.launch(cameraIntent)
     }
 
     private fun saveProductPictureInFirebaseStorage() {
-        val productPictureUri =
-            FileProvider.getUriForFile(this, "com.dedoware.shoopt.fileprovider", productPictureFile)
-
         val storageRef = Firebase.storage.reference
 
         val productBarcode = productBarcodeEditText.text.toString().toLong()
         val productName = productNameEditText.text.toString()
         val productShop = productShopEditText.text.toString()
 
-
         val productPicturesRef =
             storageRef.child("product-pictures/$productBarcode-$productName-$productShop.jpg")
 
-        val uploadTask = productPicturesRef.putFile(productPictureUri)
+        val productPictureData = getProductPictureData()
+
+        val uploadTask = productPicturesRef.putBytes(productPictureData)
+
         uploadTask.addOnFailureListener { exception ->
             Log.d("SHOOPT_TAG", exception.localizedMessage ?: "Failed to store product picture")
             Toast.makeText(this, exception.localizedMessage, Toast.LENGTH_SHORT).show()
@@ -125,6 +117,21 @@ class AddProductActivity : AppCompatActivity() {
                 saveProductInFirebaseDatabase(downloadUrl)
             }
         }
+    }
+
+    private fun getProductPictureData(): ByteArray {
+        val (productPictureOrientation, productPictureBitmap) = getProductPictureBitmap(null)
+
+        val productPictureByteArrayOutputStream = ByteArrayOutputStream()
+        rotateProductPictureBitmap(
+            productPictureOrientation,
+            productPictureBitmap
+        )?.compress(
+            Bitmap.CompressFormat.JPEG,
+            50,
+            productPictureByteArrayOutputStream
+        ) // compress image to 50% quality
+        return productPictureByteArrayOutputStream.toByteArray()
     }
 
     private fun getScannedBarcode() {
@@ -188,18 +195,21 @@ class AddProductActivity : AppCompatActivity() {
         }
     }
 
-    private fun getProductPictureBitmap(): Pair<Int, Bitmap> {
+    private fun getProductPictureBitmap(options: Options?): Pair<Int, Bitmap> {
         val exif = ExifInterface(productPictureFile.path)
         val orientation = exif.getAttributeInt(
             ExifInterface.TAG_ORIENTATION,
             ExifInterface.ORIENTATION_UNDEFINED
         )
 
-        val options = BitmapFactory.Options()
-        options.inSampleSize = 10
-
-        val bitmap = BitmapFactory.decodeFile(productPictureFile.path, options)
-        return Pair(orientation, bitmap)
+        return if (options != null) Pair(
+            orientation,
+            BitmapFactory.decodeFile(productPictureFile.path, options)
+        )
+        else Pair(
+            orientation,
+            BitmapFactory.decodeFile(productPictureFile.path)
+        )
     }
 
     private fun rotateProductPictureBitmap(
@@ -215,6 +225,24 @@ class AddProductActivity : AppCompatActivity() {
             }
         }
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+    }
+
+    private fun displayProductPictureOnImageButton() {
+        val options = Options()
+        options.inSampleSize = 10
+
+        val (productPictureOrientation, productPictureBitmap) = getProductPictureBitmap(
+            options
+        )
+
+        productPictureImageButton.setImageBitmap(
+            rotateProductPictureBitmap(
+                productPictureOrientation,
+                productPictureBitmap
+            )
+        )
+
+        productPictureBitmap.recycle()
     }
 
     private fun setMainVariables() {
