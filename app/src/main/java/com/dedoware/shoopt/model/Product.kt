@@ -2,11 +2,15 @@ package com.dedoware.shoopt.model
 
 import com.google.gson.annotations.SerializedName
 
-class Product(
+data class Product(
     @SerializedName("id") val id: String,
-    @SerializedName("barcode") val barcode: Number,
+    @SerializedName("barcode") val barcode: Long,
+    @SerializedName("timestamp") val timestamp: Long,
     @SerializedName("name") val name: String,
-    @SerializedName("price") val price: Number,
-    @SerializedName("unit_price") val unitPrice: Number,
-    @SerializedName("shop") val shop: String
-)
+    @SerializedName("price") val price: Double,
+    @SerializedName("unit_price") val unitPrice: Double,
+    @SerializedName("shop") val shop: String,
+    @SerializedName("picture_url") val pictureUrl: String
+) {
+    constructor() : this("", 0, 0, "", 0.0, 0.0, "", "")
+}

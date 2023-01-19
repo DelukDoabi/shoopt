@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
         setContentView(R.layout.activity_main)
 
         supportActionBar?.hide()
@@ -34,6 +35,10 @@ class MainActivity : AppCompatActivity() {
 
         addOrUpdateProductImageButton.setOnClickListener {
             displayAddProductWayUserChoice()
+        }
+
+        analyseImageButton.setOnClickListener {
+            startActivity(Intent(this, AnalyseActivity::class.java))
         }
     }
 
