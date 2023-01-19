@@ -89,7 +89,8 @@ class AnalyseActivity : AppCompatActivity() {
                     product?.let { (products as MutableList<Product>).add(it) }
                 }
                 if (products.isNotEmpty()) {
-                    productListRecyclerView.adapter = ProductListAdapter(products)
+                    productListRecyclerView.adapter =
+                        ProductListAdapter(products.sortedByDescending { it.timestamp })
                     progressBar.visibility = View.GONE
                 } else {
                     Log.d("SHOOPT_TAG", "No product found!")

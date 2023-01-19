@@ -50,7 +50,7 @@ class AddProductActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+
         setContentView(R.layout.activity_add_product)
 
         supportActionBar?.hide()
@@ -144,6 +144,7 @@ class AddProductActivity : AppCompatActivity() {
         val barcode = if (productBarcodeEditText.text.toString()
                 .isEmpty()
         ) "0".toLong() else productBarcodeEditText.text.toString().toLong()
+        val timestamp = System.currentTimeMillis()
         val name = productNameEditText.text.toString()
         val price = productPriceEditText.text.toString().toDouble()
         val unitPrice = productUnitPriceEditText.text.toString().toDouble()
@@ -151,7 +152,16 @@ class AddProductActivity : AppCompatActivity() {
         val id = "$barcode-$name-$shop"
 
         if (name.isNotEmpty() && !price.isNaN() && !unitPrice.isNaN() && shop.isNotEmpty()) {
-            addProductToRTDB(id, barcode, name, shop, price, unitPrice, productPictureUrl)
+            addProductToRTDB(
+                id,
+                barcode,
+                timestamp,
+                name,
+                shop,
+                price,
+                unitPrice,
+                productPictureUrl
+            )
         } else {
             displayFailedStorage()
         }
@@ -169,6 +179,7 @@ class AddProductActivity : AppCompatActivity() {
     private fun addProductToRTDB(
         id: String,
         barcode: Long,
+        timestamp: Long,
         name: String,
         shop: String,
         price: Double,
@@ -177,8 +188,8 @@ class AddProductActivity : AppCompatActivity() {
     ) {
         val productId = ShooptUtils.getFirebaseDatabaseReference().push().key
         if (productId != null) {
-            val product = Product(id, barcode, name, price, unitPrice, shop, pictureUrl)
-
+            val product = Product(id, barcode, timestamp, name, price, unitPrice, shop, pictureUrl)
+            
             ShooptUtils.getFirebaseDatabaseReference().child("products").child(productId)
                 .setValue(product)
                 .addOnCompleteListener { task ->
