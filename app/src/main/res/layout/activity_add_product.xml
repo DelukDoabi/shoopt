@@ -83,21 +83,20 @@
         android:hint="@string/insert_product_unit_price"
         android:inputType="numberDecimal" />
 
-    <EditText
-        android:id="@+id/product_shop_ET"
+    <Spinner
+        android:id="@+id/shop_spinner"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/product_unit_price_ET"
         android:layout_centerInParent="true"
         android:layout_margin="5dp"
-        android:hint="@string/insert_product_shop"
-        android:inputType="text" />
+        android:hint="@string/insert_product_shop" />
 
     <ImageButton
         android:id="@+id/save_product_IB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/product_shop_ET"
+        android:layout_below="@id/shop_spinner"
         android:layout_centerInParent="true"
         android:layout_margin="5dp"
         android:background="@drawable/main_rounded_button"

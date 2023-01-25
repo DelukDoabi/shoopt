@@ -1,6 +1,7 @@
 package com.dedoware.shoopt.activities
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -10,16 +11,20 @@ import android.media.ExifInterface
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.text.InputType
 import android.util.Log
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.Toast
+import android.view.View
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.model.Product
+import com.dedoware.shoopt.model.Shop
 import com.dedoware.shoopt.utils.ShooptUtils
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.io.ByteArrayOutputStream
@@ -35,7 +40,7 @@ class AddProductActivity : AppCompatActivity() {
     private lateinit var productNameEditText: EditText
     private lateinit var productPriceEditText: EditText
     private lateinit var productUnitPriceEditText: EditText
-    private lateinit var productShopEditText: EditText
+    private lateinit var productShopSpinner: Spinner
 
     private lateinit var productPictureFile: File
 
@@ -55,10 +60,9 @@ class AddProductActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        // TODO NBE if not working put findViewById methods after setContentView
         setMainVariables()
 
-        ShooptUtils.doAfterInitFirebase(baseContext, null)
+        ShooptUtils.doAfterInitFirebase(baseContext) { setSpinnerWithShopsData() }
 
         productPictureFile = File(
             getExternalFilesDir(Environment.DIRECTORY_PICTURES),
@@ -75,10 +79,124 @@ class AddProductActivity : AppCompatActivity() {
             launchCamera()
         }
 
-        // Save product information to Firebase Realtime Database
         saveProductImageButton.setOnClickListener {
             saveProductPictureInFirebaseStorage()
         }
+    }
+
+    private fun setSpinnerWithShopsData() {
+        val adapter =
+            ArrayAdapter(this, android.R.layout.simple_spinner_item, mutableListOf<String>())
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        productShopSpinner.adapter = adapter
+
+        val shopsReference = ShooptUtils.getFirebaseDatabaseReference().child("shops")
+
+        shopsReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    shopsReference.setValue(HashMap<String, Any>())
+                }
+                val shopList = mutableListOf<String>()
+                dataSnapshot.children.forEach { shop ->
+                    val shopName = shop.child("name").getValue(String::class.java)
+                    if (shopName != null && !shopList.contains(shopName)) {
+                        shopList.add(shopName)
+                    }
+                }
+                shopList.add("Create new shop")
+                adapter.clear()
+                adapter.addAll(shopList)
+                adapter.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.d("SHOOPT_TAG", "Failed to read value.", databaseError.toException())
+                Toast.makeText(
+                    this@AddProductActivity,
+                    databaseError.toException().localizedMessage,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
+
+        productShopSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                if (position == adapter.count - 1) {
+                    val builder = AlertDialog.Builder(this@AddProductActivity)
+                    builder.setTitle("Create new shop")
+                    builder.setMessage("Enter the name of the new shop")
+
+                    val input = EditText(this@AddProductActivity)
+                    input.inputType = InputType.TYPE_CLASS_TEXT
+                    builder.setView(input)
+
+                    builder.setPositiveButton("OK") { _, _ ->
+                        addNewShop(input.text.toString())
+                    }
+
+                    builder.setNegativeButton("Cancel") { _, _ -> }
+
+                    val dialog = builder.create()
+                    dialog.show()
+
+                } else {
+                    // Handle the selection of an existing shop
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+    }
+
+    private fun addNewShop(shopName: String) {
+        val shopsReference = ShooptUtils.getFirebaseDatabaseReference().child("shops")
+
+        shopsReference.orderByChild("name").equalTo(shopName)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (!dataSnapshot.exists()) {
+                        val newShop = Shop(shopName)
+                        shopsReference.push().setValue(newShop) { error, _ ->
+                            if (error == null) {
+                                Log.d("SHOOPT_TAG", "New shop added successfully!")
+                                Toast.makeText(
+                                    this@AddProductActivity,
+                                    "New shop added successfully!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                Log.d("SHOOPT_TAG", error.message)
+                                Toast.makeText(
+                                    this@AddProductActivity,
+                                    error.message,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@AddProductActivity,
+                            "Shop already exists!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.d("SHOOPT_TAG", databaseError.details)
+                    Toast.makeText(
+                        this@AddProductActivity,
+                        "Error adding shop: ${databaseError.details}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
     }
 
     private fun launchCamera() {
@@ -95,7 +213,7 @@ class AddProductActivity : AppCompatActivity() {
 
         val productBarcode = productBarcodeEditText.text.toString().toLong()
         val productName = productNameEditText.text.toString()
-        val productShop = productShopEditText.text.toString()
+        val productShop = productShopSpinner.selectedItem.toString()
 
         val productPicturesRef =
             storageRef.child("product-pictures/$productBarcode-$productName-$productShop.jpg")
@@ -148,7 +266,7 @@ class AddProductActivity : AppCompatActivity() {
         val name = productNameEditText.text.toString()
         val price = productPriceEditText.text.toString().toDouble()
         val unitPrice = productUnitPriceEditText.text.toString().toDouble()
-        val shop = productShopEditText.text.toString()
+        val shop = productShopSpinner.selectedItem.toString()
         val id = "$barcode-$name-$shop"
 
         if (name.isNotEmpty() && !price.isNaN() && !unitPrice.isNaN() && shop.isNotEmpty()) {
@@ -189,7 +307,7 @@ class AddProductActivity : AppCompatActivity() {
         val productId = ShooptUtils.getFirebaseDatabaseReference().push().key
         if (productId != null) {
             val product = Product(id, barcode, timestamp, name, price, unitPrice, shop, pictureUrl)
-            
+
             ShooptUtils.getFirebaseDatabaseReference().child("products").child(productId)
                 .setValue(product)
                 .addOnCompleteListener { task ->
@@ -265,6 +383,6 @@ class AddProductActivity : AppCompatActivity() {
         productNameEditText = findViewById(R.id.product_name_ET)
         productPriceEditText = findViewById(R.id.product_price_ET)
         productUnitPriceEditText = findViewById(R.id.product_unit_price_ET)
-        productShopEditText = findViewById(R.id.product_shop_ET)
+        productShopSpinner = findViewById(R.id.shop_spinner)
     }
 }

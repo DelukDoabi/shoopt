@@ -83,7 +83,7 @@ class AnalyseActivity : AppCompatActivity() {
 
         productsReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                products = mutableListOf<Product>()
+                products = mutableListOf()
                 dataSnapshot.children.forEach { productData ->
                     val product = productData.getValue(Product::class.java)
                     product?.let { (products as MutableList<Product>).add(it) }
