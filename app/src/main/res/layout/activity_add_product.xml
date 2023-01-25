@@ -87,10 +87,10 @@
         android:id="@+id/shop_spinner"
         style="@style/Widget.AppCompat.Spinner.Underlined"
         android:layout_width="250dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/product_unit_price_ET"
         android:layout_centerInParent="true"
-        android:layout_margin="5dp"
+        android:layout_margin="10dp"
         android:hint="@string/insert_product_shop" />
 
     <ImageButton
