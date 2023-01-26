@@ -29,7 +29,7 @@
         android:textSize="15sp" />
 
     <TextView
-        android:id="@+id/product_price_TV"
+        android:id="@+id/product_full_price_TV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
