@@ -1,7 +1,6 @@
 package com.dedoware.shoopt.activities
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -11,9 +10,7 @@ import android.media.ExifInterface
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.text.InputType
 import android.util.Log
-import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -40,9 +37,11 @@ class AddProductActivity : AppCompatActivity() {
     private lateinit var productNameEditText: EditText
     private lateinit var productPriceEditText: EditText
     private lateinit var productUnitPriceEditText: EditText
-    private lateinit var productShopSpinner: Spinner
+    private lateinit var productShopAutoCompleteTextView: AutoCompleteTextView
 
     private lateinit var productPictureFile: File
+
+    val shopList = mutableListOf<String>()
 
 
     // Get your image
@@ -62,7 +61,7 @@ class AddProductActivity : AppCompatActivity() {
 
         setMainVariables()
 
-        ShooptUtils.doAfterInitFirebase(baseContext) { setSpinnerWithShopsData() }
+        ShooptUtils.doAfterInitFirebase(baseContext) { setShopsData() }
 
         productPictureFile = File(
             getExternalFilesDir(Environment.DIRECTORY_PICTURES),
@@ -80,15 +79,15 @@ class AddProductActivity : AppCompatActivity() {
         }
 
         saveProductImageButton.setOnClickListener {
-            saveProductPictureInFirebaseStorage()
+            saveAllProductDataInFirebase()
         }
     }
 
-    private fun setSpinnerWithShopsData() {
+    private fun setShopsData() {
         val adapter =
             ArrayAdapter(this, android.R.layout.simple_spinner_item, mutableListOf<String>())
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        productShopSpinner.adapter = adapter
+        productShopAutoCompleteTextView.setAdapter(adapter)
 
         val shopsReference = ShooptUtils.getFirebaseDatabaseReference().child("shops")
 
@@ -97,14 +96,12 @@ class AddProductActivity : AppCompatActivity() {
                 if (!dataSnapshot.exists()) {
                     shopsReference.setValue(HashMap<String, Any>())
                 }
-                val shopList = mutableListOf<String>()
                 dataSnapshot.children.forEach { shop ->
                     val shopName = shop.child("name").getValue(String::class.java)
                     if (shopName != null && !shopList.contains(shopName)) {
                         shopList.add(shopName)
                     }
                 }
-                shopList.add("Create new shop")
                 adapter.clear()
                 adapter.addAll(shopList)
                 adapter.notifyDataSetChanged()
@@ -120,37 +117,8 @@ class AddProductActivity : AppCompatActivity() {
             }
         })
 
-        productShopSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                if (position == adapter.count - 1) {
-                    val builder = AlertDialog.Builder(this@AddProductActivity)
-                    builder.setTitle("Create new shop")
-                    builder.setMessage("Enter the name of the new shop")
-
-                    val input = EditText(this@AddProductActivity)
-                    input.inputType = InputType.TYPE_CLASS_TEXT
-                    builder.setView(input)
-
-                    builder.setPositiveButton("OK") { _, _ ->
-                        addNewShop(input.text.toString())
-                    }
-
-                    builder.setNegativeButton("Cancel") { _, _ -> }
-
-                    val dialog = builder.create()
-                    dialog.show()
-
-                } else {
-                    // Handle the selection of an existing shop
-                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        productShopAutoCompleteTextView.setOnClickListener {
+            productShopAutoCompleteTextView.showDropDown()
         }
     }
 
@@ -208,12 +176,12 @@ class AddProductActivity : AppCompatActivity() {
         resultLauncher.launch(cameraIntent)
     }
 
-    private fun saveProductPictureInFirebaseStorage() {
+    private fun saveAllProductDataInFirebase() {
         val storageRef = Firebase.storage.reference
 
         val productBarcode = productBarcodeEditText.text.toString().toLong()
         val productName = productNameEditText.text.toString()
-        val productShop = productShopSpinner.selectedItem.toString()
+        val productShop = productShopAutoCompleteTextView.text.toString()
 
         val productPicturesRef =
             storageRef.child("product-pictures/$productBarcode-$productName-$productShop.jpg")
@@ -233,9 +201,16 @@ class AddProductActivity : AppCompatActivity() {
                 val downloadUrl = it.toString()
                 Log.d("SHOOPT_TAG", "Download URL: $downloadUrl")
 
+                saveShop(productShop)
+
                 saveProductInFirebaseDatabase(downloadUrl)
             }
         }
+    }
+
+    private fun saveShop(productShop: String) {
+        if (!shopList.contains(productShop))
+            addNewShop(productShop)
     }
 
     private fun getProductPictureData(): ByteArray {
@@ -266,7 +241,7 @@ class AddProductActivity : AppCompatActivity() {
         val name = productNameEditText.text.toString()
         val price = productPriceEditText.text.toString().toDouble()
         val unitPrice = productUnitPriceEditText.text.toString().toDouble()
-        val shop = productShopSpinner.selectedItem.toString()
+        val shop = productShopAutoCompleteTextView.text.toString()
         val id = "$barcode-$name-$shop"
 
         if (name.isNotEmpty() && !price.isNaN() && !unitPrice.isNaN() && shop.isNotEmpty()) {
@@ -383,6 +358,6 @@ class AddProductActivity : AppCompatActivity() {
         productNameEditText = findViewById(R.id.product_name_ET)
         productPriceEditText = findViewById(R.id.product_price_ET)
         productUnitPriceEditText = findViewById(R.id.product_unit_price_ET)
-        productShopSpinner = findViewById(R.id.shop_spinner)
+        productShopAutoCompleteTextView = findViewById(R.id.shop_autocomplete)
     }
 }

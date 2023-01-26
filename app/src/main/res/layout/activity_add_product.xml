@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,114 +7,123 @@
     android:orientation="vertical"
     tools:context=".activities.AddProductActivity">
 
-    <ImageButton
-        android:id="@+id/back_IB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="40dp"
-        android:background="@null"
-        android:contentDescription="@string/back"
-        android:src="@drawable/shoopt_back"></ImageButton>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?backgroundColor"
+        android:orientation="vertical"
+        tools:context=".activities.AddProductActivity">
 
-    <ImageButton
-        android:id="@+id/product_picture_IB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/back_IB"
-        android:layout_centerInParent="true"
-        android:layout_margin="5dp"
-        android:background="@drawable/main_rectangle_button"
-        android:contentDescription="@string/take_picture"
-        android:padding="15dp"
-        android:src="@drawable/shoopt_add_picture"></ImageButton>
+        <ImageButton
+            android:id="@+id/back_IB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="40dp"
+            android:background="@null"
+            android:contentDescription="@string/back"
+            android:src="@drawable/shoopt_back"></ImageButton>
 
-    <TextView
-        android:id="@+id/take_picture_TV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/product_picture_IB"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="30dp"
-        android:text="@string/take_picture"
-        android:textStyle="bold" />
+        <ImageButton
+            android:id="@+id/product_picture_IB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/back_IB"
+            android:layout_centerInParent="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/main_rectangle_button"
+            android:contentDescription="@string/take_picture"
+            android:padding="15dp"
+            android:src="@drawable/shoopt_add_picture"></ImageButton>
 
-    <EditText
-        android:id="@+id/product_barcode_ET"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/take_picture_TV"
-        android:layout_centerInParent="true"
-        android:layout_margin="5dp"
-        android:hint="@string/insert_product_barcode"
-        android:inputType="number" />
+        <TextView
+            android:id="@+id/take_picture_TV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/product_picture_IB"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="30dp"
+            android:text="@string/take_picture"
+            android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/product_name_ET"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/product_barcode_ET"
-        android:layout_centerInParent="true"
-        android:layout_margin="5dp"
-        android:hint="@string/insert_product_name"
-        android:inputType="text" />
+        <EditText
+            android:id="@+id/product_barcode_ET"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/take_picture_TV"
+            android:layout_centerInParent="true"
+            android:layout_margin="5dp"
+            android:hint="@string/insert_product_barcode"
+            android:inputType="number" />
 
-    <EditText
-        android:id="@+id/product_price_ET"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/product_name_ET"
-        android:layout_centerInParent="true"
-        android:layout_margin="5dp"
-        android:hint="@string/insert_product_price"
-        android:inputType="numberDecimal" />
+        <EditText
+            android:id="@+id/product_name_ET"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/product_barcode_ET"
+            android:layout_centerInParent="true"
+            android:layout_margin="5dp"
+            android:hint="@string/insert_product_name"
+            android:inputType="text" />
 
-    <EditText
-        android:id="@+id/product_unit_price_ET"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/product_price_ET"
-        android:layout_centerInParent="true"
-        android:layout_margin="5dp"
-        android:hint="@string/insert_product_unit_price"
-        android:inputType="numberDecimal" />
+        <EditText
+            android:id="@+id/product_price_ET"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/product_name_ET"
+            android:layout_centerInParent="true"
+            android:layout_margin="5dp"
+            android:hint="@string/insert_product_price"
+            android:inputType="numberDecimal" />
 
-    <Spinner
-        android:id="@+id/shop_spinner"
-        style="@style/Widget.AppCompat.Spinner.Underlined"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/product_unit_price_ET"
-        android:layout_centerInParent="true"
-        android:layout_margin="10dp"
-        android:hint="@string/insert_product_shop"
-        android:prompt="@string/insert_product_shop" />
+        <EditText
+            android:id="@+id/product_unit_price_ET"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/product_price_ET"
+            android:layout_centerInParent="true"
+            android:layout_margin="5dp"
+            android:hint="@string/insert_product_unit_price"
+            android:inputType="numberDecimal" />
 
-    <ImageButton
-        android:id="@+id/save_product_IB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/shop_spinner"
-        android:layout_centerInParent="true"
-        android:layout_margin="5dp"
-        android:background="@drawable/main_rounded_button"
-        android:contentDescription="@string/save_product"
-        android:padding="15dp"
-        android:src="@drawable/shoopt_save_product" />
+        <AutoCompleteTextView
+            android:id="@+id/shop_autocomplete"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/product_unit_price_ET"
+            android:layout_centerInParent="true"
+            android:layout_margin="5dp"
+            android:completionThreshold="1"
+            android:hint="@string/insert_product_shop" />
 
-    <TextView
-        android:id="@+id/save_product_TV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/save_product_IB"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="30dp"
-        android:text="@string/save_product"
-        android:textStyle="bold" />
+        <ImageButton
+            android:id="@+id/save_product_IB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/shop_autocomplete"
+            android:layout_centerInParent="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/main_rounded_button"
+            android:contentDescription="@string/save_product"
+            android:padding="15dp"
+            android:src="@drawable/shoopt_save_product" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/save_product_TV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/save_product_IB"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="30dp"
+            android:text="@string/save_product"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+</ScrollView>
