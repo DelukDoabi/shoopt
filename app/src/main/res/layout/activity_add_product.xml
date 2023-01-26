@@ -99,7 +99,8 @@
             android:layout_centerInParent="true"
             android:layout_margin="5dp"
             android:completionThreshold="1"
-            android:hint="@string/insert_product_shop" />
+            android:hint="@string/insert_product_shop"
+            android:inputType="text" />
 
         <ImageButton
             android:id="@+id/save_product_IB"
