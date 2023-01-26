@@ -210,7 +210,7 @@ class AddProductActivity : AppCompatActivity() {
 
     private fun saveShop(productShop: String) {
         if (!shopList.contains(productShop))
-            addNewShop(productShop)
+            addNewShop(productShop.trim())
     }
 
     private fun getProductPictureData(): ByteArray {
