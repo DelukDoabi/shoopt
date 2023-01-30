@@ -10,6 +10,27 @@
     tools:context=".activities.MainActivity">
 
     <ImageButton
+        android:id="@+id/memo_list_IB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@drawable/main_rounded_button"
+        android:contentDescription="@string/update_shopping_list"
+        android:gravity="center"
+        android:padding="15dp"
+        android:src="@drawable/shoop_update_shopping_list" />
+
+    <TextView
+        android:id="@+id/update_shopping_list_TV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="30dp"
+        android:gravity="center"
+        android:text="@string/update_shopping_list"
+        android:textStyle="bold" />
+
+    <ImageButton
         android:id="@+id/add_or_update_product_IB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

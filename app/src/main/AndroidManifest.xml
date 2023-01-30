@@ -39,6 +39,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activities.UpdateShoppingListActivity"
+            android:exported="false"></activity>
+        <activity
             android:name=".activities.AddProductActivity"
             android:exported="false" />
         <activity

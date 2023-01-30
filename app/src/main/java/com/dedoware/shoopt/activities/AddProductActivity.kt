@@ -9,12 +9,14 @@ import android.graphics.Matrix
 import android.media.ExifInterface
 import android.os.Bundle
 import android.os.Environment
+import android.os.PersistableBundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import androidx.core.graphics.drawable.toBitmap
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.model.Product
 import com.dedoware.shoopt.model.Shop
@@ -44,7 +46,6 @@ class AddProductActivity : AppCompatActivity() {
     val shopList = mutableListOf<String>()
 
 
-    // Get your image
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -60,6 +61,8 @@ class AddProductActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         setMainVariables()
+
+        retrieveMainData(savedInstanceState)
 
         ShooptUtils.doAfterInitFirebase(baseContext) { setShopsData() }
 
@@ -81,6 +84,17 @@ class AddProductActivity : AppCompatActivity() {
         saveProductImageButton.setOnClickListener {
             saveAllProductDataInFirebase()
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState, outPersistentState)
+
+        outState.putParcelable("productPicture", productPictureImageButton.drawable.toBitmap())
+        outState.putString("productBarCode", productBarcodeEditText.text.toString())
+        outState.putString("productName", productNameEditText.text.toString())
+        outState.putString("productPrice", productPriceEditText.text.toString())
+        outState.putString("productUnitPrice", productUnitPriceEditText.text.toString())
+        outState.putString("productShop", productShopAutoCompleteTextView.text.toString())
     }
 
     private fun setShopsData() {
@@ -171,6 +185,7 @@ class AddProductActivity : AppCompatActivity() {
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         val productPictureUri =
             FileProvider.getUriForFile(this, "com.dedoware.shoopt.fileprovider", productPictureFile)
+
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, productPictureUri)
 
         resultLauncher.launch(cameraIntent)
@@ -359,5 +374,16 @@ class AddProductActivity : AppCompatActivity() {
         productPriceEditText = findViewById(R.id.product_price_ET)
         productUnitPriceEditText = findViewById(R.id.product_unit_price_ET)
         productShopAutoCompleteTextView = findViewById(R.id.shop_autocomplete)
+    }
+
+    private fun retrieveMainData(savedInstanceState: Bundle?) {
+        if (savedInstanceState != null) {
+            productPictureImageButton.setImageBitmap(savedInstanceState.getParcelable("productPicture"))
+            productBarcodeEditText.setText(savedInstanceState.getString("productBarCode"))
+            productNameEditText.setText(savedInstanceState.getString("productName"))
+            productPriceEditText.setText(savedInstanceState.getString("productPrice"))
+            productUnitPriceEditText.setText(savedInstanceState.getString("productUnitPrice"))
+            productShopAutoCompleteTextView.setText(savedInstanceState.getString("productShop"))
+        }
     }
 }
