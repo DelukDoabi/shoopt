@@ -8,5 +8,8 @@ class UpdateShoppingListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update_shopping_list)
+
+        supportActionBar?.hide()
+
     }
 }

@@ -14,8 +14,7 @@ import com.journeyapps.barcodescanner.ScanOptions
 
 
 class MainActivity : AppCompatActivity() {
-
-    // TODO NBE if not working put findViewById methods after setContentView
+    private lateinit var updateShoppingListImageButton: ImageButton
     private lateinit var addOrUpdateProductImageButton: ImageButton
     private lateinit var trackShoppingImageButton: ImageButton
     private lateinit var analyseImageButton: ImageButton
@@ -25,13 +24,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+
         setContentView(R.layout.activity_main)
 
         supportActionBar?.hide()
 
-        // TODO NBE if not working put findViewById methods after setContentView
         setMainVariables()
+
+        updateShoppingListImageButton.setOnClickListener {
+            startActivity(Intent(this, UpdateShoppingListActivity::class.java))
+        }
 
         addOrUpdateProductImageButton.setOnClickListener {
             displayAddProductWayUserChoice()
@@ -76,6 +78,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setMainVariables() {
+        updateShoppingListImageButton =
+            findViewById(R.id.shopping_list_IB)
         addOrUpdateProductImageButton =
             findViewById(R.id.add_or_update_product_IB)
         trackShoppingImageButton =
