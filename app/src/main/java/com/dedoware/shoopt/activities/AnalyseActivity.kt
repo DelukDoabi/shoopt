@@ -23,7 +23,7 @@ class AnalyseActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var searchView: SearchView
 
-    private lateinit var products: List<Product>
+    private var products: List<Product> = emptyList()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
