@@ -1,6 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- First Shopping List Header -->
+    <TextView
+        android:id="@+id/shop1_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/main_shopping_list"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <!-- First Shopping List Text Edit Area -->
+    <EditText
+        android:id="@+id/edit_text_shop1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/shop1_header"
+        android:inputType="textMultiLine"
+        android:maxLines="10"
+        android:padding="16dp"
+        android:scrollbars="vertical"
+        android:textSize="16sp" />
+
+    <!-- Second Shopping List Header -->
+    <TextView
+        android:id="@+id/shop2_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edit_text_shop1"
+        android:padding="16dp"
+        android:text="@string/secondary_shopping_list"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <!-- Second Shopping List Text Edit Area -->
+    <EditText
+        android:id="@+id/edit_text_shop2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/shop2_header"
+        android:inputType="textMultiLine"
+        android:maxLines="10"
+        android:padding="16dp"
+        android:scrollbars="vertical"
+        android:textSize="16sp" />
+
+</RelativeLayout>
