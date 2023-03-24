@@ -1,6 +1,8 @@
 package com.dedoware.shoopt.activities
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
@@ -12,8 +14,8 @@ class UpdateShoppingListActivity : AppCompatActivity() {
     private lateinit var mainShoppingListEditText: EditText
     private lateinit var secondaryShoppingListEditText: EditText
     private lateinit var databaseReference: FirebaseDatabase
-    private lateinit var mainShoppingListDbRef: DatabaseReference
-    private lateinit var secondaryShoppingListDbRef: DatabaseReference
+    private val handler = Handler(Looper.getMainLooper())
+    private var runnable: Runnable = Runnable { }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,20 +23,14 @@ class UpdateShoppingListActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        mainShoppingListEditText = findViewById(R.id.edit_text_shop1)
-        secondaryShoppingListEditText = findViewById(R.id.edit_text_shop2)
+        mainShoppingListEditText = findViewById(R.id.main_shopping_list_edit_text)
+        secondaryShoppingListEditText = findViewById(R.id.secondary_shopping_list_edit_text)
 
         // Initialize Firebase database reference
         databaseReference = FirebaseDatabase.getInstance()
 
-        mainShoppingListDbRef = databaseReference.getReference("mainShoppingList")
-        secondaryShoppingListDbRef = databaseReference.getReference("secondaryShoppingList")
-
-        storeShoppingListOnChange(mainShoppingListEditText, mainShoppingListDbRef)
-        storeShoppingListOnChange(secondaryShoppingListEditText, secondaryShoppingListDbRef)
-
-        loadShoppingList(mainShoppingListEditText, mainShoppingListDbRef)
-        loadShoppingList(secondaryShoppingListEditText, secondaryShoppingListDbRef)
+        storeAndLoadShoppingList(mainShoppingListEditText, "mainShoppingList")
+        storeAndLoadShoppingList(secondaryShoppingListEditText, "secondaryShoppingList")
     }
 
     private fun loadShoppingList(
@@ -43,8 +39,11 @@ class UpdateShoppingListActivity : AppCompatActivity() {
     ) {
         shoppingListDbRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val shoppingList1 = snapshot.getValue(String::class.java)
-                shoppingListEditText.setText(shoppingList1)
+                val shoppingList = snapshot.getValue(String::class.java)
+                val selectionStart = shoppingListEditText.selectionStart
+                val selectionEnd = shoppingListEditText.selectionEnd
+                shoppingListEditText.setText(shoppingList)
+                shoppingListEditText.setSelection(selectionStart, selectionEnd)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -53,23 +52,38 @@ class UpdateShoppingListActivity : AppCompatActivity() {
         })
     }
 
+
     private fun storeShoppingListOnChange(
         shoppingListEditText: EditText,
         shoppingListDbRef: DatabaseReference
     ) {
         shoppingListEditText.addTextChangedListener(object : TextWatcher {
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // Do nothing
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val mainShoppingListContent = s.toString()
-                shoppingListDbRef.setValue(mainShoppingListContent)
+                runnable.let { handler.removeCallbacks(it) }
+                runnable = Runnable {
+                    val shoppingListContent = s.toString()
+                    shoppingListDbRef.setValue(shoppingListContent)
+                }
+                handler.postDelayed(runnable, 500) // Delay the update by 500 milliseconds
             }
 
             override fun afterTextChanged(s: Editable?) {
                 // Do nothing
             }
         })
+    }
+
+    private fun storeAndLoadShoppingList(
+        shoppingListEditText: EditText,
+        dbRefKey: String
+    ) {
+        val shoppingListDbRef = databaseReference.getReference(dbRefKey)
+        loadShoppingList(shoppingListEditText, shoppingListDbRef)
+        storeShoppingListOnChange(shoppingListEditText, shoppingListDbRef)
     }
 }

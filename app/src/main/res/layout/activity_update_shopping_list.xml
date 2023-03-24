@@ -5,7 +5,7 @@
 
     <!-- First Shopping List Header -->
     <TextView
-        android:id="@+id/shop1_header"
+        android:id="@+id/main_shopping_list_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
@@ -15,11 +15,11 @@
 
     <!-- First Shopping List Text Edit Area -->
     <EditText
-        android:id="@+id/edit_text_shop1"
+        android:id="@+id/main_shopping_list_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/shop1_header"
-        android:inputType="textMultiLine"
+        android:layout_below="@id/main_shopping_list_header"
+        android:gravity="top"
         android:maxLines="10"
         android:padding="16dp"
         android:scrollbars="vertical"
@@ -27,10 +27,10 @@
 
     <!-- Second Shopping List Header -->
     <TextView
-        android:id="@+id/shop2_header"
+        android:id="@+id/secondary_shopping_list_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/edit_text_shop1"
+        android:layout_below="@id/main_shopping_list_edit_text"
         android:padding="16dp"
         android:text="@string/secondary_shopping_list"
         android:textSize="18sp"
@@ -38,11 +38,11 @@
 
     <!-- Second Shopping List Text Edit Area -->
     <EditText
-        android:id="@+id/edit_text_shop2"
+        android:id="@+id/secondary_shopping_list_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/shop2_header"
-        android:inputType="textMultiLine"
+        android:layout_below="@id/secondary_shopping_list_header"
+        android:gravity="top"
         android:maxLines="10"
         android:padding="16dp"
         android:scrollbars="vertical"
