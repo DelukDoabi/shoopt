@@ -56,7 +56,7 @@ class AnalyseActivity : AppCompatActivity() {
                 val filteredProducts = products.filter {
                     it.name.contains(newText!!, ignoreCase = true)
                 }
-                productListRecyclerView.adapter = ProductListAdapter(filteredProducts)
+                setupAdapter(filteredProducts)
                 return true
             }
         })
@@ -72,7 +72,7 @@ class AnalyseActivity : AppCompatActivity() {
         }
 
         searchView.setOnCloseListener {
-            productListRecyclerView.adapter = ProductListAdapter(products)
+            setupAdapter(products)
             false
         }
     }
@@ -89,8 +89,7 @@ class AnalyseActivity : AppCompatActivity() {
                     product?.let { (products as MutableList<Product>).add(it) }
                 }
                 if (products.isNotEmpty()) {
-                    productListRecyclerView.adapter =
-                        ProductListAdapter(products.sortedByDescending { it.timestamp })
+                    setupAdapter(products.sortedByDescending { it.timestamp })
                     progressBar.visibility = View.GONE
                 } else {
                     Log.d("SHOOPT_TAG", "No product found!")
@@ -105,4 +104,21 @@ class AnalyseActivity : AppCompatActivity() {
         })
     }
 
+    private fun setupAdapter(products: List<Product>) {
+        productListRecyclerView.adapter = ProductListAdapter(products)
+        productListRecyclerView.adapter?.let { adapter ->
+            if (adapter is ProductListAdapter) {
+                adapter.setOnLongClickListener { product ->
+                    Toast.makeText(
+                        this@AnalyseActivity,
+                        "Long pressed on product: ${product.name}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    supportActionBar?.show()
+                }
+            } else {
+                Log.d("SHOOPT_TAG", "Adapter is NOT an instance of ProductListAdapter")
+            }
+        }
+    }
 }

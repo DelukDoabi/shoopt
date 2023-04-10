@@ -12,7 +12,10 @@ import com.dedoware.shoopt.R
 class ProductListAdapter(private val products: List<Product>) :
     RecyclerView.Adapter<ProductListAdapter.ViewHolder>() {
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private var onItemClickListener: ((Product) -> Unit)? = null
+    private var onItemLongClickListener: ((Product) -> Unit)? = null
+
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(product: Product) {
             itemView.findViewById<TextView>(R.id.product_name_TV).text = product.name
             itemView.findViewById<TextView>(R.id.product_shop_TV).text = product.shop
@@ -21,6 +24,15 @@ class ProductListAdapter(private val products: List<Product>) :
 
             val imageView = itemView.findViewById<ImageView>(R.id.product_image_IV)
             Glide.with(itemView.context).load(product.pictureUrl).into(imageView)
+
+            itemView.setOnClickListener {
+                onItemClickListener?.invoke(product)
+            }
+
+            itemView.setOnLongClickListener {
+                onItemLongClickListener?.invoke(product)
+                true
+            }
         }
     }
 
@@ -36,5 +48,13 @@ class ProductListAdapter(private val products: List<Product>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(products[position])
+    }
+
+    fun setOnItemClickListener(listener: (Product) -> Unit) {
+        onItemClickListener = listener
+    }
+
+    fun setOnLongClickListener(listener: (Product) -> Unit) {
+        onItemLongClickListener = listener
     }
 }
