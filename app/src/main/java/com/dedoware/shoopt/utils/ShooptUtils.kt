@@ -7,19 +7,25 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 
 class ShooptUtils {
 
-
     companion object {
         private lateinit var firebaseDatabaseReference: DatabaseReference
+        private lateinit var firebaseStorageReference: StorageReference
 
         fun getFirebaseDatabaseReference(): DatabaseReference {
             return firebaseDatabaseReference
         }
 
+        fun getFirebaseStorageReference(): StorageReference {
+            return firebaseStorageReference
+        }
+
         fun doAfterInitFirebase(context: Context, doOnComplete: (() -> Unit)?) {
-            var firebaseAuth = FirebaseAuth.getInstance()
+            val firebaseAuth = FirebaseAuth.getInstance()
 
             firebaseAuth.signInAnonymously()
                 .addOnCompleteListener { task ->
@@ -27,6 +33,7 @@ class ShooptUtils {
                         Log.d("SHOOPT_TAG", "signInAnonymously:success")
 
                         initializeFirebaseDatabase()
+                        initializeFirebaseStorage()
 
                         doOnComplete?.let { it() }
                     } else {
@@ -37,11 +44,14 @@ class ShooptUtils {
                 }
         }
 
-
         private fun initializeFirebaseDatabase() {
             firebaseDatabaseReference =
                 Firebase.database("https://shoopt-9ab47-default-rtdb.europe-west1.firebasedatabase.app/")
                     .reference
+        }
+
+        private fun initializeFirebaseStorage() {
+            firebaseStorageReference = FirebaseStorage.getInstance().reference
         }
     }
 }

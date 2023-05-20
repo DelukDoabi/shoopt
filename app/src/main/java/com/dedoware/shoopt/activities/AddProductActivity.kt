@@ -257,11 +257,9 @@ class AddProductActivity : AppCompatActivity() {
         val price = productPriceEditText.text.toString().toDouble()
         val unitPrice = productUnitPriceEditText.text.toString().toDouble()
         val shop = productShopAutoCompleteTextView.text.toString()
-        val id = "$barcode-$name-$shop"
 
         if (name.isNotEmpty() && !price.isNaN() && !unitPrice.isNaN() && shop.isNotEmpty()) {
             addProductToRTDB(
-                id,
                 barcode,
                 timestamp,
                 name,
@@ -285,7 +283,6 @@ class AddProductActivity : AppCompatActivity() {
     }
 
     private fun addProductToRTDB(
-        id: String,
         barcode: Long,
         timestamp: Long,
         name: String,
@@ -296,7 +293,7 @@ class AddProductActivity : AppCompatActivity() {
     ) {
         val productId = ShooptUtils.getFirebaseDatabaseReference().push().key
         if (productId != null) {
-            val product = Product(id, barcode, timestamp, name, price, unitPrice, shop, pictureUrl)
+            val product = Product(productId, barcode, timestamp, name, price, unitPrice, shop, pictureUrl)
 
             ShooptUtils.getFirebaseDatabaseReference().child("products").child(productId)
                 .setValue(product)
