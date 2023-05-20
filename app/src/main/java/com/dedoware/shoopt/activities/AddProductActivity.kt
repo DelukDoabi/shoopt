@@ -17,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.graphics.drawable.toBitmap
+import com.bumptech.glide.Glide
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.model.Product
 import com.dedoware.shoopt.model.Shop
@@ -61,6 +62,8 @@ class AddProductActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         setMainVariables()
+
+        retrieveProductDataFromIntent()
 
         retrieveMainData(savedInstanceState)
 
@@ -383,4 +386,30 @@ class AddProductActivity : AppCompatActivity() {
             productShopAutoCompleteTextView.setText(savedInstanceState.getString("productShop"))
         }
     }
+
+    private fun retrieveProductDataFromIntent() {
+        val productId = intent.getStringExtra("productId")
+        val barcode = intent.getLongExtra("barcode", 0L)
+        val name = intent.getStringExtra("name")
+        val shop = intent.getStringExtra("shop")
+        val price = intent.getDoubleExtra("price", 0.0)
+        val unitPrice = intent.getDoubleExtra("unitPrice", 0.0)
+        val pictureUrl = intent.getStringExtra("pictureUrl")
+
+        if (productId != null && barcode != 0L && name != null && shop != null && price != 0.0 && unitPrice != 0.0) {
+            productBarcodeEditText.setText(barcode.toString())
+            productNameEditText.setText(name)
+            productShopAutoCompleteTextView.setText(shop)
+            productPriceEditText.setText(price.toString())
+            productUnitPriceEditText.setText(unitPrice.toString())
+
+            // Load the product picture from the pictureUrl using your preferred image loading library
+
+            // Example with Glide:
+            Glide.with(this)
+                .load(pictureUrl)
+                .into(productPictureImageButton)
+        }
+    }
+
 }

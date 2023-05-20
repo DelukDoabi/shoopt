@@ -1,6 +1,7 @@
 package com.dedoware.shoopt.activities
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -112,11 +113,29 @@ class AnalyseActivity : AppCompatActivity() {
             if (adapter is ProductListAdapter) {
                 adapter.setOnLongClickListener { product ->
                     displayAlertOnDeleteProduct(product)
+                    true // Return true to indicate that the long click event is handled
+                }
+
+                adapter.setOnItemClickListener { product ->
+                    openAddProductActivity(product)
                 }
             } else {
                 Log.d("SHOOPT_TAG", "Adapter is NOT an instance of ProductListAdapter")
             }
         }
+    }
+
+    private fun openAddProductActivity(product: Product) {
+        val intent = Intent(this, AddProductActivity::class.java).apply {
+            putExtra("productId", product.id)
+            putExtra("barcode", product.barcode)
+            putExtra("name", product.name)
+            putExtra("shop", product.shop)
+            putExtra("price", product.price)
+            putExtra("unitPrice", product.unitPrice)
+            putExtra("pictureUrl", product.pictureUrl)
+        }
+        startActivity(intent)
     }
 
     private fun displayAlertOnDeleteProduct(product: Product) {
