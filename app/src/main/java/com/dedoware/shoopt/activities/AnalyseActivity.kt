@@ -1,5 +1,6 @@
 package com.dedoware.shoopt.activities
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -16,6 +17,7 @@ import com.dedoware.shoopt.utils.ShooptUtils
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 
 class AnalyseActivity : AppCompatActivity() {
     private lateinit var productListRecyclerView: RecyclerView
@@ -56,7 +58,7 @@ class AnalyseActivity : AppCompatActivity() {
                 val filteredProducts = products.filter {
                     it.name.contains(newText!!, ignoreCase = true)
                 }
-                productListRecyclerView.adapter = ProductListAdapter(filteredProducts)
+                setupAdapter(filteredProducts)
                 return true
             }
         })
@@ -72,7 +74,7 @@ class AnalyseActivity : AppCompatActivity() {
         }
 
         searchView.setOnCloseListener {
-            productListRecyclerView.adapter = ProductListAdapter(products)
+            setupAdapter(products)
             false
         }
     }
@@ -89,8 +91,7 @@ class AnalyseActivity : AppCompatActivity() {
                     product?.let { (products as MutableList<Product>).add(it) }
                 }
                 if (products.isNotEmpty()) {
-                    productListRecyclerView.adapter =
-                        ProductListAdapter(products.sortedByDescending { it.timestamp })
+                    setupAdapter(products.sortedByDescending { it.timestamp })
                     progressBar.visibility = View.GONE
                 } else {
                     Log.d("SHOOPT_TAG", "No product found!")
@@ -103,6 +104,79 @@ class AnalyseActivity : AppCompatActivity() {
                     .show()
             }
         })
+    }
+
+    private fun setupAdapter(products: List<Product>) {
+        productListRecyclerView.adapter = ProductListAdapter(products)
+        productListRecyclerView.adapter?.let { adapter ->
+            if (adapter is ProductListAdapter) {
+                adapter.setOnLongClickListener { product ->
+                    displayAlertOnDeleteProduct(product)
+                }
+            } else {
+                Log.d("SHOOPT_TAG", "Adapter is NOT an instance of ProductListAdapter")
+            }
+        }
+    }
+
+    private fun displayAlertOnDeleteProduct(product: Product) {
+        val alertDialog = AlertDialog.Builder(this)
+            .setTitle("Delete Product")
+            .setMessage("Are you sure you want to delete this product?")
+            .setPositiveButton("Delete") { dialog, _ ->
+                deleteProductFromRTDB(product)
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+
+        alertDialog.show()
+    }
+
+    private fun deleteProductFromRTDB(product: Product) {
+        // Delete product from Firebase Realtime Database
+        Log.d("SHOOPT_TAG", "Deleting product ${product.id}")
+        val productReference = ShooptUtils.getFirebaseDatabaseReference().child("products").child(product.id)
+        productReference.removeValue()
+            .addOnSuccessListener {
+                Log.d("SHOOPT_TAG", "Product deleted from RTDB")
+                Toast.makeText(
+                    this@AnalyseActivity,
+                    "Product ${product.name} deleted",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                // Delete product picture from Firebase Storage
+                Log.d("SHOOPT_TAG", "Deleting picture at : ${product.pictureUrl}")
+                val pictureRef = FirebaseStorage.getInstance().getReferenceFromUrl(product.pictureUrl)
+                pictureRef.delete()
+                    .addOnSuccessListener {
+                        Log.d("SHOOPT_TAG", "Product picture deleted from Storage")
+                        Toast.makeText(
+                            this@AnalyseActivity,
+                            "Associated product picture deleted as well",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    .addOnFailureListener { e ->
+                        Log.d("SHOOPT_TAG", "Failed to delete product picture from Storage: ${e.message}")
+                        Toast.makeText(
+                            this@AnalyseActivity,
+                            "Failed to delete product picture from Storage: ${e.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+            }
+            .addOnFailureListener { e ->
+                Log.d("SHOOPT_TAG", "Failed to delete product from RTDB: ${e.message}")
+                Toast.makeText(
+                    this@AnalyseActivity,
+                    "Failed to delete product from RTDB: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
     }
 
 }
