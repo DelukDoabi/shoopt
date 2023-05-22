@@ -24,6 +24,7 @@ import com.dedoware.shoopt.model.Shop
 import com.dedoware.shoopt.utils.ShooptUtils
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -32,6 +33,7 @@ import java.io.File
 
 
 class AddProductActivity : AppCompatActivity() {
+    private lateinit var retrievedProductId: String
     private lateinit var backImageButton: ImageButton
     private lateinit var productPictureImageButton: ImageButton
 
@@ -85,7 +87,11 @@ class AddProductActivity : AppCompatActivity() {
         }
 
         saveProductImageButton.setOnClickListener {
-            saveAllProductDataInFirebase()
+            if (intent.hasExtra("productId"))
+                intent.getStringExtra("pictureUrl")
+                    ?.let { it -> saveProductInFirebaseDatabase(it) }
+            else
+                saveAllProductDataInFirebase()
         }
     }
 
@@ -262,17 +268,85 @@ class AddProductActivity : AppCompatActivity() {
         val shop = productShopAutoCompleteTextView.text.toString()
 
         if (name.isNotEmpty() && !price.isNaN() && !unitPrice.isNaN() && shop.isNotEmpty()) {
-            addProductToRTDB(
-                barcode,
-                timestamp,
-                name,
-                shop,
-                price,
-                unitPrice,
-                productPictureUrl
-            )
+            val productsRef = ShooptUtils.getFirebaseDatabaseReference().child("products")
+
+            if (intent.hasExtra("productId")) {
+                // Product already exists, update its data
+                intent.getStringExtra("productId")?.let {
+                    updateProductInRTDB(
+                        it,
+                        barcode,
+                        timestamp,
+                        name,
+                        price,
+                        unitPrice,
+                        shop,
+                        productPictureUrl,
+                        productsRef
+                    )
+                }
+            } else {
+                // Product does not exist, create a new one
+                addProductToRTDB(
+                    barcode,
+                    timestamp,
+                    name,
+                    shop,
+                    price,
+                    unitPrice,
+                    productPictureUrl
+                )
+            }
         } else {
             displayFailedStorage()
+        }
+    }
+
+    private fun updateProductInRTDB(
+        productId: String,
+        barcode: Long,
+        timestamp: Long,
+        name: String,
+        price: Double,
+        unitPrice: Double,
+        shop: String,
+        productPictureUrl: String,
+        productsRef: DatabaseReference
+    ) {
+            if (productId != null) {
+                val updatedProduct = Product(
+                    productId,
+                    barcode,
+                    timestamp,
+                    name,
+                    price,
+                    unitPrice,
+                    shop,
+                    productPictureUrl
+                )
+
+                // Update the product in the database
+                productsRef.child(productId).setValue(updatedProduct)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Log.d("SHOOPT_TAG", "Product updated!")
+                            Toast.makeText(
+                                this@AddProductActivity,
+                                "Product updated!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Log.d("SHOOPT_TAG", "Error updating product: ${task.exception}")
+                        }
+                    }
+                    .addOnFailureListener { e ->
+                        Log.d("SHOOPT_TAG", e.localizedMessage ?: "Failed to update product")
+                        Toast.makeText(
+                            this@AddProductActivity,
+                            e.localizedMessage,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
         }
     }
 
@@ -397,6 +471,7 @@ class AddProductActivity : AppCompatActivity() {
         val pictureUrl = intent.getStringExtra("pictureUrl")
 
         if (productId != null && barcode != 0L && name != null && shop != null && price != 0.0 && unitPrice != 0.0) {
+            retrievedProductId = productId
             productBarcodeEditText.setText(barcode.toString())
             productNameEditText.setText(name)
             productShopAutoCompleteTextView.setText(shop)
