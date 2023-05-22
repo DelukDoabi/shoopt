@@ -478,11 +478,10 @@ class AddProductActivity : AppCompatActivity() {
             productPriceEditText.setText(price.toString())
             productUnitPriceEditText.setText(unitPrice.toString())
 
-            // Load the product picture from the pictureUrl using your preferred image loading library
-
-            // Example with Glide:
+            // Load the product picture from the pictureUrl using Glide with resizing options
             Glide.with(this)
                 .load(pictureUrl)
+                .override(300, 300)
                 .into(productPictureImageButton)
         }
     }
