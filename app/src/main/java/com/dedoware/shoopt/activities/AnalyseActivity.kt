@@ -112,7 +112,7 @@ class AnalyseActivity : AppCompatActivity() {
         productListRecyclerView.adapter?.let { adapter ->
             if (adapter is ProductListAdapter) {
                 adapter.setOnLongClickListener { product ->
-                    displayAlertOnDeleteProduct(product)
+                    showContextMenu(product)
                     true // Return true to indicate that the long click event is handled
                 }
 
@@ -197,5 +197,21 @@ class AnalyseActivity : AppCompatActivity() {
                 ).show()
             }
     }
+
+    private fun showContextMenu(product: Product) {
+        val menuItems = arrayOf("Delete", "Modify")
+
+        val builder = AlertDialog.Builder(this)
+        builder.setItems(menuItems) { _, which ->
+            when (which) {
+                0 -> displayAlertOnDeleteProduct(product)
+                1 -> openAddProductActivity(product)
+            }
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+    }
+
 
 }
