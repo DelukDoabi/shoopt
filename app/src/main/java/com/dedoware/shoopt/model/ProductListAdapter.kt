@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dedoware.shoopt.R
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ProductListAdapter(private val products: List<Product>) :
     RecyclerView.Adapter<ProductListAdapter.ViewHolder>() {
@@ -21,6 +23,8 @@ class ProductListAdapter(private val products: List<Product>) :
             itemView.findViewById<TextView>(R.id.product_shop_TV).text = product.shop
             itemView.findViewById<TextView>(R.id.product_full_price_TV).text =
                 product.price.toString() + " €" + " (" + product.unitPrice.toString() + " €)"
+            itemView.findViewById<TextView>(R.id.product_last_update_date_TV).text =
+                SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date(product.timestamp))
 
             val imageView = itemView.findViewById<ImageView>(R.id.product_image_IV)
             Glide.with(itemView.context).load(product.pictureUrl).into(imageView)
