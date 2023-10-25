@@ -39,6 +39,10 @@ class MainActivity : AppCompatActivity() {
             displayAddProductWayUserChoice()
         }
 
+        trackShoppingImageButton.setOnClickListener {
+            startActivity(Intent(this, TrackShoppingActivity::class.java))
+        }
+
         analyseImageButton.setOnClickListener {
             startActivity(Intent(this, AnalyseActivity::class.java))
         }

@@ -6,6 +6,7 @@
     <string name="insert_product_name">Insert name</string>
     <string name="insert_product_price">Insert price</string>
     <string name="insert_product_shop">Insert shop</string>
+    <string name="add_product">Add product</string>
     <string name="save_product">Save product</string>
     <string name="product_picture">Product picture</string>
     <string name="take_picture">Take picture</string>
@@ -15,4 +16,7 @@
     <string name="update_shopping_list">Update Shopping List</string>
     <string name="main_shopping_list">Main Shopping List</string>
     <string name="secondary_shopping_list">Secondary Shopping List</string>
+    <string name="title_activity_track_shopping">TrackShoppingActivity</string>
+    <string name="products">Products: </string>
+    <string name="total">Total: </string>
 </resources>
