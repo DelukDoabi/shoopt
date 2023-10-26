@@ -2,6 +2,7 @@ package com.dedoware.shoopt.activities
 
 import CartItem
 import ShoppingCart
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +10,8 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.model.Product
 import com.dedoware.shoopt.utils.ShooptUtils
@@ -35,15 +38,9 @@ class TrackShoppingActivity : ComponentActivity() {
             displayAddProductWayUserChoice()
         }
 
-        // TODO either add something to do or refactor to just init firebase
         ShooptUtils.doAfterInitFirebase(baseContext) {
             loadShoppingCart()
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        loadShoppingCart()
     }
 
     private fun loadShoppingCart() {
@@ -77,12 +74,24 @@ class TrackShoppingActivity : ComponentActivity() {
         builder.setNegativeButton("Add product manually") { _, _ ->
             // Launch the add product manually activity
             val addProductIntent = Intent(this, AddProductActivity::class.java)
-            startActivity(addProductIntent)
+            addProductIntent.putExtra("source", "TrackShoppingActivity")
+            addProductContract.launch(Intent(addProductIntent))
         }
 
         val dialog = builder.create()
         dialog.show()
     }
+
+    private val addProductContract = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data = result.data
+            val product = data?.getParcelableExtra<Product>("productToAddToShoppingCart")
+            if (product != null) {
+                addProductToShoppingCart(product)
+            }
+        }
+    }
+
 
     // Register the launcher and result handler
     private val barcodeLauncher = registerForActivityResult(
