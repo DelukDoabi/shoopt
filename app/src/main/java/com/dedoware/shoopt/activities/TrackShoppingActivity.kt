@@ -36,7 +36,32 @@ class TrackShoppingActivity : ComponentActivity() {
         }
 
         // TODO either add something to do or refactor to just init firebase
-        ShooptUtils.doAfterInitFirebase(baseContext) {  }
+        ShooptUtils.doAfterInitFirebase(baseContext) {
+            loadShoppingCart()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadShoppingCart()
+    }
+
+    private fun loadShoppingCart() {
+        val cartReference = FirebaseDatabase.getInstance().reference.child("shoppingCart")
+
+        cartReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val currentCart = dataSnapshot.getValue(ShoppingCart::class.java)
+
+                if (currentCart != null) {
+                    updateCartUI(currentCart)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                showToast("Failed to load shopping cart")
+            }
+        })
     }
 
     private fun displayAddProductWayUserChoice() {
@@ -64,7 +89,7 @@ class TrackShoppingActivity : ComponentActivity() {
         ScanContract()
     ) { result: ScanIntentResult ->
         if (result.contents == null) {
-            Toast.makeText(this@TrackShoppingActivity, "Cancelled", Toast.LENGTH_LONG).show()
+            showToast("Cancelled")
         } else {
             getProductByBarcodeFromDB(result.contents.toLong()) { product ->
                 if (product != null) {
@@ -109,7 +134,7 @@ class TrackShoppingActivity : ComponentActivity() {
                     updateCartUI(currentCart)
 
                     // Optionally, you can display a message to the user indicating success
-                    Toast.makeText(this@TrackShoppingActivity, "Product added to the shopping cart", Toast.LENGTH_LONG).show()
+                    showToast("Product added to the shopping cart")
                 } else {
                     // If the cart does not exist, create a new cart with the added product
                     val newCart = ShoppingCart(mutableListOf(CartItem(product, 1)))
@@ -120,13 +145,13 @@ class TrackShoppingActivity : ComponentActivity() {
                     updateCartUI(newCart)
 
                     // Optionally, you can display a message to the user indicating success
-                    Toast.makeText(this@TrackShoppingActivity, "Product added to the shopping cart", Toast.LENGTH_LONG).show()
+                    showToast("Product added to the shopping cart")
                 }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 // Handle database errors
-                Toast.makeText(this@TrackShoppingActivity, "Failed to add product to the shopping cart", Toast.LENGTH_LONG).show()
+                showToast("Failed to add product to the shopping cart")
             }
         })
     }
@@ -170,4 +195,7 @@ class TrackShoppingActivity : ComponentActivity() {
         totalPriceTextView.text = String.format("%.2f", totalPrice)
     }
 
+    private fun showToast(messageToDisplay: String) {
+        Toast.makeText(this@TrackShoppingActivity, messageToDisplay, Toast.LENGTH_LONG).show()
+    }
 }
