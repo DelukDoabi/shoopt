@@ -7,6 +7,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -51,7 +52,11 @@ class TrackShoppingActivity : ComponentActivity() {
                 val currentCart = dataSnapshot.getValue(ShoppingCart::class.java)
 
                 if (currentCart != null) {
+                    // Update the UI with the latest data
                     updateCartUI(currentCart)
+
+                    // Populate the product list
+                    populateProductList(currentCart.products)
                 }
             }
 
@@ -207,4 +212,24 @@ class TrackShoppingActivity : ComponentActivity() {
     private fun showToast(messageToDisplay: String) {
         Toast.makeText(this@TrackShoppingActivity, messageToDisplay, Toast.LENGTH_LONG).show()
     }
+
+    private fun populateProductList(products: List<CartItem>) {
+        val productListContainer = findViewById<LinearLayout>(R.id.product_list_container)
+
+        // Clear any previous product views
+        productListContainer.removeAllViews()
+
+        for (productItem in products) {
+            val product = productItem.product
+
+            // Create a TextView for each product
+            val productTextView = TextView(this)
+            productTextView.text = "${product.name} - Quantity: ${productItem.quantity}"
+            // You can customize the appearance of the TextView here
+
+            // Add the TextView to the product list container
+            productListContainer.addView(productTextView)
+        }
+    }
+
 }
