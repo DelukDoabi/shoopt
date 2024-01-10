@@ -6,6 +6,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -82,15 +83,16 @@ class TrackShoppingActivity : ComponentActivity() {
         dialog.show()
     }
 
-    private val addProductContract = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val data = result.data
-            val product = data?.getParcelableExtra<Product>("productToAddToShoppingCart")
-            if (product != null) {
-                addProductToShoppingCart(product)
+    private val addProductContract =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data = result.data
+                val product = data?.getParcelableExtra<Product>("productToAddToShoppingCart")
+                if (product != null) {
+                    addProductToShoppingCart(product)
+                }
             }
         }
-    }
 
 
     // Register the launcher and result handler
@@ -104,7 +106,8 @@ class TrackShoppingActivity : ComponentActivity() {
                 if (product != null) {
                     addProductToShoppingCart(product)
                 } else {
-                    val addProductIntent = Intent(this@TrackShoppingActivity, AddProductActivity::class.java)
+                    val addProductIntent =
+                        Intent(this@TrackShoppingActivity, AddProductActivity::class.java)
                     addProductIntent.putExtra("barcode", result.contents)
                     startActivity(addProductIntent)
                 }
@@ -207,4 +210,20 @@ class TrackShoppingActivity : ComponentActivity() {
     private fun showToast(messageToDisplay: String) {
         Toast.makeText(this@TrackShoppingActivity, messageToDisplay, Toast.LENGTH_LONG).show()
     }
+
+    fun emptyCart(view: View) {
+        val cartReference = FirebaseDatabase.getInstance().reference.child("shoppingCart")
+
+        cartReference.removeValue()
+            .addOnSuccessListener {
+                // Cart emptied successfully
+                loadShoppingCart()  // Refresh the UI after emptying the cart
+                showToast("Shopping cart emptied")
+            }
+            .addOnFailureListener {
+                // Failed to empty the cart
+                showToast("Failed to empty shopping cart")
+            }
+    }
+
 }
