@@ -126,7 +126,7 @@ class TrackShoppingActivity : ComponentActivity() {
                     val addProductIntent =
                         Intent(this@TrackShoppingActivity, AddProductActivity::class.java)
                     addProductIntent.putExtra("barcode", result.contents)
-                    startActivity(addProductIntent)
+                    addProductContract.launch(Intent(addProductIntent))
                 }
             }
         }
