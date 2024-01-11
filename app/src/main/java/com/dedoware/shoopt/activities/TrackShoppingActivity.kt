@@ -24,6 +24,10 @@ import com.google.firebase.database.ValueEventListener
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class TrackShoppingActivity : ComponentActivity() {
     private lateinit var addProductImageButton: ImageButton
@@ -52,7 +56,9 @@ class TrackShoppingActivity : ComponentActivity() {
             findViewById(R.id.empty_cart_IB)
 
         clearCartImageButton.setOnClickListener {
-            emptyCart()
+            GlobalScope.launch(Dispatchers.Main) {
+                emptyCart()
+            }
         }
     }
 
@@ -63,15 +69,8 @@ class TrackShoppingActivity : ComponentActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val currentCart = dataSnapshot.getValue(ShoppingCart::class.java)
 
-                if (currentCart != null) {
-                    // Update the UI with the latest data
-                    runOnUiThread {
-                        updateCartUI(currentCart)
-                    }
-
-                    // Populate the product list
-                    populateProductList(currentCart.products)
-                }
+                // Update the UI with the latest data
+                updateCartUI(currentCart)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -161,9 +160,7 @@ class TrackShoppingActivity : ComponentActivity() {
                     // Update the cart in Firebase
                     cartReference.setValue(currentCart)
 
-                    runOnUiThread {
-                        updateCartUI(currentCart)
-                    }
+                    updateCartUI(currentCart)
 
                     // Optionally, you can display a message to the user indicating success
                     showToast("Product added to the shopping cart")
@@ -174,9 +171,7 @@ class TrackShoppingActivity : ComponentActivity() {
                     // Set the new cart in Firebase
                     cartReference.setValue(newCart)
 
-                    runOnUiThread {
-                        updateCartUI(newCart)
-                    }
+                    updateCartUI(newCart)
 
                     // Optionally, you can display a message to the user indicating success
                     showToast("Product added to the shopping cart")
@@ -218,15 +213,22 @@ class TrackShoppingActivity : ComponentActivity() {
         })
     }
 
-    private fun updateCartUI(cart: ShoppingCart) {
+    private fun updateCartUI(cart: ShoppingCart?) {
         val itemCountTextView = findViewById<TextView>(R.id.cart_item_count)
         val totalPriceTextView = findViewById<TextView>(R.id.total_price)
 
-        val itemQuantity = cart.products.sumOf { it.quantity }
-        val totalPrice = cart.products.sumOf { it.product.price * it.quantity }
+        val itemQuantity = cart?.products?.sumOf { it.quantity } ?: 0
+        val totalPrice = cart?.products?.sumOf { it.product.price * it.quantity } ?: 0.0
 
         itemCountTextView.text = itemQuantity.toString()
         totalPriceTextView.text = String.format("%.2f", totalPrice)
+
+        // Populate the product list
+        if (cart != null) {
+            populateProductList(cart.products)
+        } else {
+            populateProductList(mutableListOf())
+        }
     }
 
     private fun showToast(messageToDisplay: String) {
@@ -253,19 +255,18 @@ class TrackShoppingActivity : ComponentActivity() {
     }
 
 
-    fun emptyCart() {
+    private suspend fun emptyCart() {
         val cartReference = FirebaseDatabase.getInstance().reference.child("shoppingCart")
 
-        cartReference.removeValue()
-            .addOnSuccessListener {
-                // Cart emptied successfully
-                loadShoppingCart()  // Refresh the UI after emptying the cart
-                showToast("Shopping cart emptied")
-            }
-            .addOnFailureListener {
-                // Failed to empty the cart
-                showToast("Failed to empty shopping cart")
-            }
+        try {
+            cartReference.child("products").removeValue().await()
+            // Cart emptied successfully
+            loadShoppingCart()  // Refresh the UI after emptying the cart
+            showToast("Shopping cart emptied")
+        } catch (e: Exception) {
+            // Failed to empty the cart
+            showToast("Failed to empty shopping cart")
+        }
     }
 
 }
