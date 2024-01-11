@@ -6,7 +6,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -28,11 +27,20 @@ import com.journeyapps.barcodescanner.ScanOptions
 
 class TrackShoppingActivity : ComponentActivity() {
     private lateinit var addProductImageButton: ImageButton
+    private lateinit var clearCartImageButton: ImageButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_track_shopping)
 
+        setupActionButtons()
+
+        ShooptUtils.doAfterInitFirebase(baseContext) {
+            loadShoppingCart()
+        }
+    }
+
+    private fun setupActionButtons() {
         addProductImageButton =
             findViewById(R.id.add_product_IB)
 
@@ -40,8 +48,11 @@ class TrackShoppingActivity : ComponentActivity() {
             displayAddProductWayUserChoice()
         }
 
-        ShooptUtils.doAfterInitFirebase(baseContext) {
-            loadShoppingCart()
+        clearCartImageButton =
+            findViewById(R.id.empty_cart_IB)
+
+        clearCartImageButton.setOnClickListener {
+            emptyCart()
         }
     }
 
@@ -54,7 +65,9 @@ class TrackShoppingActivity : ComponentActivity() {
 
                 if (currentCart != null) {
                     // Update the UI with the latest data
-                    updateCartUI(currentCart)
+                    runOnUiThread {
+                        updateCartUI(currentCart)
+                    }
 
                     // Populate the product list
                     populateProductList(currentCart.products)
@@ -148,7 +161,9 @@ class TrackShoppingActivity : ComponentActivity() {
                     // Update the cart in Firebase
                     cartReference.setValue(currentCart)
 
-                    updateCartUI(currentCart)
+                    runOnUiThread {
+                        updateCartUI(currentCart)
+                    }
 
                     // Optionally, you can display a message to the user indicating success
                     showToast("Product added to the shopping cart")
@@ -159,7 +174,9 @@ class TrackShoppingActivity : ComponentActivity() {
                     // Set the new cart in Firebase
                     cartReference.setValue(newCart)
 
-                    updateCartUI(newCart)
+                    runOnUiThread {
+                        updateCartUI(newCart)
+                    }
 
                     // Optionally, you can display a message to the user indicating success
                     showToast("Product added to the shopping cart")
@@ -236,7 +253,7 @@ class TrackShoppingActivity : ComponentActivity() {
     }
 
 
-    fun emptyCart(view: View) {
+    fun emptyCart() {
         val cartReference = FirebaseDatabase.getInstance().reference.child("shoppingCart")
 
         cartReference.removeValue()

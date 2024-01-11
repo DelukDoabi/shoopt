@@ -7,6 +7,7 @@
     <string name="insert_product_price">Insert price</string>
     <string name="insert_product_shop">Insert shop</string>
     <string name="add_product">Add product</string>
+    <string name="empty_cart">Empty cart</string>
     <string name="save_product">Save product</string>
     <string name="product_picture">Product picture</string>
     <string name="take_picture">Take picture</string>
