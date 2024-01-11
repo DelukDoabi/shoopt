@@ -32,6 +32,7 @@ import kotlinx.coroutines.tasks.await
 class TrackShoppingActivity : ComponentActivity() {
     private lateinit var addProductImageButton: ImageButton
     private lateinit var clearCartImageButton: ImageButton
+    private lateinit var backImageButton: ImageButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -59,6 +60,12 @@ class TrackShoppingActivity : ComponentActivity() {
             GlobalScope.launch(Dispatchers.Main) {
                 emptyCart()
             }
+        }
+
+        backImageButton = findViewById(R.id.back_IB)
+
+        backImageButton.setOnClickListener {
+            finish()
         }
     }
 
@@ -124,7 +131,8 @@ class TrackShoppingActivity : ComponentActivity() {
                     addProductToShoppingCart(product)
                 } else {
                     val addProductIntent =
-                        Intent(this@TrackShoppingActivity, AddProductActivity::class.java)
+                        Intent(this, AddProductActivity::class.java)
+                    addProductIntent.putExtra("source", "TrackShoppingActivity")
                     addProductIntent.putExtra("barcode", result.contents)
                     addProductContract.launch(Intent(addProductIntent))
                 }
