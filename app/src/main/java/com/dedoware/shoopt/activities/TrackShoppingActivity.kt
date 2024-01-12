@@ -1,18 +1,20 @@
 package com.dedoware.shoopt.activities
 
 import CartItem
+import ProductTrackAdapter
 import ShoppingCart
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageButton
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.model.Product
 import com.dedoware.shoopt.utils.ShooptUtils
@@ -244,22 +246,9 @@ class TrackShoppingActivity : ComponentActivity() {
     }
 
     private fun populateProductList(products: List<CartItem>) {
-        val productListContainer = findViewById<LinearLayout>(R.id.product_list_container)
-
-        // Clear any previous product views
-        productListContainer.removeAllViews()
-
-        for (productItem in products) {
-            val product = productItem.product
-
-            // Create a TextView for each product
-            val productTextView = TextView(this)
-            productTextView.text = "${product.name} - Quantity: ${productItem.quantity}"
-            // You can customize the appearance of the TextView here
-
-            // Add the TextView to the product list container
-            productListContainer.addView(productTextView)
-        }
+        val recyclerView: RecyclerView = findViewById(R.id.product_list_recycler_view)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = ProductTrackAdapter(products)
     }
 
 
