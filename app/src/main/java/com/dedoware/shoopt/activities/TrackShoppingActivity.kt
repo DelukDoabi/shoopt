@@ -72,7 +72,7 @@ class TrackShoppingActivity : ComponentActivity() {
     private fun loadShoppingCart() {
         val cartReference = FirebaseDatabase.getInstance().reference.child("shoppingCart")
 
-        cartReference.addListenerForSingleValueEvent(object : ValueEventListener {
+        cartReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val currentCart = dataSnapshot.getValue(ShoppingCart::class.java)
 
