@@ -15,6 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Shoopt"
         tools:targetApi="31">
+        <activity
+            android:name=".activities.TrackShoppingActivity"
+            android:exported="false"
+            android:label="@string/title_activity_track_shopping"
+            android:theme="@style/Theme.Shoopt" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -43,7 +48,7 @@
         <activity
             android:name=".activities.UpdateShoppingListActivity"
             android:exported="false"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.AddProductActivity"
             android:exported="false"

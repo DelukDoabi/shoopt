@@ -7,8 +7,7 @@
     android:orientation="vertical"
     tools:context=".activities.AddProductActivity">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?backgroundColor"
@@ -34,7 +33,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/back_IB"
             android:layout_centerInParent="true"
-            android:layout_margin="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/main_rectangle_button"
             android:contentDescription="@string/take_picture"
             android:padding="15dp"
@@ -57,7 +59,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/take_picture_TV"
             android:layout_centerInParent="true"
-            android:layout_margin="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
             android:hint="@string/insert_product_barcode"
             android:inputType="number" />
 
@@ -108,7 +113,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/shop_autocomplete"
             android:layout_centerInParent="true"
-            android:layout_margin="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/main_rounded_button"
             android:contentDescription="@string/save_product"
             android:padding="15dp"

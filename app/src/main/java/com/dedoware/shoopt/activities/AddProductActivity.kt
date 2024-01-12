@@ -335,6 +335,8 @@ class AddProductActivity : AppCompatActivity() {
                                 "Product updated!",
                                 Toast.LENGTH_SHORT
                             ).show()
+
+                            updateResultIntentForTrackShopping(updatedProduct)
                         } else {
                             Log.d("SHOOPT_TAG", "Error updating product: ${task.exception}")
                         }
@@ -378,6 +380,8 @@ class AddProductActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         Log.d("SHOOPT_TAG", "Product saved!")
                         Toast.makeText(this, "Product saved!", Toast.LENGTH_SHORT).show()
+
+                        updateResultIntentForTrackShopping(product)
                     } else {
                         Log.d("SHOOPT_TAG", "Error: ${task.exception}")
                     }
@@ -486,4 +490,15 @@ class AddProductActivity : AppCompatActivity() {
         }
     }
 
+
+    private fun updateResultIntentForTrackShopping(product: Product) {
+        val source = intent.getStringExtra("source")
+
+        if (source != null && source == "TrackShoppingActivity") {
+            val resultIntent = Intent()
+            resultIntent.putExtra("productToAddToShoppingCart", product)
+            setResult(RESULT_OK, resultIntent)
+            finish()
+        }
+    }
 }
