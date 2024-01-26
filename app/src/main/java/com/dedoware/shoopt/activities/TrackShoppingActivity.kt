@@ -59,9 +59,7 @@ class TrackShoppingActivity : ComponentActivity() {
             findViewById(R.id.empty_cart_IB)
 
         clearCartImageButton.setOnClickListener {
-            GlobalScope.launch(Dispatchers.Main) {
-                emptyCart()
-            }
+            showClearCartConfirmationDialog()
         }
 
         backImageButton = findViewById(R.id.back_IB)
@@ -264,6 +262,25 @@ class TrackShoppingActivity : ComponentActivity() {
             // Failed to empty the cart
             showToast("Failed to empty shopping cart")
         }
+    }
+
+    private fun showClearCartConfirmationDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Clear Shopping Cart")
+        builder.setMessage("Are you sure you want to clear the shopping cart? This action cannot be undone.")
+
+        builder.setPositiveButton("Clear") { _, _ ->
+            GlobalScope.launch(Dispatchers.Main) {
+                emptyCart()
+            }
+        }
+
+        builder.setNegativeButton("Cancel") { _, _ ->
+            // User canceled, do nothing
+        }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 
 }
