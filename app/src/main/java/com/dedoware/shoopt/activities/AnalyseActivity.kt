@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -28,6 +29,8 @@ class AnalyseActivity : AppCompatActivity() {
 
     private var products: List<Product> = emptyList()
 
+    private lateinit var backImageButton: ImageButton
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +42,12 @@ class AnalyseActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.loading_indicator)
         searchView = findViewById(R.id.search_view)
         productListRecyclerView = findViewById(R.id.product_list_recycler_view)
+        
+        backImageButton = findViewById(R.id.back_IB)
+
+        backImageButton.setOnClickListener {
+            finish()
+        }
 
         progressBar.visibility = View.VISIBLE
         productListRecyclerView.layoutManager = GridLayoutManager(this, 2)
@@ -157,7 +166,8 @@ class AnalyseActivity : AppCompatActivity() {
     private fun deleteProductFromRTDB(product: Product) {
         // Delete product from Firebase Realtime Database
         Log.d("SHOOPT_TAG", "Deleting product ${product.id}")
-        val productReference = ShooptUtils.getFirebaseDatabaseReference().child("products").child(product.id)
+        val productReference =
+            ShooptUtils.getFirebaseDatabaseReference().child("products").child(product.id)
         productReference.removeValue()
             .addOnSuccessListener {
                 Log.d("SHOOPT_TAG", "Product deleted from RTDB")
@@ -169,7 +179,8 @@ class AnalyseActivity : AppCompatActivity() {
 
                 // Delete product picture from Firebase Storage
                 Log.d("SHOOPT_TAG", "Deleting picture at : ${product.pictureUrl}")
-                val pictureRef = FirebaseStorage.getInstance().getReferenceFromUrl(product.pictureUrl)
+                val pictureRef =
+                    FirebaseStorage.getInstance().getReferenceFromUrl(product.pictureUrl)
                 pictureRef.delete()
                     .addOnSuccessListener {
                         Log.d("SHOOPT_TAG", "Product picture deleted from Storage")
@@ -180,7 +191,10 @@ class AnalyseActivity : AppCompatActivity() {
                         ).show()
                     }
                     .addOnFailureListener { e ->
-                        Log.d("SHOOPT_TAG", "Failed to delete product picture from Storage: ${e.message}")
+                        Log.d(
+                            "SHOOPT_TAG",
+                            "Failed to delete product picture from Storage: ${e.message}"
+                        )
                         Toast.makeText(
                             this@AnalyseActivity,
                             "Failed to delete product picture from Storage: ${e.message}",
