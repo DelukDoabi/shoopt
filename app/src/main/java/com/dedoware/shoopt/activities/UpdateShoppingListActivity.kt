@@ -6,9 +6,14 @@ import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import com.dedoware.shoopt.R
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class UpdateShoppingListActivity : AppCompatActivity() {
     private lateinit var mainShoppingListEditText: EditText
@@ -16,6 +21,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
     private lateinit var databaseReference: FirebaseDatabase
     private val handler = Handler(Looper.getMainLooper())
     private var runnable: Runnable = Runnable { }
+    private lateinit var backImageButton: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +37,12 @@ class UpdateShoppingListActivity : AppCompatActivity() {
 
         storeAndLoadShoppingList(mainShoppingListEditText, "mainShoppingList")
         storeAndLoadShoppingList(secondaryShoppingListEditText, "secondaryShoppingList")
+
+        backImageButton = findViewById(R.id.back_IB)
+
+        backImageButton.setOnClickListener {
+            finish()
+        }
     }
 
     private fun loadShoppingList(
