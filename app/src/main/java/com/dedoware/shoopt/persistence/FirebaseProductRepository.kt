@@ -4,6 +4,7 @@ import com.dedoware.shoopt.model.Product
 import com.dedoware.shoopt.model.Shop
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
@@ -45,6 +46,21 @@ class FirebaseProductRepository : IProductRepository {
     override suspend fun delete(id: String): Boolean = withContext(Dispatchers.IO) {
         try {
             productsRef.child(id).removeValue().await()
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    override suspend fun deleteProduct(product: Product): Boolean = withContext(Dispatchers.IO) {
+        try {
+            // Delete product from Realtime Database
+            productsRef.child(product.id).removeValue().await()
+
+            // Delete product picture from Firebase Storage
+            val pictureRef = FirebaseStorage.getInstance().getReferenceFromUrl(product.pictureUrl)
+            pictureRef.delete().await()
+
             true
         } catch (e: Exception) {
             false

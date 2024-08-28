@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
@@ -15,47 +16,55 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.model.Product
 import com.dedoware.shoopt.model.ProductListAdapter
-import com.dedoware.shoopt.utils.ShooptUtils
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.storage.FirebaseStorage
+import com.dedoware.shoopt.persistence.IProductRepository
+import com.dedoware.shoopt.persistence.FirebaseProductRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AnalyseActivity : AppCompatActivity() {
     private lateinit var productListRecyclerView: RecyclerView
-
     private lateinit var progressBar: ProgressBar
     private lateinit var searchView: SearchView
-
-    private var products: List<Product> = emptyList()
-
     private lateinit var backImageButton: ImageButton
 
+    private var products: List<Product> = emptyList()
+    private val productRepository: IProductRepository = FirebaseProductRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_analyse)
-
         supportActionBar?.hide()
 
         progressBar = findViewById(R.id.loading_indicator)
         searchView = findViewById(R.id.search_view)
         productListRecyclerView = findViewById(R.id.product_list_recycler_view)
-        
         backImageButton = findViewById(R.id.back_IB)
 
-        backImageButton.setOnClickListener {
-            finish()
-        }
+        backImageButton.setOnClickListener { finish() }
 
         progressBar.visibility = View.VISIBLE
         productListRecyclerView.layoutManager = GridLayoutManager(this, 2)
         productListRecyclerView.adapter = ProductListAdapter(emptyList())
 
-        ShooptUtils.doAfterInitFirebase(baseContext) { getProductsFromRTDB() }
-
+        loadProducts()
         addSearch()
+    }
+
+    private fun loadProducts() {
+        CoroutineScope(Dispatchers.Main).launch {
+            products = withContext(Dispatchers.IO) {
+                productRepository.getAll()
+            }
+            if (products.isNotEmpty()) {
+                setupAdapter(products.sortedByDescending { it.timestamp })
+                progressBar.visibility = View.GONE
+            } else {
+                Log.d("SHOOPT_TAG", "No products found!")
+                progressBar.visibility = View.GONE
+            }
+        }
     }
 
     private fun addSearch() {
@@ -73,64 +82,32 @@ class AnalyseActivity : AppCompatActivity() {
             }
         })
 
-        searchView.setOnClickListener {
-            searchView.isIconified = false
-        }
-
+        searchView.setOnClickListener { searchView.isIconified = false }
         searchView.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                searchView.isIconified = false
-            }
+            if (hasFocus) searchView.isIconified = false
         }
-
         searchView.setOnCloseListener {
             setupAdapter(products)
             false
         }
     }
 
-    private fun getProductsFromRTDB() {
-        val productsReference =
-            ShooptUtils.getFirebaseDatabaseReference().child("products")
-
-        productsReference.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                products = mutableListOf()
-                dataSnapshot.children.forEach { productData ->
-                    val product = productData.getValue(Product::class.java)
-                    product?.let { (products as MutableList<Product>).add(it) }
-                }
-                if (products.isNotEmpty()) {
-                    setupAdapter(products.sortedByDescending { it.timestamp })
-                    progressBar.visibility = View.GONE
-                } else {
-                    Log.d("SHOOPT_TAG", "No product found!")
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.d("SHOOPT_TAG", databaseError.details)
-                Toast.makeText(this@AnalyseActivity, databaseError.details, Toast.LENGTH_SHORT)
-                    .show()
-            }
-        })
-    }
-
     private fun setupAdapter(products: List<Product>) {
         productListRecyclerView.adapter = ProductListAdapter(products)
-        productListRecyclerView.adapter?.let { adapter ->
-            if (adapter is ProductListAdapter) {
-                adapter.setOnLongClickListener { product ->
-                    showContextMenu(product)
-                    true // Return true to indicate that the long click event is handled
-                }
-
-                adapter.setOnItemClickListener { product ->
-                    openAddProductActivity(product)
-                }
-            } else {
-                Log.d("SHOOPT_TAG", "Adapter is NOT an instance of ProductListAdapter")
+        (productListRecyclerView.adapter as? ProductListAdapter)?.apply {
+            setOnLongClickListener { product ->
+                showContextMenu(product)
+                true
             }
+            setOnItemClickListener { product ->
+                openAddProductActivity(product)
+            }
+        }
+    }
+
+    private val addProductLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            loadProducts() // Reload products to reflect changes
         }
     }
 
@@ -144,7 +121,7 @@ class AnalyseActivity : AppCompatActivity() {
             putExtra("unitPrice", product.unitPrice)
             putExtra("pictureUrl", product.pictureUrl)
         }
-        startActivity(intent)
+        addProductLauncher.launch(intent)
     }
 
     private fun displayAlertOnDeleteProduct(product: Product) {
@@ -152,64 +129,32 @@ class AnalyseActivity : AppCompatActivity() {
             .setTitle("Delete Product")
             .setMessage("Are you sure you want to delete this product?")
             .setPositiveButton("Delete") { dialog, _ ->
-                deleteProductFromRTDB(product)
-                dialog.dismiss()
+                CoroutineScope(Dispatchers.Main).launch {
+                    val isDeleted = withContext(Dispatchers.IO) {
+                        productRepository.deleteProduct(product)
+                    }
+                    if (isDeleted) {
+                        Toast.makeText(
+                            this@AnalyseActivity,
+                            "Product ${product.name} deleted",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        loadProducts()
+                    } else {
+                        Toast.makeText(
+                            this@AnalyseActivity,
+                            "Failed to delete product",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    dialog.dismiss()
+                }
             }
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
             }
             .create()
-
         alertDialog.show()
-    }
-
-    private fun deleteProductFromRTDB(product: Product) {
-        // Delete product from Firebase Realtime Database
-        Log.d("SHOOPT_TAG", "Deleting product ${product.id}")
-        val productReference =
-            ShooptUtils.getFirebaseDatabaseReference().child("products").child(product.id)
-        productReference.removeValue()
-            .addOnSuccessListener {
-                Log.d("SHOOPT_TAG", "Product deleted from RTDB")
-                Toast.makeText(
-                    this@AnalyseActivity,
-                    "Product ${product.name} deleted",
-                    Toast.LENGTH_SHORT
-                ).show()
-
-                // Delete product picture from Firebase Storage
-                Log.d("SHOOPT_TAG", "Deleting picture at : ${product.pictureUrl}")
-                val pictureRef =
-                    FirebaseStorage.getInstance().getReferenceFromUrl(product.pictureUrl)
-                pictureRef.delete()
-                    .addOnSuccessListener {
-                        Log.d("SHOOPT_TAG", "Product picture deleted from Storage")
-                        Toast.makeText(
-                            this@AnalyseActivity,
-                            "Associated product picture deleted as well",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                    .addOnFailureListener { e ->
-                        Log.d(
-                            "SHOOPT_TAG",
-                            "Failed to delete product picture from Storage: ${e.message}"
-                        )
-                        Toast.makeText(
-                            this@AnalyseActivity,
-                            "Failed to delete product picture from Storage: ${e.message}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-            }
-            .addOnFailureListener { e ->
-                Log.d("SHOOPT_TAG", "Failed to delete product from RTDB: ${e.message}")
-                Toast.makeText(
-                    this@AnalyseActivity,
-                    "Failed to delete product from RTDB: ${e.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
     }
 
     private fun showContextMenu(product: Product) {
@@ -222,10 +167,11 @@ class AnalyseActivity : AppCompatActivity() {
                 1 -> openAddProductActivity(product)
             }
         }
-
-        val dialog = builder.create()
-        dialog.show()
+        builder.create().show()
     }
 
-
+    override fun onResume() {
+        super.onResume()
+        loadProducts() // Reload products to ensure UI is updated with the latest data
+    }
 }

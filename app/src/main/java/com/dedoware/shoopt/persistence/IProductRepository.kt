@@ -12,4 +12,5 @@ interface IProductRepository {
     suspend fun delete(id: String): Boolean
     suspend fun getShops(): List<String>
     suspend fun addShop(shop: Shop): Boolean
+    suspend fun deleteProduct(product: Product): Boolean
 }
