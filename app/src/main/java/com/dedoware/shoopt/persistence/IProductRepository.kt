@@ -1,5 +1,6 @@
 package com.dedoware.shoopt.persistence
 
+import ShoppingCart
 import com.dedoware.shoopt.model.Product
 import com.dedoware.shoopt.model.Shop
 
@@ -10,7 +11,11 @@ interface IProductRepository {
     suspend fun insert(product: Product): String
     suspend fun update(product: Product): Boolean
     suspend fun delete(id: String): Boolean
+    suspend fun deleteProduct(product: Product): Boolean
     suspend fun getShops(): List<String>
     suspend fun addShop(shop: Shop): Boolean
-    suspend fun deleteProduct(product: Product): Boolean
+    suspend fun getShoppingCart(): ShoppingCart?
+    suspend fun addProductToCart(product: Product): Boolean
+    suspend fun clearShoppingCart(): Boolean
+    suspend fun getProductByBarcode(barcode: Long): Product?
 }

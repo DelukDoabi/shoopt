@@ -1,5 +1,7 @@
 package com.dedoware.shoopt.persistence
 
+import CartItem
+import ShoppingCart
 import com.dedoware.shoopt.model.Product
 import com.dedoware.shoopt.model.Shop
 import com.google.firebase.database.ktx.database
@@ -13,6 +15,7 @@ class FirebaseProductRepository : IProductRepository {
     private val database = Firebase.database.reference
     private val productsRef = database.child("products")
     private val shopsRef = database.child("shops")
+    private val cartRef = database.child("shoppingCart")
 
     override suspend fun getUniqueId(): String? = withContext(Dispatchers.IO) {
         productsRef.push().key
@@ -79,5 +82,42 @@ class FirebaseProductRepository : IProductRepository {
         } catch (e: Exception) {
             false
         }
+    }
+
+    override suspend fun getShoppingCart(): ShoppingCart? = withContext(Dispatchers.IO) {
+        val snapshot = cartRef.get().await()
+        snapshot.getValue(ShoppingCart::class.java)
+    }
+
+    override suspend fun addProductToCart(product: Product): Boolean = withContext(Dispatchers.IO) {
+        try {
+            val currentCart = getShoppingCart() ?: ShoppingCart(mutableListOf())
+
+            val existingCartItem = currentCart.products.find { it.product.barcode == product.barcode }
+            if (existingCartItem != null) {
+                existingCartItem.quantity += 1
+            } else {
+                currentCart.products.add(CartItem(product, 1))
+            }
+
+            cartRef.setValue(currentCart).await()
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    override suspend fun clearShoppingCart(): Boolean = withContext(Dispatchers.IO) {
+        try {
+            cartRef.child("products").removeValue().await()
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    override suspend fun getProductByBarcode(barcode: Long): Product? = withContext(Dispatchers.IO) {
+        val querySnapshot = productsRef.orderByChild("barcode").equalTo(barcode.toDouble()).get().await()
+        querySnapshot.children.firstOrNull()?.getValue(Product::class.java)
     }
 }
