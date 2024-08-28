@@ -1,8 +1,8 @@
 package com.dedoware.shoopt.persistence
 
-import ShoppingCart
 import com.dedoware.shoopt.model.Product
 import com.dedoware.shoopt.model.Shop
+import com.dedoware.shoopt.model.ShoppingCart
 
 interface IProductRepository {
     suspend fun getUniqueId(): String?

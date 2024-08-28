@@ -1,9 +1,9 @@
 package com.dedoware.shoopt.persistence
 
-import CartItem
-import ShoppingCart
+import com.dedoware.shoopt.model.CartItem
 import com.dedoware.shoopt.model.Product
 import com.dedoware.shoopt.model.Shop
+import com.dedoware.shoopt.model.ShoppingCart
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage

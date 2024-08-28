@@ -1,8 +1,5 @@
 package com.dedoware.shoopt.activities
 
-import CartItem
-import ProductTrackAdapter
-import ShoppingCart
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
@@ -16,7 +13,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dedoware.shoopt.R
+import com.dedoware.shoopt.model.CartItem
 import com.dedoware.shoopt.model.Product
+import com.dedoware.shoopt.model.ProductTrackAdapter
+import com.dedoware.shoopt.model.ShoppingCart
 import com.dedoware.shoopt.persistence.IProductRepository
 import com.dedoware.shoopt.persistence.FirebaseProductRepository
 import com.journeyapps.barcodescanner.ScanContract

@@ -1,4 +1,5 @@
-import com.dedoware.shoopt.model.Product
+package com.dedoware.shoopt.model
+
 import com.google.firebase.database.Exclude
 
 data class CartItem(

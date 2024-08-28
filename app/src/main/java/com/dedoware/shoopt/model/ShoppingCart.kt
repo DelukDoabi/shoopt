@@ -1,3 +1,5 @@
+package com.dedoware.shoopt.model
+
 import com.google.firebase.database.Exclude
 
 data class ShoppingCart(
