@@ -91,7 +91,7 @@ class FirebaseProductRepository : IProductRepository {
 
     override suspend fun addProductToCart(product: Product): Boolean = withContext(Dispatchers.IO) {
         try {
-            val currentCart = getShoppingCart() ?: ShoppingCart(mutableListOf())
+            val currentCart = getShoppingCart() ?: ShoppingCart(1, mutableListOf())
 
             val existingCartItem = currentCart.products.find { it.product.barcode == product.barcode }
             if (existingCartItem != null) {

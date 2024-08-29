@@ -13,12 +13,15 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dedoware.shoopt.R
+import com.dedoware.shoopt.ShooptApplication
 import com.dedoware.shoopt.model.CartItem
 import com.dedoware.shoopt.model.Product
 import com.dedoware.shoopt.model.ProductTrackAdapter
 import com.dedoware.shoopt.model.ShoppingCart
 import com.dedoware.shoopt.persistence.IProductRepository
 import com.dedoware.shoopt.persistence.FirebaseProductRepository
+import com.dedoware.shoopt.persistence.RoomProductRepository
+import com.dedoware.shoopt.persistence.ShooptRoomDatabase
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
@@ -33,11 +36,28 @@ class TrackShoppingActivity : ComponentActivity() {
     private lateinit var backImageButton: ImageButton
 
     // Repository instance
-    private val productRepository: IProductRepository = FirebaseProductRepository()
+    private lateinit var productRepository: IProductRepository
 
+    private val database: ShooptRoomDatabase by lazy {
+        (application as ShooptApplication).database
+    }
+
+    private val useFirebase = false // This could be a config or user preference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_track_shopping)
+
+        productRepository = if (useFirebase) {
+            FirebaseProductRepository()
+        } else {
+            RoomProductRepository(
+                database.productDao(),
+                database.shopDao(),
+                database.shoppingCartDao(),
+                database.cartItemDao()
+            )
+        }
+
         setupActionButtons()
 
         loadShoppingCart()

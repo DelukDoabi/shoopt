@@ -14,10 +14,13 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dedoware.shoopt.R
+import com.dedoware.shoopt.ShooptApplication
 import com.dedoware.shoopt.model.Product
 import com.dedoware.shoopt.model.ProductListAdapter
 import com.dedoware.shoopt.persistence.IProductRepository
 import com.dedoware.shoopt.persistence.FirebaseProductRepository
+import com.dedoware.shoopt.persistence.RoomProductRepository
+import com.dedoware.shoopt.persistence.ShooptRoomDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -30,11 +33,30 @@ class AnalyseActivity : AppCompatActivity() {
     private lateinit var backImageButton: ImageButton
 
     private var products: List<Product> = emptyList()
-    private val productRepository: IProductRepository = FirebaseProductRepository()
+    private lateinit var productRepository: IProductRepository
+
+    private val database: ShooptRoomDatabase by lazy {
+        (application as ShooptApplication).database
+    }
+
+    private val useFirebase = false // This could be a config or user preference
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_analyse)
+
+        productRepository = if (useFirebase) {
+            FirebaseProductRepository()
+        } else {
+            RoomProductRepository(
+                database.productDao(),
+                database.shopDao(),
+                database.shoppingCartDao(),
+                database.cartItemDao()
+            )
+        }
+
         supportActionBar?.hide()
 
         progressBar = findViewById(R.id.loading_indicator)

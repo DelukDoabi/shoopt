@@ -19,12 +19,16 @@ import androidx.core.content.FileProvider
 import androidx.core.graphics.drawable.toBitmap
 import com.bumptech.glide.Glide
 import com.dedoware.shoopt.R
+import com.dedoware.shoopt.ShooptApplication
 import com.dedoware.shoopt.model.Product
 import com.dedoware.shoopt.model.Shop
 import com.dedoware.shoopt.persistence.FirebaseImageStorage
 import com.dedoware.shoopt.persistence.FirebaseProductRepository
 import com.dedoware.shoopt.persistence.IImageStorage
 import com.dedoware.shoopt.persistence.IProductRepository
+import com.dedoware.shoopt.persistence.LocalImageStorage
+import com.dedoware.shoopt.persistence.RoomProductRepository
+import com.dedoware.shoopt.persistence.ShooptRoomDatabase
 import com.dedoware.shoopt.utils.ShooptUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -47,9 +51,12 @@ class AddProductActivity : AppCompatActivity() {
     private lateinit var productShopAutoCompleteTextView: AutoCompleteTextView
     private lateinit var productPictureFile: File
     val shopList = mutableListOf<String>()
-    private val productRepository: IProductRepository = FirebaseProductRepository()
+    private lateinit var productRepository: IProductRepository
     private lateinit var imageStorage: IImageStorage
-
+    private val database: ShooptRoomDatabase by lazy {
+        (application as ShooptApplication).database
+    }
+    private val useFirebase = false // This could be a config or user preference
 
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -63,7 +70,22 @@ class AddProductActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_add_product)
 
-        imageStorage = FirebaseImageStorage()
+        productRepository = if (useFirebase) {
+            FirebaseProductRepository()
+        } else {
+            RoomProductRepository(
+                database.productDao(),
+                database.shopDao(),
+                database.shoppingCartDao(),
+                database.cartItemDao()
+            )
+        }
+
+        imageStorage = if (useFirebase) {
+            FirebaseImageStorage()
+        } else {
+            LocalImageStorage(this)
+        }
 
         supportActionBar?.hide()
 

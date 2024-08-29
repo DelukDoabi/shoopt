@@ -4,12 +4,23 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import android.content.Context
+import com.dedoware.shoopt.model.CartItem
+import com.dedoware.shoopt.model.CartItemEntity
 import com.dedoware.shoopt.model.Product
+import com.dedoware.shoopt.model.Shop
+import com.dedoware.shoopt.model.ShoppingCart
+import com.dedoware.shoopt.model.ShoppingCartEntity
+import com.dedoware.shoopt.model.dao.CartItemDao
 import com.dedoware.shoopt.model.dao.ProductDao
+import com.dedoware.shoopt.model.dao.ShopDao
+import com.dedoware.shoopt.model.dao.ShoppingCartDao
 
-@Database(entities = [Product::class], version = 1)
+@Database(entities = [Product::class, Shop::class, ShoppingCartEntity::class, CartItemEntity::class], version = 1)
 abstract class ShooptRoomDatabase : RoomDatabase() {  // Renamed class
     abstract fun productDao(): ProductDao
+    abstract fun shopDao(): ShopDao
+    abstract fun shoppingCartDao(): ShoppingCartDao
+    abstract fun cartItemDao(): CartItemDao
 
     companion object {
         @Volatile
