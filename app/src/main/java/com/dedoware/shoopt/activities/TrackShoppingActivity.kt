@@ -20,7 +20,7 @@ import com.dedoware.shoopt.model.ProductTrackAdapter
 import com.dedoware.shoopt.model.ShoppingCart
 import com.dedoware.shoopt.persistence.IProductRepository
 import com.dedoware.shoopt.persistence.FirebaseProductRepository
-import com.dedoware.shoopt.persistence.RoomProductRepository
+import com.dedoware.shoopt.persistence.LocalProductRepository
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanIntentResult
@@ -50,7 +50,7 @@ class TrackShoppingActivity : ComponentActivity() {
         productRepository = if (useFirebase) {
             FirebaseProductRepository()
         } else {
-            RoomProductRepository(
+            LocalProductRepository(
                 database.productDao(),
                 database.shopDao(),
                 database.shoppingCartDao(),

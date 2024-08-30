@@ -10,11 +10,9 @@ import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.ShooptApplication
-import com.dedoware.shoopt.persistence.FirebaseProductRepository
 import com.dedoware.shoopt.persistence.IShoppingListRepository
 import com.dedoware.shoopt.persistence.FirebaseShoppingListRepository
 import com.dedoware.shoopt.persistence.LocalShoppingListRepository
-import com.dedoware.shoopt.persistence.RoomProductRepository
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

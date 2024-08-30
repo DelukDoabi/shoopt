@@ -5,7 +5,7 @@ import com.dedoware.shoopt.model.dao.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class RoomProductRepository(
+class LocalProductRepository(
     private val productDao: ProductDao,
     private val shopDao: ShopDao,
     private val shoppingCartDao: ShoppingCartDao,

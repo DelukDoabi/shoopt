@@ -19,7 +19,7 @@ import com.dedoware.shoopt.model.Product
 import com.dedoware.shoopt.model.ProductListAdapter
 import com.dedoware.shoopt.persistence.IProductRepository
 import com.dedoware.shoopt.persistence.FirebaseProductRepository
-import com.dedoware.shoopt.persistence.RoomProductRepository
+import com.dedoware.shoopt.persistence.LocalProductRepository
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -49,7 +49,7 @@ class AnalyseActivity : AppCompatActivity() {
         productRepository = if (useFirebase) {
             FirebaseProductRepository()
         } else {
-            RoomProductRepository(
+            LocalProductRepository(
                 database.productDao(),
                 database.shopDao(),
                 database.shoppingCartDao(),
