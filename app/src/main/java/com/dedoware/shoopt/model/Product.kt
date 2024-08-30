@@ -1,19 +1,32 @@
 package com.dedoware.shoopt.model
 
-import com.google.gson.annotations.SerializedName
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "products")
 data class Product(
+    @PrimaryKey
     @SerializedName("id") val id: String,
+
     @SerializedName("barcode") val barcode: Long,
+
     @SerializedName("timestamp") val timestamp: Long,
+
     @SerializedName("name") val name: String,
+
     @SerializedName("price") val price: Double,
+
     @SerializedName("unit_price") val unitPrice: Double,
+
     @SerializedName("shop") val shop: String,
+
     @SerializedName("picture_url") val pictureUrl: String
 ) : Parcelable {
+
+    // Default constructor required by Room
     constructor() : this("", 0, 0, "", 0.0, 0.0, "", "")
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

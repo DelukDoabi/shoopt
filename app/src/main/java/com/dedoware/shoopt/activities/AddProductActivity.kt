@@ -19,35 +19,44 @@ import androidx.core.content.FileProvider
 import androidx.core.graphics.drawable.toBitmap
 import com.bumptech.glide.Glide
 import com.dedoware.shoopt.R
+import com.dedoware.shoopt.ShooptApplication
 import com.dedoware.shoopt.model.Product
 import com.dedoware.shoopt.model.Shop
+import com.dedoware.shoopt.persistence.FirebaseImageStorage
+import com.dedoware.shoopt.persistence.FirebaseProductRepository
+import com.dedoware.shoopt.persistence.IImageStorage
+import com.dedoware.shoopt.persistence.IProductRepository
+import com.dedoware.shoopt.persistence.LocalImageStorage
+import com.dedoware.shoopt.persistence.RoomProductRepository
+import com.dedoware.shoopt.persistence.ShooptRoomDatabase
 import com.dedoware.shoopt.utils.ShooptUtils
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.util.UUID
 
 
 class AddProductActivity : AppCompatActivity() {
     private lateinit var retrievedProductId: String
     private lateinit var backImageButton: ImageButton
     private lateinit var productPictureImageButton: ImageButton
-
     private lateinit var saveProductImageButton: ImageButton
     private lateinit var productBarcodeEditText: EditText
     private lateinit var productNameEditText: EditText
     private lateinit var productPriceEditText: EditText
     private lateinit var productUnitPriceEditText: EditText
     private lateinit var productShopAutoCompleteTextView: AutoCompleteTextView
-
     private lateinit var productPictureFile: File
-
     val shopList = mutableListOf<String>()
-
+    private lateinit var productRepository: IProductRepository
+    private lateinit var imageStorage: IImageStorage
+    private val database: ShooptRoomDatabase by lazy {
+        (application as ShooptApplication).database
+    }
+    private val useFirebase = false // This could be a config or user preference
 
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -60,6 +69,23 @@ class AddProductActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_add_product)
+
+        productRepository = if (useFirebase) {
+            FirebaseProductRepository()
+        } else {
+            RoomProductRepository(
+                database.productDao(),
+                database.shopDao(),
+                database.shoppingCartDao(),
+                database.cartItemDao()
+            )
+        }
+
+        imageStorage = if (useFirebase) {
+            FirebaseImageStorage()
+        } else {
+            LocalImageStorage(this)
+        }
 
         supportActionBar?.hide()
 
@@ -89,9 +115,9 @@ class AddProductActivity : AppCompatActivity() {
         saveProductImageButton.setOnClickListener {
             if (intent.hasExtra("productId"))
                 intent.getStringExtra("pictureUrl")
-                    ?.let { it -> saveProductInFirebaseDatabase(it) }
+                    ?.let { it -> saveProduct(it) }
             else
-                saveAllProductDataInFirebase()
+                saveAllProductData()
         }
     }
 
@@ -112,82 +138,52 @@ class AddProductActivity : AppCompatActivity() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         productShopAutoCompleteTextView.setAdapter(adapter)
 
-        val shopsReference = ShooptUtils.getFirebaseDatabaseReference().child("shops")
-
-        shopsReference.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (!dataSnapshot.exists()) {
-                    shopsReference.setValue(HashMap<String, Any>())
-                }
-                dataSnapshot.children.forEach { shop ->
-                    val shopName = shop.child("name").getValue(String::class.java)
-                    if (shopName != null && !shopList.contains(shopName)) {
-                        shopList.add(shopName)
-                    }
-                }
-                adapter.clear()
-                adapter.addAll(shopList)
-                adapter.notifyDataSetChanged()
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.d("SHOOPT_TAG", "Failed to read value.", databaseError.toException())
-                Toast.makeText(
-                    this@AddProductActivity,
-                    databaseError.toException().localizedMessage,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        })
+        updateShopList(adapter)
 
         productShopAutoCompleteTextView.setOnClickListener {
             productShopAutoCompleteTextView.showDropDown()
         }
     }
 
+    private fun updateShopList(adapter: ArrayAdapter<String>) {
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val shops = withContext(Dispatchers.IO) {
+                    productRepository.getShops()
+                }
+                shopList.clear()
+                shopList.addAll(shops)
+                adapter.clear()
+                adapter.addAll(shopList)
+                adapter.notifyDataSetChanged()
+            } catch (e: Exception) {
+                Log.d("SHOOPT_TAG", "Failed to load shops.", e)
+                Toast.makeText(
+                    this@AddProductActivity,
+                    "Failed to load shops: ${e.localizedMessage}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
     private fun addNewShop(shopName: String) {
-        val shopsReference = ShooptUtils.getFirebaseDatabaseReference().child("shops")
-
-        shopsReference.orderByChild("name").equalTo(shopName)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (!dataSnapshot.exists()) {
-                        val newShop = Shop(shopName)
-                        shopsReference.push().setValue(newShop) { error, _ ->
-                            if (error == null) {
-                                Log.d("SHOOPT_TAG", "New shop added successfully!")
-                                Toast.makeText(
-                                    this@AddProductActivity,
-                                    "New shop added successfully!",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else {
-                                Log.d("SHOOPT_TAG", error.message)
-                                Toast.makeText(
-                                    this@AddProductActivity,
-                                    error.message,
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        }
-                    } else {
-                        Toast.makeText(
-                            this@AddProductActivity,
-                            "Shop already exists!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val success = withContext(Dispatchers.IO) {
+                    productRepository.addShop(Shop(shopName))
                 }
-
-                override fun onCancelled(databaseError: DatabaseError) {
-                    Log.d("SHOOPT_TAG", databaseError.details)
-                    Toast.makeText(
-                        this@AddProductActivity,
-                        "Error adding shop: ${databaseError.details}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                if (success) {
+                    Log.d("SHOOPT_TAG", "New shop added successfully!")
+                    Toast.makeText(this@AddProductActivity, "New shop added successfully!", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this@AddProductActivity, "Failed to add shop.", Toast.LENGTH_SHORT).show()
                 }
-            })
+            } catch (e: Exception) {
+                Log.d("SHOOPT_TAG", "Failed to add shop.", e)
+                Toast.makeText(this@AddProductActivity, "Error adding shop: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun launchCamera() {
@@ -200,35 +196,72 @@ class AddProductActivity : AppCompatActivity() {
         resultLauncher.launch(cameraIntent)
     }
 
-    private fun saveAllProductDataInFirebase() {
-        val storageRef = Firebase.storage.reference
+    private fun saveAllProductData() {
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val productBarcode = productBarcodeEditText.text.toString().toLong()
+                val productName = productNameEditText.text.toString()
+                val productShop = productShopAutoCompleteTextView.text.toString()
 
-        val productBarcode = productBarcodeEditText.text.toString().toLong()
-        val productName = productNameEditText.text.toString()
-        val productShop = productShopAutoCompleteTextView.text.toString()
+                val pictureUrl = saveProductImage(getProductPictureData(), "product-pictures/$productBarcode-$productName-$productShop.jpg")
 
-        val productPicturesRef =
-            storageRef.child("product-pictures/$productBarcode-$productName-$productShop.jpg")
+                if (pictureUrl != null) {
+                    saveShop(productShop)
 
-        val productPictureData = getProductPictureData()
-
-        val uploadTask = productPicturesRef.putBytes(productPictureData)
-
-        uploadTask.addOnFailureListener { exception ->
-            Log.d("SHOOPT_TAG", exception.localizedMessage ?: "Failed to store product picture")
-            Toast.makeText(this, exception.localizedMessage, Toast.LENGTH_SHORT).show()
-        }.addOnSuccessListener {
-            Log.d("SHOOPT_TAG", "Product picture saved!")
-            Toast.makeText(this, "Product picture saved!", Toast.LENGTH_SHORT).show()
-
-            productPicturesRef.downloadUrl.addOnSuccessListener {
-                val downloadUrl = it.toString()
-                Log.d("SHOOPT_TAG", "Download URL: $downloadUrl")
-
-                saveShop(productShop)
-
-                saveProductInFirebaseDatabase(downloadUrl)
+                    saveProduct(pictureUrl)
+                } else {
+                    Toast.makeText(this@AddProductActivity, "Failed to upload product picture.", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Log.d("SHOOPT_TAG", "Error saving product.", e)
+                Toast.makeText(this@AddProductActivity, "Error saving product: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    private fun saveProduct(productPictureUrl: String) {
+        val barcode = if (productBarcodeEditText.text.toString()
+                .isEmpty()
+        ) "0".toLong() else productBarcodeEditText.text.toString().toLong()
+        val timestamp = System.currentTimeMillis()
+        val name = productNameEditText.text.toString()
+        val price = productPriceEditText.text.toString().toDouble()
+        val unitPrice = productUnitPriceEditText.text.toString().toDouble()
+        val shop = productShopAutoCompleteTextView.text.toString()
+
+        if (name.isNotEmpty() && !price.isNaN() && !unitPrice.isNaN() && shop.isNotEmpty()) {
+
+            CoroutineScope(Dispatchers.Main).launch {
+                try {
+                    val productId = withContext(Dispatchers.IO) {
+                        if (intent.hasExtra("productId")) {
+                            val product = Product(retrievedProductId, barcode, timestamp, name, price, unitPrice, shop, productPictureUrl)
+                            productRepository.update(product)
+                            product.id
+                        } else {
+                            var repositoryProductId = productRepository.getUniqueId()
+
+                            if (repositoryProductId == null) {
+                                repositoryProductId = UUID.randomUUID().toString()
+                            }
+
+                            val product = Product(repositoryProductId, barcode, timestamp, name, price, unitPrice, shop, productPictureUrl)
+                            productRepository.insert(product)
+                        }
+                    }
+
+                    Toast.makeText(this@AddProductActivity, "Product saved with ID: $productId", Toast.LENGTH_SHORT).show()
+
+                    updateResultIntentForTrackShopping(Product(productId, barcode, timestamp, name, price, unitPrice, shop, productPictureUrl))
+
+                    finish()
+                } catch (e: Exception) {
+                    Log.d("SHOOPT_TAG", "Error saving product.", e)
+                    Toast.makeText(this@AddProductActivity, "Error saving product: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else {
+            displayFailedStorage()
         }
     }
 
@@ -257,101 +290,6 @@ class AddProductActivity : AppCompatActivity() {
         if (scannedBarcode != null) productBarcodeEditText.setText(scannedBarcode)
     }
 
-    private fun saveProductInFirebaseDatabase(productPictureUrl: String) {
-        val barcode = if (productBarcodeEditText.text.toString()
-                .isEmpty()
-        ) "0".toLong() else productBarcodeEditText.text.toString().toLong()
-        val timestamp = System.currentTimeMillis()
-        val name = productNameEditText.text.toString()
-        val price = productPriceEditText.text.toString().toDouble()
-        val unitPrice = productUnitPriceEditText.text.toString().toDouble()
-        val shop = productShopAutoCompleteTextView.text.toString()
-
-        if (name.isNotEmpty() && !price.isNaN() && !unitPrice.isNaN() && shop.isNotEmpty()) {
-            val productsRef = ShooptUtils.getFirebaseDatabaseReference().child("products")
-
-            if (intent.hasExtra("productId")) {
-                // Product already exists, update its data
-                intent.getStringExtra("productId")?.let {
-                    updateProductInRTDB(
-                        it,
-                        barcode,
-                        timestamp,
-                        name,
-                        price,
-                        unitPrice,
-                        shop,
-                        productPictureUrl,
-                        productsRef
-                    )
-                }
-            } else {
-                // Product does not exist, create a new one
-                addProductToRTDB(
-                    barcode,
-                    timestamp,
-                    name,
-                    shop,
-                    price,
-                    unitPrice,
-                    productPictureUrl
-                )
-            }
-        } else {
-            displayFailedStorage()
-        }
-    }
-
-    private fun updateProductInRTDB(
-        productId: String,
-        barcode: Long,
-        timestamp: Long,
-        name: String,
-        price: Double,
-        unitPrice: Double,
-        shop: String,
-        productPictureUrl: String,
-        productsRef: DatabaseReference
-    ) {
-            if (productId != null) {
-                val updatedProduct = Product(
-                    productId,
-                    barcode,
-                    timestamp,
-                    name,
-                    price,
-                    unitPrice,
-                    shop,
-                    productPictureUrl
-                )
-
-                // Update the product in the database
-                productsRef.child(productId).setValue(updatedProduct)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Log.d("SHOOPT_TAG", "Product updated!")
-                            Toast.makeText(
-                                this@AddProductActivity,
-                                "Product updated!",
-                                Toast.LENGTH_SHORT
-                            ).show()
-
-                            updateResultIntentForTrackShopping(updatedProduct)
-                        } else {
-                            Log.d("SHOOPT_TAG", "Error updating product: ${task.exception}")
-                        }
-                    }
-                    .addOnFailureListener { e ->
-                        Log.d("SHOOPT_TAG", e.localizedMessage ?: "Failed to update product")
-                        Toast.makeText(
-                            this@AddProductActivity,
-                            e.localizedMessage,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-        }
-    }
-
     private fun displayFailedStorage() {
         Toast.makeText(
             this@AddProductActivity,
@@ -359,38 +297,6 @@ class AddProductActivity : AppCompatActivity() {
             Toast.LENGTH_SHORT
         )
             .show()
-    }
-
-    private fun addProductToRTDB(
-        barcode: Long,
-        timestamp: Long,
-        name: String,
-        shop: String,
-        price: Double,
-        unitPrice: Double,
-        pictureUrl: String
-    ) {
-        val productId = ShooptUtils.getFirebaseDatabaseReference().push().key
-        if (productId != null) {
-            val product = Product(productId, barcode, timestamp, name, price, unitPrice, shop, pictureUrl)
-
-            ShooptUtils.getFirebaseDatabaseReference().child("products").child(productId)
-                .setValue(product)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d("SHOOPT_TAG", "Product saved!")
-                        Toast.makeText(this, "Product saved!", Toast.LENGTH_SHORT).show()
-
-                        updateResultIntentForTrackShopping(product)
-                    } else {
-                        Log.d("SHOOPT_TAG", "Error: ${task.exception}")
-                    }
-                }
-                .addOnFailureListener { e ->
-                    Log.d("SHOOPT_TAG", e.localizedMessage ?: "Failed to store product")
-                    Toast.makeText(this, e.localizedMessage, Toast.LENGTH_SHORT).show()
-                }
-        }
     }
 
     private fun getProductPictureBitmap(options: Options?): Pair<Int, Bitmap> {
@@ -500,5 +406,13 @@ class AddProductActivity : AppCompatActivity() {
             setResult(RESULT_OK, resultIntent)
             finish()
         }
+    }
+
+    private suspend fun saveProductImage(imageData: ByteArray, pathString: String): String? {
+        return imageStorage.uploadImage(imageData, pathString)
+    }
+
+    private suspend fun removeProductImage(imageUrl: String): Boolean {
+        return imageStorage.deleteImage(imageUrl)
     }
 }
