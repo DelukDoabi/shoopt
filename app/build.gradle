@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.dedoware.shoopt"
-        minSdk 25
+        minSdk 33
         targetSdk 34
         versionCode 14
         versionName "0.0.14-beta"
