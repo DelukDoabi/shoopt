@@ -10,10 +10,10 @@ import com.dedoware.shoopt.model.CartItemEntity
 @Dao
 interface CartItemDao {
 
-    @Query("SELECT * FROM cart_item")
+    @Query("SELECT * FROM cart_items")
     suspend fun getAllCartItems(): List<CartItemEntity>
 
-    @Query("SELECT * FROM cart_item WHERE id = :id")
+    @Query("SELECT * FROM cart_items WHERE id = :id")
     suspend fun getCartItemById(id: Long): CartItemEntity?
 
     @Insert
@@ -22,9 +22,9 @@ interface CartItemDao {
     @Update
     suspend fun update(cartItem: CartItemEntity): Int
 
-    @Query("DELETE FROM cart_item WHERE id = :id")
+    @Query("DELETE FROM cart_items WHERE id = :id")
     suspend fun delete(id: Long): Int
 
-    @Query("DELETE FROM cart_item")
+    @Query("DELETE FROM cart_items")
     suspend fun clearCart()
 }

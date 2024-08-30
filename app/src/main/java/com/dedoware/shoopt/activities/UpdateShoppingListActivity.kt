@@ -9,8 +9,13 @@ import android.widget.EditText
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import com.dedoware.shoopt.R
+import com.dedoware.shoopt.ShooptApplication
+import com.dedoware.shoopt.persistence.FirebaseProductRepository
 import com.dedoware.shoopt.persistence.IShoppingListRepository
 import com.dedoware.shoopt.persistence.FirebaseShoppingListRepository
+import com.dedoware.shoopt.persistence.LocalShoppingListRepository
+import com.dedoware.shoopt.persistence.RoomProductRepository
+import com.dedoware.shoopt.persistence.ShooptRoomDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,13 +25,27 @@ class UpdateShoppingListActivity : AppCompatActivity() {
     private lateinit var mainShoppingListEditText: EditText
     private lateinit var secondaryShoppingListEditText: EditText
     private lateinit var backImageButton: ImageButton
-    private val shoppingListRepository: IShoppingListRepository = FirebaseShoppingListRepository()
+    private lateinit var shoppingListRepository: IShoppingListRepository
     private val handler = Handler(Looper.getMainLooper())
     private var runnable: Runnable = Runnable { }
+
+    private val database: ShooptRoomDatabase by lazy {
+        (application as ShooptApplication).database
+    }
+
+    private val useFirebase = false // This could be a config or user preference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update_shopping_list)
+
+        shoppingListRepository = if (useFirebase) {
+            FirebaseShoppingListRepository()
+        } else {
+            LocalShoppingListRepository(
+                database.shoppingListDao()
+            )
+        }
 
         supportActionBar?.hide()
 

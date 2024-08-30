@@ -22,7 +22,7 @@ data class CartItem(
 
 // Room-compatible CartItem
 @Entity(
-    tableName = "cart_item",
+    tableName = "cart_items",
     foreignKeys = [ForeignKey(
         entity = ShoppingCartEntity::class,
         parentColumns = ["id"],

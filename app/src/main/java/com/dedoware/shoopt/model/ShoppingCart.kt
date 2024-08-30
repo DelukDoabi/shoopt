@@ -19,7 +19,7 @@ data class ShoppingCart(
 }
 
 // Room-compatible ShoppingCart
-@Entity(tableName = "shopping_cart")
+@Entity(tableName = "shopping_carts")
 data class ShoppingCartEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0, // Primary key for Room
     val cartName: String = "default_cart"  // Example field to differentiate carts (optional)

@@ -14,13 +14,13 @@ import com.dedoware.shoopt.model.ShoppingCartWithItems
 interface ShoppingCartDao {
 
     @Transaction
-    @Query("SELECT * FROM shopping_cart WHERE id = :id LIMIT 1")
+    @Query("SELECT * FROM shopping_carts WHERE id = :id LIMIT 1")
     suspend fun getShoppingCartWithItems(id: Int): ShoppingCartWithItems?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCart(cart: ShoppingCartEntity): Long
 
-    @Query("DELETE FROM cart_item WHERE cartId = :cartId")
+    @Query("DELETE FROM cart_items WHERE cartId = :cartId")
     suspend fun deleteCartItemsByCartId(cartId: Int)
 
     @Update

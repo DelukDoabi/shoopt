@@ -8,7 +8,7 @@ import com.dedoware.shoopt.model.Shop
 @Dao
 interface ShopDao {
 
-    @Query("SELECT * FROM shop")
+    @Query("SELECT * FROM shops")
     suspend fun getAllShops(): List<Shop>
 
     @Insert

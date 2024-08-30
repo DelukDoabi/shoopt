@@ -10,16 +10,22 @@ import com.dedoware.shoopt.model.Product
 import com.dedoware.shoopt.model.Shop
 import com.dedoware.shoopt.model.ShoppingCart
 import com.dedoware.shoopt.model.ShoppingCartEntity
+import com.dedoware.shoopt.model.ShoppingList
 import com.dedoware.shoopt.model.dao.CartItemDao
 import com.dedoware.shoopt.model.dao.ProductDao
 import com.dedoware.shoopt.model.dao.ShopDao
 import com.dedoware.shoopt.model.dao.ShoppingCartDao
+import com.dedoware.shoopt.model.dao.ShoppingListDao
 
-@Database(entities = [Product::class, Shop::class, ShoppingCartEntity::class, CartItemEntity::class], version = 1)
+@Database(
+    version = 1,
+    entities = [Product::class, Shop::class, ShoppingCartEntity::class, CartItemEntity::class, ShoppingList::class]
+)
 abstract class ShooptRoomDatabase : RoomDatabase() {  // Renamed class
     abstract fun productDao(): ProductDao
     abstract fun shopDao(): ShopDao
     abstract fun shoppingCartDao(): ShoppingCartDao
+    abstract fun shoppingListDao(): ShoppingListDao
     abstract fun cartItemDao(): CartItemDao
 
     companion object {
