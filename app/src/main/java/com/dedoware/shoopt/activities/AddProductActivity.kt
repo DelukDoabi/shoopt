@@ -345,8 +345,6 @@ class AddProductActivity : AppCompatActivity() {
                 productPictureBitmap
             )
         )
-
-        productPictureBitmap.recycle()
     }
 
     private fun setMainVariables() {

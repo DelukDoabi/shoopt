@@ -8,12 +8,12 @@ history, and analyze it to create an optimal shopping cart for your next purchas
 ## Features
 
 - Scan product barcodes to quickly add them to your list
-- Compare prices across different stores to find the best deal
 - Store information about your products, including name, price, and unit price
 - Take a picture of the product to easily identify it later
 - Keep track of your shopping history
-- Analyze your shopping history to create an optimal shopping cart for your next purchase
 - Keep track of your products and their prices over time
+- Compare prices across different stores to find the best deal (coming soon)
+- Analyze your shopping history to create an optimal shopping cart for your next purchase (coming soon)
 
 ## Getting Started
 
@@ -31,7 +31,6 @@ Firebase Authentication to handle user registration and login
 
 Shoopt is open-source and welcomes contributions. If you'd like to contribute, please submit a pull
 request.
-
 ## Contact
 
 If you have any questions or feedback, please reach out to me at deluk.doabi@gmail.com.
