@@ -15,7 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "838481016105-3u3iiulk73etd1al5m63f8hr5qkeahto.apps.googleusercontent.com",
+          "client_id": "838481016105-5otqllj9erqi6hm5ho1k41c8k6g2ui0q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dedoware.shoopt",
+            "certificate_hash": "f3061c195b6b000903270be98a349ed2e63306bb"
+          }
+        },
+        {
+          "client_id": "838481016105-24n85kta0oembba3bqt0p6rjn2qbit43.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -28,7 +36,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "838481016105-3u3iiulk73etd1al5m63f8hr5qkeahto.apps.googleusercontent.com",
+              "client_id": "838481016105-24n85kta0oembba3bqt0p6rjn2qbit43.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
