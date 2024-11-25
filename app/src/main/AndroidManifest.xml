@@ -17,6 +17,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Shoopt"
         tools:targetApi="34">
+
+        <activity
+            android:name=".activities.LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activities.TrackShoppingActivity"
             android:exported="false"
