@@ -95,7 +95,11 @@ class AddProductActivity : AppCompatActivity() {
 
         retrieveMainData(savedInstanceState)
 
-        ShooptUtils.doAfterInitFirebase(baseContext) { setShopsData() }
+        if (useFirebase) {
+            ShooptUtils.doAfterInitFirebase(baseContext) { setShopsData() }
+        } else {
+            setShopsData()
+        }
 
         productPictureFile = File(
             getExternalFilesDir(Environment.DIRECTORY_PICTURES),
