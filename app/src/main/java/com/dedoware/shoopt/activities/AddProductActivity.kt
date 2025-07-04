@@ -6,7 +6,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.BitmapFactory.Options
 import android.graphics.Matrix
-import android.media.ExifInterface
 import android.os.Bundle
 import android.os.Environment
 import android.os.PersistableBundle
@@ -32,11 +31,18 @@ import com.dedoware.shoopt.persistence.ShooptRoomDatabase
 import com.dedoware.shoopt.utils.ShooptUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.net.HttpURLConnection
+import java.net.URL
 import java.util.UUID
+import androidx.exifinterface.media.ExifInterface
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 
 
 class AddProductActivity : AppCompatActivity() {
@@ -62,8 +68,26 @@ class AddProductActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 displayProductPictureOnImageButton()
+
+                // Trigger image analysis after the user validates the picture
+                CoroutineScope(Dispatchers.Main).launch {
+                    try {
+                        val pictureUrl = saveProductImage(getProductPictureData(), "temp-product-picture.jpg")
+
+                        if (pictureUrl != null) {
+                            analyzeProductImage(pictureUrl)
+                        } else {
+                            Toast.makeText(this@AddProductActivity, "Failed to upload product picture.", Toast.LENGTH_SHORT).show()
+                        }
+                    } catch (e: Exception) {
+                        Log.d("SHOOPT_TAG", "Error analyzing product image.", e)
+                        Toast.makeText(this@AddProductActivity, "Error analyzing product image: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
+
+    private var analyzeImageJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -274,6 +298,104 @@ class AddProductActivity : AppCompatActivity() {
             addNewShop(productShop.trim())
     }
 
+    // Replace analyzeProductImage to directly perform the curl equivalent
+    private fun analyzeProductImage(imageUrl: String) {
+        // Fetch the API key securely from Firebase Remote Config
+        val remoteConfig = Firebase.remoteConfig
+        remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val apiKey = remoteConfig.getString("HF_KEY")
+                Log.d("DEBUG", "Fetched HF_KEY: $apiKey")
+
+                if (apiKey.isNotEmpty()) {
+                    // Convert the image to Base64
+                    val base64Image = getBase64EncodedImage()
+
+                    val payload = """
+                    {
+                        "messages": [
+                            {
+                                "role": "user",
+                                "content": [
+                                    {
+                                        "type": "text",
+                                        "text": "Identify this product, its unit price, and its price per kilo in this image. Respond in JSON format with only 3 fields: name, unit_price, and kilo_price."
+                                    },
+                                    {
+                                        "type": "image_url",
+                                        "image_url": {
+                                            "url": "data:image/jpeg;base64,$base64Image"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "model": "google/gemma-3-27b-it-fast",
+                        "stream": false
+                    }
+                    """.trimIndent()
+
+                    // Proceed with the HTTP request using the fetched API key
+                    CoroutineScope(Dispatchers.IO).launch {
+                        try {
+                            val url = URL("https://router.huggingface.co/nebius/v1/chat/completions")
+                            val connection = url.openConnection() as HttpURLConnection
+                            connection.requestMethod = "POST"
+                            connection.setRequestProperty("Authorization", "Bearer $apiKey")
+                            connection.setRequestProperty("Content-Type", "application/json")
+                            connection.doOutput = true
+
+                            connection.outputStream.use { it.write(payload.toByteArray()) }
+
+                            val responseCode = connection.responseCode
+                            val errorMessage = connection.errorStream?.bufferedReader()?.use { it.readText() }
+                            if (responseCode == 200) {
+                                val response = connection.inputStream.bufferedReader().use { it.readText() }
+                                val jsonResponse = JSONObject(response)
+                                val productDetails = jsonResponse.getJSONArray("choices").getJSONObject(0).getJSONObject("message")
+                                val content = productDetails.getString("content")
+                                val jsonContent = content
+                                    .replace("```json", "")
+                                    .replace("```", "")
+                                    .trim()
+                                val parsedDetails = JSONObject(jsonContent)
+
+                                withContext(Dispatchers.Main) {
+                                    productNameEditText.setText(parsedDetails.getString("name"))
+                                    productPriceEditText.setText(parsedDetails.getString("unit_price"))
+                                    productUnitPriceEditText.setText(parsedDetails.getString("kilo_price"))
+                                }
+                            } else {
+                                withContext(Dispatchers.Main) {
+                                    val errorMsg = errorMessage ?: "Unknown error"
+                                    Toast.makeText(this@AddProductActivity, "Failed to analyze image. Response code: $responseCode. Error: $errorMsg", Toast.LENGTH_LONG).show()
+                                }
+                            }
+                        } catch (e: Exception) {
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(this@AddProductActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }
+                } else {
+                    Log.e("DEBUG", "HF_KEY is empty")
+                }
+            } else {
+                Log.e("DEBUG", "Failed to fetch HF_KEY from Firebase Remote Config")
+            }
+        }
+    }
+
+    private fun getBase64EncodedImage(): String {
+        return try {
+            val bytes = productPictureFile.readBytes()
+            android.util.Base64.encodeToString(bytes, android.util.Base64.NO_WRAP)
+        } catch (e: Exception) {
+            Log.e("DEBUG", "Error encoding image to Base64", e)
+            ""
+        }
+    }
+
     private fun getProductPictureData(): ByteArray {
         val (productPictureOrientation, productPictureBitmap) = getProductPictureBitmap(null)
 
@@ -364,7 +486,7 @@ class AddProductActivity : AppCompatActivity() {
 
     private fun retrieveMainData(savedInstanceState: Bundle?) {
         if (savedInstanceState != null) {
-            productPictureImageButton.setImageBitmap(savedInstanceState.getParcelable("productPicture"))
+            productPictureImageButton.setImageBitmap(savedInstanceState?.getParcelable<Bitmap>("productPicture"))
             productBarcodeEditText.setText(savedInstanceState.getString("productBarCode"))
             productNameEditText.setText(savedInstanceState.getString("productName"))
             productPriceEditText.setText(savedInstanceState.getString("productPrice"))
