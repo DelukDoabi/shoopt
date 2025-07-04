@@ -41,7 +41,6 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.UUID
 import androidx.exifinterface.media.ExifInterface
-import com.dedoware.shoopt.BuildConfig
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 
@@ -309,6 +308,9 @@ class AddProductActivity : AppCompatActivity() {
                 Log.d("DEBUG", "Fetched HF_KEY: $apiKey")
 
                 if (apiKey.isNotEmpty()) {
+                    // Convert the image to Base64
+                    val base64Image = getBase64EncodedImage()
+
                     val payload = """
                     {
                         "messages": [
@@ -322,7 +324,7 @@ class AddProductActivity : AppCompatActivity() {
                                     {
                                         "type": "image_url",
                                         "image_url": {
-                                            "url": "https://firebasestorage.googleapis.com/v0/b/shoopt-9ab47.appspot.com/o/product-pictures%2F3017620425035-nutella-leclerc%20saint%20priest.jpg?alt=media&token=911d499f-9d52-44d1-b775-70cfc2b06a4c"
+                                            "url": "data:image/jpeg;base64,$base64Image"
                                         }
                                     }
                                 ]
@@ -381,6 +383,16 @@ class AddProductActivity : AppCompatActivity() {
             } else {
                 Log.e("DEBUG", "Failed to fetch HF_KEY from Firebase Remote Config")
             }
+        }
+    }
+
+    private fun getBase64EncodedImage(): String {
+        return try {
+            val bytes = productPictureFile.readBytes()
+            android.util.Base64.encodeToString(bytes, android.util.Base64.NO_WRAP)
+        } catch (e: Exception) {
+            Log.e("DEBUG", "Error encoding image to Base64", e)
+            ""
         }
     }
 
