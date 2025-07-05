@@ -1,7 +1,9 @@
 package com.dedoware.shoopt.activities
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.BitmapFactory.Options
@@ -14,6 +16,7 @@ import android.util.Log
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.core.graphics.drawable.toBitmap
 import com.bumptech.glide.Glide
@@ -29,9 +32,14 @@ import com.dedoware.shoopt.persistence.LocalImageStorage
 import com.dedoware.shoopt.persistence.LocalProductRepository
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
 import com.dedoware.shoopt.utils.ShooptUtils
+import com.google.android.gms.location.*
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
+import java.util.Locale
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -41,8 +49,11 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.UUID
 import androidx.exifinterface.media.ExifInterface
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
+import com.google.android.libraries.places.api.net.PlacesClient
 
 
 class AddProductActivity : AppCompatActivity() {
@@ -56,6 +67,8 @@ class AddProductActivity : AppCompatActivity() {
     private lateinit var productUnitPriceEditText: EditText
     private lateinit var productShopAutoCompleteTextView: AutoCompleteTextView
     private lateinit var productPictureFile: File
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var placesClient: PlacesClient
     val shopList = mutableListOf<String>()
     private lateinit var productRepository: IProductRepository
     private lateinit var imageStorage: IImageStorage
@@ -69,20 +82,21 @@ class AddProductActivity : AppCompatActivity() {
             if (result.resultCode == Activity.RESULT_OK) {
                 displayProductPictureOnImageButton()
 
-                // Trigger image analysis after the user validates the picture
-                CoroutineScope(Dispatchers.Main).launch {
-                    try {
-                        val pictureUrl = saveProductImage(getProductPictureData(), "temp-product-picture.jpg")
+                val pictureUrl = intent.getStringExtra("pictureUrl") ?: ""
 
-                        if (pictureUrl != null) {
-                            analyzeProductImage(pictureUrl)
-                        } else {
-                            Toast.makeText(this@AddProductActivity, "Failed to upload product picture.", Toast.LENGTH_SHORT).show()
-                        }
-                    } catch (e: Exception) {
-                        Log.d("SHOOPT_TAG", "Error analyzing product image.", e)
-                        Toast.makeText(this@AddProductActivity, "Error analyzing product image: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+                // Trigger image analysis and shop name auto-completion in parallel
+                CoroutineScope(Dispatchers.Main).launch {
+                    val imageAnalysisJob = async {
+                        analyzeProductImage(pictureUrl)
                     }
+
+                    val shopNameAutoCompleteJob = async {
+                        fetchCurrentLocationAndFillShopName()
+                    }
+
+                    // Wait for both tasks to complete
+                    imageAnalysisJob.await()
+                    shopNameAutoCompleteJob.await()
                 }
             }
         }
@@ -141,11 +155,54 @@ class AddProductActivity : AppCompatActivity() {
         }
 
         saveProductImageButton.setOnClickListener {
-            if (intent.hasExtra("productId"))
-                intent.getStringExtra("pictureUrl")
-                    ?.let { it -> saveProduct(it) }
-            else
+            if (intent.hasExtra("productId")) {
+                val pictureUrl = intent.getStringExtra("pictureUrl")
+                val price = productPriceEditText.text.toString()
+                val unitPrice = productUnitPriceEditText.text.toString()
+
+                if (!price.isNullOrEmpty() && !unitPrice.isNullOrEmpty()) {
+                    pictureUrl?.let { saveProduct(it, price, unitPrice) }
+                } else {
+                    // Handle missing price or unit price
+                    Toast.makeText(this, "Price and Unit Price are required", Toast.LENGTH_SHORT).show()
+                }
+            } else {
                 saveAllProductData()
+            }
+        }
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        // Initialize Places API
+        val remoteConfig = Firebase.remoteConfig
+        remoteConfig.fetch(0).addOnCompleteListener { fetchTask ->
+            if (fetchTask.isSuccessful) {
+                remoteConfig.activate().addOnCompleteListener { activateTask ->
+                    if (activateTask.isSuccessful) {
+                        Log.d("DEBUG", "Remote Config fetch and activate successful.")
+                        val mapsApiKey = remoteConfig.getString("MAPS_KEY")
+                        Log.d("DEBUG", "Fetched MAPS_KEY: $mapsApiKey")
+
+                        if (mapsApiKey.isNotEmpty()) {
+                            Places.initialize(applicationContext, mapsApiKey)
+                            placesClient = Places.createClient(this)
+                        } else {
+                            Log.e("DEBUG", "MAPS_KEY is empty. Places API initialization skipped.")
+                        }
+                    } else {
+                        Log.e("DEBUG", "Remote Config activation failed.", activateTask.exception)
+                    }
+                }
+            } else {
+                Log.e("DEBUG", "Remote Config fetch failed.", fetchTask.exception)
+            }
+
+            if (!::placesClient.isInitialized) {
+                Log.e("DEBUG", "placesClient is not initialized. Skipping location fetch.")
+                return@addOnCompleteListener
+            }
+
+            fetchCurrentLocationAndFillShopName()
         }
     }
 
@@ -224,6 +281,11 @@ class AddProductActivity : AppCompatActivity() {
         resultLauncher.launch(cameraIntent)
     }
 
+    private fun sanitizePriceInput(price: String): String {
+        return price.replace(",", ".").replace(Regex("[^0-9.]"), "")
+    }
+
+    // Update the saveAllProductData function to sanitize price inputs
     private fun saveAllProductData() {
         CoroutineScope(Dispatchers.Main).launch {
             try {
@@ -231,12 +293,16 @@ class AddProductActivity : AppCompatActivity() {
                 val productName = productNameEditText.text.toString()
                 val productShop = productShopAutoCompleteTextView.text.toString()
 
+                // Sanitize price inputs
+                val sanitizedPrice = sanitizePriceInput(productPriceEditText.text.toString())
+                val sanitizedUnitPrice = sanitizePriceInput(productUnitPriceEditText.text.toString())
+
                 val pictureUrl = saveProductImage(getProductPictureData(), "product-pictures/$productBarcode-$productName-$productShop.jpg")
 
                 if (pictureUrl != null) {
                     saveShop(productShop)
 
-                    saveProduct(pictureUrl)
+                    saveProduct(pictureUrl, sanitizedPrice, sanitizedUnitPrice)
                 } else {
                     Toast.makeText(this@AddProductActivity, "Failed to upload product picture.", Toast.LENGTH_SHORT).show()
                 }
@@ -247,23 +313,19 @@ class AddProductActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveProduct(productPictureUrl: String) {
-        val barcode = if (productBarcodeEditText.text.toString()
-                .isEmpty()
-        ) "0".toLong() else productBarcodeEditText.text.toString().toLong()
+    // Update the saveProduct function to accept sanitized prices
+    private fun saveProduct(productPictureUrl: String, price: String, unitPrice: String) {
+        val barcode = if (productBarcodeEditText.text.toString().isEmpty()) "0".toLong() else productBarcodeEditText.text.toString().toLong()
         val timestamp = System.currentTimeMillis()
         val name = productNameEditText.text.toString()
-        val price = productPriceEditText.text.toString().toDouble()
-        val unitPrice = productUnitPriceEditText.text.toString().toDouble()
         val shop = productShopAutoCompleteTextView.text.toString()
 
-        if (name.isNotEmpty() && !price.isNaN() && !unitPrice.isNaN() && shop.isNotEmpty()) {
-
+        if (name.isNotEmpty() && price.isNotEmpty() && unitPrice.isNotEmpty() && shop.isNotEmpty()) {
             CoroutineScope(Dispatchers.Main).launch {
                 try {
                     val productId = withContext(Dispatchers.IO) {
                         if (intent.hasExtra("productId")) {
-                            val product = Product(retrievedProductId, barcode, timestamp, name, price, unitPrice, shop, productPictureUrl)
+                            val product = Product(retrievedProductId, barcode, timestamp, name, price.toDouble(), unitPrice.toDouble(), shop, productPictureUrl)
                             productRepository.update(product)
                             product.id
                         } else {
@@ -273,14 +335,14 @@ class AddProductActivity : AppCompatActivity() {
                                 repositoryProductId = UUID.randomUUID().toString()
                             }
 
-                            val product = Product(repositoryProductId, barcode, timestamp, name, price, unitPrice, shop, productPictureUrl)
+                            val product = Product(repositoryProductId, barcode, timestamp, name, price.toDouble(), unitPrice.toDouble(), shop, productPictureUrl)
                             productRepository.insert(product)
                         }
                     }
 
                     Toast.makeText(this@AddProductActivity, "Product saved with ID: $productId", Toast.LENGTH_SHORT).show()
 
-                    updateResultIntentForTrackShopping(Product(productId, barcode, timestamp, name, price, unitPrice, shop, productPictureUrl))
+                    updateResultIntentForTrackShopping(Product(productId, barcode, timestamp, name, price.toDouble(), unitPrice.toDouble(), shop, productPictureUrl))
 
                     finish()
                 } catch (e: Exception) {
@@ -364,10 +426,12 @@ class AddProductActivity : AppCompatActivity() {
                                     productNameEditText.setText(parsedDetails.getString("name"))
                                     productPriceEditText.setText(parsedDetails.getString("unit_price"))
                                     productUnitPriceEditText.setText(parsedDetails.getString("kilo_price"))
+
+                                    // Removed the call to fetchLocationAndAutocompleteShop
                                 }
                             } else {
                                 withContext(Dispatchers.Main) {
-                                    val errorMsg = errorMessage ?: "Unknown error"
+                                    val errorMsg = errorMessage ?: getString(R.string.unknown_error)
                                     Toast.makeText(this@AddProductActivity, "Failed to analyze image. Response code: $responseCode. Error: $errorMsg", Toast.LENGTH_LONG).show()
                                 }
                             }
@@ -378,7 +442,7 @@ class AddProductActivity : AppCompatActivity() {
                         }
                     }
                 } else {
-                    Log.e("DEBUG", "HF_KEY is empty")
+                    Log.e("DEBUG", getString(R.string.hf_key_empty))
                 }
             } else {
                 Log.e("DEBUG", "Failed to fetch HF_KEY from Firebase Remote Config")
@@ -538,5 +602,54 @@ class AddProductActivity : AppCompatActivity() {
 
     private suspend fun removeProductImage(imageUrl: String): Boolean {
         return imageStorage.deleteImage(imageUrl)
+    }
+
+    private fun checkLocationPermission(): Boolean {
+        return ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestLocationPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+            LOCATION_PERMISSION_REQUEST_CODE
+        )
+    }
+
+    private fun fetchCurrentLocationAndFillShopName() {
+        if (!checkLocationPermission()) {
+            requestLocationPermission()
+            return
+        }
+
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            if (!::placesClient.isInitialized) {
+                Log.e("DEBUG", "placesClient is not initialized. Skipping location fetch.")
+                productShopAutoCompleteTextView.setText(getString(R.string.unknown_shop))
+                return@addOnSuccessListener
+            }
+
+            if (location != null) {
+                val placeRequest = FindCurrentPlaceRequest.newInstance(
+                    listOf(Place.Field.NAME, Place.Field.ADDRESS)
+                )
+
+                placesClient.findCurrentPlace(placeRequest).addOnSuccessListener { response ->
+                    val mostLikelyPlace = response.placeLikelihoods.maxByOrNull { it.likelihood }
+                    val shopName = mostLikelyPlace?.place?.name ?: getString(R.string.unknown_shop)
+                    productShopAutoCompleteTextView.setText(shopName)
+                }.addOnFailureListener {
+                    productShopAutoCompleteTextView.setText(getString(R.string.unknown_shop))
+                }
+            } else {
+                productShopAutoCompleteTextView.setText(getString(R.string.unknown_shop))
+            }
+        }.addOnFailureListener {
+            productShopAutoCompleteTextView.setText(getString(R.string.unknown_shop))
+        }
+    }
+
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
     }
 }
