@@ -26,4 +26,7 @@
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="forgot_password">Forgot Password?</string>
+    <string name="unknown_error">An unknown error occurred.</string>
+    <string name="hf_key_empty">The Hugging Face API key is empty.</string>
+    <string name="unknown_shop">Unknown Shop</string>
 </resources>
