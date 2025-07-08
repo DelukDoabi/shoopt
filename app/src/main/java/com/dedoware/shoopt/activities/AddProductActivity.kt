@@ -13,6 +13,7 @@ import android.os.Environment
 import android.os.PersistableBundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -133,7 +134,9 @@ class AddProductActivity : AppCompatActivity() {
             }
             val combinedMessage = loadingMessages.joinToString("\n")
             withContext(Dispatchers.Main) {
-                findViewById<TextView>(R.id.loading_overlay_message).text = combinedMessage
+                val loadingMessageTextView = findViewById<TextView>(R.id.loading_overlay_message)
+                loadingMessageTextView.text = combinedMessage
+                loadingMessageTextView.gravity = Gravity.CENTER // Ensure text is centered
             }
         }
     }
