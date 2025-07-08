@@ -10,6 +10,8 @@ import android.graphics.Matrix
 import android.location.Location
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.os.PersistableBundle
 import android.provider.MediaStore
 import android.util.Log
@@ -125,6 +127,10 @@ class AddProductActivity : AppCompatActivity() {
     private val loadingMessages = mutableListOf<String>()
     private val loadingMessagesMutex = Mutex()
 
+    private var dotCount = 0
+    private var isAnimatingDots = false
+    private val dotHandler = Handler(Looper.getMainLooper())
+
     private suspend fun updateLoadingMessage(message: String, add: Boolean) {
         loadingMessagesMutex.withLock {
             if (add) {
@@ -142,20 +148,20 @@ class AddProductActivity : AppCompatActivity() {
     }
 
     private suspend fun analyzeProductImageWithMessage(pictureUrl: String) {
-        updateLoadingMessage("Analyzing image...", true)
+        updateLoadingMessage("Analyzing image", true)
         try {
             analyzeProductImage(pictureUrl)
         } finally {
-            updateLoadingMessage("Analyzing image...", false)
+            updateLoadingMessage("Analyzing image", false)
         }
     }
 
     private suspend fun fetchCurrentLocationAndFillShopNameWithMessage() {
-        updateLoadingMessage("Fetching location and shop name...", true)
+        updateLoadingMessage("Fetching location and shop name", true)
         try {
             fetchCurrentLocationAndFillShopName()
         } finally {
-            updateLoadingMessage("Fetching location and shop name...", false)
+            updateLoadingMessage("Fetching location and shop name", false)
         }
     }
 
@@ -725,12 +731,34 @@ class AddProductActivity : AppCompatActivity() {
         val rotateAnimation = AnimationUtils.loadAnimation(this, R.anim.rotate)
         loadingOverlay.startAnimation(rotateAnimation)
         findViewById<View>(R.id.loading_overlay).visibility = View.VISIBLE
+        startDotAnimation() // Start the dot animation when showing the overlay
     }
 
     private fun hideLoadingOverlay() {
+        stopDotAnimation() // Stop the dot animation when hiding the overlay
         findViewById<View>(R.id.loading_overlay).visibility = View.GONE
         val loadingOverlay = findViewById<ImageView>(R.id.loading_overlay_image)
         loadingOverlay.clearAnimation()
+    }
+
+    private fun startDotAnimation() {
+        if (isAnimatingDots) return
+        isAnimatingDots = true
+        dotHandler.post(object : Runnable {
+            override fun run() {
+                val loadingMessageTextView = findViewById<TextView>(R.id.loading_overlay_message)
+                val baseMessage = loadingMessages.joinToString("\n")
+                val dots = ".".repeat(dotCount % 4) // Add 0 to 3 dots
+                loadingMessageTextView.text = baseMessage + dots
+                dotCount++
+                dotHandler.postDelayed(this, 300) // Update every 500ms
+            }
+        })
+    }
+
+    private fun stopDotAnimation() {
+        isAnimatingDots = false
+        dotHandler.removeCallbacksAndMessages(null)
     }
 
     companion object {
