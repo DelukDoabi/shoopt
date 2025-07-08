@@ -1,6 +1,5 @@
 package com.dedoware.shoopt.activities
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -8,17 +7,32 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.BitmapFactory.Options
 import android.graphics.Matrix
+import android.location.Location
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.os.PersistableBundle
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.core.graphics.drawable.toBitmap
+import androidx.exifinterface.media.ExifInterface
 import com.bumptech.glide.Glide
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.ShooptApplication
@@ -32,28 +46,31 @@ import com.dedoware.shoopt.persistence.LocalImageStorage
 import com.dedoware.shoopt.persistence.LocalProductRepository
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
 import com.dedoware.shoopt.utils.ShooptUtils
-import com.google.android.gms.location.*
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
+import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
-import java.util.Locale
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.UUID
-import androidx.exifinterface.media.ExifInterface
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
-import com.google.android.libraries.places.api.net.PlacesClient
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 
 class AddProductActivity : AppCompatActivity() {
@@ -86,22 +103,67 @@ class AddProductActivity : AppCompatActivity() {
 
                 // Trigger image analysis and shop name auto-completion in parallel
                 CoroutineScope(Dispatchers.Main).launch {
+                    showLoadingOverlay()
                     val imageAnalysisJob = async {
-                        analyzeProductImage(pictureUrl)
+                        analyzeProductImageWithMessage(pictureUrl)
                     }
 
                     val shopNameAutoCompleteJob = async {
-                        fetchCurrentLocationAndFillShopName()
+                        fetchCurrentLocationAndFillShopNameWithMessage()
                     }
 
                     // Wait for both tasks to complete
                     imageAnalysisJob.await()
                     shopNameAutoCompleteJob.await()
+                    hideLoadingOverlay()
                 }
             }
         }
 
     private var analyzeImageJob: Job? = null
+
+    private lateinit var loadingOverlay: View
+
+    private val loadingMessages = mutableListOf<String>()
+    private val loadingMessagesMutex = Mutex()
+
+    private var dotCount = 0
+    private var isAnimatingDots = false
+    private val dotHandler = Handler(Looper.getMainLooper())
+
+    private suspend fun updateLoadingMessage(message: String, add: Boolean) {
+        loadingMessagesMutex.withLock {
+            if (add) {
+                loadingMessages.add(message)
+            } else {
+                loadingMessages.remove(message)
+            }
+            val combinedMessage = loadingMessages.joinToString("\n")
+            withContext(Dispatchers.Main) {
+                val loadingMessageTextView = findViewById<TextView>(R.id.loading_overlay_message)
+                loadingMessageTextView.text = combinedMessage
+                loadingMessageTextView.gravity = Gravity.CENTER // Ensure text is centered
+            }
+        }
+    }
+
+    private suspend fun analyzeProductImageWithMessage(pictureUrl: String) {
+        updateLoadingMessage("Analyzing image", true)
+        try {
+            analyzeProductImage(pictureUrl)
+        } finally {
+            updateLoadingMessage("Analyzing image", false)
+        }
+    }
+
+    private suspend fun fetchCurrentLocationAndFillShopNameWithMessage() {
+        updateLoadingMessage("Fetching location and shop name", true)
+        try {
+            fetchCurrentLocationAndFillShopName()
+        } finally {
+            updateLoadingMessage("Fetching location and shop name", false)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -202,8 +264,18 @@ class AddProductActivity : AppCompatActivity() {
                 return@addOnCompleteListener
             }
 
-            fetchCurrentLocationAndFillShopName()
+            CoroutineScope(Dispatchers.Main).launch {
+                fetchCurrentLocationAndFillShopName()
+            }
         }
+
+        // Inflate and configure the loading overlay
+        val inflater = LayoutInflater.from(this)
+        loadingOverlay = inflater.inflate(R.layout.loading_overlay, null)
+        loadingOverlay.visibility = View.GONE
+        val rootLayout = findViewById<ViewGroup>(android.R.id.content)
+        loadingOverlay = inflater.inflate(R.layout.loading_overlay, rootLayout, false)
+        rootLayout.addView(loadingOverlay)
     }
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
@@ -361,19 +433,41 @@ class AddProductActivity : AppCompatActivity() {
     }
 
     // Replace analyzeProductImage to directly perform the curl equivalent
-    private fun analyzeProductImage(imageUrl: String) {
-        // Fetch the API key securely from Firebase Remote Config
-        val remoteConfig = Firebase.remoteConfig
-        remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val apiKey = remoteConfig.getString("HF_KEY")
-                Log.d("DEBUG", "Fetched HF_KEY: $apiKey")
+    private suspend fun analyzeProductImage(imageUrl: String) {
+        try {
+            val apiKey = fetchHuggingFaceApiKey() ?: run {
+                Log.e("DEBUG", getString(R.string.hf_key_empty))
+                return
+            }
 
-                if (apiKey.isNotEmpty()) {
-                    // Convert the image to Base64
-                    val base64Image = getBase64EncodedImage()
+            val base64Image = getBase64EncodedImage()
+            val payload = createImageAnalysisPayload(base64Image)
 
-                    val payload = """
+            val response = sendImageAnalysisRequest(apiKey, payload)
+            handleImageAnalysisResponse(response)
+        } catch (e: Exception) {
+            Log.e("DEBUG", "Error analyzing product image", e)
+            withContext(Dispatchers.Main) {
+                Toast.makeText(this@AddProductActivity, "Error: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private suspend fun fetchHuggingFaceApiKey(): String? {
+        return suspendCancellableCoroutine { cont ->
+            Firebase.remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val apiKey = Firebase.remoteConfig.getString("HF_KEY")
+                    cont.resume(apiKey.ifEmpty { null })
+                } else {
+                    cont.resumeWithException(task.exception ?: Exception("Failed to fetch HF_KEY"))
+                }
+            }
+        }
+    }
+
+    private fun createImageAnalysisPayload(base64Image: String): String {
+        return  """
                     {
                         "messages": [
                             {
@@ -396,57 +490,43 @@ class AddProductActivity : AppCompatActivity() {
                         "stream": false
                     }
                     """.trimIndent()
+    }
 
-                    // Proceed with the HTTP request using the fetched API key
-                    CoroutineScope(Dispatchers.IO).launch {
-                        try {
-                            val url = URL("https://router.huggingface.co/nebius/v1/chat/completions")
-                            val connection = url.openConnection() as HttpURLConnection
-                            connection.requestMethod = "POST"
-                            connection.setRequestProperty("Authorization", "Bearer $apiKey")
-                            connection.setRequestProperty("Content-Type", "application/json")
-                            connection.doOutput = true
+    private suspend fun sendImageAnalysisRequest(apiKey: String, payload: String): String {
+        return withContext(Dispatchers.IO) {
+            val url = URL("https://router.huggingface.co/nebius/v1/chat/completions")
+            val connection = url.openConnection() as HttpURLConnection
+            connection.requestMethod = "POST"
+            connection.setRequestProperty("Authorization", "Bearer $apiKey")
+            connection.setRequestProperty("Content-Type", "application/json")
+            connection.doOutput = true
 
-                            connection.outputStream.use { it.write(payload.toByteArray()) }
+            connection.outputStream.use { it.write(payload.toByteArray()) }
 
-                            val responseCode = connection.responseCode
-                            val errorMessage = connection.errorStream?.bufferedReader()?.use { it.readText() }
-                            if (responseCode == 200) {
-                                val response = connection.inputStream.bufferedReader().use { it.readText() }
-                                val jsonResponse = JSONObject(response)
-                                val productDetails = jsonResponse.getJSONArray("choices").getJSONObject(0).getJSONObject("message")
-                                val content = productDetails.getString("content")
-                                val jsonContent = content
-                                    .replace("```json", "")
-                                    .replace("```", "")
-                                    .trim()
-                                val parsedDetails = JSONObject(jsonContent)
-
-                                withContext(Dispatchers.Main) {
-                                    productNameEditText.setText(parsedDetails.getString("name"))
-                                    productPriceEditText.setText(parsedDetails.getString("unit_price"))
-                                    productUnitPriceEditText.setText(parsedDetails.getString("kilo_price"))
-
-                                    // Removed the call to fetchLocationAndAutocompleteShop
-                                }
-                            } else {
-                                withContext(Dispatchers.Main) {
-                                    val errorMsg = errorMessage ?: getString(R.string.unknown_error)
-                                    Toast.makeText(this@AddProductActivity, "Failed to analyze image. Response code: $responseCode. Error: $errorMsg", Toast.LENGTH_LONG).show()
-                                }
-                            }
-                        } catch (e: Exception) {
-                            withContext(Dispatchers.Main) {
-                                Toast.makeText(this@AddProductActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
-                            }
-                        }
-                    }
-                } else {
-                    Log.e("DEBUG", getString(R.string.hf_key_empty))
-                }
+            val responseCode = connection.responseCode
+            if (responseCode == 200) {
+                connection.inputStream.bufferedReader().use { it.readText() }
             } else {
-                Log.e("DEBUG", "Failed to fetch HF_KEY from Firebase Remote Config")
+                val errorMessage = connection.errorStream?.bufferedReader()?.use { it.readText() }
+                throw Exception("Failed to analyze image. Response code: $responseCode, Error: $errorMessage")
             }
+        }
+    }
+
+    private suspend fun handleImageAnalysisResponse(response: String) {
+        val jsonResponse = JSONObject(response)
+        val productDetails = jsonResponse.getJSONArray("choices").getJSONObject(0).getJSONObject("message")
+        val content = productDetails.getString("content")
+        val jsonContent = content
+            .replace("```json", "")
+            .replace("```", "")
+            .trim()
+        val parsedDetails = JSONObject(jsonContent)
+
+        withContext(Dispatchers.Main) {
+            productNameEditText.setText(parsedDetails.getString("name"))
+            productPriceEditText.setText(parsedDetails.getString("unit_price"))
+            productUnitPriceEditText.setText(parsedDetails.getString("kilo_price"))
         }
     }
 
@@ -616,37 +696,69 @@ class AddProductActivity : AppCompatActivity() {
         )
     }
 
-    private fun fetchCurrentLocationAndFillShopName() {
+    private suspend fun fetchCurrentLocationAndFillShopName() {
         if (!checkLocationPermission()) {
             requestLocationPermission()
             return
         }
 
-        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-            if (!::placesClient.isInitialized) {
-                Log.e("DEBUG", "placesClient is not initialized. Skipping location fetch.")
-                productShopAutoCompleteTextView.setText(getString(R.string.unknown_shop))
-                return@addOnSuccessListener
+        val location = suspendCancellableCoroutine<Location?> { cont ->
+            fusedLocationClient.lastLocation.addOnSuccessListener { cont.resume(it) }
+                .addOnFailureListener { cont.resumeWithException(it) }
+        }
+
+        if (location != null && ::placesClient.isInitialized) {
+            val placeRequest = FindCurrentPlaceRequest.newInstance(
+                listOf(Place.Field.NAME, Place.Field.ADDRESS)
+            )
+
+            val response = suspendCancellableCoroutine { cont ->
+                placesClient.findCurrentPlace(placeRequest)
+                    .addOnSuccessListener { cont.resume(it) }
+                    .addOnFailureListener { cont.resumeWithException(it) }
             }
 
-            if (location != null) {
-                val placeRequest = FindCurrentPlaceRequest.newInstance(
-                    listOf(Place.Field.NAME, Place.Field.ADDRESS)
-                )
-
-                placesClient.findCurrentPlace(placeRequest).addOnSuccessListener { response ->
-                    val mostLikelyPlace = response.placeLikelihoods.maxByOrNull { it.likelihood }
-                    val shopName = mostLikelyPlace?.place?.name ?: getString(R.string.unknown_shop)
-                    productShopAutoCompleteTextView.setText(shopName)
-                }.addOnFailureListener {
-                    productShopAutoCompleteTextView.setText(getString(R.string.unknown_shop))
-                }
-            } else {
-                productShopAutoCompleteTextView.setText(getString(R.string.unknown_shop))
-            }
-        }.addOnFailureListener {
+            val mostLikelyPlace = response.placeLikelihoods.maxByOrNull { it.likelihood }
+            val shopName = mostLikelyPlace?.place?.name ?: getString(R.string.unknown_shop)
+            productShopAutoCompleteTextView.setText(shopName)
+        } else {
             productShopAutoCompleteTextView.setText(getString(R.string.unknown_shop))
         }
+    }
+
+    private fun showLoadingOverlay() {
+        val loadingOverlay = findViewById<ImageView>(R.id.loading_overlay_image)
+        val rotateAnimation = AnimationUtils.loadAnimation(this, R.anim.rotate)
+        loadingOverlay.startAnimation(rotateAnimation)
+        findViewById<View>(R.id.loading_overlay).visibility = View.VISIBLE
+        startDotAnimation() // Start the dot animation when showing the overlay
+    }
+
+    private fun hideLoadingOverlay() {
+        stopDotAnimation() // Stop the dot animation when hiding the overlay
+        findViewById<View>(R.id.loading_overlay).visibility = View.GONE
+        val loadingOverlay = findViewById<ImageView>(R.id.loading_overlay_image)
+        loadingOverlay.clearAnimation()
+    }
+
+    private fun startDotAnimation() {
+        if (isAnimatingDots) return
+        isAnimatingDots = true
+        dotHandler.post(object : Runnable {
+            override fun run() {
+                val loadingMessageTextView = findViewById<TextView>(R.id.loading_overlay_message)
+                val baseMessage = loadingMessages.joinToString("\n")
+                val dots = ".".repeat(dotCount % 4) // Add 0 to 3 dots
+                loadingMessageTextView.text = baseMessage + dots
+                dotCount++
+                dotHandler.postDelayed(this, 300) // Update every 500ms
+            }
+        })
+    }
+
+    private fun stopDotAnimation() {
+        isAnimatingDots = false
+        dotHandler.removeCallbacksAndMessages(null)
     }
 
     companion object {

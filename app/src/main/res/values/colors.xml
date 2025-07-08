@@ -22,4 +22,7 @@
     <color name="main_palette_rajah">#FFB05B</color>
     <color name="main_palette_rajah_variant">#F8A13F</color>
     <color name="main_palette_rajah_on">#F2EDEB</color>
+
+    <color name="overlay_background">#80000000</color>
+    <color name="overlay_blur">#80FFFFFF</color>
 </resources>
