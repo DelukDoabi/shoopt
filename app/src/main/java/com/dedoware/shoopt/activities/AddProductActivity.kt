@@ -648,19 +648,25 @@ class AddProductActivity : AppCompatActivity() {
         val unitPrice = intent.getDoubleExtra("unitPrice", 0.0)
         val pictureUrl = intent.getStringExtra("pictureUrl")
 
-        if (productId != null && barcode != 0L && name != null && shop != null && price != 0.0 && unitPrice != 0.0) {
+        if (productId != null) {
             retrievedProductId = productId
-            productBarcodeEditText.setText(barcode.toString())
-            productNameEditText.setText(name)
-            productShopAutoCompleteTextView.setText(shop)
-            productPriceEditText.setText(price.toString())
-            productUnitPriceEditText.setText(unitPrice.toString())
+        } else {
+            Log.w("AddProductActivity", "Missing productId")
+        }
 
-            // Load the product picture from the pictureUrl using Glide with resizing options
+        productBarcodeEditText.setText(if (barcode != 0L) barcode.toString() else "")
+        productNameEditText.setText(name ?: "")
+        productShopAutoCompleteTextView.setText(shop ?: "")
+        productPriceEditText.setText(if (price != 0.0) price.toString() else "")
+        productUnitPriceEditText.setText(if (unitPrice != 0.0) unitPrice.toString() else "")
+
+        if (!pictureUrl.isNullOrEmpty()) {
             Glide.with(this)
                 .load(pictureUrl)
                 .override(300, 300)
                 .into(productPictureImageButton)
+        } else {
+            Log.w("AddProductActivity", "Missing pictureUrl")
         }
     }
 
