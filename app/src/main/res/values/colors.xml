@@ -1,25 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <!--    default theme colors-->
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-
-    <!--    custom colors-->
-    <color name="main_palette_old_lavender">#6E6268</color>
-    <color name="main_palette_old_lavender_variant">#4E4357</color>
-    <color name="main_palette_old_lavender_on">#F2EDEB</color>
-
-    <color name="main_palette_nickel">#6D7065</color>
-
-    <color name="main_palette_isabelline">#F2EDEB</color>
-
-    <color name="main_palette_rajah">#FFB05B</color>
-    <color name="main_palette_rajah_variant">#F8A13F</color>
-    <color name="main_palette_rajah_on">#F2EDEB</color>
+    <color name="overlay_background">#80000000</color>
+    <color name="overlay_blur">#80FFFFFF</color>
+    <color name="main_palette_rajah">#F4D03F</color>
+    <color name="main_palette_rajah_variant">#F7DC6F</color>
+    <color name="main_palette_rajah_on">#FFFFFF</color>
+    <color name="main_palette_old_lavender">#796A8A</color>
+    <color name="main_palette_old_lavender_variant">#8E7FAE</color>
+    <color name="main_palette_old_lavender_on">#FFFFFF</color>
+    <color name="main_palette_isabelline">#F5F5F5</color>
+    <color name="main_palette_nickel">#727272</color>
 </resources>
