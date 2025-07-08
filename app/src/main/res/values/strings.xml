@@ -29,4 +29,5 @@
     <string name="unknown_error">An unknown error occurred.</string>
     <string name="hf_key_empty">The Hugging Face API key is empty.</string>
     <string name="unknown_shop">Unknown Shop</string>
+    <string name="scan_barcode">Scan Barcode</string>
 </resources>

@@ -66,6 +66,18 @@
             android:hint="@string/insert_product_barcode"
             android:inputType="number" />
 
+        <ImageButton
+            android:id="@+id/scan_barcode_IB"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_toEndOf="@id/product_barcode_ET"
+            android:layout_alignTop="@id/product_barcode_ET"
+            android:layout_alignBottom="@id/product_barcode_ET"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/main_rounded_button"
+            android:contentDescription="@string/scan_barcode"
+            android:src="@drawable/shoopt_scan_barcode" />
+
         <EditText
             android:id="@+id/product_name_ET"
             android:layout_width="250dp"
@@ -109,8 +121,8 @@
 
         <ImageButton
             android:id="@+id/save_product_IB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_below="@id/shop_autocomplete"
             android:layout_centerInParent="true"
             android:layout_marginStart="5dp"

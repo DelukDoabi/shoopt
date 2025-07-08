@@ -1,6 +1,7 @@
 package com.dedoware.shoopt.activities
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -54,6 +55,9 @@ import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanOptions
+import com.journeyapps.barcodescanner.ScanIntentResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -123,6 +127,8 @@ class AddProductActivity : AppCompatActivity() {
     private var analyzeImageJob: Job? = null
 
     private lateinit var loadingOverlay: View
+
+    private lateinit var scanBarcodeButton: ImageButton
 
     private val loadingMessages = mutableListOf<String>()
     private val loadingMessagesMutex = Mutex()
@@ -276,6 +282,12 @@ class AddProductActivity : AppCompatActivity() {
         val rootLayout = findViewById<ViewGroup>(android.R.id.content)
         loadingOverlay = inflater.inflate(R.layout.loading_overlay, rootLayout, false)
         rootLayout.addView(loadingOverlay)
+
+        scanBarcodeButton = findViewById(R.id.scan_barcode_IB)
+
+        scanBarcodeButton.setOnClickListener {
+            launchBarcodeScanner()
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
@@ -351,6 +363,20 @@ class AddProductActivity : AppCompatActivity() {
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, productPictureUri)
 
         resultLauncher.launch(cameraIntent)
+    }
+
+    private fun launchBarcodeScanner() {
+        barcodeLauncher.launch(ScanOptions())
+    }
+
+    private val barcodeLauncher = registerForActivityResult(
+        ScanContract()
+    ) { result: ScanIntentResult ->
+        if (result.contents == null) {
+            Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show()
+        } else {
+            productBarcodeEditText.setText(result.contents)
+        }
     }
 
     private fun sanitizePriceInput(price: String): String {
