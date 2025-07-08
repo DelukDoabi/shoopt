@@ -22,6 +22,7 @@ import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -57,6 +58,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -99,11 +102,11 @@ class AddProductActivity : AppCompatActivity() {
                 CoroutineScope(Dispatchers.Main).launch {
                     showLoadingOverlay()
                     val imageAnalysisJob = async {
-                        analyzeProductImage(pictureUrl)
+                        analyzeProductImageWithMessage(pictureUrl)
                     }
 
                     val shopNameAutoCompleteJob = async {
-                        fetchCurrentLocationAndFillShopName()
+                        fetchCurrentLocationAndFillShopNameWithMessage()
                     }
 
                     // Wait for both tasks to complete
@@ -117,6 +120,41 @@ class AddProductActivity : AppCompatActivity() {
     private var analyzeImageJob: Job? = null
 
     private lateinit var loadingOverlay: View
+
+    private val loadingMessages = mutableListOf<String>()
+    private val loadingMessagesMutex = Mutex()
+
+    private suspend fun updateLoadingMessage(message: String, add: Boolean) {
+        loadingMessagesMutex.withLock {
+            if (add) {
+                loadingMessages.add(message)
+            } else {
+                loadingMessages.remove(message)
+            }
+            val combinedMessage = loadingMessages.joinToString("\n")
+            withContext(Dispatchers.Main) {
+                findViewById<TextView>(R.id.loading_overlay_message).text = combinedMessage
+            }
+        }
+    }
+
+    private suspend fun analyzeProductImageWithMessage(pictureUrl: String) {
+        updateLoadingMessage("Analyzing image...", true)
+        try {
+            analyzeProductImage(pictureUrl)
+        } finally {
+            updateLoadingMessage("Analyzing image...", false)
+        }
+    }
+
+    private suspend fun fetchCurrentLocationAndFillShopNameWithMessage() {
+        updateLoadingMessage("Fetching location and shop name...", true)
+        try {
+            fetchCurrentLocationAndFillShopName()
+        } finally {
+            updateLoadingMessage("Fetching location and shop name...", false)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
