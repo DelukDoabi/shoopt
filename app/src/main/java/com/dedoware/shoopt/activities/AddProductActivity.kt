@@ -780,10 +780,11 @@ class AddProductActivity : AppCompatActivity() {
             override fun run() {
                 val loadingMessageTextView = findViewById<TextView>(R.id.loading_overlay_message)
                 val baseMessage = loadingMessages.joinToString("\n")
-                val dots = ".".repeat(dotCount % 4) // Add 0 to 3 dots
-                loadingMessageTextView.text = baseMessage + dots
+                val dots = "...".take(dotCount % 4) // Add 0 to 3 dots
+                val paddedDots = dots.padEnd(3, ' ') // Ensure the width remains constant
+                loadingMessageTextView.text = "$baseMessage$paddedDots" // Append padded dots
                 dotCount++
-                dotHandler.postDelayed(this, 300) // Update every 500ms
+                dotHandler.postDelayed(this, 300) // Update every 300ms
             }
         })
     }
