@@ -3,6 +3,7 @@ package com.dedoware.shoopt.activities
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -11,6 +12,7 @@ import com.dedoware.shoopt.R
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
+import com.google.firebase.auth.FirebaseAuth
 
 
 class MainActivity : AppCompatActivity() {
@@ -30,6 +32,11 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         setMainVariables()
+
+        val logoutButton: ImageButton = findViewById(R.id.logout_button)
+        logoutButton.setOnClickListener {
+            displayLogoutConfirmation()
+        }
 
         updateShoppingListImageButton.setOnClickListener {
             startActivity(Intent(this, UpdateShoppingListActivity::class.java))
@@ -99,4 +106,32 @@ class MainActivity : AppCompatActivity() {
             findViewById(R.id.analyse_TV)
     }
 
+    private fun displayLogoutConfirmation() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Logout")
+        builder.setMessage("Are you sure you want to logout?")
+
+        builder.setPositiveButton("Yes") { _, _ ->
+            // Perform logout logic
+            logoutUser()
+        }
+
+        builder.setNegativeButton("No") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun logoutUser() {
+        // Sign out from Firebase
+        FirebaseAuth.getInstance().signOut()
+
+        // Clear user session or perform necessary logout operations
+        val logoutIntent = Intent(this, LoginActivity::class.java)
+        logoutIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(logoutIntent)
+        finish()
+    }
 }
