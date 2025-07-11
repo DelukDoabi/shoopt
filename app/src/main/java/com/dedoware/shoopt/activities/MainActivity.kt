@@ -3,6 +3,7 @@ package com.dedoware.shoopt.activities
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
@@ -13,6 +14,7 @@ import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 
 class MainActivity : AppCompatActivity() {
@@ -32,6 +34,16 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         setMainVariables()
+
+        // Check if the user is signed in
+        val currentUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+        currentUser?.let {
+            val username = it.displayName
+            if (username != null) {
+                val toast = Toast.makeText(this, "Bienvenue, $username!", Toast.LENGTH_LONG)
+                toast.show()
+            }
+        }
 
         val logoutButton: ImageButton = findViewById(R.id.logout_button)
         logoutButton.setOnClickListener {
