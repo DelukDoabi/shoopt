@@ -4,18 +4,7 @@
     android:viewportWidth="24"
     android:viewportHeight="24">
 
-    <!-- Arrow body -->
     <path
         android:fillColor="#6E6268"
-        android:pathData="M10,17l5-5l-5-5" />
-
-    <!-- Horizontal line -->
-    <path
-        android:fillColor="#6E6268"
-        android:pathData="M15,12H3" />
-
-    <!-- Vertical line -->
-    <path
-        android:fillColor="#6E6268"
-        android:pathData="M19,4v16" />
+        android:pathData="M7 10.5v3h11v3.5l6-5-6-5v3.5H7zM3 3.5h10v3H3v11h10v3H3c-1.38 0-2.5-1.12-2.5-2.5v-12c0-1.38 1.12-2.5 2.5-2.5z"/>
 </vector>
