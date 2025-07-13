@@ -148,9 +148,9 @@ class AnalyseActivity : AppCompatActivity() {
 
     private fun displayAlertOnDeleteProduct(product: Product) {
         val alertDialog = AlertDialog.Builder(this)
-            .setTitle("Delete Product")
-            .setMessage("Are you sure you want to delete this product?")
-            .setPositiveButton("Delete") { dialog, _ ->
+            .setTitle(getString(R.string.delete_product))
+            .setMessage(getString(R.string.delete_product_confirm))
+            .setPositiveButton(getString(R.string.delete)) { dialog, _ ->
                 CoroutineScope(Dispatchers.Main).launch {
                     val isDeleted = withContext(Dispatchers.IO) {
                         productRepository.deleteProduct(product)
@@ -158,21 +158,21 @@ class AnalyseActivity : AppCompatActivity() {
                     if (isDeleted) {
                         Toast.makeText(
                             this@AnalyseActivity,
-                            "Product ${product.name} deleted",
+                            getString(R.string.product_deleted, product.name),
                             Toast.LENGTH_SHORT
                         ).show()
                         loadProducts()
                     } else {
                         Toast.makeText(
                             this@AnalyseActivity,
-                            "Failed to delete product",
+                            getString(R.string.failed_to_delete_product),
                             Toast.LENGTH_SHORT
                         ).show()
                     }
                     dialog.dismiss()
                 }
             }
-            .setNegativeButton("Cancel") { dialog, _ ->
+            .setNegativeButton(getString(R.string.cancelled)) { dialog, _ ->
                 dialog.dismiss()
             }
             .create()

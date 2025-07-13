@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         currentUser?.let {
             val username = it.displayName
             if (username != null) {
-                val toast = Toast.makeText(this, "Bienvenue, $username!", Toast.LENGTH_LONG)
+                val toast = Toast.makeText(this, getString(R.string.welcome_user, username), Toast.LENGTH_LONG)
                 toast.show()
             }
         }
@@ -69,15 +69,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun displayAddProductWayUserChoice() {
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Choose an option")
-        builder.setMessage("Scan barcode or add product manually")
+        builder.setTitle(getString(R.string.choose_option))
+        builder.setMessage(getString(R.string.scan_barcode_or_add_manually))
 
-        builder.setPositiveButton("Scan barcode") { _, _ ->
+        builder.setPositiveButton(getString(R.string.scan_barcode)) { _, _ ->
             // Launch the barcode scanner
             barcodeLauncher.launch(ScanOptions())
         }
 
-        builder.setNegativeButton("Add product manually") { _, _ ->
+        builder.setNegativeButton(getString(R.string.add_product_manually)) { _, _ ->
             // Launch the add product manually activity
             val addProductIntent = Intent(this, AddProductActivity::class.java)
             startActivity(addProductIntent)
@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         ScanContract()
     ) { result: ScanIntentResult ->
         if (result.contents == null) {
-            Toast.makeText(this@MainActivity, "Cancelled", Toast.LENGTH_LONG).show()
+            Toast.makeText(this@MainActivity, getString(R.string.cancelled), Toast.LENGTH_LONG).show()
         } else {
             val addProductIntent = Intent(this@MainActivity, AddProductActivity::class.java)
             addProductIntent.putExtra("barcode", result.contents)

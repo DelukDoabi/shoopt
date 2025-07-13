@@ -27,7 +27,7 @@ class RegisterActivity : AppCompatActivity() {
             val password = passwordEditText.text.toString().trim { it <= ' ' }
 
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT)
+                Toast.makeText(this, getString(R.string.please_fill_all_fields), Toast.LENGTH_SHORT)
                     .show()
                 return@setOnClickListener
             }
@@ -36,14 +36,14 @@ class RegisterActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         Toast.makeText(
                             this,
-                            "Registration Successful",
+                            getString(R.string.registration_successful),
                             Toast.LENGTH_SHORT
                         ).show()
                         finish() // Return to login screen
                     } else {
                         Toast.makeText(
                             this,
-                            "Registration Failed: " + task.exception!!.message,
+                            getString(R.string.registration_failed, task.exception!!.message ?: ""),
                             Toast.LENGTH_SHORT
                         ).show()
                     }

@@ -43,14 +43,14 @@ class LoginActivity : AppCompatActivity() {
             val password = passwordEditText.text.toString().trim { it <= ' ' }
 
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT)
+                Toast.makeText(this, getString(R.string.please_fill_all_fields), Toast.LENGTH_SHORT)
                     .show()
                 return@setOnClickListener
             }
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful()) {
-                        Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT)
+                        Toast.makeText(this, getString(R.string.login_successful), Toast.LENGTH_SHORT)
                             .show()
                         startActivity(
                             Intent(
@@ -62,7 +62,7 @@ class LoginActivity : AppCompatActivity() {
                     } else {
                         Toast.makeText(
                             this,
-                            "Login Failed: " + task.exception!!.message,
+                            getString(R.string.login_failed, task.exception!!.message ?: ""),
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -101,17 +101,17 @@ class LoginActivity : AppCompatActivity() {
                 val credential = GoogleAuthProvider.getCredential(account.idToken, null)
                 auth.signInWithCredential(credential).addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        Toast.makeText(this, "Google Sign-In Successful", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.google_sign_in_successful), Toast.LENGTH_SHORT).show()
                         startActivity(Intent(this, MainActivity::class.java))
                         finish()
                     } else {
-                        Toast.makeText(this, "Authentication Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.authentication_failed, task.exception?.message ?: ""), Toast.LENGTH_SHORT).show()
                     }
                 }
             } catch (e: ApiException) {
-                Toast.makeText(this, "Google Sign-In Failed: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.google_sign_in_failed, e.message ?: ""), Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
-                Toast.makeText(this, "An unexpected error occurred: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.unexpected_error, e.message ?: ""), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -119,20 +119,20 @@ class LoginActivity : AppCompatActivity() {
     private fun showForgotPasswordDialog() {
         val builder = AlertDialog.Builder(this)
         val emailInput = EditText(this).apply {
-            hint = "Enter your email"
+            hint = getString(R.string.enter_your_email)
         }
-        builder.setTitle("Reset Password")
-            .setMessage("Enter your email to receive a password reset link:")
+        builder.setTitle(getString(R.string.reset_password))
+            .setMessage(getString(R.string.enter_email_to_reset))
             .setView(emailInput)
-            .setPositiveButton("Send") { _, _ ->
+            .setPositiveButton(getString(R.string.send)) { _, _ ->
                 val email = emailInput.text.toString().trim()
                 if (email.isNotEmpty()) {
                     sendPasswordResetEmail(email)
                 } else {
-                    Toast.makeText(this, "Email cannot be empty", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.email_empty), Toast.LENGTH_SHORT).show()
                 }
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(getString(R.string.cancelled), null)
             .create()
             .show()
     }
@@ -141,9 +141,9 @@ class LoginActivity : AppCompatActivity() {
         auth.sendPasswordResetEmail(email)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Toast.makeText(this, "Password reset email sent!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.password_reset_sent), Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this, "Error: ${task.exception?.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, getString(R.string.error, task.exception?.message ?: ""), Toast.LENGTH_LONG).show()
                 }
             }
     }
