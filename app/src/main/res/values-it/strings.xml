@@ -71,4 +71,5 @@
     <string name="main_shopping_list">Lista acquisti principale</string>
     <string name="secondary_shopping_list">Lista acquisti secondaria</string>
     <string name="title_activity_track_shopping">Attività di tracciamento acquisti</string>
+    <string name="convert_to_product_track">Converti in Product Track</string>
 </resources>

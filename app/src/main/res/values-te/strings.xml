@@ -71,4 +71,5 @@
     <string name="secondary_shopping_list">ద్వితీయ షాపింగ్ జాబితా</string>
     <string name="title_activity_track_shopping">TrackShoppingActivity</string>
     <string name="app_name">షూప్ట్</string>
+    <string name="convert_to_product_track">Product Trackకి మార్చండి</string>
 </resources>

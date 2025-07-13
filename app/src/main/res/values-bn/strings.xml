@@ -71,4 +71,5 @@
     <string name="main_shopping_list">প্রধান শপিং তালিকা</string>
     <string name="secondary_shopping_list">গৌণ শপিং তালিকা</string>
     <string name="title_activity_track_shopping">শপিং ট্র্যাকিং কার্যক্রম</string>
+    <string name="convert_to_product_track">Product Track-এ রূপান্তর করুন</string>
 </resources>

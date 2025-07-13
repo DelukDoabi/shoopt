@@ -71,4 +71,5 @@
     <string name="main_shopping_list">ਮੁੱਖ ਖਰੀਦਦਾਰੀ ਸੂਚੀ</string>
     <string name="secondary_shopping_list">ਦੂਜੀ ਖਰੀਦਦਾਰੀ ਸੂਚੀ</string>
     <string name="title_activity_track_shopping">ਖਰੀਦਦਾਰੀ ਟ੍ਰੈਕਿੰਗ ਗਤੀਵਿਧੀ</string>
+    <string name="convert_to_product_track">Product Track ਵਿੱਚ ਰੂਪਾਂਤਰਿਤ ਕਰੋ</string>
 </resources>

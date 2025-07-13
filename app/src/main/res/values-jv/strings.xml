@@ -71,4 +71,5 @@
     <string name="main_shopping_list">Daftar belanja utama</string>
     <string name="secondary_shopping_list">Daftar belanja sekunder</string>
     <string name="title_activity_track_shopping">Aktivitas pelacakan belanja</string>
+    <string name="convert_to_product_track">Konversi ke Product Track</string>
 </resources>

@@ -176,7 +176,7 @@ class TrackShoppingActivity : ComponentActivity() {
     private fun populateProductList(products: List<CartItem>) {
         val recyclerView: RecyclerView = findViewById(R.id.product_list_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = ProductTrackAdapter(products)
+        recyclerView.adapter = ProductTrackAdapter(products.toMutableList())
     }
 
     private fun showClearCartConfirmationDialog() {

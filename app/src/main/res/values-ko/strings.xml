@@ -71,4 +71,5 @@
     <string name="main_shopping_list">메인 쇼핑 목록</string>
     <string name="secondary_shopping_list">서브 쇼핑 목록</string>
     <string name="title_activity_track_shopping">쇼핑 추적 활동</string>
+    <string name="convert_to_product_track">Product Track으로 변환</string>
 </resources>

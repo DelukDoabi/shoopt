@@ -27,6 +27,19 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
+    <!-- ImageButton pour convertir en Product Track -->
+    <ImageButton
+        android:id="@+id/convert_to_product_track_IB"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_below="@id/back_IB"
+        android:background="@drawable/ic_convert_to_product_track_bg"
+        android:contentDescription="@string/convert_to_product_track"
+        android:src="@drawable/ic_convert_product_track"
+        android:elevation="4dp" />
+
     <!-- First Shopping List Text Edit Area -->
     <EditText
         android:id="@+id/main_shopping_list_edit_text"
@@ -39,12 +52,22 @@
         android:scrollbars="vertical"
         android:textSize="16sp" />
 
+    <!-- RecyclerView pour afficher les produits convertis -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/product_track_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/main_shopping_list_edit_text"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp" />
+
     <!-- Second Shopping List Header -->
     <TextView
         android:id="@+id/secondary_shopping_list_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/main_shopping_list_edit_text"
+        android:layout_below="@id/product_track_recycler_view"
         android:padding="16dp"
         android:text="@string/secondary_shopping_list"
         android:textSize="18sp"

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dedoware.shoopt.R
 
-class ProductTrackAdapter(private val productList: List<CartItem>) :
+class ProductTrackAdapter(private val productList: MutableList<CartItem>) :
     RecyclerView.Adapter<ProductTrackAdapter.ProductViewHolder>() {
 
     class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -36,5 +36,10 @@ class ProductTrackAdapter(private val productList: List<CartItem>) :
 
     override fun getItemCount(): Int {
         return productList.size
+    }
+
+    fun removeAt(position: Int) {
+        productList.removeAt(position)
+        notifyItemRemoved(position)
     }
 }

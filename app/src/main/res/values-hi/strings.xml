@@ -48,6 +48,7 @@
     <string name="failed_to_empty_shopping_cart">कार्ट साफ़ करने में विफल</string>
     <string name="delete_product">उत्पाद हटाएँ</string>
     <string name="delete_product_confirm">क्या आप वाकई इस उत्पाद को हटाना चाहते हैं?</string>
+    <string name="convert_to_product_track">उत्पाद ट्रैक में बदलें</string>
     <string name="delete">हटाएँ</string>
     <string name="product_deleted">उत्पाद %1$s हटाया गया</string>
     <string name="failed_to_delete_product">उत्पाद हटाने में विफल</string>

@@ -71,4 +71,5 @@
     <string name="main_shopping_list">Lista principală de cumpărături</string>
     <string name="secondary_shopping_list">Lista secundară de cumpărături</string>
     <string name="title_activity_track_shopping">Activitate urmărire cumpărături</string>
+    <string name="convert_to_product_track">Convertiți în Product Track</string>
 </resources>
