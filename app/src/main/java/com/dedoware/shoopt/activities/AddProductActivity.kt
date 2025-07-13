@@ -356,6 +356,24 @@ class AddProductActivity : AppCompatActivity() {
     }
 
     private fun launchCamera() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            launchCameraInternal()
+        } else {
+            cameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
+        }
+    }
+
+    private val cameraPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            launchCameraInternal()
+        } else {
+            Toast.makeText(this, "Permission caméra refusée", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun launchCameraInternal() {
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         val productPictureUri =
             FileProvider.getUriForFile(this, "com.dedoware.shoopt.fileprovider", productPictureFile)
@@ -728,28 +746,42 @@ class AddProductActivity : AppCompatActivity() {
         )
     }
 
+    // Ajout du callback pour la permission de localisation
+    private val locationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted && ::placesClient.isInitialized) {
+            // Relance la récupération de la localisation
+            CoroutineScope(Dispatchers.Main).launch {
+                fetchCurrentLocationAndFillShopName()
+            }
+        } else {
+            Toast.makeText(this, "Permission localisation refusée ou Places non initialisé", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private suspend fun fetchCurrentLocationAndFillShopName() {
         if (!checkLocationPermission()) {
-            requestLocationPermission()
+            locationPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
             return
         }
-
+        if (!::placesClient.isInitialized) {
+            Log.e("DEBUG", "placesClient is not initialized. Skipping location fetch.")
+            return
+        }
         val location = suspendCancellableCoroutine<Location?> { cont ->
             fusedLocationClient.lastLocation.addOnSuccessListener { cont.resume(it) }
                 .addOnFailureListener { cont.resumeWithException(it) }
         }
-
-        if (location != null && ::placesClient.isInitialized) {
+        if (location != null) {
             val placeRequest = FindCurrentPlaceRequest.newInstance(
                 listOf(Place.Field.NAME, Place.Field.ADDRESS)
             )
-
             val response = suspendCancellableCoroutine { cont ->
                 placesClient.findCurrentPlace(placeRequest)
                     .addOnSuccessListener { cont.resume(it) }
                     .addOnFailureListener { cont.resumeWithException(it) }
             }
-
             val mostLikelyPlace = response.placeLikelihoods.maxByOrNull { it.likelihood }
             val shopName = mostLikelyPlace?.place?.name ?: getString(R.string.unknown_shop)
             productShopAutoCompleteTextView.setText(shopName)
