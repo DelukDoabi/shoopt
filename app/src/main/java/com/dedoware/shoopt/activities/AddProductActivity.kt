@@ -139,10 +139,15 @@ class AddProductActivity : AppCompatActivity() {
 
     private suspend fun updateLoadingMessage(message: String, add: Boolean) {
         loadingMessagesMutex.withLock {
+            val msg = when (message) {
+                "Analyzing image" -> getString(R.string.analyzing_image)
+                "Fetching location and shop name" -> getString(R.string.fetching_location_and_shop)
+                else -> message
+            }
             if (add) {
-                loadingMessages.add(message)
+                loadingMessages.add(msg)
             } else {
-                loadingMessages.remove(message)
+                loadingMessages.remove(msg)
             }
             val combinedMessage = loadingMessages.joinToString("\n")
             withContext(Dispatchers.Main) {
@@ -232,7 +237,7 @@ class AddProductActivity : AppCompatActivity() {
                     pictureUrl?.let { saveProduct(it, price, unitPrice) }
                 } else {
                     // Handle missing price or unit price
-                    Toast.makeText(this, "Price and Unit Price are required", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.price_unit_required), Toast.LENGTH_SHORT).show()
                 }
             } else {
                 saveAllProductData()
@@ -329,7 +334,7 @@ class AddProductActivity : AppCompatActivity() {
                 Log.d("SHOOPT_TAG", "Failed to load shops.", e)
                 Toast.makeText(
                     this@AddProductActivity,
-                    "Failed to load shops: ${e.localizedMessage}",
+                    getString(R.string.failed_to_load_shops, e.localizedMessage ?: ""),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -344,9 +349,9 @@ class AddProductActivity : AppCompatActivity() {
                 }
                 if (success) {
                     Log.d("SHOOPT_TAG", "New shop added successfully!")
-                    Toast.makeText(this@AddProductActivity, "New shop added successfully!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@AddProductActivity, getString(R.string.new_shop_added), Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this@AddProductActivity, "Failed to add shop.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@AddProductActivity, getString(R.string.failed_to_add_shop), Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
                 Log.d("SHOOPT_TAG", "Failed to add shop.", e)

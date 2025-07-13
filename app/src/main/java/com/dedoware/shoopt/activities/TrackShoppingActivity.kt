@@ -87,21 +87,21 @@ class TrackShoppingActivity : ComponentActivity() {
                 val cart = productRepository.getShoppingCart()
                 updateCartUI(cart)
             } catch (e: Exception) {
-                showToast("Failed to load shopping cart")
+                showToast(getString(R.string.failed_to_load_shopping_cart))
             }
         }
     }
 
     private fun displayAddProductWayUserChoice() {
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Choose an option")
-        builder.setMessage("Scan barcode or add product manually")
+        builder.setTitle(getString(R.string.choose_option))
+        builder.setMessage(getString(R.string.scan_barcode_or_add_manually))
 
-        builder.setPositiveButton("Scan barcode") { _, _ ->
+        builder.setPositiveButton(getString(R.string.scan_barcode)) { _, _ ->
             barcodeLauncher.launch(ScanOptions())
         }
 
-        builder.setNegativeButton("Add product manually") { _, _ ->
+        builder.setNegativeButton(getString(R.string.add_product_manually)) { _, _ ->
             val addProductIntent = Intent(this, AddProductActivity::class.java)
             addProductIntent.putExtra("source", "TrackShoppingActivity")
             addProductContract.launch(addProductIntent)
@@ -121,9 +121,9 @@ class TrackShoppingActivity : ComponentActivity() {
                         val success = productRepository.addProductToCart(product)
                         if (success) {
                             loadShoppingCart()  // Reload cart after adding the product
-                            showToast("Product added to cart")
+                            showToast(getString(R.string.product_added_to_cart))
                         } else {
-                            showToast("Failed to add product to cart")
+                            showToast(getString(R.string.failed_to_add_product_to_cart))
                         }
                     }
                 }
@@ -134,7 +134,7 @@ class TrackShoppingActivity : ComponentActivity() {
         ScanContract()
     ) { result: ScanIntentResult ->
         if (result.contents == null) {
-            showToast("Cancelled")
+            showToast(getString(R.string.cancelled))
         } else {
             GlobalScope.launch(Dispatchers.Main) {
                 val product = productRepository.getProductByBarcode(result.contents.toLong())
@@ -142,9 +142,9 @@ class TrackShoppingActivity : ComponentActivity() {
                     val success = productRepository.addProductToCart(product)
                     if (success) {
                         loadShoppingCart()  // Reload cart after adding the product
-                        showToast("Product added to cart")
+                        showToast(getString(R.string.product_added_to_cart))
                     } else {
-                        showToast("Failed to add product to cart")
+                        showToast(getString(R.string.failed_to_add_product_to_cart))
                     }
                 } else {
                     val addProductIntent = Intent(this@TrackShoppingActivity, AddProductActivity::class.java)
@@ -181,21 +181,21 @@ class TrackShoppingActivity : ComponentActivity() {
 
     private fun showClearCartConfirmationDialog() {
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Clear Shopping Cart")
-        builder.setMessage("Are you sure you want to clear the shopping cart? This action cannot be undone.")
+        builder.setTitle(getString(R.string.clear_shopping_cart))
+        builder.setMessage(getString(R.string.clear_shopping_cart_confirm))
 
-        builder.setPositiveButton("Clear") { _, _ ->
+        builder.setPositiveButton(getString(R.string.clear)) { _, _ ->
             GlobalScope.launch(Dispatchers.Main) {
                 try {
                     val success = productRepository.clearShoppingCart()
                     if (success) {
                         loadShoppingCart()  // Reload cart after clearing
-                        showToast("Shopping cart emptied")
+                        showToast(getString(R.string.shopping_cart_emptied))
                     } else {
-                        showToast("Failed to empty shopping cart")
+                        showToast(getString(R.string.failed_to_empty_shopping_cart))
                     }
                 } catch (e: Exception) {
-                    showToast("Failed to empty shopping cart")
+                    showToast(getString(R.string.failed_to_empty_shopping_cart))
                 }
             }
         }
