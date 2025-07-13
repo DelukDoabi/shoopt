@@ -72,4 +72,5 @@
     <string name="secondary_shopping_list">Dodatkowa lista zakupów</string>
     <string name="title_activity_track_shopping">Śledzenie zakupów</string>
     <string name="convert_to_product_track">Konwertuj na Product Track</string>
+    <string name="products_added">Dodano %1$d produktów</string>
 </resources>

@@ -72,4 +72,5 @@
     <string name="failed_to_delete_product">Failed to delete product</string>
     <string name="failed_to_load_shopping_cart">Failed to load shopping cart</string>
     <string name="convert_to_product_track">Convert into product track</string>
+    <string name="products_added">%1$d products added</string>
 </resources>

@@ -72,4 +72,5 @@
     <string name="main_shopping_list">मुख्य खरीदारी सूची</string>
     <string name="secondary_shopping_list">द्वितीयक खरीदारी सूची</string>
     <string name="title_activity_track_shopping">खरीदारी ट्रैकिंग गतिविधि</string>
+    <string name="products_added">%1$d उत्पाद जोड़े गए</string>
 </resources>

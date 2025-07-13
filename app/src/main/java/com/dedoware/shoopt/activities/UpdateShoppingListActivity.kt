@@ -102,7 +102,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
             }
             productTrackAdapter.notifyDataSetChanged()
             mainShoppingListEditText.setText("")
-            Toast.makeText(this, "${products.size} produits ajoutés", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.products_added, products.size), Toast.LENGTH_SHORT).show()
         }
 
         storeAndLoadShoppingList(mainShoppingListEditText, "mainShoppingList")
