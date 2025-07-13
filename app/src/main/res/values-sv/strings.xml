@@ -70,4 +70,5 @@
     <string name="main_shopping_list">Huvudshoppinglista</string>
     <string name="secondary_shopping_list">Sekundär shoppinglista</string>
     <string name="title_activity_track_shopping">TrackShoppingActivity</string>
+    <string name="app_name">Shoopt</string>
 </resources>

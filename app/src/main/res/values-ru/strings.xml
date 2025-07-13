@@ -70,4 +70,5 @@
     <string name="main_shopping_list">Основной список покупок</string>
     <string name="secondary_shopping_list">Второстепенный список покупок</string>
     <string name="title_activity_track_shopping">TrackShoppingActivity</string>
+    <string name="app_name">Шупт</string>
 </resources>

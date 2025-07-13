@@ -70,4 +70,5 @@
     <string name="main_shopping_list">Ana alışveriş listesi</string>
     <string name="secondary_shopping_list">İkincil alışveriş listesi</string>
     <string name="title_activity_track_shopping">TrackShoppingActivity</string>
+    <string name="app_name">Shoopt</string>
 </resources>
