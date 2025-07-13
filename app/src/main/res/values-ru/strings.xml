@@ -52,5 +52,23 @@
     <string name="product_deleted">Товар %1$s удалён</string>
     <string name="failed_to_delete_product">Не удалось удалить товар</string>
     <string name="failed_to_load_shopping_cart">Не удалось загрузить корзину</string>
+    <string name="add_or_update_product">Добавить или обновить продукт</string>
+    <string name="track_shopping">Отслеживать покупки</string>
+    <string name="analyse">Анализировать</string>
+    <string name="insert_product_name">Введите название</string>
+    <string name="insert_product_price">Введите цену</string>
+    <string name="insert_product_shop">Введите магазин</string>
+    <string name="add_product">Добавить продукт</string>
+    <string name="empty_cart">Очистить корзину</string>
+    <string name="save_product">Сохранить продукт</string>
+    <string name="product_picture">Фото продукта</string>
+    <string name="take_picture">Сделать фото</string>
+    <string name="back">Назад</string>
+    <string name="insert_product_unit_price">Введите цену за единицу</string>
+    <string name="insert_product_barcode">Введите штрих-код</string>
+    <string name="update_shopping_list">Обновить список покупок</string>
+    <string name="main_shopping_list">Основной список покупок</string>
+    <string name="secondary_shopping_list">Второстепенный список покупок</string>
+    <string name="title_activity_track_shopping">Активность отслеживания покупок</string>
+    <string name="app_name">Шупт</string>
 </resources>
-

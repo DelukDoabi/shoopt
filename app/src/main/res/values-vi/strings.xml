@@ -52,5 +52,23 @@
     <string name="product_deleted">Sản phẩm %1$s đã bị xóa</string>
     <string name="failed_to_delete_product">Không xóa được sản phẩm</string>
     <string name="failed_to_load_shopping_cart">Không tải được giỏ hàng</string>
+    <string name="add_or_update_product">Thêm hoặc cập nhật sản phẩm</string>
+    <string name="track_shopping">Theo dõi mua sắm</string>
+    <string name="analyse">Phân tích</string>
+    <string name="insert_product_name">Nhập tên</string>
+    <string name="insert_product_price">Nhập giá</string>
+    <string name="insert_product_shop">Nhập cửa hàng</string>
+    <string name="add_product">Thêm sản phẩm</string>
+    <string name="empty_cart">Xóa giỏ hàng</string>
+    <string name="save_product">Lưu sản phẩm</string>
+    <string name="product_picture">Ảnh sản phẩm</string>
+    <string name="take_picture">Chụp ảnh</string>
+    <string name="back">Quay lại</string>
+    <string name="insert_product_unit_price">Nhập giá đơn vị</string>
+    <string name="insert_product_barcode">Nhập mã vạch</string>
+    <string name="update_shopping_list">Cập nhật danh sách mua sắm</string>
+    <string name="main_shopping_list">Danh sách mua sắm chính</string>
+    <string name="secondary_shopping_list">Danh sách mua sắm phụ</string>
+    <string name="title_activity_track_shopping">TrackShoppingActivity</string>
+    <string name="app_name">Shoopt</string>
 </resources>
-

@@ -3,7 +3,7 @@
     <string name="total">Totale: </string>
     <string name="password">Password</string>
     <string name="don_t_have_an_account_register_here">Non hai un account? Registrati qui</string>
-    <string name="sign_in_with_email">Accedi con email</string>
+    <string name="sign_in_with_email">Accedi con l\'email</string>
     <string name="sign_in_with_google">Accedi con Google</string>
     <string name="title_activity_register">Registrazione</string>
     <string name="forgot_password">Hai dimenticato la password?</string>
@@ -13,11 +13,11 @@
     <string name="scan_barcode">Scansiona il codice a barre</string>
     <string name="logout">Disconnetti</string>
     <string name="welcome_user">Benvenuto, %1$s!</string>
-    <string name="choose_option">Scegli un'opzione</string>
+    <string name="choose_option">Scegli un\'opzione</string>
     <string name="scan_barcode_or_add_manually">Scansiona il codice a barre o aggiungi il prodotto manualmente</string>
     <string name="add_product_manually">Aggiungi prodotto manualmente</string>
     <string name="cancelled">Annullato</string>
-    <string name="analyzing_image">Analisi dell'immagine in corso</string>
+    <string name="analyzing_image">Analisi dell\'immagine in corso</string>
     <string name="fetching_location_and_shop">Recupero posizione e nome negozio</string>
     <string name="price_unit_required">Prezzo e prezzo unitario sono richiesti</string>
     <string name="failed_to_load_shops">Impossibile caricare i negozi: %1$s</string>
@@ -32,7 +32,7 @@
     <string name="authentication_failed">Autenticazione fallita: %1$s</string>
     <string name="google_sign_in_failed">Accesso con Google fallito: %1$s</string>
     <string name="unexpected_error">Si è verificato un errore inatteso: %1$s</string>
-    <string name="email_empty">L'email non può essere vuota</string>
+    <string name="email_empty">L\'email non può essere vuota</string>
     <string name="password_reset_sent">Email di reimpostazione password inviata!</string>
     <string name="error">Errore: %1$s</string>
     <string name="enter_your_email">Inserisci la tua email</string>
@@ -52,5 +52,23 @@
     <string name="product_deleted">Prodotto %1$s eliminato</string>
     <string name="failed_to_delete_product">Impossibile eliminare il prodotto</string>
     <string name="failed_to_load_shopping_cart">Impossibile caricare il carrello</string>
+    <string name="app_name">Shoopt</string>
+    <string name="add_or_update_product">Aggiungi o aggiorna prodotto</string>
+    <string name="track_shopping">Traccia acquisti</string>
+    <string name="analyse">Analizza</string>
+    <string name="insert_product_name">Inserisci nome</string>
+    <string name="insert_product_price">Inserisci prezzo</string>
+    <string name="insert_product_shop">Inserisci negozio</string>
+    <string name="add_product">Aggiungi prodotto</string>
+    <string name="empty_cart">Svuota carrello</string>
+    <string name="save_product">Salva prodotto</string>
+    <string name="product_picture">Foto prodotto</string>
+    <string name="take_picture">Scatta foto</string>
+    <string name="back">Indietro</string>
+    <string name="insert_product_unit_price">Inserisci prezzo unitario</string>
+    <string name="insert_product_barcode">Inserisci codice a barre</string>
+    <string name="update_shopping_list">Aggiorna lista acquisti</string>
+    <string name="main_shopping_list">Lista acquisti principale</string>
+    <string name="secondary_shopping_list">Lista acquisti secondaria</string>
+    <string name="title_activity_track_shopping">Attività di tracciamento acquisti</string>
 </resources>
-

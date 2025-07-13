@@ -52,5 +52,23 @@
     <string name="product_deleted">Producto %1$s eliminado</string>
     <string name="failed_to_delete_product">Error al eliminar producto</string>
     <string name="failed_to_load_shopping_cart">Error al cargar el carrito</string>
+    <string name="app_name">Shoopt</string>
+    <string name="add_or_update_product">Añadir o actualizar producto</string>
+    <string name="track_shopping">Seguimiento de compras</string>
+    <string name="analyse">Analizar</string>
+    <string name="insert_product_name">Insertar nombre</string>
+    <string name="insert_product_price">Insertar precio</string>
+    <string name="insert_product_shop">Insertar tienda</string>
+    <string name="add_product">Añadir producto</string>
+    <string name="empty_cart">Vaciar carrito</string>
+    <string name="save_product">Guardar producto</string>
+    <string name="product_picture">Foto del producto</string>
+    <string name="take_picture">Tomar foto</string>
+    <string name="back">Atrás</string>
+    <string name="insert_product_unit_price">Insertar precio unitario</string>
+    <string name="insert_product_barcode">Insertar código de barras</string>
+    <string name="update_shopping_list">Actualizar lista de compras</string>
+    <string name="main_shopping_list">Lista de compras principal</string>
+    <string name="secondary_shopping_list">Lista de compras secundaria</string>
+    <string name="title_activity_track_shopping">Actividad de seguimiento de compras</string>
 </resources>
-

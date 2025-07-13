@@ -52,5 +52,23 @@
     <string name="product_deleted">Produkt %1$s został usunięty</string>
     <string name="failed_to_delete_product">Nie udało się usunąć produktu</string>
     <string name="failed_to_load_shopping_cart">Nie udało się załadować koszyka</string>
+    <string name="app_name">Shoopt</string>
+    <string name="add_or_update_product">Dodaj lub zaktualizuj produkt</string>
+    <string name="track_shopping">Śledź zakupy</string>
+    <string name="analyse">Analizuj</string>
+    <string name="insert_product_name">Wpisz nazwę</string>
+    <string name="insert_product_price">Wpisz cenę</string>
+    <string name="insert_product_shop">Wpisz sklep</string>
+    <string name="add_product">Dodaj produkt</string>
+    <string name="empty_cart">Wyczyść koszyk</string>
+    <string name="save_product">Zapisz produkt</string>
+    <string name="product_picture">Zdjęcie produktu</string>
+    <string name="take_picture">Zrób zdjęcie</string>
+    <string name="back">Wstecz</string>
+    <string name="insert_product_unit_price">Wpisz cenę jednostkową</string>
+    <string name="insert_product_barcode">Wpisz kod kreskowy</string>
+    <string name="update_shopping_list">Aktualizuj listę zakupów</string>
+    <string name="main_shopping_list">Główna lista zakupów</string>
+    <string name="secondary_shopping_list">Dodatkowa lista zakupów</string>
+    <string name="title_activity_track_shopping">Śledzenie zakupów</string>
 </resources>
-

@@ -52,5 +52,23 @@
     <string name="product_deleted">ਉਤਪਾਦ %1$s ਮਿਟਾਇਆ ਗਿਆ</string>
     <string name="failed_to_delete_product">ਉਤਪਾਦ ਮਿਟਾਉਣ ਵਿੱਚ ਅਸਫਲ</string>
     <string name="failed_to_load_shopping_cart">ਕਾਰਟ ਲੋਡ ਕਰਨ ਵਿੱਚ ਅਸਫਲ</string>
+    <string name="app_name">Shoopt</string>
+    <string name="add_or_update_product">ਉਤਪਾਦ ਸ਼ਾਮਲ ਕਰੋ ਜਾਂ ਅੱਪਡੇਟ ਕਰੋ</string>
+    <string name="track_shopping">ਖਰੀਦਦਾਰੀ ਟ੍ਰੈਕ ਕਰੋ</string>
+    <string name="analyse">ਵਿਸ਼ਲੇਸ਼ਣ ਕਰੋ</string>
+    <string name="insert_product_name">ਨਾਂ ਦਰਜ ਕਰੋ</string>
+    <string name="insert_product_price">ਕੀਮਤ ਦਰਜ ਕਰੋ</string>
+    <string name="insert_product_shop">ਦੁਕਾਨ ਦਰਜ ਕਰੋ</string>
+    <string name="add_product">ਉਤਪਾਦ ਸ਼ਾਮਲ ਕਰੋ</string>
+    <string name="empty_cart">ਕਾਰਟ ਖਾਲੀ ਕਰੋ</string>
+    <string name="save_product">ਉਤਪਾਦ ਸੰਭਾਲੋ</string>
+    <string name="product_picture">ਉਤਪਾਦ ਦੀ ਤਸਵੀਰ</string>
+    <string name="take_picture">ਤਸਵੀਰ ਲਓ</string>
+    <string name="back">ਵਾਪਸ</string>
+    <string name="insert_product_unit_price">ਇਕਾਈ ਕੀਮਤ ਦਰਜ ਕਰੋ</string>
+    <string name="insert_product_barcode">ਬਾਰਕੋਡ ਦਰਜ ਕਰੋ</string>
+    <string name="update_shopping_list">ਖਰੀਦਦਾਰੀ ਸੂਚੀ ਅੱਪਡੇਟ ਕਰੋ</string>
+    <string name="main_shopping_list">ਮੁੱਖ ਖਰੀਦਦਾਰੀ ਸੂਚੀ</string>
+    <string name="secondary_shopping_list">ਦੂਜੀ ਖਰੀਦਦਾਰੀ ਸੂਚੀ</string>
+    <string name="title_activity_track_shopping">ਖਰੀਦਦਾਰੀ ਟ੍ਰੈਕਿੰਗ ਗਤੀਵਿਧੀ</string>
 </resources>
-

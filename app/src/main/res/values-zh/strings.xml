@@ -52,5 +52,23 @@
     <string name="product_deleted">产品 %1$s 已删除</string>
     <string name="failed_to_delete_product">删除产品失败</string>
     <string name="failed_to_load_shopping_cart">加载购物车失败</string>
+    <string name="add_or_update_product">添加或更新产品</string>
+    <string name="track_shopping">跟踪购物</string>
+    <string name="analyse">分析</string>
+    <string name="insert_product_name">输入名称</string>
+    <string name="insert_product_price">输入价格</string>
+    <string name="insert_product_shop">输入商店</string>
+    <string name="add_product">添加产品</string>
+    <string name="empty_cart">清空购物车</string>
+    <string name="save_product">保存产品</string>
+    <string name="product_picture">产品图片</string>
+    <string name="take_picture">拍照</string>
+    <string name="back">返回</string>
+    <string name="insert_product_unit_price">输入单价</string>
+    <string name="insert_product_barcode">输入条码</string>
+    <string name="update_shopping_list">更新购物清单</string>
+    <string name="main_shopping_list">主购物清单</string>
+    <string name="secondary_shopping_list">次购物清单</string>
+    <string name="title_activity_track_shopping">TrackShoppingActivity</string>
+    <string name="app_name">舒普特</string>
 </resources>
-

@@ -52,5 +52,23 @@
     <string name="product_deleted">제품 %1$s이(가) 삭제되었습니다</string>
     <string name="failed_to_delete_product">제품을 삭제하지 못했습니다</string>
     <string name="failed_to_load_shopping_cart">장바구니를 로드하지 못했습니다</string>
+    <string name="app_name">Shoopt</string>
+    <string name="add_or_update_product">상품 추가 또는 업데이트</string>
+    <string name="track_shopping">쇼핑 추적</string>
+    <string name="analyse">분석</string>
+    <string name="insert_product_name">이름 입력</string>
+    <string name="insert_product_price">가격 입력</string>
+    <string name="insert_product_shop">상점 입력</string>
+    <string name="add_product">상품 추가</string>
+    <string name="empty_cart">장바구니 비우기</string>
+    <string name="save_product">상품 저장</string>
+    <string name="product_picture">상품 사진</string>
+    <string name="take_picture">사진 찍기</string>
+    <string name="back">뒤로</string>
+    <string name="insert_product_unit_price">단가 입력</string>
+    <string name="insert_product_barcode">바코드 입력</string>
+    <string name="update_shopping_list">쇼핑 목록 업데이트</string>
+    <string name="main_shopping_list">메인 쇼핑 목록</string>
+    <string name="secondary_shopping_list">서브 쇼핑 목록</string>
+    <string name="title_activity_track_shopping">쇼핑 추적 활동</string>
 </resources>
-

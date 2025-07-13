@@ -52,5 +52,23 @@
     <string name="product_deleted">Produsul %1$s a fost șters</string>
     <string name="failed_to_delete_product">Nu s-a putut șterge produsul</string>
     <string name="failed_to_load_shopping_cart">Nu s-a putut încărca coșul</string>
+    <string name="app_name">Shoopt</string>
+    <string name="add_or_update_product">Adaugă sau actualizează produs</string>
+    <string name="track_shopping">Urmărește cumpărăturile</string>
+    <string name="analyse">Analizează</string>
+    <string name="insert_product_name">Introdu numele</string>
+    <string name="insert_product_price">Introdu prețul</string>
+    <string name="insert_product_shop">Introdu magazinul</string>
+    <string name="add_product">Adaugă produs</string>
+    <string name="empty_cart">Golește coșul</string>
+    <string name="save_product">Salvează produsul</string>
+    <string name="product_picture">Poză produs</string>
+    <string name="take_picture">Fă poză</string>
+    <string name="back">Înapoi</string>
+    <string name="insert_product_unit_price">Introdu prețul unitar</string>
+    <string name="insert_product_barcode">Introdu codul de bare</string>
+    <string name="update_shopping_list">Actualizează lista de cumpărături</string>
+    <string name="main_shopping_list">Lista principală de cumpărături</string>
+    <string name="secondary_shopping_list">Lista secundară de cumpărături</string>
+    <string name="title_activity_track_shopping">Activitate urmărire cumpărături</string>
 </resources>
-

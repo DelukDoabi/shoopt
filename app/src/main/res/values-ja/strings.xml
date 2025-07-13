@@ -52,5 +52,23 @@
     <string name="product_deleted">商品 %1$s が削除されました</string>
     <string name="failed_to_delete_product">商品を削除できませんでした</string>
     <string name="failed_to_load_shopping_cart">カートの読み込みに失敗しました</string>
+    <string name="app_name">Shoopt</string>
+    <string name="add_or_update_product">商品を追加または更新</string>
+    <string name="track_shopping">買い物を追跡</string>
+    <string name="analyse">分析</string>
+    <string name="insert_product_name">名前を入力</string>
+    <string name="insert_product_price">価格を入力</string>
+    <string name="insert_product_shop">店舗を入力</string>
+    <string name="add_product">商品を追加</string>
+    <string name="empty_cart">カートを空にする</string>
+    <string name="save_product">商品を保存</string>
+    <string name="product_picture">商品の写真</string>
+    <string name="take_picture">写真を撮る</string>
+    <string name="back">戻る</string>
+    <string name="insert_product_unit_price">単価を入力</string>
+    <string name="insert_product_barcode">バーコードを入力</string>
+    <string name="update_shopping_list">買い物リストを更新</string>
+    <string name="main_shopping_list">メイン買い物リスト</string>
+    <string name="secondary_shopping_list">サブ買い物リスト</string>
+    <string name="title_activity_track_shopping">買い物追跡アクティビティ</string>
 </resources>
-

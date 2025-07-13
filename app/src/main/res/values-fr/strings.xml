@@ -1,9 +1,10 @@
 <resources>
+    <string name="app_name">Shoopt</string>
     <string name="products">Produits : </string>
     <string name="total">Total : </string>
     <string name="password">Mot de passe</string>
     <string name="don_t_have_an_account_register_here">Pas de compte ? Inscrivez-vous ici</string>
-    <string name="sign_in_with_email">Se connecter avec l'e-mail</string>
+    <string name="sign_in_with_email">Se connecter avec l\'email</string>
     <string name="sign_in_with_google">Se connecter avec Google</string>
     <string name="title_activity_register">Inscription</string>
     <string name="forgot_password">Mot de passe oublié ?</string>
@@ -12,27 +13,27 @@
     <string name="unknown_shop">Magasin inconnu</string>
     <string name="scan_barcode">Scanner le code-barres</string>
     <string name="logout">Déconnexion</string>
-    <string name="welcome_user">Bienvenue, %1$s !</string>
+    <string name="welcome_user">Bienvenue, %1$s!</string>
     <string name="choose_option">Choisissez une option</string>
     <string name="scan_barcode_or_add_manually">Scannez le code-barres ou ajoutez le produit manuellement</string>
     <string name="add_product_manually">Ajouter le produit manuellement</string>
     <string name="cancelled">Annulé</string>
-    <string name="analyzing_image">Analyse de l'image en cours</string>
+    <string name="analyzing_image">Analyse de l\'image en cours</string>
     <string name="fetching_location_and_shop">Récupération de la localisation et du nom du magasin</string>
     <string name="price_unit_required">Le prix et le prix unitaire sont requis</string>
     <string name="failed_to_load_shops">Échec du chargement des magasins : %1$s</string>
     <string name="new_shop_added">Nouveau magasin ajouté avec succès !</string>
-    <string name="failed_to_add_shop">Échec de l'ajout du magasin.</string>
+    <string name="failed_to_add_shop">Échec de l\'ajout du magasin.</string>
     <string name="please_fill_all_fields">Veuillez remplir tous les champs</string>
     <string name="registration_successful">Inscription réussie</string>
-    <string name="registration_failed">Échec de l'inscription : %1$s</string>
+    <string name="registration_failed">Échec de l\'inscription : %1$s</string>
     <string name="login_successful">Connexion réussie</string>
     <string name="login_failed">Échec de la connexion : %1$s</string>
     <string name="google_sign_in_successful">Connexion Google réussie</string>
-    <string name="authentication_failed">Échec de l'authentification : %1$s</string>
+    <string name="authentication_failed">Échec de l\'authentification : %1$s</string>
     <string name="google_sign_in_failed">Échec de la connexion Google : %1$s</string>
     <string name="unexpected_error">Une erreur inattendue est survenue : %1$s</string>
-    <string name="email_empty">L'e-mail ne peut pas être vide</string>
+    <string name="email_empty">L\'email ne peut pas être vide</string>
     <string name="password_reset_sent">E-mail de réinitialisation du mot de passe envoyé !</string>
     <string name="error">Erreur : %1$s</string>
     <string name="enter_your_email">Entrez votre e-mail</string>
@@ -41,7 +42,7 @@
     <string name="send">Envoyer</string>
     <string name="clear">Vider</string>
     <string name="product_added_to_cart">Produit ajouté au panier</string>
-    <string name="failed_to_add_product_to_cart">Échec de l'ajout du produit au panier</string>
+    <string name="failed_to_add_product_to_cart">Échec de l\'ajout du produit au panier</string>
     <string name="clear_shopping_cart">Vider le panier</string>
     <string name="clear_shopping_cart_confirm">Êtes-vous sûr de vouloir vider le panier ? Cette action est irréversible.</string>
     <string name="shopping_cart_emptied">Panier vidé</string>
@@ -52,5 +53,21 @@
     <string name="product_deleted">Produit %1$s supprimé</string>
     <string name="failed_to_delete_product">Échec de la suppression du produit</string>
     <string name="failed_to_load_shopping_cart">Échec du chargement du panier</string>
+    <string name="add_or_update_product">Ajouter ou mettre à jour le produit</string>
+    <string name="track_shopping">Suivi des achats</string>
+    <string name="insert_product_name">Saisir le nom</string>
+    <string name="insert_product_price">Saisir le prix</string>
+    <string name="insert_product_shop">Saisir le magasin</string>
+    <string name="add_product">Ajouter le produit</string>
+    <string name="empty_cart">Vider le panier</string>
+    <string name="save_product">Enregistrer le produit</string>
+    <string name="product_picture">Photo du produit</string>
+    <string name="take_picture">Prendre une photo</string>
+    <string name="back">Retour</string>
+    <string name="insert_product_unit_price">Saisir le prix unitaire</string>
+    <string name="insert_product_barcode">Saisir le code-barres</string>
+    <string name="update_shopping_list">Mettre à jour la liste d\'achats</string>
+    <string name="main_shopping_list">Liste d\'achats principale</string>
+    <string name="secondary_shopping_list">Liste d\'achats secondaire</string>
+    <string name="title_activity_track_shopping">TrackShoppingActivity</string>
 </resources>
-

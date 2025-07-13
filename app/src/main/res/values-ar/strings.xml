@@ -52,5 +52,23 @@
     <string name="product_deleted">تم حذف المنتج %1$s</string>
     <string name="failed_to_delete_product">فشل حذف المنتج</string>
     <string name="failed_to_load_shopping_cart">فشل تحميل السلة</string>
+    <string name="app_name">Shoopt</string>
+    <string name="add_or_update_product">إضافة أو تحديث منتج</string>
+    <string name="track_shopping">تتبع التسوق</string>
+    <string name="analyse">تحليل</string>
+    <string name="insert_product_name">أدخل اسم المنتج</string>
+    <string name="insert_product_price">أدخل السعر</string>
+    <string name="insert_product_shop">أدخل اسم المتجر</string>
+    <string name="add_product">إضافة منتج</string>
+    <string name="empty_cart">إفراغ السلة</string>
+    <string name="save_product">حفظ المنتج</string>
+    <string name="product_picture">صورة المنتج</string>
+    <string name="take_picture">التقاط صورة</string>
+    <string name="back">رجوع</string>
+    <string name="insert_product_unit_price">أدخل سعر الوحدة</string>
+    <string name="insert_product_barcode">أدخل الباركود</string>
+    <string name="update_shopping_list">تحديث قائمة التسوق</string>
+    <string name="main_shopping_list">قائمة التسوق الرئيسية</string>
+    <string name="secondary_shopping_list">قائمة التسوق الثانوية</string>
+    <string name="title_activity_track_shopping">نشاط تتبع التسوق</string>
 </resources>
-

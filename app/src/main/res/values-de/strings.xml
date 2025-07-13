@@ -52,5 +52,23 @@
     <string name="product_deleted">Produkt %1$s gelöscht</string>
     <string name="failed_to_delete_product">Produkt konnte nicht gelöscht werden</string>
     <string name="failed_to_load_shopping_cart">Warenkorb konnte nicht geladen werden</string>
+    <string name="app_name">Shoopt</string>
+    <string name="add_or_update_product">Produkt hinzufügen oder aktualisieren</string>
+    <string name="track_shopping">Einkäufe verfolgen</string>
+    <string name="analyse">Analysieren</string>
+    <string name="insert_product_name">Name eingeben</string>
+    <string name="insert_product_price">Preis eingeben</string>
+    <string name="insert_product_shop">Geschäft eingeben</string>
+    <string name="add_product">Produkt hinzufügen</string>
+    <string name="empty_cart">Warenkorb leeren</string>
+    <string name="save_product">Produkt speichern</string>
+    <string name="product_picture">Produktbild</string>
+    <string name="take_picture">Foto aufnehmen</string>
+    <string name="back">Zurück</string>
+    <string name="insert_product_unit_price">Stückpreis eingeben</string>
+    <string name="insert_product_barcode">Barcode eingeben</string>
+    <string name="update_shopping_list">Einkaufsliste aktualisieren</string>
+    <string name="main_shopping_list">Haupt-Einkaufsliste</string>
+    <string name="secondary_shopping_list">Sekundäre Einkaufsliste</string>
+    <string name="title_activity_track_shopping">Einkaufsverfolgung</string>
 </resources>
-

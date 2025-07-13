@@ -52,5 +52,23 @@
     <string name="product_deleted">Produk %1$s wis dibusak</string>
     <string name="failed_to_delete_product">Gagal busak produk</string>
     <string name="failed_to_load_shopping_cart">Gagal ngunggah keranjang</string>
+    <string name="app_name">Shoopt</string>
+    <string name="add_or_update_product">Produk ditambah utawa diperbarui</string>
+    <string name="track_shopping">Lacak belanja</string>
+    <string name="analyse">Analisis</string>
+    <string name="insert_product_name">Masukkan nama</string>
+    <string name="insert_product_price">Masukkan harga</string>
+    <string name="insert_product_shop">Masukkan toko</string>
+    <string name="add_product">Tambah produk</string>
+    <string name="empty_cart">Kosongkan keranjang</string>
+    <string name="save_product">Simpan produk</string>
+    <string name="product_picture">Foto produk</string>
+    <string name="take_picture">Ambil foto</string>
+    <string name="back">Kembali</string>
+    <string name="insert_product_unit_price">Masukkan harga satuan</string>
+    <string name="insert_product_barcode">Masukkan barcode</string>
+    <string name="update_shopping_list">Perbarui daftar belanja</string>
+    <string name="main_shopping_list">Daftar belanja utama</string>
+    <string name="secondary_shopping_list">Daftar belanja sekunder</string>
+    <string name="title_activity_track_shopping">Aktivitas pelacakan belanja</string>
 </resources>
-
