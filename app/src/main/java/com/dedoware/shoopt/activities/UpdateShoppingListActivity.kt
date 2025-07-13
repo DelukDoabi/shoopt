@@ -5,7 +5,6 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
@@ -35,7 +34,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
     private lateinit var convertToProductTrackButton: ImageButton
     private lateinit var productTrackRecyclerView: RecyclerView
     private lateinit var productTrackAdapter: ProductTrackAdapter
-    private val cartItemList = mutableListOf<CartItem>()
+    private val shoppingItemList = mutableListOf<CartItem>()
     private val handler = Handler(Looper.getMainLooper())
     private var runnable: Runnable = Runnable { }
 
@@ -63,7 +62,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
         secondaryShoppingListEditText = findViewById(R.id.secondary_shopping_list_edit_text)
         convertToProductTrackButton = findViewById(R.id.convert_to_product_track_IB)
         productTrackRecyclerView = findViewById(R.id.product_track_recycler_view)
-        productTrackAdapter = ProductTrackAdapter(cartItemList)
+        productTrackAdapter = ProductTrackAdapter(shoppingItemList)
         productTrackRecyclerView.layoutManager = LinearLayoutManager(this)
         productTrackRecyclerView.adapter = productTrackAdapter
 
@@ -81,8 +80,8 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                 .split(Regex("[,.\\-;:|/]+"))
                 .map { it.trim() }
                 .filter { it.isNotEmpty() }
-            if (cartItemList.isEmpty()) {
-                cartItemList.addAll(products.map {
+            if (shoppingItemList.isEmpty()) {
+                shoppingItemList.addAll(products.map {
                     val regex = Regex("(\\d+)")
                     val quantityMatch = regex.find(it)
                     val quantity = quantityMatch?.value?.toIntOrNull() ?: 1
@@ -91,7 +90,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                         .let { product -> CartItem(product, quantity) }
                 })
             } else {
-                cartItemList.addAll(products.map {
+                shoppingItemList.addAll(products.map {
                     val regex = Regex("(\\d+)")
                     val quantityMatch = regex.find(it)
                     val quantity = quantityMatch?.value?.toIntOrNull() ?: 1
