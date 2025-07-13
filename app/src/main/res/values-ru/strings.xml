@@ -69,6 +69,6 @@
     <string name="update_shopping_list">Обновить список покупок</string>
     <string name="main_shopping_list">Основной список покупок</string>
     <string name="secondary_shopping_list">Второстепенный список покупок</string>
-    <string name="title_activity_track_shopping">TrackShoppingActivity</string>
+    <string name="title_activity_track_shopping">Активность отслеживания покупок</string>
     <string name="app_name">Шупт</string>
 </resources>

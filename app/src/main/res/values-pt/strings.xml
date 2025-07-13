@@ -64,7 +64,7 @@
     <string name="save_product">Salvar produto</string>
     <string name="product_picture">Foto do produto</string>
     <string name="take_picture">Tirar foto</string>
-    <string name="back">voltar</string>
+    <string name="back">Voltar</string>
     <string name="insert_product_unit_price">Inserir preço unitário</string>
     <string name="insert_product_barcode">Inserir código de barras</string>
     <string name="update_shopping_list">Atualizar lista de compras</string>
