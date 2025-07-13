@@ -52,5 +52,22 @@
     <string name="product_deleted">Produkten %1$s har tagits bort</string>
     <string name="failed_to_delete_product">Kunde inte ta bort produkten</string>
     <string name="failed_to_load_shopping_cart">Kunde inte ladda kundvagnen</string>
+    <string name="add_or_update_product">Lägg till eller uppdatera produkt</string>
+    <string name="track_shopping">Spåra shopping</string>
+    <string name="analyse">Analysera</string>
+    <string name="insert_product_name">Ange namn</string>
+    <string name="insert_product_price">Ange pris</string>
+    <string name="insert_product_shop">Ange butik</string>
+    <string name="add_product">Lägg till produkt</string>
+    <string name="empty_cart">Töm kundvagnen</string>
+    <string name="save_product">Spara produkt</string>
+    <string name="product_picture">Produktbild</string>
+    <string name="take_picture">Ta bild</string>
+    <string name="back">Tillbaka</string>
+    <string name="insert_product_unit_price">Ange styckpris</string>
+    <string name="insert_product_barcode">Ange streckkod</string>
+    <string name="update_shopping_list">Uppdatera shoppinglista</string>
+    <string name="main_shopping_list">Huvudshoppinglista</string>
+    <string name="secondary_shopping_list">Sekundär shoppinglista</string>
+    <string name="title_activity_track_shopping">TrackShoppingActivity</string>
 </resources>
-

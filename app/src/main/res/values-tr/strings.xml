@@ -52,5 +52,22 @@
     <string name="product_deleted">Ürün %1$s silindi</string>
     <string name="failed_to_delete_product">Ürün silinemedi</string>
     <string name="failed_to_load_shopping_cart">Sepet yüklenemedi</string>
+    <string name="add_or_update_product">Ürünü ekle veya güncelle</string>
+    <string name="track_shopping">Alışverişi takip et</string>
+    <string name="analyse">Analiz et</string>
+    <string name="insert_product_name">Adı girin</string>
+    <string name="insert_product_price">Fiyatı girin</string>
+    <string name="insert_product_shop">Mağaza girin</string>
+    <string name="add_product">Ürün ekle</string>
+    <string name="empty_cart">Sepeti boşalt</string>
+    <string name="save_product">Ürünü kaydet</string>
+    <string name="product_picture">Ürün resmi</string>
+    <string name="take_picture">Fotoğraf çek</string>
+    <string name="back">Geri</string>
+    <string name="insert_product_unit_price">Birim fiyatı girin</string>
+    <string name="insert_product_barcode">Barkod girin</string>
+    <string name="update_shopping_list">Alışveriş listesini güncelle</string>
+    <string name="main_shopping_list">Ana alışveriş listesi</string>
+    <string name="secondary_shopping_list">İkincil alışveriş listesi</string>
+    <string name="title_activity_track_shopping">TrackShoppingActivity</string>
 </resources>
-
