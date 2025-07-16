@@ -42,4 +42,14 @@ class ProductTrackAdapter(private val productList: MutableList<CartItem>) :
         productList.removeAt(position)
         notifyItemRemoved(position)
     }
+
+    fun getItems(): List<CartItem> {
+        return productList
+    }
+
+    fun updateItems(newItems: List<CartItem>) {
+        productList.clear()
+        productList.addAll(newItems)
+        notifyDataSetChanged()
+    }
 }

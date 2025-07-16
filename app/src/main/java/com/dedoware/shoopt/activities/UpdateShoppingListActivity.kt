@@ -36,8 +36,11 @@ class UpdateShoppingListActivity : AppCompatActivity() {
     private lateinit var backImageButton: ImageButton
     private lateinit var shoppingListRepository: IShoppingListRepository
     private lateinit var convertToProductTrackButton: ImageButton
+    private lateinit var convertSecondaryToProductTrackButton: ImageButton
     private lateinit var productTrackRecyclerView: RecyclerView
     private lateinit var productTrackAdapter: ProductTrackAdapter
+    private lateinit var secondaryProductTrackRecyclerView: RecyclerView
+    private lateinit var secondaryProductTrackAdapter: ProductTrackAdapter
     private val shoppingItemList = mutableListOf<CartItem>()
     private val handler = Handler(Looper.getMainLooper())
     private var runnable: Runnable = Runnable { }
@@ -65,10 +68,16 @@ class UpdateShoppingListActivity : AppCompatActivity() {
         mainShoppingListEditText = findViewById(R.id.main_shopping_list_edit_text)
         secondaryShoppingListEditText = findViewById(R.id.secondary_shopping_list_edit_text)
         convertToProductTrackButton = findViewById(R.id.convert_to_product_track_IB)
+        convertSecondaryToProductTrackButton = findViewById(R.id.convert_secondary_to_product_track_IB)
         productTrackRecyclerView = findViewById(R.id.product_track_recycler_view)
         productTrackAdapter = ProductTrackAdapter(shoppingItemList)
         productTrackRecyclerView.layoutManager = LinearLayoutManager(this)
         productTrackRecyclerView.adapter = productTrackAdapter
+
+        secondaryProductTrackRecyclerView = findViewById(R.id.secondary_product_track_recycler_view)
+        secondaryProductTrackAdapter = ProductTrackAdapter(mutableListOf())
+        secondaryProductTrackRecyclerView.layoutManager = LinearLayoutManager(this)
+        secondaryProductTrackRecyclerView.adapter = secondaryProductTrackAdapter
 
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean = false
@@ -78,6 +87,15 @@ class UpdateShoppingListActivity : AppCompatActivity() {
             }
         }
         ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(productTrackRecyclerView)
+
+        val secondaryItemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean = false
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                secondaryProductTrackAdapter.removeAt(position)
+            }
+        }
+        ItemTouchHelper(secondaryItemTouchHelperCallback).attachToRecyclerView(secondaryProductTrackRecyclerView)
 
         convertToProductTrackButton.setOnClickListener {
             val products = mainShoppingListEditText.text.toString()
@@ -106,6 +124,26 @@ class UpdateShoppingListActivity : AppCompatActivity() {
             productTrackAdapter.notifyDataSetChanged()
             mainShoppingListEditText.setText("")
             Toast.makeText(this, getString(R.string.products_added, products.size), Toast.LENGTH_SHORT).show()
+        }
+
+        convertSecondaryToProductTrackButton.setOnClickListener {
+            val products = secondaryShoppingListEditText.text.toString()
+                .split(Regex("[,.\\-;:|/]+"))
+                .map { it.trim() }
+                .filter { it.isNotEmpty() }
+            val newItems = products.map {
+                val regex = Regex("(\\d+)")
+                val quantityMatch = regex.find(it)
+                val quantity = quantityMatch?.value?.toIntOrNull() ?: 1
+                val name = if (quantityMatch != null) it.replace(quantityMatch.value, "").trim() else it
+                Product(name = name, id = "", barcode = 0, timestamp = 0, price = 0.0, unitPrice = 0.0, shop = "", pictureUrl = "")
+                    .let { product -> CartItem(product, quantity) }
+            }
+            val currentItems = secondaryProductTrackAdapter.getItems().toMutableList()
+            currentItems.addAll(newItems)
+            secondaryProductTrackAdapter.updateItems(currentItems)
+            secondaryShoppingListEditText.setText("")
+            Toast.makeText(this, getString(R.string.products_added, newItems.size), Toast.LENGTH_SHORT).show()
         }
 
         storeAndLoadShoppingList(mainShoppingListEditText, "mainShoppingList")
@@ -152,34 +190,38 @@ class UpdateShoppingListActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveShoppingItemListToPreferences() {
-        val sharedPreferences = getSharedPreferences("ShoppingListPrefs", MODE_PRIVATE)
+    private fun saveShoppingItemListToPreferences(prefKey: String, items: List<CartItem>) {
+        val sharedPreferences = getSharedPreferences(prefKey, MODE_PRIVATE)
         val editor = sharedPreferences.edit()
-        val jsonList = Gson().toJson(shoppingItemList)
+        val jsonList = Gson().toJson(items)
         editor.putString("shoppingItemList", jsonList)
         editor.apply()
     }
 
-    private fun loadShoppingItemListFromPreferences() {
-        val sharedPreferences = getSharedPreferences("ShoppingListPrefs", MODE_PRIVATE)
+    private fun loadShoppingItemListFromPreferences(prefKey: String): List<CartItem> {
+        val sharedPreferences = getSharedPreferences(prefKey, MODE_PRIVATE)
         val jsonList = sharedPreferences.getString("shoppingItemList", null)
-        if (jsonList != null) {
+        return if (jsonList != null) {
             val type = object : TypeToken<List<CartItem>>() {}.type
-            val restoredList: List<CartItem> = Gson().fromJson(jsonList, type)
-            shoppingItemList.clear()
-            shoppingItemList.addAll(restoredList)
-            productTrackAdapter.notifyDataSetChanged()
+            Gson().fromJson(jsonList, type)
+        } else {
+            emptyList()
         }
     }
 
     override fun onPause() {
         super.onPause()
-        saveShoppingItemListToPreferences()
+        saveShoppingItemListToPreferences("MainShoppingListPrefs", shoppingItemList)
+        saveShoppingItemListToPreferences("SecondaryShoppingListPrefs", secondaryProductTrackAdapter.getItems())
     }
 
     override fun onResume() {
         super.onResume()
-        loadShoppingItemListFromPreferences()
+        shoppingItemList.clear()
+        shoppingItemList.addAll(loadShoppingItemListFromPreferences("MainShoppingListPrefs"))
+        productTrackAdapter.notifyDataSetChanged()
+
+        secondaryProductTrackAdapter.updateItems(loadShoppingItemListFromPreferences("SecondaryShoppingListPrefs"))
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

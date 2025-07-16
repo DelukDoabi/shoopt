@@ -85,4 +85,27 @@
         android:scrollbars="vertical"
         android:textSize="16sp" />
 
+    <!-- Conversion Button for Secondary Shopping List -->
+    <ImageButton
+        android:id="@+id/convert_secondary_to_product_track_IB"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_alignBottom="@id/secondary_shopping_list_header"
+        android:background="@drawable/ic_convert_to_product_track_bg"
+        android:contentDescription="@string/convert_to_product_track"
+        android:src="@drawable/ic_convert_product_track"
+        android:elevation="4dp" />
+
+    <!-- RecyclerView for Secondary Shopping List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/secondary_product_track_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/secondary_shopping_list_edit_text"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp" />
+
 </RelativeLayout>
