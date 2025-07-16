@@ -3,6 +3,7 @@ package com.dedoware.shoopt.activities
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
@@ -21,10 +22,13 @@ import com.dedoware.shoopt.persistence.IShoppingListRepository
 import com.dedoware.shoopt.persistence.FirebaseShoppingListRepository
 import com.dedoware.shoopt.persistence.LocalShoppingListRepository
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.ArrayList
 
 class UpdateShoppingListActivity : AppCompatActivity() {
     private lateinit var mainShoppingListEditText: EditText
@@ -145,6 +149,51 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                     // Do nothing
                 }
             })
+        }
+    }
+
+    private fun saveShoppingItemListToPreferences() {
+        val sharedPreferences = getSharedPreferences("ShoppingListPrefs", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val jsonList = Gson().toJson(shoppingItemList)
+        editor.putString("shoppingItemList", jsonList)
+        editor.apply()
+    }
+
+    private fun loadShoppingItemListFromPreferences() {
+        val sharedPreferences = getSharedPreferences("ShoppingListPrefs", MODE_PRIVATE)
+        val jsonList = sharedPreferences.getString("shoppingItemList", null)
+        if (jsonList != null) {
+            val type = object : TypeToken<List<CartItem>>() {}.type
+            val restoredList: List<CartItem> = Gson().fromJson(jsonList, type)
+            shoppingItemList.clear()
+            shoppingItemList.addAll(restoredList)
+            productTrackAdapter.notifyDataSetChanged()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        saveShoppingItemListToPreferences()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadShoppingItemListFromPreferences()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelableArrayList("shoppingItemList", ArrayList<Parcelable>(shoppingItemList))
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        val restoredList = savedInstanceState.getParcelableArrayList<Parcelable>("shoppingItemList")?.filterIsInstance<CartItem>()
+        if (restoredList != null) {
+            shoppingItemList.clear()
+            shoppingItemList.addAll(restoredList)
+            productTrackAdapter.notifyDataSetChanged()
         }
     }
 }
