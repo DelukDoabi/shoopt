@@ -22,7 +22,6 @@ class ProductTrackAdapter(private val productList: MutableList<CartItem>) :
         val productImage: ImageView = itemView.findViewById(R.id.product_image)
         val productName: TextView = itemView.findViewById(R.id.product_name)
         val productQuantity: TextView = itemView.findViewById(R.id.product_quantity)
-        val swipeHintIcon: ImageView? = itemView.findViewById(R.id.swipe_hint_icon)
         val foregroundView: View? = itemView.findViewById(R.id.product_item_foreground)
         val backgroundView: View? = itemView.findViewById(R.id.swipe_background)
     }
