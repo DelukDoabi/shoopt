@@ -54,21 +54,45 @@
         android:hint="@string/enter_items_here" />
 
     <!-- RecyclerView pour afficher les produits convertis -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/product_track_recycler_view"
+    <FrameLayout
+        android:id="@+id/product_track_container"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/main_shopping_list_edit_text"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/scrollable_container_background"
+        android:elevation="2dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/product_track_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:clipToPadding="false"
+            android:paddingTop="4dp"
+            android:paddingBottom="20dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:fadingEdgeLength="24dp"
+            android:requiresFadingEdge="vertical"
+            android:scrollbars="vertical" />
+
+        <View
+            android:layout_width="40dp"
+            android:layout_height="3dp"
+            android:layout_gravity="center|bottom"
+            android:layout_marginBottom="6dp"
+            android:background="#9E9E9E"
+            android:alpha="0.5" />
+    </FrameLayout>
 
     <!-- Second Shopping List Header -->
     <TextView
         android:id="@+id/secondary_shopping_list_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/product_track_recycler_view"
+        android:layout_below="@id/product_track_container"
         android:padding="16dp"
         android:text="@string/secondary_shopping_list"
         android:textSize="18sp"
@@ -101,13 +125,37 @@
         android:elevation="4dp" />
 
     <!-- RecyclerView for Secondary Shopping List -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/secondary_product_track_recycler_view"
+    <FrameLayout
+        android:id="@+id/secondary_product_track_container"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/secondary_shopping_list_edit_text"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/scrollable_container_background"
+        android:elevation="2dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/secondary_product_track_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:clipToPadding="false"
+            android:paddingTop="4dp"
+            android:paddingBottom="20dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:fadingEdgeLength="24dp"
+            android:requiresFadingEdge="vertical"
+            android:scrollbars="vertical" />
+
+        <View
+            android:layout_width="40dp"
+            android:layout_height="3dp"
+            android:layout_gravity="center|bottom"
+            android:layout_marginBottom="6dp"
+            android:background="#9E9E9E"
+            android:alpha="0.5" />
+    </FrameLayout>
 
 </RelativeLayout>
