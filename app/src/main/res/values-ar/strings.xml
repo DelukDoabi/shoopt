@@ -73,4 +73,5 @@
     <string name="secondary_shopping_list">قائمة التسوق الثانوية</string>
     <string name="title_activity_track_shopping">نشاط تتبع التسوق</string>
     <string name="products_added">%1$d منتج تمت إضافته</string>
+    <string name="enter_items_here">أدخل العناصر هنا</string>
 </resources>

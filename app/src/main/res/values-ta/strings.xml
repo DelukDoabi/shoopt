@@ -73,4 +73,5 @@
     <string name="app_name">ஷூப்ட்</string>
     <string name="convert_to_product_track">Product Track-க்கு மாற்றவும்</string>
     <string name="products_added">%1$d பொருட்கள் சேர்க்கப்பட்டன</string>
+    <string name="enter_items_here">உருப்படிகளை இங்கே உள்ளிடவும்</string>
 </resources>

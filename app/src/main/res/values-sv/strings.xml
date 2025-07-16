@@ -73,4 +73,5 @@
     <string name="app_name">Shoopt</string>
     <string name="convert_to_product_track">Konvertera till Product Track</string>
     <string name="products_added">%1$d produkter har lagts till</string>
+    <string name="enter_items_here">Ange objekt här</string>
 </resources>

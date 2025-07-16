@@ -73,4 +73,5 @@
     <string name="app_name">Shoopt</string>
     <string name="convert_to_product_track">Product Track\'e dönüştür</string>
     <string name="products_added">%1$d ürün eklendi</string>
+    <string name="enter_items_here">Öğeleri buraya girin</string>
 </resources>

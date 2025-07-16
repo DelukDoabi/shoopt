@@ -73,4 +73,5 @@
     <string name="title_activity_track_shopping">Einkaufsverfolgung</string>
     <string name="convert_to_product_track">In Product Track umwandeln</string>
     <string name="products_added">%1$d Produkte hinzugefügt</string>
+    <string name="enter_items_here">Artikel hier eingeben</string>
 </resources>

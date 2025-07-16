@@ -73,4 +73,5 @@
     <string name="title_activity_track_shopping">TrackShoppingActivity</string>
     <string name="app_name">舒普特</string>
     <string name="products_added">已添加%1$d个产品</string>
+    <string name="enter_items_here">在此输入项目</string>
 </resources>
