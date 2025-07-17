@@ -74,4 +74,5 @@
     <string name="convert_to_product_track">Convertiți în Product Track</string>
     <string name="products_added">%1$d produse adăugate</string>
     <string name="enter_items_here">Introduceți elementele aici</string>
+    <string name="swipe_to_delete">Șterge</string>
 </resources>

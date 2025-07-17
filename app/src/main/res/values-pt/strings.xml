@@ -74,4 +74,5 @@
     <string name="convert_to_product_track">Converter para Product Track</string>
     <string name="products_added">%1$d produtos adicionados</string>
     <string name="enter_items_here">Insira os itens aqui</string>
+    <string name="swipe_to_delete">Excluir</string>
 </resources>

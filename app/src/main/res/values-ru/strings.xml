@@ -74,4 +74,5 @@
     <string name="convert_to_product_track">Преобразовать в Product Track</string>
     <string name="products_added">%1$d товаров добавлено</string>
     <string name="enter_items_here">Введите элементы здесь</string>
+    <string name="swipe_to_delete">Удалить</string>
 </resources>
