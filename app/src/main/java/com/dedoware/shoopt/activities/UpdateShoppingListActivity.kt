@@ -9,6 +9,7 @@ import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,6 +38,8 @@ class UpdateShoppingListActivity : AppCompatActivity() {
     private lateinit var shoppingListRepository: IShoppingListRepository
     private lateinit var convertToProductTrackButton: ImageButton
     private lateinit var convertSecondaryToProductTrackButton: ImageButton
+    private lateinit var emptyMainListButton: ImageButton
+    private lateinit var emptySecondaryListButton: ImageButton
     private lateinit var productTrackRecyclerView: RecyclerView
     private lateinit var productTrackAdapter: ProductTrackAdapter
     private lateinit var secondaryProductTrackRecyclerView: RecyclerView
@@ -146,6 +149,37 @@ class UpdateShoppingListActivity : AppCompatActivity() {
             Toast.makeText(this, getString(R.string.products_added, newItems.size), Toast.LENGTH_SHORT).show()
         }
 
+        emptyMainListButton = findViewById(R.id.empty_main_list_IB)
+        emptyMainListButton.setOnClickListener {
+            showConfirmationDialog {
+                shoppingItemList.clear()
+                productTrackAdapter.notifyDataSetChanged()
+                mainShoppingListEditText.setText("")
+
+                // Aussi sauvegarder la liste vide dans le repository
+                CoroutineScope(Dispatchers.IO).launch {
+                    shoppingListRepository.saveShoppingList("mainShoppingList", "")
+                }
+
+                Toast.makeText(this, R.string.shopping_cart_emptied, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        emptySecondaryListButton = findViewById(R.id.empty_secondary_list_IB)
+        emptySecondaryListButton.setOnClickListener {
+            showConfirmationDialog {
+                secondaryProductTrackAdapter.updateItems(emptyList())
+                secondaryShoppingListEditText.setText("")
+
+                // Aussi sauvegarder la liste vide dans le repository
+                CoroutineScope(Dispatchers.IO).launch {
+                    shoppingListRepository.saveShoppingList("secondaryShoppingList", "")
+                }
+
+                Toast.makeText(this, R.string.shopping_cart_emptied, Toast.LENGTH_SHORT).show()
+            }
+        }
+
         storeAndLoadShoppingList(mainShoppingListEditText, "mainShoppingList")
         storeAndLoadShoppingList(secondaryShoppingListEditText, "secondaryShoppingList")
 
@@ -153,6 +187,17 @@ class UpdateShoppingListActivity : AppCompatActivity() {
         backImageButton.setOnClickListener {
             finish()
         }
+    }
+
+    private fun showConfirmationDialog(onConfirm: () -> Unit) {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.clear_shopping_cart)
+            .setMessage(R.string.clear_shopping_cart_confirm)
+            .setPositiveButton(R.string.clear) { _, _ ->
+                onConfirm()
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
     }
 
     private fun storeAndLoadShoppingList(shoppingListEditText: EditText, dbRefKey: String) {

@@ -40,6 +40,19 @@
         android:src="@drawable/ic_convert_product_track"
         android:elevation="4dp" />
 
+    <!-- Bouton pour vider la liste principale -->
+    <ImageButton
+        android:id="@+id/empty_main_list_IB"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_toStartOf="@id/convert_to_product_track_IB"
+        android:layout_marginEnd="16dp"
+        android:layout_below="@id/back_IB"
+        android:background="@drawable/main_rounded_button"
+        android:contentDescription="@string/empty_cart"
+        android:src="@drawable/shoopt_empty_cart"
+        android:elevation="4dp" />
+
     <!-- First Shopping List Text Edit Area -->
     <EditText
         android:id="@+id/main_shopping_list_edit_text"
@@ -127,6 +140,19 @@
         android:background="@drawable/ic_convert_to_product_track_bg"
         android:contentDescription="@string/convert_to_product_track"
         android:src="@drawable/ic_convert_product_track"
+        android:elevation="4dp" />
+
+    <!-- Bouton pour vider la liste secondaire -->
+    <ImageButton
+        android:id="@+id/empty_secondary_list_IB"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_toStartOf="@id/convert_secondary_to_product_track_IB"
+        android:layout_marginEnd="16dp"
+        android:layout_alignBottom="@id/secondary_shopping_list_header"
+        android:background="@drawable/main_rounded_button"
+        android:contentDescription="@string/empty_cart"
+        android:src="@drawable/shoopt_empty_cart"
         android:elevation="4dp" />
 
     <!-- RecyclerView for Secondary Shopping List -->
