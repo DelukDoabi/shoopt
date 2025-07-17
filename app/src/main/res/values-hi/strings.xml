@@ -74,4 +74,5 @@
     <string name="title_activity_track_shopping">खरीदारी ट्रैकिंग गतिविधि</string>
     <string name="products_added">%1$d उत्पाद जोड़े गए</string>
     <string name="enter_items_here">यहां आइटम दर्ज करें</string>
+    <string name="swipe_to_delete">हटाएं</string>
 </resources>
