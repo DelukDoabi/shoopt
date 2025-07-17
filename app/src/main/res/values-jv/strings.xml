@@ -71,4 +71,8 @@
     <string name="main_shopping_list">Daftar belanja utama</string>
     <string name="secondary_shopping_list">Daftar belanja sekunder</string>
     <string name="title_activity_track_shopping">Aktivitas pelacakan belanja</string>
+    <string name="convert_to_product_track">Konversi ke Product Track</string>
+    <string name="products_added">%1$d produk ditambah</string>
+    <string name="enter_items_here">Lebokake item ing kene</string>
+    <string name="swipe_to_delete">Geser kanggo mbusak</string>
 </resources>

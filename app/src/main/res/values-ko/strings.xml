@@ -71,4 +71,8 @@
     <string name="main_shopping_list">메인 쇼핑 목록</string>
     <string name="secondary_shopping_list">서브 쇼핑 목록</string>
     <string name="title_activity_track_shopping">쇼핑 추적 활동</string>
+    <string name="convert_to_product_track">Product Track으로 변환</string>
+    <string name="products_added">%1$d개의 상품이 추가되었습니다</string>
+    <string name="enter_items_here">여기에 항목을 입력하세요</string>
+    <string name="swipe_to_delete">삭제</string>
 </resources>

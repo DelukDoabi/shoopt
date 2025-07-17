@@ -1,5 +1,7 @@
 package com.dedoware.shoopt.model
 
+import android.os.Parcel
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
@@ -10,7 +12,29 @@ import com.google.firebase.database.Exclude
 data class CartItem(
     var product: Product = Product(),   // Reference to the product
     var quantity: Int = 0              // Dynamic quantity of the product in the cart
-) {
+) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        product = parcel.readTypedObject(Product.CREATOR)!!,
+        quantity = parcel.readInt()
+    )
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeParcelable(product, flags)
+        parcel.writeInt(quantity)
+    }
+
+    override fun describeContents(): Int = 0
+
+    companion object CREATOR : Parcelable.Creator<CartItem> {
+        override fun createFromParcel(parcel: Parcel): CartItem {
+            return CartItem(parcel)
+        }
+
+        override fun newArray(size: Int): Array<CartItem?> {
+            return arrayOfNulls(size)
+        }
+    }
+
     @Exclude
     fun toMap(): Map<String, Any?> {
         return mapOf(
@@ -56,5 +80,3 @@ data class CartItemEntity(
         }
     }
 }
-
-

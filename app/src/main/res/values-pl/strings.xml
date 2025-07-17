@@ -71,4 +71,8 @@
     <string name="main_shopping_list">Główna lista zakupów</string>
     <string name="secondary_shopping_list">Dodatkowa lista zakupów</string>
     <string name="title_activity_track_shopping">Śledzenie zakupów</string>
+    <string name="convert_to_product_track">Konwertuj na Product Track</string>
+    <string name="products_added">Dodano %1$d produktów</string>
+    <string name="enter_items_here">Wprowadź elementy tutaj</string>
+    <string name="swipe_to_delete">Usuń</string>
 </resources>

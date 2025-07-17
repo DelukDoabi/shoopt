@@ -71,4 +71,8 @@
     <string name="secondary_shopping_list">İkincil alışveriş listesi</string>
     <string name="title_activity_track_shopping">TrackShoppingActivity</string>
     <string name="app_name">Shoopt</string>
+    <string name="convert_to_product_track">Product Track\'e dönüştür</string>
+    <string name="products_added">%1$d ürün eklendi</string>
+    <string name="enter_items_here">Öğeleri buraya girin</string>
+    <string name="swipe_to_delete">Sil</string>
 </resources>

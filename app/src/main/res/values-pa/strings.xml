@@ -71,4 +71,8 @@
     <string name="main_shopping_list">ਮੁੱਖ ਖਰੀਦਦਾਰੀ ਸੂਚੀ</string>
     <string name="secondary_shopping_list">ਦੂਜੀ ਖਰੀਦਦਾਰੀ ਸੂਚੀ</string>
     <string name="title_activity_track_shopping">ਖਰੀਦਦਾਰੀ ਟ੍ਰੈਕਿੰਗ ਗਤੀਵਿਧੀ</string>
+    <string name="convert_to_product_track">Product Track ਵਿੱਚ ਰੂਪਾਂਤਰਿਤ ਕਰੋ</string>
+    <string name="products_added">%1$d ਉਤਪਾਦ ਸ਼ਾਮਲ ਕੀਤੇ ਗਏ</string>
+    <string name="enter_items_here">ਇਥੇ ਆਈਟਮ ਦਾਖਲ ਕਰੋ</string>
+    <string name="swipe_to_delete">ਮਿਟਾਉਣ ਲਈ ਸਵਾਈਪ ਕਰੋ</string>
 </resources>

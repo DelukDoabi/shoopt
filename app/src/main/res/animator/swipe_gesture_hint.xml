@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Animation de déplacement horizontal subtil -->
+    <set android:ordering="sequentially">
+        <!-- Premier mouvement: déplacement plus prononcé vers la gauche -->
+        <objectAnimator
+            android:propertyName="translationX"
+            android:duration="600"
+            android:valueFrom="0"
+            android:valueTo="-130dp"
+            android:valueType="floatType"
+            android:interpolator="@android:interpolator/decelerate_cubic" />
+
+        <!-- Pause plus longue pour bien voir l'icône -->
+        <objectAnimator
+            android:propertyName="translationX"
+            android:duration="500"
+            android:valueFrom="-130dp"
+            android:valueTo="-130dp"
+            android:valueType="floatType" />
+
+        <!-- Retour plus doux à la position initiale -->
+        <objectAnimator
+            android:propertyName="translationX"
+            android:duration="500"
+            android:valueFrom="-130dp"
+            android:valueTo="0dp"
+            android:valueType="floatType"
+            android:interpolator="@android:interpolator/accelerate_cubic" />
+    </set>
+
+    <!-- Animation légère de pulsation pour attirer l'attention -->
+    <objectAnimator
+        android:propertyName="alpha"
+        android:duration="2100"
+        android:valueFrom="1.0"
+        android:valueTo="0.9"
+        android:valueType="floatType"
+        android:repeatMode="reverse"
+        android:repeatCount="1" />
+</set>

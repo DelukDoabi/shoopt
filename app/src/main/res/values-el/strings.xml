@@ -71,4 +71,8 @@
     <string name="main_shopping_list">Κύρια λίστα αγορών</string>
     <string name="secondary_shopping_list">Δευτερεύουσα λίστα αγορών</string>
     <string name="title_activity_track_shopping">Δραστηριότητα παρακολούθησης αγορών</string>
+    <string name="convert_to_product_track">Μετατροπή σε Product Track</string>
+    <string name="products_added">Προστέθηκαν %1$d προϊόντα</string>
+    <string name="enter_items_here">Εισαγάγετε στοιχεία εδώ</string>
+    <string name="swipe_to_delete">Διαγραφή</string>
 </resources>

@@ -71,4 +71,8 @@
     <string name="secondary_shopping_list">Danh sách mua sắm phụ</string>
     <string name="title_activity_track_shopping">TrackShoppingActivity</string>
     <string name="app_name">Shoopt</string>
+    <string name="convert_to_product_track">Chuyển thành Product Track</string>
+    <string name="products_added">Đã thêm %1$d sản phẩm</string>
+    <string name="enter_items_here">Nhập các mục ở đây</string>
+    <string name="swipe_to_delete">Xóa</string>
 </resources>

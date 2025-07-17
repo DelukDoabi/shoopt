@@ -71,4 +71,8 @@
     <string name="main_shopping_list">मुख्य खरेदी सूची</string>
     <string name="secondary_shopping_list">दुय्यम खरेदी सूची</string>
     <string name="title_activity_track_shopping">खरेदी ट्रॅकिंग क्रिया</string>
+    <string name="convert_to_product_track">Product Track मध्ये रूपांतरित करा</string>
+    <string name="products_added">%1$d उत्पाद जोडले गेले</string>
+    <string name="enter_items_here">आइटम येथे प्रविष्ट करा</string>
+    <string name="swipe_to_delete">हटवा</string>
 </resources>

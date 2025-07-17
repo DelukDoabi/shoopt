@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dedoware.shoopt.R
@@ -176,7 +177,83 @@ class TrackShoppingActivity : ComponentActivity() {
     private fun populateProductList(products: List<CartItem>) {
         val recyclerView: RecyclerView = findViewById(R.id.product_list_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = ProductTrackAdapter(products)
+        val adapter = ProductTrackAdapter(products.toMutableList())
+        recyclerView.adapter = adapter
+
+        // Configuration du swipe-to-delete
+        val swipeHandler = object : ItemTouchHelper.SimpleCallback(
+            0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false // Nous ne supportons pas le déplacement des éléments
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val deletedItem = adapter.getItems()[position]
+
+                // Afficher un dialogue de confirmation avant de supprimer
+                val builder = AlertDialog.Builder(this@TrackShoppingActivity)
+                builder.setTitle(getString(R.string.delete_product))
+                builder.setMessage(getString(R.string.delete_product_confirm))
+
+                builder.setPositiveButton(getString(R.string.delete)) { _, _ ->
+                    // Supprimer l'élément de l'adaptateur localement pour une réponse visuelle immédiate
+                    adapter.removeAt(position)
+
+                    // Puisqu'il n'y a pas de méthode directe pour supprimer un seul produit du panier,
+                    // nous devons reconstruire le panier sans le produit supprimé et le sauvegarder
+                    GlobalScope.launch(Dispatchers.Main) {
+                        try {
+                            // Obtenir le panier actuel
+                            val currentCart = productRepository.getShoppingCart()
+
+                            if (currentCart != null) {
+                                // Vider complètement le panier actuel
+                                productRepository.clearShoppingCart()
+
+                                // Reconstruire le panier sans le produit supprimé
+                                // Filtrer tous les produits sauf celui qu'on veut supprimer
+                                val updatedProducts = currentCart.products.filter { it.product.id != deletedItem.product.id }
+
+                                // Ajouter tous les produits restants au panier un par un
+                                for (item in updatedProducts) {
+                                    for (i in 1..item.quantity) {
+                                        productRepository.addProductToCart(item.product)
+                                    }
+                                }
+
+                                // Afficher un message de confirmation
+                                showToast(getString(R.string.product_deleted, deletedItem.product.name))
+                            }
+                        } catch (e: Exception) {
+                            showToast(getString(R.string.failed_to_delete_product))
+                            loadShoppingCart() // Recharger le panier en cas d'erreur
+                        }
+                    }
+                }
+
+                builder.setNegativeButton(android.R.string.cancel) { _, _ ->
+                    // Annuler le swipe et restaurer l'élément
+                    adapter.notifyItemChanged(position)
+                }
+
+                builder.setOnCancelListener {
+                    // Si l'utilisateur ferme le dialogue sans choisir, annuler le swipe
+                    adapter.notifyItemChanged(position)
+                }
+
+                builder.create().show()
+            }
+        }
+
+        // Attacher l'ItemTouchHelper au RecyclerView
+        ItemTouchHelper(swipeHandler).attachToRecyclerView(recyclerView)
     }
 
     private fun showClearCartConfirmationDialog() {

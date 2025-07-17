@@ -48,6 +48,7 @@
     <string name="failed_to_empty_shopping_cart">清空购物车失败</string>
     <string name="delete_product">删除产品</string>
     <string name="delete_product_confirm">确定要删除此产品吗？</string>
+    <string name="convert_to_product_track">转换为产品追踪</string>
     <string name="delete">删除</string>
     <string name="product_deleted">产品 %1$s 已删除</string>
     <string name="failed_to_delete_product">删除产品失败</string>
@@ -71,4 +72,7 @@
     <string name="secondary_shopping_list">次购物清单</string>
     <string name="title_activity_track_shopping">TrackShoppingActivity</string>
     <string name="app_name">舒普特</string>
+    <string name="products_added">已添加%1$d个产品</string>
+    <string name="enter_items_here">在此输入项目</string>
+    <string name="swipe_to_delete">删除</string>
 </resources>
