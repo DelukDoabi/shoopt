@@ -22,7 +22,7 @@
         <!-- Retour plus doux à la position initiale -->
         <objectAnimator
             android:propertyName="translationX"
-            android:duration="300"
+            android:duration="500"
             android:valueFrom="-130dp"
             android:valueTo="0dp"
             android:valueType="floatType"
