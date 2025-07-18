@@ -17,7 +17,7 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var themeDarkRadio: RadioButton
     private lateinit var themeSystemRadio: RadioButton
     private lateinit var currencySpinner: Spinner
-    private lateinit var saveButton: Button
+    private lateinit var saveButton: ImageButton
     private lateinit var backButton: ImageButton
 
     // Liste des devises disponibles
