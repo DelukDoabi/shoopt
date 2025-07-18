@@ -20,6 +20,10 @@
         android:theme="@style/Theme.Shoopt"
         tools:targetApi="34">
         <activity
+            android:name=".activities.SettingsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activities.RegisterActivity"
             android:exported="false"
             android:label="@string/title_activity_register"

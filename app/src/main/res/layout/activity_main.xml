@@ -17,6 +17,17 @@
         android:padding="16dp">
 
         <ImageButton
+            android:id="@+id/settings_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/main_rounded_button"
+            android:contentDescription="@string/settings"
+            android:gravity="center"
+            android:padding="15dp"
+            android:src="@drawable/ic_settings" />
+
+        <ImageButton
             android:id="@+id/logout_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

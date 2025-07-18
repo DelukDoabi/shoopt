@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dedoware.shoopt.R
+import com.dedoware.shoopt.utils.UserPreferences
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
@@ -25,9 +26,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var addOrUpdateProductTextView: TextView
     private lateinit var trackShoppingTextView: TextView
     private lateinit var analyseTextView: TextView
+    private lateinit var userPreferences: UserPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Initialiser et appliquer les préférences utilisateur
+        userPreferences = UserPreferences(this)
+        userPreferences.applyTheme()
 
         setContentView(R.layout.activity_main)
 
@@ -48,6 +54,11 @@ class MainActivity : AppCompatActivity() {
         val logoutButton: ImageButton = findViewById(R.id.logout_button)
         logoutButton.setOnClickListener {
             displayLogoutConfirmation()
+        }
+
+        val settingsButton: ImageButton = findViewById(R.id.settings_button)
+        settingsButton.setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
         }
 
         updateShoppingListImageButton.setOnClickListener {
