@@ -8,14 +8,14 @@ plugins {
 
 android {
     namespace 'com.dedoware.shoopt'
-    compileSdk 34
+    compileSdk 36
 
     defaultConfig {
         applicationId "com.dedoware.shoopt"
         minSdk 33
         targetSdk 36
-        versionCode 23
-        versionName "0.0.23-beta"
+        versionCode 24
+        versionName "0.0.24-beta"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
