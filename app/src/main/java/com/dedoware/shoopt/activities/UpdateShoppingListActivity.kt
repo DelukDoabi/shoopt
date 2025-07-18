@@ -33,17 +33,12 @@ import java.util.ArrayList
 
 class UpdateShoppingListActivity : AppCompatActivity() {
     private lateinit var mainShoppingListEditText: EditText
-    private lateinit var secondaryShoppingListEditText: EditText
     private lateinit var backImageButton: ImageButton
     private lateinit var shoppingListRepository: IShoppingListRepository
     private lateinit var convertToProductTrackButton: ImageButton
-    private lateinit var convertSecondaryToProductTrackButton: ImageButton
     private lateinit var emptyMainListButton: ImageButton
-    private lateinit var emptySecondaryListButton: ImageButton
     private lateinit var productTrackRecyclerView: RecyclerView
     private lateinit var productTrackAdapter: ProductTrackAdapter
-    private lateinit var secondaryProductTrackRecyclerView: RecyclerView
-    private lateinit var secondaryProductTrackAdapter: ProductTrackAdapter
     private val shoppingItemList = mutableListOf<CartItem>()
     private val handler = Handler(Looper.getMainLooper())
     private var runnable: Runnable = Runnable { }
@@ -69,18 +64,11 @@ class UpdateShoppingListActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         mainShoppingListEditText = findViewById(R.id.main_shopping_list_edit_text)
-        secondaryShoppingListEditText = findViewById(R.id.secondary_shopping_list_edit_text)
         convertToProductTrackButton = findViewById(R.id.convert_to_product_track_IB)
-        convertSecondaryToProductTrackButton = findViewById(R.id.convert_secondary_to_product_track_IB)
         productTrackRecyclerView = findViewById(R.id.product_track_recycler_view)
         productTrackAdapter = ProductTrackAdapter(shoppingItemList)
         productTrackRecyclerView.layoutManager = LinearLayoutManager(this)
         productTrackRecyclerView.adapter = productTrackAdapter
-
-        secondaryProductTrackRecyclerView = findViewById(R.id.secondary_product_track_recycler_view)
-        secondaryProductTrackAdapter = ProductTrackAdapter(mutableListOf())
-        secondaryProductTrackRecyclerView.layoutManager = LinearLayoutManager(this)
-        secondaryProductTrackRecyclerView.adapter = secondaryProductTrackAdapter
 
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean = false
@@ -90,15 +78,6 @@ class UpdateShoppingListActivity : AppCompatActivity() {
             }
         }
         ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(productTrackRecyclerView)
-
-        val secondaryItemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean = false
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val position = viewHolder.adapterPosition
-                secondaryProductTrackAdapter.removeAt(position)
-            }
-        }
-        ItemTouchHelper(secondaryItemTouchHelperCallback).attachToRecyclerView(secondaryProductTrackRecyclerView)
 
         convertToProductTrackButton.setOnClickListener {
             val products = mainShoppingListEditText.text.toString()
@@ -129,26 +108,6 @@ class UpdateShoppingListActivity : AppCompatActivity() {
             Toast.makeText(this, getString(R.string.products_added, products.size), Toast.LENGTH_SHORT).show()
         }
 
-        convertSecondaryToProductTrackButton.setOnClickListener {
-            val products = secondaryShoppingListEditText.text.toString()
-                .split(Regex("[,.\\-;:|/]+"))
-                .map { it.trim() }
-                .filter { it.isNotEmpty() }
-            val newItems = products.map {
-                val regex = Regex("(\\d+)")
-                val quantityMatch = regex.find(it)
-                val quantity = quantityMatch?.value?.toIntOrNull() ?: 1
-                val name = if (quantityMatch != null) it.replace(quantityMatch.value, "").trim() else it
-                Product(name = name, id = "", barcode = 0, timestamp = 0, price = 0.0, unitPrice = 0.0, shop = "", pictureUrl = "")
-                    .let { product -> CartItem(product, quantity) }
-            }
-            val currentItems = secondaryProductTrackAdapter.getItems().toMutableList()
-            currentItems.addAll(newItems)
-            secondaryProductTrackAdapter.updateItems(currentItems)
-            secondaryShoppingListEditText.setText("")
-            Toast.makeText(this, getString(R.string.products_added, newItems.size), Toast.LENGTH_SHORT).show()
-        }
-
         emptyMainListButton = findViewById(R.id.empty_main_list_IB)
         emptyMainListButton.setOnClickListener {
             showConfirmationDialog {
@@ -165,23 +124,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
             }
         }
 
-        emptySecondaryListButton = findViewById(R.id.empty_secondary_list_IB)
-        emptySecondaryListButton.setOnClickListener {
-            showConfirmationDialog {
-                secondaryProductTrackAdapter.updateItems(emptyList())
-                secondaryShoppingListEditText.setText("")
-
-                // Aussi sauvegarder la liste vide dans le repository
-                CoroutineScope(Dispatchers.IO).launch {
-                    shoppingListRepository.saveShoppingList("secondaryShoppingList", "")
-                }
-
-                Toast.makeText(this, R.string.shopping_cart_emptied, Toast.LENGTH_SHORT).show()
-            }
-        }
-
         storeAndLoadShoppingList(mainShoppingListEditText, "mainShoppingList")
-        storeAndLoadShoppingList(secondaryShoppingListEditText, "secondaryShoppingList")
 
         backImageButton = findViewById(R.id.back_IB)
         backImageButton.setOnClickListener {
@@ -257,7 +200,6 @@ class UpdateShoppingListActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         saveShoppingItemListToPreferences("MainShoppingListPrefs", shoppingItemList)
-        saveShoppingItemListToPreferences("SecondaryShoppingListPrefs", secondaryProductTrackAdapter.getItems())
     }
 
     override fun onResume() {
@@ -265,8 +207,6 @@ class UpdateShoppingListActivity : AppCompatActivity() {
         shoppingItemList.clear()
         shoppingItemList.addAll(loadShoppingItemListFromPreferences("MainShoppingListPrefs"))
         productTrackAdapter.notifyDataSetChanged()
-
-        secondaryProductTrackAdapter.updateItems(loadShoppingItemListFromPreferences("SecondaryShoppingListPrefs"))
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
