@@ -75,4 +75,12 @@
     <string name="products_added">%1$d produk ditambah</string>
     <string name="enter_items_here">Lebokake item ing kene</string>
     <string name="swipe_to_delete">Geser kanggo mbusak</string>
+    <string name="settings">Setelan</string>
+    <string name="theme_settings">Tema</string>
+    <string name="theme_light">Tema Padhang</string>
+    <string name="theme_dark">Tema Peteng</string>
+    <string name="theme_system">Default Sistem</string>
+    <string name="currency_settings">Mata Dhuwit</string>
+    <string name="save_settings">Simpen</string>
+    <string name="settings_saved">Setelan wis disimpen</string>
 </resources>

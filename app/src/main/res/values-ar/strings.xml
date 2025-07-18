@@ -75,4 +75,12 @@
     <string name="products_added">%1$d منتج تمت إضافته</string>
     <string name="enter_items_here">أدخل العناصر هنا</string>
     <string name="swipe_to_delete">اسحب للحذف</string>
+    <string name="settings">الإعدادات</string>
+    <string name="theme_settings">إعدادات السمة</string>
+    <string name="theme_light">السمة الفاتحة</string>
+    <string name="theme_dark">السمة الداكنة</string>
+    <string name="theme_system">إعدادات النظام الافتراضية</string>
+    <string name="currency_settings">إعدادات العملة</string>
+    <string name="save_settings">حفظ الإعدادات</string>
+    <string name="settings_saved">تم حفظ الإعدادات بنجاح</string>
 </resources>

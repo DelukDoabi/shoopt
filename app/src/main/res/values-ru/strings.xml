@@ -75,4 +75,12 @@
     <string name="products_added">%1$d товаров добавлено</string>
     <string name="enter_items_here">Введите элементы здесь</string>
     <string name="swipe_to_delete">Удалить</string>
+    <string name="settings">Настройки</string>
+    <string name="theme_settings">Тема</string>
+    <string name="theme_light">Светлая тема</string>
+    <string name="theme_dark">Темная тема</string>
+    <string name="theme_system">Системная</string>
+    <string name="currency_settings">Валюта</string>
+    <string name="save_settings">Сохранить</string>
+    <string name="settings_saved">Настройки сохранены</string>
 </resources>

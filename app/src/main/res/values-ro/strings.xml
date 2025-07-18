@@ -75,4 +75,12 @@
     <string name="products_added">%1$d produse adăugate</string>
     <string name="enter_items_here">Introduceți elementele aici</string>
     <string name="swipe_to_delete">Șterge</string>
+    <string name="settings">Setări</string>
+    <string name="theme_settings">Temă</string>
+    <string name="theme_light">Temă luminoasă</string>
+    <string name="theme_dark">Temă întunecată</string>
+    <string name="theme_system">Implicit sistem</string>
+    <string name="currency_settings">Monedă</string>
+    <string name="save_settings">Salvează</string>
+    <string name="settings_saved">Setări salvate</string>
 </resources>

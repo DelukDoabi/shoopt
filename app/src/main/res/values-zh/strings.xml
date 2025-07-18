@@ -75,4 +75,12 @@
     <string name="products_added">已添加%1$d个产品</string>
     <string name="enter_items_here">在此输入项目</string>
     <string name="swipe_to_delete">删除</string>
+    <string name="settings">设置</string>
+    <string name="theme_settings">主题</string>
+    <string name="theme_light">浅色主题</string>
+    <string name="theme_dark">深色主题</string>
+    <string name="theme_system">系统默认</string>
+    <string name="currency_settings">货币</string>
+    <string name="save_settings">保存</string>
+    <string name="settings_saved">设置已保存</string>
 </resources>

@@ -75,4 +75,12 @@
     <string name="products_added">Προστέθηκαν %1$d προϊόντα</string>
     <string name="enter_items_here">Εισαγάγετε στοιχεία εδώ</string>
     <string name="swipe_to_delete">Διαγραφή</string>
+    <string name="settings">Ρυθμίσεις</string>
+    <string name="theme_settings">Θέμα</string>
+    <string name="theme_light">Φωτεινό θέμα</string>
+    <string name="theme_dark">Σκοτεινό θέμα</string>
+    <string name="theme_system">Προεπιλογή συστήματος</string>
+    <string name="currency_settings">Νόμισμα</string>
+    <string name="save_settings">Αποθήκευση</string>
+    <string name="settings_saved">Οι ρυθμίσεις αποθηκεύτηκαν</string>
 </resources>

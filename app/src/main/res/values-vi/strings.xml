@@ -75,4 +75,12 @@
     <string name="products_added">Đã thêm %1$d sản phẩm</string>
     <string name="enter_items_here">Nhập các mục ở đây</string>
     <string name="swipe_to_delete">Xóa</string>
+    <string name="settings">Cài đặt</string>
+    <string name="theme_settings">Chủ đề</string>
+    <string name="theme_light">Chủ đề sáng</string>
+    <string name="theme_dark">Chủ đề tối</string>
+    <string name="theme_system">Mặc định hệ thống</string>
+    <string name="currency_settings">Tiền tệ</string>
+    <string name="save_settings">Lưu</string>
+    <string name="settings_saved">Đã lưu cài đặt</string>
 </resources>

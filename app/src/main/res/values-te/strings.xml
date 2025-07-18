@@ -75,4 +75,12 @@
     <string name="products_added">%1$d ఉత్పత్తులు జోడించబడ్డాయి</string>
     <string name="enter_items_here">ఇక్కడ అంశాలను నమోదు చేయండి</string>
     <string name="swipe_to_delete">తొలగించు</string>
+    <string name="settings">సెట్టింగ్‌లు</string>
+    <string name="theme_settings">థీమ్</string>
+    <string name="theme_light">లైట్ థీమ్</string>
+    <string name="theme_dark">డార్క్ థీమ్</string>
+    <string name="theme_system">సిస్టమ్ డిఫాల్ట్</string>
+    <string name="currency_settings">కరెన్సీ</string>
+    <string name="save_settings">సేవ్ చేయండి</string>
+    <string name="settings_saved">సెట్టింగ్‌లు సేవ్ చేయబడ్డాయి</string>
 </resources>
