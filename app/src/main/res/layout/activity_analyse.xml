@@ -6,6 +6,7 @@
     android:background="?backgroundColor"
     android:gravity="center"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context=".activities.AnalyseActivity">
 
     <!-- Back Button -->

@@ -4,20 +4,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
     android:background="?backgroundColor"
+    android:fitsSystemWindows="true"
     tools:context=".activities.TrackShoppingActivity">
 
-    <ImageButton
-        android:id="@+id/back_IB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="10dp"
-        android:background="@null"
-        android:contentDescription="@string/back"
-        android:src="@drawable/shoopt_back"></ImageButton>
+    <!-- Top Bar with Back Button and Empty Cart Button -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/back_IB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@null"
+            android:contentDescription="@string/back"
+            android:src="@drawable/shoopt_back" />
+
+        <ImageButton
+            android:id="@+id/empty_cart_IB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/main_rounded_button"
+            android:contentDescription="@string/empty_cart"
+            android:padding="15dp"
+            android:src="@drawable/shoopt_empty_cart" />
+    </RelativeLayout>
 
     <!-- Top Field: Cart Information -->
     <LinearLayout
@@ -25,6 +44,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="start|center_vertical"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/shoopt_search_view_border">
 
@@ -73,18 +94,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp" />
 
-    <!-- Bottom Field: Add Product and Empty Cart Buttons -->
+    <!-- Bottom Field: Add Product Button -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_gravity="bottom">
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="2" />
+        android:layout_marginBottom="20dp">
 
         <ImageButton
             android:id="@+id/add_product_IB"
@@ -95,23 +111,6 @@
             android:contentDescription="@string/add_product"
             android:padding="15dp"
             android:src="@drawable/shoopt_add_product" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <ImageButton
-            android:id="@+id/empty_cart_IB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@drawable/main_rounded_button"
-            android:contentDescription="@string/empty_cart"
-            android:padding="15dp"
-            android:src="@drawable/shoopt_empty_cart"
-            android:layout_gravity="end" /> <!-- Align to the end (right side) -->
-
     </LinearLayout>
 
 </LinearLayout>
