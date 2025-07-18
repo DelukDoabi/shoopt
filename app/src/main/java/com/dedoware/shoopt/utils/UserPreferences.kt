@@ -17,6 +17,17 @@ class UserPreferences(context: Context) {
         // Valeurs par défaut
         const val DEFAULT_THEME = THEME_SYSTEM
         const val DEFAULT_CURRENCY = "EUR"
+
+        // Map des devises avec leurs symboles
+        private val CURRENCY_SYMBOLS = mapOf(
+            "EUR" to "€",
+            "USD" to "$",
+            "GBP" to "£",
+            "JPY" to "¥",
+            "CAD" to "C$",
+            "CHF" to "Fr",
+            "AUD" to "A$"
+        )
     }
 
     private val preferences: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -36,5 +47,13 @@ class UserPreferences(context: Context) {
             else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
         }
         AppCompatDelegate.setDefaultNightMode(nightMode)
+    }
+
+    fun getCurrencySymbol(): String {
+        return CURRENCY_SYMBOLS[currency] ?: "€"
+    }
+
+    fun formatPrice(price: Double): String {
+        return String.format("%.2f %s", price, getCurrencySymbol())
     }
 }

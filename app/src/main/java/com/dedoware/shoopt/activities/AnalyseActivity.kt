@@ -21,6 +21,7 @@ import com.dedoware.shoopt.persistence.IProductRepository
 import com.dedoware.shoopt.persistence.FirebaseProductRepository
 import com.dedoware.shoopt.persistence.LocalProductRepository
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
+import com.dedoware.shoopt.utils.UserPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,6 +32,7 @@ class AnalyseActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var searchView: SearchView
     private lateinit var backImageButton: ImageButton
+    private lateinit var userPreferences: UserPreferences
 
     private var products: List<Product> = emptyList()
     private lateinit var productRepository: IProductRepository
@@ -45,6 +47,9 @@ class AnalyseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_analyse)
+
+        // Initialiser les préférences utilisateur
+        userPreferences = UserPreferences(this)
 
         productRepository = if (useFirebase) {
             FirebaseProductRepository()
@@ -68,7 +73,7 @@ class AnalyseActivity : AppCompatActivity() {
 
         progressBar.visibility = View.VISIBLE
         productListRecyclerView.layoutManager = GridLayoutManager(this, 2)
-        productListRecyclerView.adapter = ProductListAdapter(emptyList())
+        productListRecyclerView.adapter = ProductListAdapter(emptyList(), userPreferences)
 
         loadProducts()
         addSearch()
@@ -115,7 +120,7 @@ class AnalyseActivity : AppCompatActivity() {
     }
 
     private fun setupAdapter(products: List<Product>) {
-        productListRecyclerView.adapter = ProductListAdapter(products)
+        productListRecyclerView.adapter = ProductListAdapter(products, userPreferences)
         (productListRecyclerView.adapter as? ProductListAdapter)?.apply {
             setOnLongClickListener { product ->
                 showContextMenu(product)
