@@ -75,4 +75,12 @@
     <string name="products_added">%1$d produkter har lagts till</string>
     <string name="enter_items_here">Ange objekt här</string>
     <string name="swipe_to_delete">Ta bort</string>
+    <string name="settings">Inställningar</string>
+    <string name="theme_settings">Tema</string>
+    <string name="theme_light">Ljust tema</string>
+    <string name="theme_dark">Mörkt tema</string>
+    <string name="theme_system">Systemstandard</string>
+    <string name="currency_settings">Valuta</string>
+    <string name="save_settings">Spara</string>
+    <string name="settings_saved">Inställningar sparade</string>
 </resources>

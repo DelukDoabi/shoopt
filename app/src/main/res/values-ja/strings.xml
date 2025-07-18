@@ -75,4 +75,12 @@
     <string name="products_added">%1$d 件の商品が追加されました</string>
     <string name="enter_items_here">ここにアイテムを入力してください</string>
     <string name="swipe_to_delete">削除</string>
+    <string name="settings">設定</string>
+    <string name="theme_settings">テーマ</string>
+    <string name="theme_light">ライトテーマ</string>
+    <string name="theme_dark">ダークテーマ</string>
+    <string name="theme_system">システムデフォルト</string>
+    <string name="currency_settings">通貨</string>
+    <string name="save_settings">保存</string>
+    <string name="settings_saved">設定を保存しました</string>
 </resources>

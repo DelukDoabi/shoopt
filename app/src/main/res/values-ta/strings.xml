@@ -75,4 +75,12 @@
     <string name="products_added">%1$d பொருட்கள் சேர்க்கப்பட்டன</string>
     <string name="enter_items_here">உருப்படிகளை இங்கே உள்ளிடவும்</string>
     <string name="swipe_to_delete">நீக்கு</string>
+    <string name="settings">அமைப்புகள்</string>
+    <string name="theme_settings">தீம்</string>
+    <string name="theme_light">வெளிர் தீம்</string>
+    <string name="theme_dark">இருள் தீம்</string>
+    <string name="theme_system">சிஸ்டம் டிஃபால்ட்</string>
+    <string name="currency_settings">நாணயம்</string>
+    <string name="save_settings">சேமி</string>
+    <string name="settings_saved">அமைப்புகள் சேமிக்கப்பட்டன</string>
 </resources>

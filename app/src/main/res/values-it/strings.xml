@@ -75,4 +75,12 @@
     <string name="products_added">%1$d prodotti aggiunti</string>
     <string name="enter_items_here">Inserisci gli articoli qui</string>
     <string name="swipe_to_delete">Elimina</string>
+    <string name="settings">Impostazioni</string>
+    <string name="theme_settings">Tema</string>
+    <string name="theme_light">Tema chiaro</string>
+    <string name="theme_dark">Tema scuro</string>
+    <string name="theme_system">Predefinito di sistema</string>
+    <string name="currency_settings">Valuta</string>
+    <string name="save_settings">Salva</string>
+    <string name="settings_saved">Impostazioni salvate</string>
 </resources>

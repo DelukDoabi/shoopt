@@ -75,4 +75,12 @@
     <string name="products_added">%1$d ਉਤਪਾਦ ਸ਼ਾਮਲ ਕੀਤੇ ਗਏ</string>
     <string name="enter_items_here">ਇਥੇ ਆਈਟਮ ਦਾਖਲ ਕਰੋ</string>
     <string name="swipe_to_delete">ਮਿਟਾਉਣ ਲਈ ਸਵਾਈਪ ਕਰੋ</string>
+    <string name="settings">ਸੈਟਿੰਗਾਂ</string>
+    <string name="theme_settings">ਥੀਮ</string>
+    <string name="theme_light">ਹਲਕਾ ਥੀਮ</string>
+    <string name="theme_dark">ਗੂੜ੍ਹਾ ਥੀਮ</string>
+    <string name="theme_system">ਸਿਸਟਮ ਡਿਫੌਲਟ</string>
+    <string name="currency_settings">ਮੁਦਰਾ</string>
+    <string name="save_settings">ਸੇਵ ਕਰੋ</string>
+    <string name="settings_saved">ਸੈਟਿੰਗਾਂ ਸੇਵ ਕੀਤੀਆਂ ਗਈਆਂ</string>
 </resources>
