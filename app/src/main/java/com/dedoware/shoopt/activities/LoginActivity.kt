@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dedoware.shoopt.R
+import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -52,6 +53,17 @@ class LoginActivity : AppCompatActivity() {
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful()) {
+                        // Analytics pour connexion réussie (sans collecter d'emails)
+                        try {
+                            val params = Bundle().apply {
+                                putString("login_method", "email")
+                                putBoolean("success", true)
+                            }
+                            AnalyticsManager.logCustomEvent("login_attempt", params)
+                        } catch (e: Exception) {
+                            CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement login dans Analytics: ${e.message ?: "Message non disponible"}")
+                        }
+
                         // Pas de logging pour les cas de succès
                         Toast.makeText(this, getString(R.string.login_successful), Toast.LENGTH_SHORT)
                             .show()
@@ -63,6 +75,18 @@ class LoginActivity : AppCompatActivity() {
                         ) // Navigate to the main app
                         finish()
                     } else {
+                        // Analytics pour échec de connexion (sans collecter d'emails)
+                        try {
+                            val params = Bundle().apply {
+                                putString("login_method", "email")
+                                putBoolean("success", false)
+                                // Pas d'informations sur l'erreur qui pourraient contenir des données personnelles
+                            }
+                            AnalyticsManager.logCustomEvent("login_attempt", params)
+                        } catch (e: Exception) {
+                            CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement login dans Analytics: ${e.message ?: "Message non disponible"}")
+                        }
+
                         // Log de l'erreur dans Crashlytics
                         task.exception?.let {
                             CrashlyticsManager.log("Échec de connexion par email: ${it.message}")
@@ -99,6 +123,13 @@ class LoginActivity : AppCompatActivity() {
 
         findViewById<TextView>(R.id.forgot_password_link).setOnClickListener {
             showForgotPasswordDialog()
+        }
+
+        // Suivi de l'écran de connexion
+        try {
+            AnalyticsManager.logScreenView("Login", "LoginActivity")
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de l'enregistrement de l'écran dans Analytics: ${e.message ?: "Message non disponible"}")
         }
     }
 

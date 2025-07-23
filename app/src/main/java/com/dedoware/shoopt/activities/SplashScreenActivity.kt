@@ -6,6 +6,7 @@ import android.view.WindowManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.dedoware.shoopt.R
+import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.google.firebase.auth.FirebaseAuth
 import java.util.concurrent.Executors
@@ -19,6 +20,13 @@ class SplashScreenActivity : AppCompatActivity() {
             super.onCreate(savedInstanceState)
 
             setContentView(R.layout.splash_screen)
+
+            // Enregistrement de la vue de l'écran de démarrage dans Analytics
+            try {
+                AnalyticsManager.logScreenView("SplashScreen", "SplashScreenActivity")
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de l'enregistrement de l'écran dans Analytics: ${e.message ?: "Message non disponible"}")
+            }
 
             forceFullScreen()
 
@@ -63,6 +71,21 @@ class SplashScreenActivity : AppCompatActivity() {
         try {
             val currentUser = FirebaseAuth.getInstance().currentUser
             val targetActivity = if (currentUser != null) MainActivity::class.java else LoginActivity::class.java
+
+            // Analytics pour le statut de connexion au démarrage
+            try {
+                AnalyticsManager.logUserAction(
+                    "app_start",
+                    "session",
+                    mapOf(
+                        "user_status" to if (currentUser != null) "logged_in" else "not_logged_in",
+                        "target_screen" to targetActivity.simpleName
+                    )
+                )
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
+            }
+
             val executor = Executors.newSingleThreadScheduledExecutor()
             executor.schedule({
                 try {

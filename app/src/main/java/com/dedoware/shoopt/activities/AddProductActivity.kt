@@ -46,6 +46,7 @@ import com.dedoware.shoopt.persistence.IProductRepository
 import com.dedoware.shoopt.persistence.LocalImageStorage
 import com.dedoware.shoopt.persistence.LocalProductRepository
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
+import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.ShooptUtils
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -211,6 +212,9 @@ class AddProductActivity : AppCompatActivity() {
 
         try {
             setContentView(R.layout.activity_add_product)
+
+            // Enregistrer l'événement d'ouverture de l'écran AddProduct
+            AnalyticsManager.logScreenView("AddProduct", "AddProductActivity")
 
             try {
                 productRepository = if (useFirebase) {
@@ -592,6 +596,9 @@ class AddProductActivity : AppCompatActivity() {
     }
 
     private fun launchCameraInternal() {
+        // Analytique pour le lancement de la caméra
+        AnalyticsManager.logSelectContent("product_picture", "camera", "product_capture")
+
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         val productPictureUri =
             FileProvider.getUriForFile(this, "com.dedoware.shoopt.fileprovider", productPictureFile)
@@ -602,6 +609,9 @@ class AddProductActivity : AppCompatActivity() {
     }
 
     private fun launchBarcodeScanner() {
+        // Analytique pour le scan de code-barres
+        AnalyticsManager.logSelectContent("barcode_scan", "scanner", "product_barcode")
+
         barcodeLauncher.launch(ScanOptions())
     }
 
@@ -612,6 +622,12 @@ class AddProductActivity : AppCompatActivity() {
             Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show()
         } else {
             productBarcodeEditText.setText(result.contents)
+
+            // Analytique pour le code-barres scanné
+            val params = Bundle().apply {
+                putString("barcode_length", result.contents.length.toString())
+            }
+            AnalyticsManager.logCustomEvent("barcode_scanned", params)
         }
     }
 
@@ -679,7 +695,7 @@ class AddProductActivity : AppCompatActivity() {
         }
     }
 
-    // Update the saveProduct function to accept sanitized prices
+    // Update the saveProduct function without collecting personal data
     private fun saveProduct(productPictureUrl: String, price: String, unitPrice: String) {
         val barcode = if (productBarcodeEditText.text.toString().isEmpty()) "0".toLong() else productBarcodeEditText.text.toString().toLong()
         val timestamp = System.currentTimeMillis()
@@ -693,6 +709,14 @@ class AddProductActivity : AppCompatActivity() {
                         if (intent.hasExtra("productId")) {
                             val product = Product(retrievedProductId, barcode, timestamp, name, price.toDouble(), unitPrice.toDouble(), shop, productPictureUrl)
                             productRepository.update(product)
+
+                            // Analytique anonymisée pour la mise à jour de produit
+                            val params = Bundle().apply {
+                                putString("has_barcode", (barcode != 0L).toString())
+                                // Ne pas collecter le nom du produit ou autres données personnelles
+                            }
+                            AnalyticsManager.logCustomEvent("product_updated", params)
+
                             product.id
                         } else {
                             var repositoryProductId = productRepository.getUniqueId()
@@ -702,7 +726,16 @@ class AddProductActivity : AppCompatActivity() {
                             }
 
                             val product = Product(repositoryProductId, barcode, timestamp, name, price.toDouble(), unitPrice.toDouble(), shop, productPictureUrl)
-                            productRepository.insert(product)
+                            val productIdInserted = productRepository.insert(product)
+
+                            // Analytique anonymisée pour l'ajout de produit
+                            val params = Bundle().apply {
+                                putString("has_barcode", (barcode != 0L).toString())
+                                putBoolean("has_image", productPictureUrl.isNotEmpty())
+                                // Ne pas collecter les noms ou prix exacts
+                            }
+                            AnalyticsManager.logCustomEvent("product_created", params)
+                            productIdInserted
                         }
                     }
 
@@ -714,10 +747,24 @@ class AddProductActivity : AppCompatActivity() {
                 } catch (e: Exception) {
                     Log.d("SHOOPT_TAG", "Error saving product.", e)
                     Toast.makeText(this@AddProductActivity, "Error saving product: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+
+                    // Analytique anonymisée pour les erreurs de sauvegarde
+                    val params = Bundle().apply {
+                        putString("error_type", e.javaClass.simpleName)
+                        // Sans les détails du message d'erreur qui pourrait contenir des infos sensibles
+                    }
+                    AnalyticsManager.logCustomEvent("product_save_error", params)
                 }
             }
         } else {
             displayFailedStorage()
+
+            // Analytique anonymisée pour les champs manquants
+            val params = Bundle().apply {
+                putBoolean("missing_fields", true)
+                // Sans détailler quels champs exactement sont manquants
+            }
+            AnalyticsManager.logCustomEvent("product_save_validation_failed", params)
         }
     }
 
@@ -726,13 +773,26 @@ class AddProductActivity : AppCompatActivity() {
             addNewShop(productShop.trim())
     }
 
-    // Replace analyzeProductImage to directly perform the curl equivalent
+    // Mise à jour de la méthode pour inclure l'analytique lors de l'analyse d'image
     private suspend fun analyzeProductImage(imageUrl: String) {
         try {
+            // Analytique pour le début de l'analyse d'image
+            withContext(Dispatchers.Main) {
+                val params = Bundle().apply {
+                    putString("image_source", if (imageUrl.isEmpty()) "camera" else "url")
+                }
+                AnalyticsManager.logCustomEvent("image_analysis_started", params)
+            }
+
             val apiKey = fetchHuggingFaceApiKey() ?: run {
                 Log.e("DEBUG", getString(R.string.hf_key_empty))
                 CrashlyticsManager.log("HF_KEY vide ou non disponible")
                 CrashlyticsManager.setCustomKey("error_location", "api_key_missing")
+
+                withContext(Dispatchers.Main) {
+                    // Analytique pour l'erreur d'API key
+                    AnalyticsManager.logCustomEvent("image_analysis_api_key_missing", null)
+                }
                 return
             }
 
@@ -740,6 +800,11 @@ class AddProductActivity : AppCompatActivity() {
             if (base64Image.isEmpty()) {
                 CrashlyticsManager.log("Échec de l'encodage de l'image en Base64")
                 CrashlyticsManager.setCustomKey("error_location", "image_encoding")
+
+                withContext(Dispatchers.Main) {
+                    // Analytique pour l'erreur d'encodage
+                    AnalyticsManager.logCustomEvent("image_analysis_encoding_failed", null)
+                }
                 return
             }
 
@@ -748,6 +813,11 @@ class AddProductActivity : AppCompatActivity() {
             try {
                 val response = sendImageAnalysisRequest(apiKey, payload)
                 handleImageAnalysisResponse(response)
+
+                withContext(Dispatchers.Main) {
+                    // Analytique pour l'analyse réussie
+                    AnalyticsManager.logCustomEvent("image_analysis_success", null)
+                }
             } catch (e: Exception) {
                 CrashlyticsManager.log("Erreur lors de l'analyse de l'image: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "image_analysis_api")
@@ -757,6 +827,13 @@ class AddProductActivity : AppCompatActivity() {
 
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@AddProductActivity, "Erreur d'analyse de l'image: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+
+                    // Analytique pour l'erreur d'analyse
+                    val params = Bundle().apply {
+                        putString("error_message", e.message ?: "Unknown error")
+                        putString("error_type", e.javaClass.simpleName)
+                    }
+                    AnalyticsManager.logCustomEvent("image_analysis_api_error", params)
                 }
             }
         } catch (e: Exception) {
@@ -769,6 +846,13 @@ class AddProductActivity : AppCompatActivity() {
             Log.e("DEBUG", "Error analyzing product image", e)
             withContext(Dispatchers.Main) {
                 Toast.makeText(this@AddProductActivity, "Error: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+
+                // Analytique pour l'erreur globale
+                val params = Bundle().apply {
+                    putString("error_message", e.message ?: "Unknown error")
+                    putString("error_type", e.javaClass.simpleName)
+                }
+                AnalyticsManager.logCustomEvent("image_analysis_general_error", params)
             }
         }
     }

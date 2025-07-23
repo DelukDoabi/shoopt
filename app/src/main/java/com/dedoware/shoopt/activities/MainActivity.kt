@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dedoware.shoopt.R
+import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.UserPreferences
 import com.journeyapps.barcodescanner.ScanContract
@@ -42,6 +43,13 @@ class MainActivity : AppCompatActivity() {
             supportActionBar?.hide()
 
             setMainVariables()
+
+            // Enregistrement de l'écran principal dans Analytics
+            try {
+                AnalyticsManager.logScreenView("Main", "MainActivity")
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de l'enregistrement de l'écran dans Analytics: ${e.message ?: "Message non disponible"}")
+            }
 
             // Check if the user is signed in
             try {
@@ -85,6 +93,9 @@ class MainActivity : AppCompatActivity() {
 
             updateShoppingListImageButton.setOnClickListener {
                 try {
+                    // Analytics pour le passage à l'écran de mise à jour de la liste
+                    AnalyticsManager.logSelectContent("navigation", "button", "update_shopping_list")
+
                     startActivity(Intent(this, UpdateShoppingListActivity::class.java))
                 } catch (e: Exception) {
                     // Capture des erreurs
@@ -98,11 +109,17 @@ class MainActivity : AppCompatActivity() {
             }
 
             addOrUpdateProductImageButton.setOnClickListener {
+                // Analytics pour le passage à l'écran d'ajout/mise à jour de produit
+                AnalyticsManager.logSelectContent("navigation", "button", "add_product")
+
                 displayAddProductWayUserChoice()
             }
 
             trackShoppingImageButton.setOnClickListener {
                 try {
+                    // Analytics pour le passage à l'écran de suivi des achats
+                    AnalyticsManager.logSelectContent("navigation", "button", "track_shopping")
+
                     startActivity(Intent(this, TrackShoppingActivity::class.java))
                 } catch (e: Exception) {
                     CrashlyticsManager.log("Erreur lors du lancement de TrackShoppingActivity: ${e.message ?: "Message non disponible"}")
@@ -116,6 +133,9 @@ class MainActivity : AppCompatActivity() {
 
             analyseImageButton.setOnClickListener {
                 try {
+                    // Analytics pour le passage à l'écran d'analyse
+                    AnalyticsManager.logSelectContent("navigation", "button", "analyse")
+
                     startActivity(Intent(this, AnalyseActivity::class.java))
                 } catch (e: Exception) {
                     CrashlyticsManager.log("Erreur lors du lancement de AnalyseActivity: ${e.message ?: "Message non disponible"}")

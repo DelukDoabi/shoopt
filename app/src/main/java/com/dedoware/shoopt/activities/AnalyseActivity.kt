@@ -21,6 +21,7 @@ import com.dedoware.shoopt.persistence.IProductRepository
 import com.dedoware.shoopt.persistence.FirebaseProductRepository
 import com.dedoware.shoopt.persistence.LocalProductRepository
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
+import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.UserPreferences
 import kotlinx.coroutines.CoroutineScope
@@ -49,6 +50,18 @@ class AnalyseActivity : AppCompatActivity() {
         try {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.activity_analyse)
+
+            // Enregistrement de l'écran dans Analytics
+            try {
+                AnalyticsManager.logScreenView("Analyze", "AnalyseActivity")
+
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de l'enregistrement de l'écran dans Analytics: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "analytics_screen_log")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+            }
 
             // Initialiser les préférences utilisateur
             try {
@@ -170,6 +183,13 @@ class AnalyseActivity : AppCompatActivity() {
     private fun addSearch() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
+                // Analytique pour la recherche soumise (sans collecter le terme exact)
+                if (!query.isNullOrEmpty()) {
+                    val params = Bundle().apply {
+                        putBoolean("search_performed", true)
+                    }
+                    AnalyticsManager.logCustomEvent("product_search", params)
+                }
                 return false
             }
 

@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
+import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.google.firebase.FirebaseApp
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -22,6 +23,9 @@ class ShooptApplication : Application() {
 
         // Configuration de Crashlytics avec identification de l'environnement
         setupCrashlytics()
+
+        // Configuration de Firebase Analytics
+        setupAnalytics()
 
         // Initialize other components here if necessary
     }
@@ -63,5 +67,18 @@ class ShooptApplication : Application() {
 
         // Déléguer à notre gestionnaire personnalisé
         CrashlyticsManager.setCrashlyticsCollectionEnabled(true)
+    }
+
+    private fun setupAnalytics() {
+        // Déterminer si nous sommes en mode debug
+        val isDebug = (applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
+
+        // Initialiser le gestionnaire d'analytics
+        AnalyticsManager.initialize(isDebug)
+
+        // En production, activer la collecte d'analytics
+        if (!isDebug) {
+            AnalyticsManager.setAnalyticsCollectionEnabled(true)
+        }
     }
 }
