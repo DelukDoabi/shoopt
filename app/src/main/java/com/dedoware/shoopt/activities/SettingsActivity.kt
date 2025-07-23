@@ -34,9 +34,6 @@ class SettingsActivity : AppCompatActivity() {
             // Suivi de la vue d'écran pour l'analyse
             AnalyticsManager.logScreenView("settings_screen", "SettingsActivity")
 
-            // Masquer l'ActionBar pour afficher notre propre mise en page
-            supportActionBar?.hide()
-
             try {
                 userPreferences = UserPreferences(this)
             } catch (e: Exception) {

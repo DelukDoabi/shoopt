@@ -36,9 +36,6 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        // Masquer la barre d'action (ActionBar)
-        supportActionBar?.hide()
-
         auth = FirebaseAuth.getInstance()
 
         val emailEditText = findViewById<EditText>(R.id.editTextEmail)

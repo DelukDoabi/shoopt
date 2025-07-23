@@ -95,8 +95,6 @@ class AnalyseActivity : AppCompatActivity() {
                 Toast.makeText(this, "Erreur lors de l'initialisation de la base de données", Toast.LENGTH_SHORT).show()
             }
 
-            supportActionBar?.hide()
-
             try {
                 progressBar = findViewById(R.id.loading_indicator)
                 searchView = findViewById(R.id.search_view)

@@ -36,8 +36,7 @@
             android:theme="@style/Theme.Shoopt" />
         <activity
             android:name=".activities.LoginActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Shoopt.NoActionBar">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

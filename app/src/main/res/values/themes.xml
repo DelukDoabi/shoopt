@@ -1,31 +1,7 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="Theme.Shoopt" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.Shoopt" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/main_palette_rajah</item>
-        <item name="colorPrimaryVariant">@color/main_palette_rajah_variant</item>
-        <item name="colorOnPrimary">@color/main_palette_rajah_on</item>
-
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/main_palette_old_lavender</item>
-        <item name="colorSecondaryVariant">@color/main_palette_old_lavender_variant</item>
-        <item name="colorOnSecondary">@color/main_palette_old_lavender_on</item>
-
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Configuration pour les insets système -->
-        <item name="android:windowTranslucentStatus">false</item>
-        <item name="android:windowTranslucentNavigation">false</item>
-        <item name="android:fitsSystemWindows">true</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-
-        <!-- Customize your theme here. -->
-        <item name="backgroundColor">@color/main_palette_isabelline</item>
-    </style>
-
-    <!-- Thème sans ActionBar pour l'écran de connexion -->
-    <style name="Theme.Shoopt.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/main_palette_rajah</item>
         <item name="colorPrimaryVariant">@color/main_palette_rajah_variant</item>

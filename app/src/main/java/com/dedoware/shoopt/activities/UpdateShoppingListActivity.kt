@@ -88,8 +88,6 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                 return
             }
 
-            supportActionBar?.hide()
-
             try {
                 mainShoppingListEditText = findViewById(R.id.main_shopping_list_edit_text)
                 convertToProductTrackButton = findViewById(R.id.convert_to_product_track_IB)
