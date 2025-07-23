@@ -28,6 +28,7 @@ android {
                 mappingFileUploadEnabled false
                 nativeSymbolUploadEnabled false
                 unstrippedNativeLibsDir = null
+                // Les clés personnalisées doivent être définies au runtime, pas ici
             }
             // Désactiver l'envoi automatique des rapports pour les tests en utilisant une propriété du manifeste
             manifestPlaceholders = [crashlyticsCollectionEnabled: "false"]
@@ -39,6 +40,7 @@ android {
             firebaseCrashlytics {
                 mappingFileUploadEnabled true
                 nativeSymbolUploadEnabled true
+                // Les clés personnalisées doivent être définies au runtime, pas ici
             }
             // Activer l'envoi automatique des rapports en utilisant une propriété du manifeste
             manifestPlaceholders = [crashlyticsCollectionEnabled: "true"]
@@ -65,7 +67,6 @@ dependencies {
     implementation 'androidx.compose.ui:ui-tooling-preview'
     implementation 'androidx.compose.material3:material3'
     implementation 'com.google.android.gms:play-services-location:21.3.0'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx:20.0.0'
     androidTestImplementation platform('androidx.compose:compose-bom:2024.04.01')
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     debugImplementation 'androidx.compose.ui:ui-tooling'
