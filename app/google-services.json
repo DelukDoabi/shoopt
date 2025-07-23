@@ -19,6 +19,14 @@
           "client_type": 1,
           "android_info": {
             "package_name": "com.dedoware.shoopt",
+            "certificate_hash": "7a05a1beb92e43f3855a63dbdd7f7d8b66c14f21"
+          }
+        },
+        {
+          "client_id": "838481016105-bqva85cnjfqb99cop5mbslg0qn650keo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dedoware.shoopt",
             "certificate_hash": "f3061c195b6b000903270be98a349ed2e63306bb"
           }
         },
