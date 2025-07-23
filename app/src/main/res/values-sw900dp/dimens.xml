@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Margins -->
+    <dimen name="margin_small">16dp</dimen>
+    <dimen name="margin_medium">32dp</dimen>
+    <dimen name="margin_large">48dp</dimen>
+    <dimen name="margin_xlarge">64dp</dimen>
+
+    <!-- Paddings -->
+    <dimen name="screen_padding">48dp</dimen>
+    <dimen name="card_padding">40dp</dimen>
+
+    <!-- Text sizes -->
+    <dimen name="text_small">18sp</dimen>
+    <dimen name="text_medium">22sp</dimen>
+    <dimen name="text_large">28sp</dimen>
+    <dimen name="text_xlarge">36sp</dimen>
+
+    <!-- Component sizing - More compact layout for larger screens -->
+    <dimen name="card_width_percent">0.6</dimen>
+    <dimen name="button_width_percent">0.6</dimen>
+
+    <!-- Logo sizing -->
+    <dimen name="logo_width_percent">0.15</dimen>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Ajustements spécifiques pour l'orientation paysage -->
+    <dimen name="margin_large">16dp</dimen>
+    <dimen name="card_width_percent">0.7</dimen>
+    <dimen name="button_width_percent">0.7</dimen>
+
+    <!-- Réduire la taille du logo en mode paysage pour gagner de l'espace vertical -->
+    <item name="logo_width_percent" format="float" type="dimen">0.15</item>
+</resources>
+
