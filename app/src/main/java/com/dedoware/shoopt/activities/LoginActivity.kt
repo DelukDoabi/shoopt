@@ -35,6 +35,10 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        // Masquer la barre d'action (ActionBar)
+        supportActionBar?.hide()
+
         auth = FirebaseAuth.getInstance()
 
         val emailEditText = findViewById<EditText>(R.id.editTextEmail)
@@ -180,7 +184,7 @@ class LoginActivity : AppCompatActivity() {
                 CrashlyticsManager.setCustomKey("exception_cause", e.cause?.toString() ?: "Cause inconnue")
                 CrashlyticsManager.logException(e)  // Ceci capture la stack trace complète
 
-                // Affichage plus détaillé de l'erreur Google Sign-In
+                // Affichage plus détaillée de l'erreur Google Sign-In
                 Toast.makeText(this, getString(R.string.google_sign_in_failed, "Code: ${e.statusCode}, Message: ${e.message ?: ""}"), Toast.LENGTH_LONG).show()
                 // Log plus détaillé pour le débogage
                 Log.e("GoogleSignIn", "Google sign in failed with code: ${e.statusCode}", e)
