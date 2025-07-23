@@ -83,4 +83,9 @@
     <string name="currency_settings">Para birimi</string>
     <string name="save_settings">Kaydet</string>
     <string name="settings_saved">Ayarlar kaydedildi</string>
+    <string name="welcome_back">Tekrar hoş geldiniz!</string>
+    <string name="or_continue_with">Veya şununla devam edin</string>
+    <string name="don_t_have_account">Hesabınız yok mu?</string>
+    <string name="register_here">Buradan kaydolun</string>
+    <string name="email">E-posta</string>
 </resources>

@@ -7,14 +7,14 @@
     <string name="sign_in_with_google">Google மூலம் உள்நுழையவும்</string>
     <string name="title_activity_register">பதிவு</string>
     <string name="forgot_password">கடவுச்சொல்லை மறந்துவிட்டீர்களா?</string>
-    <string name="unknown_error">அறியப்படாத பிழை ஏற்பட்டுள்ளது.</string>
-    <string name="hf_key_empty">Hugging Face API விசை காலியாக உள்ளது.</string>
+    <string name="unknown_error">அறியப்படாத ���ிழை ஏற்பட்டுள்ளது.</string>
+    <string name="hf_key_empty">Hugging Face API ��ிசை காலியாக உள்ளது.</string>
     <string name="unknown_shop">அறியப்படாத கடை</string>
-    <string name="scan_barcode">பார்கோடு ஸ்கேன் செய்யவும்</string>
+    <string name="scan_barcode">பார்கோடு ஸ்கேன் செய்யவ��ம்</string>
     <string name="logout">வெளியேறு</string>
     <string name="welcome_user">வரவேற்கிறோம், %1$s!</string>
-    <string name="choose_option">ஒரு விருப்பத்தை தேர்ந்தெடுக்கவும்</string>
-    <string name="scan_barcode_or_add_manually">பார்கோடு ஸ்கேன் செய்யவும் அல்லது பொருளை கைமுறையாக சேர்க்கவும்</string>
+    <string name="choose_option">ஒரு விருப்பத்தை தேர்ந்தெடுக்��வும்</string>
+    <string name="scan_barcode_or_add_manually">பார்கோடு ஸ்கேன் செய்யவும் அல்லது பொருளை கை��ுறையாக சேர்க்கவும்</string>
     <string name="add_product_manually">பொருளை கைமுறையாக சேர்க்கவும்</string>
     <string name="cancelled">ரத்து செய்யப்பட்டது</string>
     <string name="analyzing_image">படத்தை பகுப்பாய்வு செய்கிறது</string>
@@ -65,7 +65,7 @@
     <string name="take_picture">படம் எடுக்கவும்</string>
     <string name="back">பின்செல்</string>
     <string name="insert_product_unit_price">யூனிட் விலையை உள்ளிடவும்</string>
-    <string name="insert_product_barcode">பார்கோடு உள்ளிடவும்</string>
+    <string name="insert_product_barcode">பார்கோடு உள்ளிட��ும்</string>
     <string name="update_shopping_list">வாங்கும் பட்டியலை புதுப்பிக்கவும்</string>
     <string name="main_shopping_list">முக்கிய வாங்கும் பட்டியல்</string>
     <string name="secondary_shopping_list">இரண்டாம் வாங்கும் பட்டியல்</string>
@@ -83,4 +83,9 @@
     <string name="currency_settings">நாணயம்</string>
     <string name="save_settings">சேமி</string>
     <string name="settings_saved">அமைப்புகள் சேமிக்கப்பட்டன</string>
+    <string name="welcome_back">மீண்டும் வரவேற்கிறோம்!</string>
+    <string name="or_continue_with">அல்லது இதனுடன் தொடரவும்</string>
+    <string name="don_t_have_account">கணக்கு இல்லையா?</string>
+    <string name="register_here">இங்கே பதிவு செய்யுங்கள்</string>
+    <string name="email">மின்னஞ்சல்</string>
 </resources>

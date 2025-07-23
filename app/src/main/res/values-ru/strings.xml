@@ -83,4 +83,9 @@
     <string name="currency_settings">Валюта</string>
     <string name="save_settings">Сохранить</string>
     <string name="settings_saved">Настройки сохранены</string>
+    <string name="welcome_back">Добро пожаловать!</string>
+    <string name="or_continue_with">Или продолжить с</string>
+    <string name="don_t_have_account">Нет учетной записи?</string>
+    <string name="register_here">Зарегистрироваться здесь</string>
+    <string name="email">Электронная почта</string>
 </resources>

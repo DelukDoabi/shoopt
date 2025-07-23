@@ -83,4 +83,9 @@
     <string name="currency_settings">মুদ্রা সেটিংস</string>
     <string name="save_settings">সেটিংস সংরক্ষণ করুন</string>
     <string name="settings_saved">সেটিংস সফলভাবে সংরক্ষিত হয়েছে</string>
+    <string name="welcome_back">ফিরে আসার জন্য স্বাগতম!</string>
+    <string name="or_continue_with">অথবা এর সাথে চালিয়ে যান</string>
+    <string name="don_t_have_account">অ্যাকাউন্ট নেই?</string>
+    <string name="register_here">এখানে নিবন্ধন করুন</string>
+    <string name="email">ইমেইল</string>
 </resources>

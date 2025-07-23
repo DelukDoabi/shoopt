@@ -83,4 +83,9 @@
     <string name="currency_settings">Νόμισμα</string>
     <string name="save_settings">Αποθήκευση</string>
     <string name="settings_saved">Οι ρυθμίσεις αποθηκεύτηκαν</string>
+    <string name="welcome_back">Καλώς ήρθατε πάλι!</string>
+    <string name="or_continue_with">Ή συνεχίστε με</string>
+    <string name="don_t_have_account">Δεν έχετε λογαριασμό;</string>
+    <string name="register_here">Εγγραφείτε εδώ</string>
+    <string name="email">Email</string>
 </resources>

@@ -13,6 +13,11 @@
     <string name="scan_barcode">Escanear código de barras</string>
     <string name="logout">Cerrar sesión</string>
     <string name="welcome_user">¡Bienvenido, %1$s!</string>
+    <string name="welcome_back">¡Bienvenido de nuevo!</string>
+    <string name="or_continue_with">O continuar con</string>
+    <string name="don_t_have_account">¿No tienes una cuenta?</string>
+    <string name="register_here">Regístrate aquí</string>
+    <string name="email">Correo electrónico</string>
     <string name="choose_option">Elige una opción</string>
     <string name="scan_barcode_or_add_manually">Escanea el código de barras o añade el producto manualmente</string>
     <string name="add_product_manually">Añadir producto manualmente</string>

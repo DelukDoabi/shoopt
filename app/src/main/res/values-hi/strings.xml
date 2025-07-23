@@ -8,7 +8,7 @@
     <string name="title_activity_register">पंजीकरण</string>
     <string name="forgot_password">पासवर्ड भूल गए?</string>
     <string name="unknown_error">अज्ञात त्रुटि हुई।</string>
-    <string name="hf_key_empty">Hugging Face API कुंजी खाली है।</string>
+    <string name="hf_key_empty">Hugging Face API कुंजी खाल��� है।</string>
     <string name="unknown_shop">अज्ञात दुकान</string>
     <string name="scan_barcode">बारकोड स्कैन करें</string>
     <string name="logout">लॉगआउट</string>
@@ -66,7 +66,7 @@
     <string name="product_picture">उत्पाद की तस्वीर</string>
     <string name="take_picture">तस्वीर लें</string>
     <string name="back">वापस</string>
-    <string name="insert_product_unit_price">यूनिट मूल्य दर्ज करें</string>
+    <string name="insert_product_unit_price">यूनिट मूल्य दर्ज करे��</string>
     <string name="insert_product_barcode">बारकोड दर्ज करें</string>
     <string name="update_shopping_list">खरीदारी सूची अपडेट करें</string>
     <string name="main_shopping_list">मुख्य खरीदारी सूची</string>
@@ -75,7 +75,7 @@
     <string name="products_added">%1$d उत्पाद जोड़े गए</string>
     <string name="enter_items_here">यहां आइटम दर्ज करें</string>
     <string name="swipe_to_delete">हटाएं</string>
-    <string name="settings">सेटिंग्स</string>
+    <string name="settings">सेटि���ग्स</string>
     <string name="theme_settings">थीम</string>
     <string name="theme_light">लाइट थीम</string>
     <string name="theme_dark">डार्क थीम</string>
@@ -83,4 +83,9 @@
     <string name="currency_settings">मुद्रा</string>
     <string name="save_settings">सहेजें</string>
     <string name="settings_saved">सेटिंग्स सहेजी गईं</string>
+    <string name="welcome_back">वापसी पर स्वागत है!</string>
+    <string name="or_continue_with">या इसके साथ जारी रखें</string>
+    <string name="don_t_have_account">खाता नहीं है?</string>
+    <string name="register_here">यहां पंजीकरण करें</string>
+    <string name="email">ईमेल</string>
 </resources>

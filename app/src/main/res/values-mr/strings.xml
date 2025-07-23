@@ -83,4 +83,9 @@
     <string name="currency_settings">चलन</string>
     <string name="save_settings">जतन करा</string>
     <string name="settings_saved">सेटिंग्ज जतन केल्या</string>
+    <string name="welcome_back">पुन्हा स्वागत आहे!</string>
+    <string name="or_continue_with">किंवा यासह सुरू ठेवा</string>
+    <string name="don_t_have_account">खाते नाही?</string>
+    <string name="register_here">येथे नोंदणी करा</string>
+    <string name="email">ईमेल</string>
 </resources>

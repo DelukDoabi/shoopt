@@ -83,4 +83,9 @@
     <string name="currency_settings">Währung</string>
     <string name="save_settings">Speichern</string>
     <string name="settings_saved">Einstellungen gespeichert</string>
+    <string name="welcome_back">Willkommen zurück!</string>
+    <string name="or_continue_with">Oder fortfahren mit</string>
+    <string name="don_t_have_account">Noch kein Konto?</string>
+    <string name="register_here">Hier registrieren</string>
+    <string name="email">E-Mail</string>
 </resources>

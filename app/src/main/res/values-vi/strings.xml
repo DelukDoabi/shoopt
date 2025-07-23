@@ -83,4 +83,9 @@
     <string name="currency_settings">Tiền tệ</string>
     <string name="save_settings">Lưu</string>
     <string name="settings_saved">Đã lưu cài đặt</string>
+    <string name="welcome_back">Chào mừng trở lại!</string>
+    <string name="or_continue_with">Hoặc tiếp tục với</string>
+    <string name="don_t_have_account">Bạn chưa có tài khoản?</string>
+    <string name="register_here">Đăng ký tại đây</string>
+    <string name="email">Email</string>
 </resources>
