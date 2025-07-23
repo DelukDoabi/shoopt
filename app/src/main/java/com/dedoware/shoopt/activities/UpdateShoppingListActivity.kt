@@ -23,6 +23,7 @@ import com.dedoware.shoopt.persistence.IShoppingListRepository
 import com.dedoware.shoopt.persistence.FirebaseShoppingListRepository
 import com.dedoware.shoopt.persistence.LocalShoppingListRepository
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
+import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
@@ -50,84 +51,188 @@ class UpdateShoppingListActivity : AppCompatActivity() {
     private val useFirebase = false // This could be a config or user preference
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_update_shopping_list)
+        try {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_update_shopping_list)
 
-        shoppingListRepository = if (useFirebase) {
-            FirebaseShoppingListRepository()
-        } else {
-            LocalShoppingListRepository(
-                database.shoppingListDao()
-            )
-        }
-
-        supportActionBar?.hide()
-
-        mainShoppingListEditText = findViewById(R.id.main_shopping_list_edit_text)
-        convertToProductTrackButton = findViewById(R.id.convert_to_product_track_IB)
-        productTrackRecyclerView = findViewById(R.id.product_track_recycler_view)
-        productTrackAdapter = ProductTrackAdapter(shoppingItemList)
-        productTrackRecyclerView.layoutManager = LinearLayoutManager(this)
-        productTrackRecyclerView.adapter = productTrackAdapter
-
-        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean = false
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val position = viewHolder.adapterPosition
-                productTrackAdapter.removeAt(position)
-            }
-        }
-        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(productTrackRecyclerView)
-
-        convertToProductTrackButton.setOnClickListener {
-            val products = mainShoppingListEditText.text.toString()
-                .split(Regex("[,.\\-;:|/]+"))
-                .map { it.trim() }
-                .filter { it.isNotEmpty() }
-            if (shoppingItemList.isEmpty()) {
-                shoppingItemList.addAll(products.map {
-                    val regex = Regex("(\\d+)")
-                    val quantityMatch = regex.find(it)
-                    val quantity = quantityMatch?.value?.toIntOrNull() ?: 1
-                    val name = if (quantityMatch != null) it.replace(quantityMatch.value, "").trim() else it
-                    Product(name = name, id = "", barcode = 0, timestamp = 0, price = 0.0, unitPrice = 0.0, shop = "", pictureUrl = "")
-                        .let { product -> CartItem(product, quantity) }
-                })
-            } else {
-                shoppingItemList.addAll(products.map {
-                    val regex = Regex("(\\d+)")
-                    val quantityMatch = regex.find(it)
-                    val quantity = quantityMatch?.value?.toIntOrNull() ?: 1
-                    val name = if (quantityMatch != null) it.replace(quantityMatch.value, "").trim() else it
-                    Product(name = name, id = "", barcode = 0, timestamp = 0, price = 0.0, unitPrice = 0.0, shop = "", pictureUrl = "")
-                        .let { product -> CartItem(product, quantity) }
-                })
-            }
-            productTrackAdapter.notifyDataSetChanged()
-            mainShoppingListEditText.setText("")
-            Toast.makeText(this, getString(R.string.products_added, products.size), Toast.LENGTH_SHORT).show()
-        }
-
-        emptyMainListButton = findViewById(R.id.empty_main_list_IB)
-        emptyMainListButton.setOnClickListener {
-            showConfirmationDialog {
-                shoppingItemList.clear()
-                productTrackAdapter.notifyDataSetChanged()
-                mainShoppingListEditText.setText("")
-
-                // Aussi sauvegarder la liste vide dans le repository
-                CoroutineScope(Dispatchers.IO).launch {
-                    shoppingListRepository.saveShoppingList("mainShoppingList", "")
+            try {
+                shoppingListRepository = if (useFirebase) {
+                    FirebaseShoppingListRepository()
+                } else {
+                    LocalShoppingListRepository(
+                        database.shoppingListDao()
+                    )
                 }
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de l'initialisation du repository de listes de courses: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "shopping_list_repository_init")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
 
-                Toast.makeText(this, R.string.shopping_cart_emptied, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Erreur lors de l'initialisation de l'application", Toast.LENGTH_SHORT).show()
+                finish()
+                return
             }
-        }
 
-        storeAndLoadShoppingList(mainShoppingListEditText, "mainShoppingList")
+            supportActionBar?.hide()
 
-        backImageButton = findViewById(R.id.back_IB)
-        backImageButton.setOnClickListener {
+            try {
+                mainShoppingListEditText = findViewById(R.id.main_shopping_list_edit_text)
+                convertToProductTrackButton = findViewById(R.id.convert_to_product_track_IB)
+                productTrackRecyclerView = findViewById(R.id.product_track_recycler_view)
+                productTrackAdapter = ProductTrackAdapter(shoppingItemList)
+                productTrackRecyclerView.layoutManager = LinearLayoutManager(this)
+                productTrackRecyclerView.adapter = productTrackAdapter
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de l'initialisation des composants d'interface: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "ui_components_init")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+
+                Toast.makeText(this, "Erreur lors de l'initialisation de l'interface", Toast.LENGTH_SHORT).show()
+            }
+
+            try {
+                val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+                    override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean = false
+                    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                        try {
+                            val position = viewHolder.adapterPosition
+                            productTrackAdapter.removeAt(position)
+                        } catch (e: Exception) {
+                            CrashlyticsManager.log("Erreur lors du swipe pour suppression: ${e.message ?: "Message non disponible"}")
+                            CrashlyticsManager.setCustomKey("error_location", "swipe_item_removal")
+                            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                            CrashlyticsManager.logException(e)
+
+                            Toast.makeText(this@UpdateShoppingListActivity, "Erreur lors de la suppression de l'élément", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(productTrackRecyclerView)
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de la configuration du swipe pour suppression: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "swipe_config")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+            }
+
+            convertToProductTrackButton.setOnClickListener {
+                try {
+                    val products = mainShoppingListEditText.text.toString()
+                        .split(Regex("[,.\\-;:|/]+"))
+                        .map { it.trim() }
+                        .filter { it.isNotEmpty() }
+                    if (shoppingItemList.isEmpty()) {
+                        shoppingItemList.addAll(products.map {
+                            val regex = Regex("(\\d+)")
+                            val quantityMatch = regex.find(it)
+                            val quantity = quantityMatch?.value?.toIntOrNull() ?: 1
+                            val name = if (quantityMatch != null) it.replace(quantityMatch.value, "").trim() else it
+                            Product(name = name, id = "", barcode = 0, timestamp = 0, price = 0.0, unitPrice = 0.0, shop = "", pictureUrl = "")
+                                .let { product -> CartItem(product, quantity) }
+                        })
+                    } else {
+                        shoppingItemList.addAll(products.map {
+                            val regex = Regex("(\\d+)")
+                            val quantityMatch = regex.find(it)
+                            val quantity = quantityMatch?.value?.toIntOrNull() ?: 1
+                            val name = if (quantityMatch != null) it.replace(quantityMatch.value, "").trim() else it
+                            Product(name = name, id = "", barcode = 0, timestamp = 0, price = 0.0, unitPrice = 0.0, shop = "", pictureUrl = "")
+                                .let { product -> CartItem(product, quantity) }
+                        })
+                    }
+                    productTrackAdapter.notifyDataSetChanged()
+                    mainShoppingListEditText.setText("")
+                    Toast.makeText(this, getString(R.string.products_added, products.size), Toast.LENGTH_SHORT).show()
+                } catch (e: Exception) {
+                    CrashlyticsManager.log("Erreur lors de la conversion de la liste de courses: ${e.message ?: "Message non disponible"}")
+                    CrashlyticsManager.setCustomKey("error_location", "convert_list")
+                    CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                    CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                    CrashlyticsManager.logException(e)
+
+                    Toast.makeText(this, "Erreur lors de la conversion de la liste", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            emptyMainListButton = findViewById(R.id.empty_main_list_IB)
+            emptyMainListButton.setOnClickListener {
+                try {
+                    showConfirmationDialog {
+                        try {
+                            shoppingItemList.clear()
+                            productTrackAdapter.notifyDataSetChanged()
+                            mainShoppingListEditText.setText("")
+
+                            // Aussi sauvegarder la liste vide dans le repository
+                            CoroutineScope(Dispatchers.IO).launch {
+                                try {
+                                    shoppingListRepository.saveShoppingList("mainShoppingList", "")
+                                } catch (e: Exception) {
+                                    CrashlyticsManager.log("Erreur lors de la sauvegarde de la liste vide: ${e.message ?: "Message non disponible"}")
+                                    CrashlyticsManager.setCustomKey("error_location", "save_empty_list")
+                                    CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                                    CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                                    CrashlyticsManager.logException(e)
+
+                                    withContext(Dispatchers.Main) {
+                                        Toast.makeText(this@UpdateShoppingListActivity, "Erreur lors de la sauvegarde de la liste", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            }
+
+                            Toast.makeText(this, R.string.shopping_cart_emptied, Toast.LENGTH_SHORT).show()
+                        } catch (e: Exception) {
+                            CrashlyticsManager.log("Erreur lors de la vidange de la liste: ${e.message ?: "Message non disponible"}")
+                            CrashlyticsManager.setCustomKey("error_location", "empty_list_action")
+                            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                            CrashlyticsManager.logException(e)
+
+                            Toast.makeText(this, "Erreur lors de la suppression de la liste", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    CrashlyticsManager.log("Erreur lors de l'affichage du dialogue de confirmation: ${e.message ?: "Message non disponible"}")
+                    CrashlyticsManager.setCustomKey("error_location", "show_confirmation_dialog")
+                    CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                    CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                    CrashlyticsManager.logException(e)
+
+                    Toast.makeText(this, "Erreur lors de l'affichage du dialogue", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            try {
+                storeAndLoadShoppingList(mainShoppingListEditText, "mainShoppingList")
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors du chargement initial de la liste de courses: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "initial_list_load")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+
+                Toast.makeText(this, "Erreur lors du chargement de la liste", Toast.LENGTH_SHORT).show()
+            }
+
+            backImageButton = findViewById(R.id.back_IB)
+            backImageButton.setOnClickListener {
+                finish()
+            }
+        } catch (e: Exception) {
+            // Capture des erreurs globales dans onCreate
+            CrashlyticsManager.log("Erreur globale dans UpdateShoppingListActivity.onCreate: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "shopping_list_activity_init")
+            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+            CrashlyticsManager.logException(e)
+
+            Toast.makeText(this, "Une erreur est survenue lors du démarrage de l'application", Toast.LENGTH_LONG).show()
             finish()
         }
     }
@@ -179,48 +284,101 @@ class UpdateShoppingListActivity : AppCompatActivity() {
     }
 
     private fun saveShoppingItemListToPreferences(prefKey: String, items: List<CartItem>) {
-        val sharedPreferences = getSharedPreferences(prefKey, MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        val jsonList = Gson().toJson(items)
-        editor.putString("shoppingItemList", jsonList)
-        editor.apply()
+        try {
+            val sharedPreferences = getSharedPreferences(prefKey, MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            val jsonList = Gson().toJson(items)
+            editor.putString("shoppingItemList", jsonList)
+            editor.apply()
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la sauvegarde de la liste dans les préférences: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "save_shopping_list_preferences")
+            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+            CrashlyticsManager.logException(e)
+        }
     }
 
     private fun loadShoppingItemListFromPreferences(prefKey: String): List<CartItem> {
-        val sharedPreferences = getSharedPreferences(prefKey, MODE_PRIVATE)
-        val jsonList = sharedPreferences.getString("shoppingItemList", null)
-        return if (jsonList != null) {
-            val type = object : TypeToken<List<CartItem>>() {}.type
-            Gson().fromJson(jsonList, type)
-        } else {
-            emptyList()
+        try {
+            val sharedPreferences = getSharedPreferences(prefKey, MODE_PRIVATE)
+            val jsonList = sharedPreferences.getString("shoppingItemList", null)
+            return if (jsonList != null) {
+                val type = object : TypeToken<List<CartItem>>() {}.type
+                Gson().fromJson(jsonList, type)
+            } else {
+                emptyList()
+            }
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors du chargement de la liste depuis les préférences: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "load_shopping_list_preferences")
+            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+            CrashlyticsManager.logException(e)
+            return emptyList()
         }
     }
 
     override fun onPause() {
-        super.onPause()
-        saveShoppingItemListToPreferences("MainShoppingListPrefs", shoppingItemList)
+        try {
+            super.onPause()
+            saveShoppingItemListToPreferences("MainShoppingListPrefs", shoppingItemList)
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la pause de l'activité: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "on_pause_activity")
+            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+            CrashlyticsManager.logException(e)
+        }
     }
 
     override fun onResume() {
-        super.onResume()
-        shoppingItemList.clear()
-        shoppingItemList.addAll(loadShoppingItemListFromPreferences("MainShoppingListPrefs"))
-        productTrackAdapter.notifyDataSetChanged()
+        try {
+            super.onResume()
+            shoppingItemList.clear()
+            shoppingItemList.addAll(loadShoppingItemListFromPreferences("MainShoppingListPrefs"))
+            productTrackAdapter.notifyDataSetChanged()
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la reprise de l'activité: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "on_resume_activity")
+            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+            CrashlyticsManager.logException(e)
+
+            Toast.makeText(this, "Erreur lors du chargement de la liste de courses", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putParcelableArrayList("shoppingItemList", ArrayList<Parcelable>(shoppingItemList))
+        try {
+            super.onSaveInstanceState(outState)
+            outState.putParcelableArrayList("shoppingItemList", ArrayList<Parcelable>(shoppingItemList))
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la sauvegarde de l'état de l'instance: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "save_instance_state")
+            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+            CrashlyticsManager.logException(e)
+        }
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        val restoredList = savedInstanceState.getParcelableArrayList<Parcelable>("shoppingItemList")?.filterIsInstance<CartItem>()
-        if (restoredList != null) {
-            shoppingItemList.clear()
-            shoppingItemList.addAll(restoredList)
-            productTrackAdapter.notifyDataSetChanged()
+        try {
+            super.onRestoreInstanceState(savedInstanceState)
+            val restoredList = savedInstanceState.getParcelableArrayList<Parcelable>("shoppingItemList")?.filterIsInstance<CartItem>()
+            if (restoredList != null) {
+                shoppingItemList.clear()
+                shoppingItemList.addAll(restoredList)
+                productTrackAdapter.notifyDataSetChanged()
+            }
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la restauration de l'état de l'instance: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "restore_instance_state")
+            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+            CrashlyticsManager.logException(e)
+
+            Toast.makeText(this, "Erreur lors de la restauration de l'état de l'application", Toast.LENGTH_SHORT).show()
         }
     }
 }

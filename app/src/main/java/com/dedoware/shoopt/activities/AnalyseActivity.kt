@@ -21,6 +21,7 @@ import com.dedoware.shoopt.persistence.IProductRepository
 import com.dedoware.shoopt.persistence.FirebaseProductRepository
 import com.dedoware.shoopt.persistence.LocalProductRepository
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
+import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.UserPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -45,51 +46,123 @@ class AnalyseActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_analyse)
+        try {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_analyse)
 
-        // Initialiser les préférences utilisateur
-        userPreferences = UserPreferences(this)
+            // Initialiser les préférences utilisateur
+            try {
+                userPreferences = UserPreferences(this)
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de l'initialisation des préférences utilisateur: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "user_preferences_init")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+            }
 
-        productRepository = if (useFirebase) {
-            FirebaseProductRepository()
-        } else {
-            LocalProductRepository(
-                database.productDao(),
-                database.shopDao(),
-                database.shoppingCartDao(),
-                database.cartItemDao()
-            )
+            try {
+                productRepository = if (useFirebase) {
+                    FirebaseProductRepository()
+                } else {
+                    LocalProductRepository(
+                        database.productDao(),
+                        database.shopDao(),
+                        database.shoppingCartDao(),
+                        database.cartItemDao()
+                    )
+                }
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de l'initialisation du repository: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "repository_init")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+
+                Toast.makeText(this, "Erreur lors de l'initialisation de la base de données", Toast.LENGTH_SHORT).show()
+            }
+
+            supportActionBar?.hide()
+
+            try {
+                progressBar = findViewById(R.id.loading_indicator)
+                searchView = findViewById(R.id.search_view)
+                productListRecyclerView = findViewById(R.id.product_list_recycler_view)
+                backImageButton = findViewById(R.id.back_IB)
+
+                backImageButton.setOnClickListener { finish() }
+
+                progressBar.visibility = View.VISIBLE
+                productListRecyclerView.layoutManager = GridLayoutManager(this, 2)
+                productListRecyclerView.adapter = ProductListAdapter(emptyList(), userPreferences)
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de l'initialisation de l'interface: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "ui_init")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+
+                Toast.makeText(this, "Erreur lors de l'initialisation de l'interface", Toast.LENGTH_SHORT).show()
+            }
+
+            try {
+                loadProducts()
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors du chargement des produits: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "load_products")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+
+                progressBar.visibility = View.GONE
+                Toast.makeText(this, "Impossible de charger les produits", Toast.LENGTH_SHORT).show()
+            }
+
+            try {
+                addSearch()
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de l'initialisation de la recherche: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "search_init")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+            }
+        } catch (e: Exception) {
+            // Capture des erreurs globales dans onCreate
+            CrashlyticsManager.log("Erreur globale dans onCreate d'AnalyseActivity: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "analyse_activity_init")
+            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+            CrashlyticsManager.logException(e)
+
+            Toast.makeText(this, "Une erreur est survenue lors du démarrage de l'application", Toast.LENGTH_LONG).show()
         }
-
-        supportActionBar?.hide()
-
-        progressBar = findViewById(R.id.loading_indicator)
-        searchView = findViewById(R.id.search_view)
-        productListRecyclerView = findViewById(R.id.product_list_recycler_view)
-        backImageButton = findViewById(R.id.back_IB)
-
-        backImageButton.setOnClickListener { finish() }
-
-        progressBar.visibility = View.VISIBLE
-        productListRecyclerView.layoutManager = GridLayoutManager(this, 2)
-        productListRecyclerView.adapter = ProductListAdapter(emptyList(), userPreferences)
-
-        loadProducts()
-        addSearch()
     }
 
     private fun loadProducts() {
         CoroutineScope(Dispatchers.Main).launch {
-            products = withContext(Dispatchers.IO) {
-                productRepository.getAll()
-            }
-            if (products.isNotEmpty()) {
-                setupAdapter(products.sortedByDescending { it.timestamp })
-                progressBar.visibility = View.GONE
-            } else {
-                Log.d("SHOOPT_TAG", "No products found!")
-                progressBar.visibility = View.GONE
+            try {
+                products = withContext(Dispatchers.IO) {
+                    productRepository.getAll()
+                }
+                if (products.isNotEmpty()) {
+                    setupAdapter(products.sortedByDescending { it.timestamp })
+                    progressBar.visibility = View.GONE
+                } else {
+                    Log.d("SHOOPT_TAG", "No products found!")
+                    progressBar.visibility = View.GONE
+                }
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors du chargement des produits: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "load_products_coroutine")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+
+                withContext(Dispatchers.Main) {
+                    progressBar.visibility = View.GONE
+                    Toast.makeText(this@AnalyseActivity, "Erreur lors du chargement des produits", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -139,16 +212,27 @@ class AnalyseActivity : AppCompatActivity() {
     }
 
     private fun openAddProductActivity(product: Product) {
-        val intent = Intent(this, AddProductActivity::class.java).apply {
-            putExtra("productId", product.id)
-            putExtra("barcode", product.barcode)
-            putExtra("name", product.name)
-            putExtra("shop", product.shop)
-            putExtra("price", product.price)
-            putExtra("unitPrice", product.unitPrice)
-            putExtra("pictureUrl", product.pictureUrl)
+        try {
+            val intent = Intent(this, AddProductActivity::class.java).apply {
+                putExtra("productId", product.id)
+                putExtra("barcode", product.barcode)
+                putExtra("name", product.name)
+                putExtra("shop", product.shop)
+                putExtra("price", product.price)
+                putExtra("unitPrice", product.unitPrice)
+                putExtra("pictureUrl", product.pictureUrl)
+            }
+            addProductLauncher.launch(intent)
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de l'ouverture de l'activité d'édition de produit: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "open_add_product")
+            CrashlyticsManager.setCustomKey("product_id", product.id)
+            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+            CrashlyticsManager.logException(e)
+
+            Toast.makeText(this, "Impossible d'ouvrir l'éditeur de produit", Toast.LENGTH_SHORT).show()
         }
-        addProductLauncher.launch(intent)
     }
 
     private fun displayAlertOnDeleteProduct(product: Product) {
@@ -157,24 +241,41 @@ class AnalyseActivity : AppCompatActivity() {
             .setMessage(getString(R.string.delete_product_confirm))
             .setPositiveButton(getString(R.string.delete)) { dialog, _ ->
                 CoroutineScope(Dispatchers.Main).launch {
-                    val isDeleted = withContext(Dispatchers.IO) {
-                        productRepository.deleteProduct(product)
-                    }
-                    if (isDeleted) {
-                        Toast.makeText(
-                            this@AnalyseActivity,
-                            getString(R.string.product_deleted, product.name),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        loadProducts()
-                    } else {
+                    try {
+                        val isDeleted = withContext(Dispatchers.IO) {
+                            productRepository.deleteProduct(product)
+                        }
+                        if (isDeleted) {
+                            Toast.makeText(
+                                this@AnalyseActivity,
+                                getString(R.string.product_deleted, product.name),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            loadProducts()
+                        } else {
+                            Toast.makeText(
+                                this@AnalyseActivity,
+                                getString(R.string.failed_to_delete_product),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        dialog.dismiss()
+                    } catch (e: Exception) {
+                        CrashlyticsManager.log("Erreur lors de la suppression du produit: ${e.message ?: "Message non disponible"}")
+                        CrashlyticsManager.setCustomKey("error_location", "delete_product")
+                        CrashlyticsManager.setCustomKey("product_id", product.id)
+                        CrashlyticsManager.setCustomKey("product_name", product.name)
+                        CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                        CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                        CrashlyticsManager.logException(e)
+
                         Toast.makeText(
                             this@AnalyseActivity,
                             getString(R.string.failed_to_delete_product),
                             Toast.LENGTH_SHORT
                         ).show()
+                        dialog.dismiss()
                     }
-                    dialog.dismiss()
                 }
             }
             .setNegativeButton(getString(R.string.cancelled)) { dialog, _ ->

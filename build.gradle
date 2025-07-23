@@ -8,6 +8,8 @@ buildscript {
     dependencies {
         // The dependency for the Google services Gradle plugin
         classpath 'com.google.gms:google-services:4.3.15'
+        // The dependency for the Firebase Crashlytics plugin
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.5'
     }
 }
 

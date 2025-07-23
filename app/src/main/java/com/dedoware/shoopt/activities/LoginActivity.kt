@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dedoware.shoopt.R
+import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -51,6 +52,7 @@ class LoginActivity : AppCompatActivity() {
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful()) {
+                        // Pas de logging pour les cas de succès
                         Toast.makeText(this, getString(R.string.login_successful), Toast.LENGTH_SHORT)
                             .show()
                         startActivity(
@@ -61,6 +63,14 @@ class LoginActivity : AppCompatActivity() {
                         ) // Navigate to the main app
                         finish()
                     } else {
+                        // Log de l'erreur dans Crashlytics
+                        task.exception?.let {
+                            CrashlyticsManager.log("Échec de connexion par email: ${it.message}")
+                            CrashlyticsManager.logException(it)
+                            CrashlyticsManager.setCustomKey("auth_method", "email")
+                            CrashlyticsManager.setCustomKey("email", email) // Attention: ne stockez que des infos non sensibles
+                        }
+
                         Toast.makeText(
                             this,
                             getString(R.string.login_failed, task.exception!!.message ?: ""),
@@ -100,21 +110,59 @@ class LoginActivity : AppCompatActivity() {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(data)
                 val account = task.getResult(ApiException::class.java)
                 val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+
                 auth.signInWithCredential(credential).addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
+                        // Association de l'ID utilisateur pour les futurs rapports de crash
+                        // On garde uniquement l'association de l'utilisateur pour les rapports futurs
+                        auth.currentUser?.uid?.let { userId ->
+                            CrashlyticsManager.setUserId(userId)
+                        }
+
                         Toast.makeText(this, getString(R.string.google_sign_in_successful), Toast.LENGTH_SHORT).show()
                         startActivity(Intent(this, MainActivity::class.java))
                         finish()
                     } else {
+                        // Log de l'erreur dans Crashlytics
+                        task.exception?.let {
+                            CrashlyticsManager.log("Échec de l'authentification Firebase avec Google: ${it.message}")
+                            CrashlyticsManager.logException(it)
+
+                            // Ajout d'informations contextuelles sur le type d'erreur
+                            CrashlyticsManager.setCustomKey("auth_method", "google")
+                            CrashlyticsManager.setCustomKey("error_phase", "firebase_auth")
+
+                            // Capture de la stack trace complète
+                            it.printStackTrace()
+                        }
+
                         Toast.makeText(this, getString(R.string.authentication_failed, task.exception?.message ?: ""), Toast.LENGTH_SHORT).show()
                     }
                 }
             } catch (e: ApiException) {
+                // Capture détaillée de l'erreur Google Sign-In avec Crashlytics
+                CrashlyticsManager.log("Google Sign-In ApiException: Code ${e.statusCode}, Message: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("google_sign_in_error_code", e.statusCode)
+                CrashlyticsManager.setCustomKey("auth_method", "google")
+                CrashlyticsManager.setCustomKey("error_phase", "google_signin")
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.setCustomKey("exception_cause", e.cause?.toString() ?: "Cause inconnue")
+                CrashlyticsManager.logException(e)  // Ceci capture la stack trace complète
+
                 // Affichage plus détaillé de l'erreur Google Sign-In
                 Toast.makeText(this, getString(R.string.google_sign_in_failed, "Code: ${e.statusCode}, Message: ${e.message ?: ""}"), Toast.LENGTH_LONG).show()
                 // Log plus détaillé pour le débogage
                 Log.e("GoogleSignIn", "Google sign in failed with code: ${e.statusCode}", e)
             } catch (e: Exception) {
+                // Capture des erreurs inattendues avec Crashlytics
+                CrashlyticsManager.log("Erreur inattendue lors de la connexion Google: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("auth_method", "google")
+                CrashlyticsManager.setCustomKey("error_phase", "unknown")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.setCustomKey("exception_cause", e.cause?.toString() ?: "Cause inconnue")
+                CrashlyticsManager.logException(e)  // Ceci capture la stack trace complète
+
                 Toast.makeText(this, getString(R.string.unexpected_error, e.message ?: ""), Toast.LENGTH_SHORT).show()
                 Log.e("GoogleSignIn", "Unexpected error during Google sign in", e)
             }
