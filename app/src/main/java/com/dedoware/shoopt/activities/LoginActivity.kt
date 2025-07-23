@@ -3,6 +3,7 @@ package com.dedoware.shoopt.activities
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -109,9 +110,13 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
             } catch (e: ApiException) {
-                Toast.makeText(this, getString(R.string.google_sign_in_failed, e.message ?: ""), Toast.LENGTH_SHORT).show()
+                // Affichage plus détaillé de l'erreur Google Sign-In
+                Toast.makeText(this, getString(R.string.google_sign_in_failed, "Code: ${e.statusCode}, Message: ${e.message ?: ""}"), Toast.LENGTH_LONG).show()
+                // Log plus détaillé pour le débogage
+                Log.e("GoogleSignIn", "Google sign in failed with code: ${e.statusCode}", e)
             } catch (e: Exception) {
                 Toast.makeText(this, getString(R.string.unexpected_error, e.message ?: ""), Toast.LENGTH_SHORT).show()
+                Log.e("GoogleSignIn", "Unexpected error during Google sign in", e)
             }
         }
     }
