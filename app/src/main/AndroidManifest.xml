@@ -19,6 +19,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Shoopt"
         tools:targetApi="34">
+
+        <!-- Configuration Firebase Crashlytics -->
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="${crashlyticsCollectionEnabled}" />
+
         <activity
             android:name=".activities.SettingsActivity"
             android:exported="false"

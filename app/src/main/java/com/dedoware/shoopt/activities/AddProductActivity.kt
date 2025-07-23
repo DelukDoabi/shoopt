@@ -46,6 +46,8 @@ import com.dedoware.shoopt.persistence.IProductRepository
 import com.dedoware.shoopt.persistence.LocalImageStorage
 import com.dedoware.shoopt.persistence.LocalProductRepository
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
+import com.dedoware.shoopt.utils.AnalyticsManager
+import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.ShooptUtils
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -100,27 +102,56 @@ class AddProductActivity : AppCompatActivity() {
 
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                displayProductPictureOnImageButton()
+            try {
+                if (result.resultCode == Activity.RESULT_OK) {
+                    displayProductPictureOnImageButton()
 
-                val pictureUrl = intent.getStringExtra("pictureUrl") ?: ""
+                    val pictureUrl = intent.getStringExtra("pictureUrl") ?: ""
 
-                // Trigger image analysis and shop name auto-completion in parallel
-                CoroutineScope(Dispatchers.Main).launch {
-                    showLoadingOverlay()
-                    val imageAnalysisJob = async {
-                        analyzeProductImageWithMessage(pictureUrl)
+                    // Trigger image analysis and shop name auto-completion in parallel
+                    CoroutineScope(Dispatchers.Main).launch {
+                        try {
+                            showLoadingOverlay()
+                            val imageAnalysisJob = async {
+                                analyzeProductImageWithMessage(pictureUrl)
+                            }
+
+                            val shopNameAutoCompleteJob = async {
+                                fetchCurrentLocationAndFillShopNameWithMessage()
+                            }
+
+                            // Wait for both tasks to complete
+                            try {
+                                imageAnalysisJob.await()
+                                shopNameAutoCompleteJob.await()
+                            } catch (e: Exception) {
+                                CrashlyticsManager.log("Erreur lors de l'attente des tâches asynchrones: ${e.message ?: "Message non disponible"}")
+                                CrashlyticsManager.setCustomKey("error_location", "async_tasks")
+                                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                                CrashlyticsManager.logException(e)
+                            } finally {
+                                hideLoadingOverlay()
+                            }
+                        } catch (e: Exception) {
+                            CrashlyticsManager.log("Erreur lors de l'analyse de l'image ou de la récupération de l'emplacement: ${e.message ?: "Message non disponible"}")
+                            CrashlyticsManager.setCustomKey("error_location", "product_analysis")
+                            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                            CrashlyticsManager.logException(e)
+
+                            hideLoadingOverlay()
+                        }
                     }
-
-                    val shopNameAutoCompleteJob = async {
-                        fetchCurrentLocationAndFillShopNameWithMessage()
-                    }
-
-                    // Wait for both tasks to complete
-                    imageAnalysisJob.await()
-                    shopNameAutoCompleteJob.await()
-                    hideLoadingOverlay()
                 }
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur dans resultLauncher: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "result_launcher")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+
+                Toast.makeText(this, "Une erreur est survenue lors du traitement de l'image", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -179,119 +210,305 @@ class AddProductActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_add_product)
+        try {
+            setContentView(R.layout.activity_add_product)
 
-        productRepository = if (useFirebase) {
-            FirebaseProductRepository()
-        } else {
-            LocalProductRepository(
-                database.productDao(),
-                database.shopDao(),
-                database.shoppingCartDao(),
-                database.cartItemDao()
-            )
-        }
+            // Enregistrer l'événement d'ouverture de l'écran AddProduct
+            AnalyticsManager.logScreenView("AddProduct", "AddProductActivity")
 
-        imageStorage = if (useFirebase) {
-            FirebaseImageStorage()
-        } else {
-            LocalImageStorage(this)
-        }
-
-        supportActionBar?.hide()
-
-        setMainVariables()
-
-        retrieveProductDataFromIntent()
-
-        retrieveMainData(savedInstanceState)
-
-        if (useFirebase) {
-            ShooptUtils.doAfterInitFirebase(baseContext) { setShopsData() }
-        } else {
-            setShopsData()
-        }
-
-        productPictureFile = File(
-            getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-            "temp_shoopt_product_picture.jpg"
-        )
-
-        getScannedBarcode()
-
-        backImageButton.setOnClickListener {
-            finish()
-        }
-
-        productPictureImageButton.setOnClickListener {
-            launchCamera()
-        }
-
-        saveProductImageButton.setOnClickListener {
-            if (intent.hasExtra("productId")) {
-                val pictureUrl = intent.getStringExtra("pictureUrl")
-                val price = productPriceEditText.text.toString()
-                val unitPrice = productUnitPriceEditText.text.toString()
-
-                if (!price.isNullOrEmpty() && !unitPrice.isNullOrEmpty()) {
-                    pictureUrl?.let { saveProduct(it, price, unitPrice) }
+            try {
+                productRepository = if (useFirebase) {
+                    FirebaseProductRepository()
                 } else {
-                    // Handle missing price or unit price
-                    Toast.makeText(this, getString(R.string.price_unit_required), Toast.LENGTH_SHORT).show()
+                    LocalProductRepository(
+                        database.productDao(),
+                        database.shopDao(),
+                        database.shoppingCartDao(),
+                        database.cartItemDao()
+                    )
+                }
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de l'initialisation du repository: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "repository_init")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+
+                Toast.makeText(this, "Erreur lors de l'initialisation de l'application", Toast.LENGTH_SHORT).show()
+            }
+
+            try {
+                imageStorage = if (useFirebase) {
+                    FirebaseImageStorage()
+                } else {
+                    LocalImageStorage(this)
+                }
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de l'initialisation du stockage d'images: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "image_storage_init")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+            }
+
+            supportActionBar?.hide()
+
+            try {
+                setMainVariables()
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de l'initialisation des variables: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "main_variables_init")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+            }
+
+            try {
+                retrieveProductDataFromIntent()
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de la récupération des données du produit depuis l'intent: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "intent_data_retrieval")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+            }
+
+            try {
+                retrieveMainData(savedInstanceState)
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de la récupération des données sauvegardées: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "saved_instance_data_retrieval")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+            }
+
+            if (useFirebase) {
+                try {
+                    ShooptUtils.doAfterInitFirebase(baseContext) { setShopsData() }
+                } catch (e: Exception) {
+                    CrashlyticsManager.log("Erreur lors de l'initialisation Firebase: ${e.message ?: "Message non disponible"}")
+                    CrashlyticsManager.setCustomKey("error_location", "firebase_init")
+                    CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                    CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                    CrashlyticsManager.logException(e)
                 }
             } else {
-                saveAllProductData()
+                try {
+                    setShopsData()
+                } catch (e: Exception) {
+                    CrashlyticsManager.log("Erreur lors de l'initialisation des données de magasins: ${e.message ?: "Message non disponible"}")
+                    CrashlyticsManager.setCustomKey("error_location", "shops_data_init")
+                    CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                    CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                    CrashlyticsManager.logException(e)
+                }
             }
-        }
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+            try {
+                productPictureFile = File(
+                    getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                    "temp_shoopt_product_picture.jpg"
+                )
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de la création du fichier image temporaire: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "temp_file_creation")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+            }
 
-        // Initialize Places API
-        val remoteConfig = Firebase.remoteConfig
-        remoteConfig.fetch(0).addOnCompleteListener { fetchTask ->
-            if (fetchTask.isSuccessful) {
-                remoteConfig.activate().addOnCompleteListener { activateTask ->
-                    if (activateTask.isSuccessful) {
-                        Log.d("DEBUG", "Remote Config fetch and activate successful.")
-                        val mapsApiKey = remoteConfig.getString("MAPS_KEY")
-                        Log.d("DEBUG", "Fetched MAPS_KEY: $mapsApiKey")
+            try {
+                getScannedBarcode()
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de la récupération du code-barres scanné: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "barcode_retrieval")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+            }
 
-                        if (mapsApiKey.isNotEmpty()) {
-                            Places.initialize(applicationContext, mapsApiKey)
-                            placesClient = Places.createClient(this)
+            backImageButton.setOnClickListener {
+                finish()
+            }
+
+            productPictureImageButton.setOnClickListener {
+                try {
+                    launchCamera()
+                } catch (e: Exception) {
+                    CrashlyticsManager.log("Erreur lors du lancement de la caméra: ${e.message ?: "Message non disponible"}")
+                    CrashlyticsManager.setCustomKey("error_location", "camera_launch")
+                    CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                    CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                    CrashlyticsManager.logException(e)
+
+                    Toast.makeText(this, "Impossible de lancer l'appareil photo", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            saveProductImageButton.setOnClickListener {
+                try {
+                    if (intent.hasExtra("productId")) {
+                        val pictureUrl = intent.getStringExtra("pictureUrl")
+                        val price = productPriceEditText.text.toString()
+                        val unitPrice = productUnitPriceEditText.text.toString()
+
+                        if (!price.isNullOrEmpty() && !unitPrice.isNullOrEmpty()) {
+                            pictureUrl?.let { saveProduct(it, price, unitPrice) }
                         } else {
-                            Log.e("DEBUG", "MAPS_KEY is empty. Places API initialization skipped.")
+                            // Handle missing price or unit price
+                            Toast.makeText(this, getString(R.string.price_unit_required), Toast.LENGTH_SHORT).show()
                         }
                     } else {
-                        Log.e("DEBUG", "Remote Config activation failed.", activateTask.exception)
+                        saveAllProductData()
+                    }
+                } catch (e: Exception) {
+                    CrashlyticsManager.log("Erreur lors de la sauvegarde du produit: ${e.message ?: "Message non disponible"}")
+                    CrashlyticsManager.setCustomKey("error_location", "product_save_button")
+                    CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                    CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                    CrashlyticsManager.logException(e)
+
+                    Toast.makeText(this, "Erreur lors de la sauvegarde du produit", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            try {
+                fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de l'initialisation du client de localisation: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "location_client_init")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+            }
+
+            // Initialize Places API
+            try {
+                val remoteConfig = Firebase.remoteConfig
+                remoteConfig.fetch(0).addOnCompleteListener { fetchTask ->
+                    if (fetchTask.isSuccessful) {
+                        remoteConfig.activate().addOnCompleteListener { activateTask ->
+                            if (activateTask.isSuccessful) {
+                                Log.d("DEBUG", "Remote Config fetch and activate successful.")
+                                val mapsApiKey = remoteConfig.getString("MAPS_KEY")
+                                Log.d("DEBUG", "Fetched MAPS_KEY: $mapsApiKey")
+
+                                if (mapsApiKey.isNotEmpty()) {
+                                    try {
+                                        Places.initialize(applicationContext, mapsApiKey)
+                                        placesClient = Places.createClient(this)
+                                    } catch (e: Exception) {
+                                        CrashlyticsManager.log("Erreur lors de l'initialisation de Places API: ${e.message ?: "Message non disponible"}")
+                                        CrashlyticsManager.setCustomKey("error_location", "places_api_init")
+                                        CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                                        CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                                        CrashlyticsManager.logException(e)
+                                    }
+                                } else {
+                                    Log.e("DEBUG", "MAPS_KEY is empty. Places API initialization skipped.")
+                                    CrashlyticsManager.log("MAPS_KEY vide, initialisation de Places API ignorée")
+                                    CrashlyticsManager.setCustomKey("error_location", "maps_key_empty")
+                                }
+                            } else {
+                                Log.e("DEBUG", "Remote Config activation failed.", activateTask.exception)
+                                activateTask.exception?.let {
+                                    CrashlyticsManager.log("Échec de l'activation de Remote Config: ${it.message ?: "Message non disponible"}")
+                                    CrashlyticsManager.setCustomKey("error_location", "remote_config_activate")
+                                    CrashlyticsManager.setCustomKey("exception_class", it.javaClass.name)
+                                    CrashlyticsManager.setCustomKey("exception_message", it.message ?: "Message non disponible")
+                                    CrashlyticsManager.logException(it)
+                                }
+                            }
+                        }
+                    } else {
+                        Log.e("DEBUG", "Remote Config fetch failed.", fetchTask.exception)
+                        fetchTask.exception?.let {
+                            CrashlyticsManager.log("Échec de la récupération de Remote Config: ${it.message ?: "Message non disponible"}")
+                            CrashlyticsManager.setCustomKey("error_location", "remote_config_fetch")
+                            CrashlyticsManager.setCustomKey("exception_class", it.javaClass.name)
+                            CrashlyticsManager.setCustomKey("exception_message", it.message ?: "Message non disponible")
+                            CrashlyticsManager.logException(it)
+                        }
+                    }
+
+                    if (!::placesClient.isInitialized) {
+                        Log.e("DEBUG", "placesClient is not initialized. Skipping location fetch.")
+                        return@addOnCompleteListener
+                    }
+
+                    CoroutineScope(Dispatchers.Main).launch {
+                        try {
+                            fetchCurrentLocationAndFillShopName()
+                        } catch (e: Exception) {
+                            CrashlyticsManager.log("Erreur lors de la récupération de la localisation: ${e.message ?: "Message non disponible"}")
+                            CrashlyticsManager.setCustomKey("error_location", "location_fetch")
+                            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                            CrashlyticsManager.logException(e)
+                        }
                     }
                 }
-            } else {
-                Log.e("DEBUG", "Remote Config fetch failed.", fetchTask.exception)
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de l'initialisation de Remote Config: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "remote_config_init")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
             }
 
-            if (!::placesClient.isInitialized) {
-                Log.e("DEBUG", "placesClient is not initialized. Skipping location fetch.")
-                return@addOnCompleteListener
+            // Inflate and configure the loading overlay
+            try {
+                val inflater = LayoutInflater.from(this)
+                loadingOverlay = inflater.inflate(R.layout.loading_overlay, null)
+                loadingOverlay.visibility = View.GONE
+                val rootLayout = findViewById<ViewGroup>(android.R.id.content)
+                loadingOverlay = inflater.inflate(R.layout.loading_overlay, rootLayout, false)
+                rootLayout.addView(loadingOverlay)
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de l'initialisation de l'overlay de chargement: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "loading_overlay_init")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
             }
 
-            CoroutineScope(Dispatchers.Main).launch {
-                fetchCurrentLocationAndFillShopName()
+            try {
+                scanBarcodeButton = findViewById(R.id.scan_barcode_IB)
+
+                scanBarcodeButton.setOnClickListener {
+                    try {
+                        launchBarcodeScanner()
+                    } catch (e: Exception) {
+                        CrashlyticsManager.log("Erreur lors du lancement du scanner de code-barres: ${e.message ?: "Message non disponible"}")
+                        CrashlyticsManager.setCustomKey("error_location", "barcode_scanner_launch")
+                        CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                        CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                        CrashlyticsManager.logException(e)
+
+                        Toast.makeText(this, "Impossible de lancer le scanner", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de l'initialisation du bouton de scan: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "scan_button_init")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
             }
-        }
+        } catch (e: Exception) {
+            // Capture des erreurs globales dans onCreate
+            CrashlyticsManager.log("Erreur globale dans onCreate d'AddProductActivity: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "add_product_activity_init")
+            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+            CrashlyticsManager.logException(e)
 
-        // Inflate and configure the loading overlay
-        val inflater = LayoutInflater.from(this)
-        loadingOverlay = inflater.inflate(R.layout.loading_overlay, null)
-        loadingOverlay.visibility = View.GONE
-        val rootLayout = findViewById<ViewGroup>(android.R.id.content)
-        loadingOverlay = inflater.inflate(R.layout.loading_overlay, rootLayout, false)
-        rootLayout.addView(loadingOverlay)
+            // Affichage d'un message d'erreur à l'utilisateur
+            Toast.makeText(this, "Une erreur est survenue lors du démarrage de l'application. Veuillez réessayer.", Toast.LENGTH_LONG).show()
 
-        scanBarcodeButton = findViewById(R.id.scan_barcode_IB)
-
-        scanBarcodeButton.setOnClickListener {
-            launchBarcodeScanner()
+            // Fermer l'activité en cas d'erreur critique
+            finish()
         }
     }
 
@@ -379,6 +596,9 @@ class AddProductActivity : AppCompatActivity() {
     }
 
     private fun launchCameraInternal() {
+        // Analytique pour le lancement de la caméra
+        AnalyticsManager.logSelectContent("product_picture", "camera", "product_capture")
+
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         val productPictureUri =
             FileProvider.getUriForFile(this, "com.dedoware.shoopt.fileprovider", productPictureFile)
@@ -389,6 +609,9 @@ class AddProductActivity : AppCompatActivity() {
     }
 
     private fun launchBarcodeScanner() {
+        // Analytique pour le scan de code-barres
+        AnalyticsManager.logSelectContent("barcode_scan", "scanner", "product_barcode")
+
         barcodeLauncher.launch(ScanOptions())
     }
 
@@ -399,6 +622,12 @@ class AddProductActivity : AppCompatActivity() {
             Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show()
         } else {
             productBarcodeEditText.setText(result.contents)
+
+            // Analytique pour le code-barres scanné
+            val params = Bundle().apply {
+                putString("barcode_length", result.contents.length.toString())
+            }
+            AnalyticsManager.logCustomEvent("barcode_scanned", params)
         }
     }
 
@@ -410,7 +639,17 @@ class AddProductActivity : AppCompatActivity() {
     private fun saveAllProductData() {
         CoroutineScope(Dispatchers.Main).launch {
             try {
-                val productBarcode = productBarcodeEditText.text.toString().toLong()
+                val productBarcode = try {
+                    productBarcodeEditText.text.toString().toLong()
+                } catch (e: NumberFormatException) {
+                    CrashlyticsManager.log("Erreur de conversion du code-barres: ${e.message ?: "Message non disponible"}")
+                    CrashlyticsManager.setCustomKey("error_location", "barcode_parsing")
+                    CrashlyticsManager.setCustomKey("barcode_input", productBarcodeEditText.text.toString())
+                    CrashlyticsManager.logException(e)
+                    Toast.makeText(this@AddProductActivity, "Le code-barres doit être un nombre valide", Toast.LENGTH_SHORT).show()
+                    return@launch
+                }
+
                 val productName = productNameEditText.text.toString()
                 val productShop = productShopAutoCompleteTextView.text.toString()
 
@@ -418,23 +657,45 @@ class AddProductActivity : AppCompatActivity() {
                 val sanitizedPrice = sanitizePriceInput(productPriceEditText.text.toString())
                 val sanitizedUnitPrice = sanitizePriceInput(productUnitPriceEditText.text.toString())
 
-                val pictureUrl = saveProductImage(getProductPictureData(), "product-pictures/$productBarcode-$productName-$productShop.jpg")
+                if (sanitizedPrice.isEmpty() || sanitizedUnitPrice.isEmpty()) {
+                    Toast.makeText(this@AddProductActivity, getString(R.string.price_unit_required), Toast.LENGTH_SHORT).show()
+                    return@launch
+                }
 
-                if (pictureUrl != null) {
-                    saveShop(productShop)
+                try {
+                    val pictureUrl = saveProductImage(getProductPictureData(), "product-pictures/$productBarcode-$productName-$productShop.jpg")
 
-                    saveProduct(pictureUrl, sanitizedPrice, sanitizedUnitPrice)
-                } else {
-                    Toast.makeText(this@AddProductActivity, "Failed to upload product picture.", Toast.LENGTH_SHORT).show()
+                    if (pictureUrl != null) {
+                        saveShop(productShop)
+                        saveProduct(pictureUrl, sanitizedPrice, sanitizedUnitPrice)
+                    } else {
+                        CrashlyticsManager.log("Échec de l'upload de l'image du produit")
+                        CrashlyticsManager.setCustomKey("error_location", "product_image_upload")
+                        Toast.makeText(this@AddProductActivity, "Échec de l'upload de l'image du produit", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    CrashlyticsManager.log("Erreur lors de la sauvegarde de l'image: ${e.message ?: "Message non disponible"}")
+                    CrashlyticsManager.setCustomKey("error_location", "product_image_save")
+                    CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                    CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                    CrashlyticsManager.logException(e)
+
+                    Toast.makeText(this@AddProductActivity, "Erreur lors de la sauvegarde de l'image: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur globale lors de la sauvegarde du produit: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "save_product_data")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+
                 Log.d("SHOOPT_TAG", "Error saving product.", e)
                 Toast.makeText(this@AddProductActivity, "Error saving product: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    // Update the saveProduct function to accept sanitized prices
+    // Update the saveProduct function without collecting personal data
     private fun saveProduct(productPictureUrl: String, price: String, unitPrice: String) {
         val barcode = if (productBarcodeEditText.text.toString().isEmpty()) "0".toLong() else productBarcodeEditText.text.toString().toLong()
         val timestamp = System.currentTimeMillis()
@@ -448,6 +709,14 @@ class AddProductActivity : AppCompatActivity() {
                         if (intent.hasExtra("productId")) {
                             val product = Product(retrievedProductId, barcode, timestamp, name, price.toDouble(), unitPrice.toDouble(), shop, productPictureUrl)
                             productRepository.update(product)
+
+                            // Analytique anonymisée pour la mise à jour de produit
+                            val params = Bundle().apply {
+                                putString("has_barcode", (barcode != 0L).toString())
+                                // Ne pas collecter le nom du produit ou autres données personnelles
+                            }
+                            AnalyticsManager.logCustomEvent("product_updated", params)
+
                             product.id
                         } else {
                             var repositoryProductId = productRepository.getUniqueId()
@@ -457,7 +726,16 @@ class AddProductActivity : AppCompatActivity() {
                             }
 
                             val product = Product(repositoryProductId, barcode, timestamp, name, price.toDouble(), unitPrice.toDouble(), shop, productPictureUrl)
-                            productRepository.insert(product)
+                            val productIdInserted = productRepository.insert(product)
+
+                            // Analytique anonymisée pour l'ajout de produit
+                            val params = Bundle().apply {
+                                putString("has_barcode", (barcode != 0L).toString())
+                                putBoolean("has_image", productPictureUrl.isNotEmpty())
+                                // Ne pas collecter les noms ou prix exacts
+                            }
+                            AnalyticsManager.logCustomEvent("product_created", params)
+                            productIdInserted
                         }
                     }
 
@@ -469,10 +747,24 @@ class AddProductActivity : AppCompatActivity() {
                 } catch (e: Exception) {
                     Log.d("SHOOPT_TAG", "Error saving product.", e)
                     Toast.makeText(this@AddProductActivity, "Error saving product: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+
+                    // Analytique anonymisée pour les erreurs de sauvegarde
+                    val params = Bundle().apply {
+                        putString("error_type", e.javaClass.simpleName)
+                        // Sans les détails du message d'erreur qui pourrait contenir des infos sensibles
+                    }
+                    AnalyticsManager.logCustomEvent("product_save_error", params)
                 }
             }
         } else {
             displayFailedStorage()
+
+            // Analytique anonymisée pour les champs manquants
+            val params = Bundle().apply {
+                putBoolean("missing_fields", true)
+                // Sans détailler quels champs exactement sont manquants
+            }
+            AnalyticsManager.logCustomEvent("product_save_validation_failed", params)
         }
     }
 
@@ -481,23 +773,86 @@ class AddProductActivity : AppCompatActivity() {
             addNewShop(productShop.trim())
     }
 
-    // Replace analyzeProductImage to directly perform the curl equivalent
+    // Mise à jour de la méthode pour inclure l'analytique lors de l'analyse d'image
     private suspend fun analyzeProductImage(imageUrl: String) {
         try {
+            // Analytique pour le début de l'analyse d'image
+            withContext(Dispatchers.Main) {
+                val params = Bundle().apply {
+                    putString("image_source", if (imageUrl.isEmpty()) "camera" else "url")
+                }
+                AnalyticsManager.logCustomEvent("image_analysis_started", params)
+            }
+
             val apiKey = fetchHuggingFaceApiKey() ?: run {
                 Log.e("DEBUG", getString(R.string.hf_key_empty))
+                CrashlyticsManager.log("HF_KEY vide ou non disponible")
+                CrashlyticsManager.setCustomKey("error_location", "api_key_missing")
+
+                withContext(Dispatchers.Main) {
+                    // Analytique pour l'erreur d'API key
+                    AnalyticsManager.logCustomEvent("image_analysis_api_key_missing", null)
+                }
                 return
             }
 
             val base64Image = getBase64EncodedImage()
+            if (base64Image.isEmpty()) {
+                CrashlyticsManager.log("Échec de l'encodage de l'image en Base64")
+                CrashlyticsManager.setCustomKey("error_location", "image_encoding")
+
+                withContext(Dispatchers.Main) {
+                    // Analytique pour l'erreur d'encodage
+                    AnalyticsManager.logCustomEvent("image_analysis_encoding_failed", null)
+                }
+                return
+            }
+
             val payload = createImageAnalysisPayload(base64Image)
 
-            val response = sendImageAnalysisRequest(apiKey, payload)
-            handleImageAnalysisResponse(response)
+            try {
+                val response = sendImageAnalysisRequest(apiKey, payload)
+                handleImageAnalysisResponse(response)
+
+                withContext(Dispatchers.Main) {
+                    // Analytique pour l'analyse réussie
+                    AnalyticsManager.logCustomEvent("image_analysis_success", null)
+                }
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de l'analyse de l'image: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "image_analysis_api")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@AddProductActivity, "Erreur d'analyse de l'image: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+
+                    // Analytique pour l'erreur d'analyse
+                    val params = Bundle().apply {
+                        putString("error_message", e.message ?: "Unknown error")
+                        putString("error_type", e.javaClass.simpleName)
+                    }
+                    AnalyticsManager.logCustomEvent("image_analysis_api_error", params)
+                }
+            }
         } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur globale lors de l'analyse de l'image: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "image_analysis_process")
+            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+            CrashlyticsManager.logException(e)
+
             Log.e("DEBUG", "Error analyzing product image", e)
             withContext(Dispatchers.Main) {
                 Toast.makeText(this@AddProductActivity, "Error: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+
+                // Analytique pour l'erreur globale
+                val params = Bundle().apply {
+                    putString("error_message", e.message ?: "Unknown error")
+                    putString("error_type", e.javaClass.simpleName)
+                }
+                AnalyticsManager.logCustomEvent("image_analysis_general_error", params)
             }
         }
     }
