@@ -95,4 +95,11 @@
     <string name="register">Register</string>
     <string name="already_have_account">Already have an account?</string>
     <string name="login_here">Login here</string>
+
+    <!-- Chaînes pour la boîte de dialogue de confirmation de déconnexion -->
+    <string name="logout_confirmation_title">Confirmer la déconnexion</string>
+    <string name="logout_confirmation_message">Êtes-vous sûr de vouloir vous déconnecter ?</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="logout_error">Erreur lors de la déconnexion</string>
 </resources>

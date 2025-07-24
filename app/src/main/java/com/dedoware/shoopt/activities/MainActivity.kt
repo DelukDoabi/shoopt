@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -18,6 +17,8 @@ import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.android.material.card.MaterialCardView
+import com.google.android.material.button.MaterialButton
 
 
 class MainActivity : AppCompatActivity() {
@@ -39,7 +40,6 @@ class MainActivity : AppCompatActivity() {
             userPreferences.applyTheme()
 
             setContentView(R.layout.activity_main)
-
 
             setMainVariables()
 
@@ -69,12 +69,13 @@ class MainActivity : AppCompatActivity() {
                 CrashlyticsManager.logException(e)
             }
 
-            val logoutButton: ImageButton = findViewById(R.id.logout_button)
+            // Configuration des boutons MaterialButton au lieu de ImageButton pour settings et logout
+            val logoutButton: MaterialButton = findViewById(R.id.logout_button)
             logoutButton.setOnClickListener {
                 displayLogoutConfirmation()
             }
 
-            val settingsButton: ImageButton = findViewById(R.id.settings_button)
+            val settingsButton: MaterialButton = findViewById(R.id.settings_button)
             settingsButton.setOnClickListener {
                 try {
                     startActivity(Intent(this, SettingsActivity::class.java))
@@ -90,116 +91,165 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            updateShoppingListImageButton.setOnClickListener {
-                try {
-                    // Analytics pour le passage à l'écran de mise à jour de la liste
-                    AnalyticsManager.logSelectContent("navigation", "button", "update_shopping_list")
+            // Configuration des cartes pour une meilleure expérience utilisateur
+            setupFeatureCards()
 
+        } catch (e: Exception) {
+            // Capture des erreurs générales dans onCreate
+            CrashlyticsManager.log("Erreur générale dans MainActivity.onCreate: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "main_activity_init")
+            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+            CrashlyticsManager.logException(e)
+
+            // Afficher un message à l'utilisateur
+            Toast.makeText(this, "Une erreur s'est produite lors du chargement de l'application", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setMainVariables() {
+        try {
+            // Initialisation des boutons et textes
+            updateShoppingListImageButton = findViewById(R.id.shopping_list_IB)
+            addOrUpdateProductImageButton = findViewById(R.id.add_or_update_product_IB)
+            trackShoppingImageButton = findViewById(R.id.track_shopping_IB)
+            analyseImageButton = findViewById(R.id.analyse_IB)
+
+            addOrUpdateProductTextView = findViewById(R.id.save_product_TV)
+            trackShoppingTextView = findViewById(R.id.track_shopping_TV)
+            analyseTextView = findViewById(R.id.analyse_TV)
+        } catch (e: Exception) {
+            // Capture des erreurs lors de l'initialisation des variables
+            CrashlyticsManager.log("Erreur lors de l'initialisation des variables: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "set_main_variables")
+            CrashlyticsManager.logException(e)
+        }
+    }
+
+    // Configuration des cartes de fonctionnalités avec animations de feedback tactile
+    private fun setupFeatureCards() {
+        try {
+            // Configuration de la carte liste d'achats
+            val shoppingListCard: MaterialCardView = findViewById(R.id.shopping_list_card)
+            shoppingListCard.setOnClickListener {
+                try {
+                    // Animation de feedback tactile
+                    it.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).withEndAction {
+                        it.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
+                    }.start()
+
+                    // Analytics pour le passage à l'écran de mise à jour de la liste
+                    AnalyticsManager.logSelectContent("navigation", "card", "update_shopping_list")
                     startActivity(Intent(this, UpdateShoppingListActivity::class.java))
                 } catch (e: Exception) {
                     // Capture des erreurs
                     CrashlyticsManager.log("Erreur lors du lancement de UpdateShoppingListActivity: ${e.message ?: "Message non disponible"}")
-                    CrashlyticsManager.setCustomKey("error_location", "launch_activity")
-                    CrashlyticsManager.setCustomKey("target_activity", "UpdateShoppingListActivity")
                     CrashlyticsManager.logException(e)
-
-                    Toast.makeText(this, "Impossible de mettre à jour la liste. Veuillez réessayer.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Impossible d'ouvrir la liste d'achats", Toast.LENGTH_SHORT).show()
                 }
             }
 
-            addOrUpdateProductImageButton.setOnClickListener {
-                // Analytics pour le passage à l'écran d'ajout/mise à jour de produit
-                AnalyticsManager.logSelectContent("navigation", "button", "add_product")
+            // Configuration de la carte ajouter/mettre à jour un produit
+            val addProductCard: MaterialCardView = findViewById(R.id.add_product_card)
+            addProductCard.setOnClickListener {
+                try {
+                    // Animation de feedback tactile
+                    it.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).withEndAction {
+                        it.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
+                    }.start()
 
-                displayAddProductWayUserChoice()
+                    // Analytics pour le passage à l'écran d'ajout de produit
+                    AnalyticsManager.logSelectContent("navigation", "card", "add_update_product")
+                    startActivity(Intent(this, AddProductActivity::class.java))
+                } catch (e: Exception) {
+                    // Capture des erreurs
+                    CrashlyticsManager.log("Erreur lors du lancement de AddProductActivity: ${e.message ?: "Message non disponible"}")
+                    CrashlyticsManager.logException(e)
+                    Toast.makeText(this, "Impossible d'ouvrir l'écran de produit", Toast.LENGTH_SHORT).show()
+                }
             }
 
-            trackShoppingImageButton.setOnClickListener {
+            // Configuration de la carte suivi des achats
+            val trackShoppingCard: MaterialCardView = findViewById(R.id.track_shopping_card)
+            trackShoppingCard.setOnClickListener {
                 try {
-                    // Analytics pour le passage à l'écran de suivi des achats
-                    AnalyticsManager.logSelectContent("navigation", "button", "track_shopping")
+                    // Animation de feedback tactile
+                    it.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).withEndAction {
+                        it.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
+                    }.start()
 
+                    // Analytics pour le passage à l'écran de suivi des achats
+                    AnalyticsManager.logSelectContent("navigation", "card", "track_shopping")
                     startActivity(Intent(this, TrackShoppingActivity::class.java))
                 } catch (e: Exception) {
+                    // Capture des erreurs
                     CrashlyticsManager.log("Erreur lors du lancement de TrackShoppingActivity: ${e.message ?: "Message non disponible"}")
-                    CrashlyticsManager.setCustomKey("error_location", "launch_activity")
-                    CrashlyticsManager.setCustomKey("target_activity", "TrackShoppingActivity")
                     CrashlyticsManager.logException(e)
-
-                    Toast.makeText(this, "Impossible de suivre les achats. Veuillez réessayer.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Impossible d'ouvrir le suivi des achats", Toast.LENGTH_SHORT).show()
                 }
             }
 
-            analyseImageButton.setOnClickListener {
+            // Configuration de la carte d'analyse
+            val analyseCard: MaterialCardView = findViewById(R.id.analyse_card)
+            analyseCard.setOnClickListener {
                 try {
-                    // Analytics pour le passage à l'écran d'analyse
-                    AnalyticsManager.logSelectContent("navigation", "button", "analyse")
+                    // Animation de feedback tactile
+                    it.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).withEndAction {
+                        it.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
+                    }.start()
 
+                    // Analytics pour le passage à l'écran d'analyse
+                    AnalyticsManager.logSelectContent("navigation", "card", "analyse")
                     startActivity(Intent(this, AnalyseActivity::class.java))
                 } catch (e: Exception) {
+                    // Capture des erreurs
                     CrashlyticsManager.log("Erreur lors du lancement de AnalyseActivity: ${e.message ?: "Message non disponible"}")
-                    CrashlyticsManager.setCustomKey("error_location", "launch_activity")
-                    CrashlyticsManager.setCustomKey("target_activity", "AnalyseActivity")
                     CrashlyticsManager.logException(e)
-
-                    Toast.makeText(this, "Impossible d'ouvrir l'analyse. Veuillez réessayer.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Impossible d'ouvrir l'écran d'analyse", Toast.LENGTH_SHORT).show()
                 }
             }
-        } catch (e: Exception) {
-            // Capture des erreurs globales dans onCreate
-            CrashlyticsManager.log("Erreur globale dans MainActivity.onCreate: ${e.message ?: "Message non disponible"}")
-            CrashlyticsManager.setCustomKey("error_location", "main_activity_init")
-            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
-            CrashlyticsManager.logException(e)
 
-            // Tentative de récupération pour éviter un crash complet de l'application
-            Toast.makeText(this, "Une erreur est survenue. Veuillez redémarrer l'application.", Toast.LENGTH_LONG).show()
+            // Configuration des ImageButtons dans les cartes pour une redondance d'interaction
+            updateShoppingListImageButton.setOnClickListener { shoppingListCard.performClick() }
+            addOrUpdateProductImageButton.setOnClickListener { addProductCard.performClick() }
+            trackShoppingImageButton.setOnClickListener { trackShoppingCard.performClick() }
+            analyseImageButton.setOnClickListener { analyseCard.performClick() }
+
+        } catch (e: Exception) {
+            // Capture des erreurs lors de la configuration des cartes
+            CrashlyticsManager.log("Erreur lors de la configuration des cartes: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "setup_feature_cards")
+            CrashlyticsManager.logException(e)
         }
     }
 
-    private fun displayAddProductWayUserChoice() {
-        try {
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle(getString(R.string.choose_option))
-            builder.setMessage(getString(R.string.scan_barcode_or_add_manually))
-
-            builder.setPositiveButton(getString(R.string.scan_barcode)) { _, _ ->
-                // Launch the barcode scanner
+    private fun displayLogoutConfirmation() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.logout_confirmation_title))
+            .setMessage(getString(R.string.logout_confirmation_message))
+            .setPositiveButton(getString(R.string.yes)) { _, _ ->
                 try {
-                    barcodeLauncher.launch(ScanOptions())
+                    // Analytics pour déconnexion
+                    AnalyticsManager.logUserAction(
+                        action = "logout",
+                        category = "authentication"
+                    )
+
+                    FirebaseAuth.getInstance().signOut()
+                    startActivity(Intent(this, LoginActivity::class.java))
+                    finish()
                 } catch (e: Exception) {
-                    CrashlyticsManager.log("Erreur lors du lancement du scanner: ${e.message ?: "Message non disponible"}")
-                    CrashlyticsManager.setCustomKey("error_location", "barcode_scanner_launch")
-                    CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                    // Capture des erreurs lors de la déconnexion
+                    CrashlyticsManager.log("Erreur lors de la déconnexion: ${e.message ?: "Message non disponible"}")
+                    CrashlyticsManager.setCustomKey("error_location", "user_logout")
                     CrashlyticsManager.logException(e)
 
-                    Toast.makeText(this, "Impossible de lancer le scanner. Veuillez réessayer.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.logout_error), Toast.LENGTH_SHORT).show()
                 }
             }
-
-            builder.setNegativeButton(getString(R.string.add_product_manually)) { _, _ ->
-                // Launch the add product manually activity
-                try {
-                    val addProductIntent = Intent(this, AddProductActivity::class.java)
-                    startActivity(addProductIntent)
-                } catch (e: Exception) {
-                    CrashlyticsManager.log("Erreur lors du lancement de AddProductActivity: ${e.message ?: "Message non disponible"}")
-                    CrashlyticsManager.setCustomKey("error_location", "launch_activity")
-                    CrashlyticsManager.setCustomKey("target_activity", "AddProductActivity")
-                    CrashlyticsManager.logException(e)
-
-                    Toast.makeText(this, "Impossible d'ajouter un produit. Veuillez réessayer.", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            val dialog = builder.create()
-            dialog.show()
-        } catch (e: Exception) {
-            CrashlyticsManager.log("Erreur lors de l'affichage du choix d'ajout de produit: ${e.message ?: "Message non disponible"}")
-            CrashlyticsManager.setCustomKey("error_location", "display_product_choice")
-            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
-            CrashlyticsManager.logException(e)
-        }
+            .setNegativeButton(getString(R.string.no), null)
+            .create()
+            .show()
     }
 
     // Register the launcher and result handler
@@ -228,65 +278,6 @@ class MainActivity : AppCompatActivity() {
             CrashlyticsManager.setCustomKey("error_location", "barcode_scan_result")
             CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
             CrashlyticsManager.logException(e)
-        }
-    }
-
-    private fun setMainVariables() {
-        updateShoppingListImageButton =
-            findViewById(R.id.shopping_list_IB)
-        addOrUpdateProductImageButton =
-            findViewById(R.id.add_or_update_product_IB)
-        trackShoppingImageButton =
-            findViewById(R.id.track_shopping_IB)
-        analyseImageButton =
-            findViewById(R.id.analyse_IB)
-
-        addOrUpdateProductTextView =
-            findViewById(R.id.save_product_TV)
-        trackShoppingTextView =
-            findViewById(R.id.track_shopping_TV)
-        analyseTextView =
-            findViewById(R.id.analyse_TV)
-    }
-
-    private fun displayLogoutConfirmation() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Logout")
-        builder.setMessage("Are you sure you want to logout?")
-
-        builder.setPositiveButton("Yes") { _, _ ->
-            // Perform logout logic
-            logoutUser()
-        }
-
-        builder.setNegativeButton("No") { dialog, _ ->
-            dialog.dismiss()
-        }
-
-        val dialog = builder.create()
-        dialog.show()
-    }
-
-    private fun logoutUser() {
-        try {
-            // Sign out from Firebase
-            FirebaseAuth.getInstance().signOut()
-
-            // Clear user session or perform necessary logout operations
-            val logoutIntent = Intent(this, LoginActivity::class.java)
-            logoutIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(logoutIntent)
-            finish()
-        } catch (e: Exception) {
-            // Capture des erreurs liées à la déconnexion
-            CrashlyticsManager.log("Erreur lors de la déconnexion: ${e.message ?: "Message non disponible"}")
-            CrashlyticsManager.setCustomKey("error_location", "logout_process")
-            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
-            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
-            CrashlyticsManager.logException(e)
-
-            // Informer l'utilisateur
-            Toast.makeText(this, "Problème lors de la déconnexion. Veuillez réessayer.", Toast.LENGTH_SHORT).show()
         }
     }
 }
