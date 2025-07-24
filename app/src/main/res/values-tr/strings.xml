@@ -83,4 +83,16 @@
     <string name="currency_settings">Para birimi</string>
     <string name="save_settings">Kaydet</string>
     <string name="settings_saved">Ayarlar kaydedildi</string>
+    <string name="welcome_back">Tekrar hoş geldiniz!</string>
+    <string name="or_continue_with">Veya şununla devam edin</string>
+    <string name="don_t_have_account">Hesabınız yok mu?</string>
+    <string name="register_here">Buradan kaydolun</string>
+    <string name="email">E-posta</string>
+    <string name="welcome">Hoş geldiniz!</string>
+    <string name="create_your_account">Hesabınızı oluşturun</string>
+    <string name="full_name">Ad Soyad</string>
+    <string name="confirm_password">Şifreyi Onayla</string>
+    <string name="register">Kayıt Ol</string>
+    <string name="already_have_account">Zaten hesabınız var mı?</string>
+    <string name="login_here">Buradan giriş yapın</string>
 </resources>

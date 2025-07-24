@@ -59,7 +59,6 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private fun forceFullScreen() {
-        supportActionBar?.hide()
 
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,

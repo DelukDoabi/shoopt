@@ -44,7 +44,7 @@
     <string name="failed_to_add_product_to_cart">পণ্য কার্টে যোগ করতে ব্যর্থ</string>
     <string name="clear_shopping_cart">কার্ট পরিষ্কার করুন</string>
     <string name="clear_shopping_cart_confirm">আপনি কি নিশ্চিত যে কার্ট পরিষ্কার করতে চান? এই কাজটি পূর্বাবস্থায় ফেরানো যাবে না।</string>
-    <string name="shopping_cart_emptied">কার্ট পরিষ্কার হয়েছে</string>
+    <string name="shopping_cart_emptied">কার্ট পরিষ্কার হয়েছ���</string>
     <string name="failed_to_empty_shopping_cart">কার্ট পরিষ্কার করতে ব্যর্থ</string>
     <string name="delete_product">পণ্য মুছুন</string>
     <string name="delete_product_confirm">আপনি কি নিশ্চিত যে এই পণ্যটি মুছতে চান?</string>
@@ -61,7 +61,7 @@
     <string name="insert_product_shop">দোকানের নাম লিখুন</string>
     <string name="add_product">পণ্য যোগ করুন</string>
     <string name="empty_cart">কার্ট খালি করুন</string>
-    <string name="save_product">পণ্য সংরক্ষণ করুন</string>
+    <string name="save_product">পণ্য সংরক্ষণ করু���</string>
     <string name="product_picture">পণ্যের ছবি</string>
     <string name="take_picture">ছবি তুলুন</string>
     <string name="back">ফিরে যান</string>
@@ -79,8 +79,20 @@
     <string name="theme_settings">থিম সেটিংস</string>
     <string name="theme_light">লাইট থিম</string>
     <string name="theme_dark">ডার্ক থিম</string>
-    <string name="theme_system">সিস্টেম ডিফল্ট</string>
+    <string name="theme_system">সিস্ট���ম ডিফল্ট</string>
     <string name="currency_settings">মুদ্রা সেটিংস</string>
     <string name="save_settings">সেটিংস সংরক্ষণ করুন</string>
     <string name="settings_saved">সেটিংস সফলভাবে সংরক্ষিত হয়েছে</string>
+    <string name="welcome_back">ফিরে আসার জন্য স্বাগতম!</string>
+    <string name="or_continue_with">অথবা এর সাথে চালিয়ে যান</string>
+    <string name="don_t_have_account">অ্যাকাউন্ট নেই?</string>
+    <string name="register_here">এখানে নিবন্ধন করুন</string>
+    <string name="email">ইমেইল</string>
+    <string name="welcome">স্বাগতম!</string>
+    <string name="create_your_account">আপনার অ্যাকাউন্ট তৈরি করুন</string>
+    <string name="full_name">পুরো নাম</string>
+    <string name="confirm_password">পাসওয়ার্ড নিশ্চিত করুন</string>
+    <string name="register">নিবন্ধন করুন</string>
+    <string name="already_have_account">ইতিমধ্যে একটি অ্যাকাউন্ট আছে?</string>
+    <string name="login_here">এখানে লগইন করুন</string>
 </resources>

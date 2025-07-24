@@ -83,4 +83,16 @@
     <string name="currency_settings">Valuta</string>
     <string name="save_settings">Spara</string>
     <string name="settings_saved">Inställningar sparade</string>
+    <string name="welcome_back">Välkommen tillbaka!</string>
+    <string name="or_continue_with">Eller fortsätt med</string>
+    <string name="don_t_have_account">Har du inget konto?</string>
+    <string name="register_here">Registrera dig här</string>
+    <string name="email">E-post</string>
+    <string name="welcome">Välkommen!</string>
+    <string name="create_your_account">Skapa ditt konto</string>
+    <string name="full_name">Fullständigt namn</string>
+    <string name="confirm_password">Bekräfta lösenord</string>
+    <string name="register">Registrera</string>
+    <string name="already_have_account">Har du redan ett konto?</string>
+    <string name="login_here">Logga in här</string>
 </resources>

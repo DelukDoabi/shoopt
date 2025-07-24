@@ -2,7 +2,7 @@
     <string name="products">제품: </string>
     <string name="total">총합: </string>
     <string name="password">비밀번호</string>
-    <string name="don_t_have_an_account_register_here">계정이 없으신가요? 여기서 등록하세요</string>
+    <string name="don_t_have_an_account_register_here">계정이 ���으신가요? 여기서 등록하세요</string>
     <string name="sign_in_with_email">이메일로 로그인</string>
     <string name="sign_in_with_google">Google로 로그인</string>
     <string name="title_activity_register">등록</string>
@@ -36,12 +36,12 @@
     <string name="password_reset_sent">비밀번호 재설정 이메일이 전송되었습니다!</string>
     <string name="error">오류: %1$s</string>
     <string name="enter_your_email">이메일을 입력하세요</string>
-    <string name="reset_password">비밀번호 재설정</string>
+    <string name="reset_password">비밀번��� 재설정</string>
     <string name="enter_email_to_reset">비밀번호 재설정 링크를 받으려면 이메일을 입력하세요:</string>
     <string name="send">보내기</string>
     <string name="clear">지우기</string>
     <string name="product_added_to_cart">제품이 장바구니에 추가되었습니다</string>
-    <string name="failed_to_add_product_to_cart">제품을 장바구니에 추가하지 못했습니다</string>
+    <string name="failed_to_add_product_to_cart">제품을 장바구니에 ���가���지 못했습니다</string>
     <string name="clear_shopping_cart">장바구니 비우기</string>
     <string name="clear_shopping_cart_confirm">정말로 장바구니를 비우시겠습니까? 이 작업은 되돌릴 수 없습니다.</string>
     <string name="shopping_cart_emptied">장바구니가 비워졌습니다</string>
@@ -70,7 +70,7 @@
     <string name="update_shopping_list">쇼핑 목록 업데이트</string>
     <string name="main_shopping_list">메인 쇼핑 목록</string>
     <string name="secondary_shopping_list">서브 쇼핑 목록</string>
-    <string name="title_activity_track_shopping">쇼핑 추적 활동</string>
+    <string name="title_activity_track_shopping">쇼핑 추적 ��동</string>
     <string name="convert_to_product_track">Product Track으로 변환</string>
     <string name="products_added">%1$d개의 상품이 추가되었습니다</string>
     <string name="enter_items_here">여기에 항목을 입력하세요</string>
@@ -83,4 +83,16 @@
     <string name="currency_settings">통화</string>
     <string name="save_settings">저장</string>
     <string name="settings_saved">설정이 저장되었습니다</string>
+    <string name="welcome_back">다시 오신 것을 환영합니다!</string>
+    <string name="or_continue_with">또는 다음으로 계속</string>
+    <string name="don_t_have_account">계정이 없으신가요?</string>
+    <string name="register_here">여기서 등록하세요</string>
+    <string name="email">이메일</string>
+    <string name="welcome">환��합니다!</string>
+    <string name="create_your_account">계정 만들기</string>
+    <string name="full_name">성명</string>
+    <string name="confirm_password">비밀번호 확인</string>
+    <string name="register">회원가입</string>
+    <string name="already_have_account">이미 계정이 있으신가요?</string>
+    <string name="login_here">여기서 로그인</string>
 </resources>

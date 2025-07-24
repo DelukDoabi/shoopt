@@ -31,7 +31,7 @@
     <string name="google_sign_in_successful">Googleでのログインが成功しました</string>
     <string name="authentication_failed">認証に失敗しました: %1$s</string>
     <string name="google_sign_in_failed">Googleでのログインに失敗しました: %1$s</string>
-    <string name="unexpected_error">予期しないエラーが発生しました: %1$s</string>
+    <string name="unexpected_error">予期しないエラーが発生���ました: %1$s</string>
     <string name="email_empty">メールアドレスは空にできません</string>
     <string name="password_reset_sent">パスワードリセットメールが送信されました！</string>
     <string name="error">エラー: %1$s</string>
@@ -83,4 +83,16 @@
     <string name="currency_settings">通貨</string>
     <string name="save_settings">保存</string>
     <string name="settings_saved">設定を保存しました</string>
+    <string name="welcome_back">お帰りなさい！</string>
+    <string name="or_continue_with">または�����で続行</string>
+    <string name="don_t_have_account">アカウントをお持ちでないですか？</string>
+    <string name="register_here">こちらで登録</string>
+    <string name="email">Eメール</string>
+    <string name="welcome">ようこそ！</string>
+    <string name="create_your_account">アカウントを作成</string>
+    <string name="full_name">氏���</string>
+    <string name="confirm_password">パスワード確認</string>
+    <string name="register">登録</string>
+    <string name="already_have_account">アカウントをお持ちですか？</string>
+    <string name="login_here">ログインはこちら</string>
 </resources>

@@ -251,7 +251,6 @@ class AddProductActivity : AppCompatActivity() {
                 CrashlyticsManager.logException(e)
             }
 
-            supportActionBar?.hide()
 
             try {
                 setMainVariables()

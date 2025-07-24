@@ -83,4 +83,16 @@
     <string name="currency_settings">Währung</string>
     <string name="save_settings">Speichern</string>
     <string name="settings_saved">Einstellungen gespeichert</string>
+    <string name="welcome_back">Willkommen zurück!</string>
+    <string name="or_continue_with">Oder fortfahren mit</string>
+    <string name="don_t_have_account">Noch kein Konto?</string>
+    <string name="register_here">Hier registrieren</string>
+    <string name="email">E-Mail</string>
+    <string name="welcome">Willkommen!</string>
+    <string name="create_your_account">Erstelle dein Konto</string>
+    <string name="full_name">Vollständiger Name</string>
+    <string name="confirm_password">Passwort bestätigen</string>
+    <string name="register">Registrieren</string>
+    <string name="already_have_account">Bereits ein Konto?</string>
+    <string name="login_here">Hier anmelden</string>
 </resources>

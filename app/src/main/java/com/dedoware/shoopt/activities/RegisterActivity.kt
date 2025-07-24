@@ -1,14 +1,18 @@
 package com.dedoware.shoopt.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -36,9 +40,29 @@ class RegisterActivity : AppCompatActivity() {
                 return
             }
 
+            val fullNameEditText = findViewById<TextInputEditText>(R.id.editTextName)
             val emailEditText = findViewById<EditText>(R.id.email)
             val passwordEditText = findViewById<EditText>(R.id.password)
+            val confirmPasswordEditText = findViewById<TextInputEditText>(R.id.confirm_password)
             val registerButton = findViewById<Button>(R.id.register_button)
+
+            // Récupération du lien de connexion
+            val loginLink = findViewById<TextView>(R.id.login_link)
+
+            // Ajout d'un click listener pour rediriger vers l'écran de connexion
+            loginLink.setOnClickListener {
+                // Suivre le clic sur le lien de connexion
+                AnalyticsManager.logUserAction(
+                    action = "click",
+                    category = "navigation",
+                    additionalParams = mapOf("button" to "login_link")
+                )
+
+                // Redirection vers LoginActivity
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish() // Fermer l'activité d'inscription
+            }
 
             registerButton.setOnClickListener {
                 try {
@@ -49,23 +73,34 @@ class RegisterActivity : AppCompatActivity() {
                         additionalParams = mapOf("button" to "register_button")
                     )
 
-                    val email = emailEditText.text.toString().trim { it <= ' ' }
-                    val password = passwordEditText.text.toString().trim { it <= ' ' }
+                    val fullName = fullNameEditText.text.toString().trim()
+                    val email = emailEditText.text.toString().trim()
+                    val password = passwordEditText.text.toString().trim()
+                    val confirmPassword = confirmPasswordEditText.text.toString().trim()
 
-                    if (email.isEmpty() || password.isEmpty()) {
+                    // Validation des champs
+                    if (fullName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                         // Suivre les tentatives d'inscription avec champs manquants
                         AnalyticsManager.logUserAction(
                             action = "validation_error",
                             category = "registration",
                             additionalParams = mapOf(
                                 "error_type" to "empty_fields",
+                                "has_name" to (fullName.isNotEmpty()),
                                 "has_email" to (email.isNotEmpty()),
-                                "has_password" to (password.isNotEmpty())
+                                "has_password" to (password.isNotEmpty()),
+                                "has_confirm_password" to (confirmPassword.isNotEmpty())
                             )
                         )
 
                         Toast.makeText(this, getString(R.string.please_fill_all_fields), Toast.LENGTH_SHORT)
                             .show()
+                        return@setOnClickListener
+                    }
+
+                    // Vérifier que les mots de passe correspondent
+                    if (password != confirmPassword) {
+                        Toast.makeText(this, "Les mots de passe ne correspondent pas", Toast.LENGTH_SHORT).show()
                         return@setOnClickListener
                     }
 
@@ -78,6 +113,36 @@ class RegisterActivity : AppCompatActivity() {
                             val duration = System.currentTimeMillis() - startTime
 
                             if (task.isSuccessful) {
+                                // Ajouter le nom complet au profil utilisateur
+                                val user = mAuth!!.currentUser
+                                val profileUpdates = UserProfileChangeRequest.Builder()
+                                    .setDisplayName(fullName)
+                                    .build()
+
+                                user?.updateProfile(profileUpdates)
+                                    ?.addOnCompleteListener { profileTask ->
+                                        if (profileTask.isSuccessful) {
+                                            // Profil mis à jour avec succès
+                                            AnalyticsManager.logUserAction(
+                                                action = "profile_update",
+                                                category = "registration",
+                                                additionalParams = mapOf("success" to true)
+                                            )
+                                        } else {
+                                            // Échec de la mise à jour du profil
+                                            AnalyticsManager.logUserAction(
+                                                action = "profile_update",
+                                                category = "registration",
+                                                additionalParams = mapOf("success" to false)
+                                            )
+
+                                            profileTask.exception?.let {
+                                                CrashlyticsManager.log("Échec de mise à jour du profil: ${it.message ?: "Message non disponible"}")
+                                                CrashlyticsManager.logException(it)
+                                            }
+                                        }
+                                    }
+
                                 // Suivre les inscriptions réussies
                                 AnalyticsManager.logAuthEvent(
                                     method = "email",

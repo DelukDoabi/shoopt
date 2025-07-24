@@ -67,7 +67,7 @@
     <string name="back">返回</string>
     <string name="insert_product_unit_price">输入单价</string>
     <string name="insert_product_barcode">输入条码</string>
-    <string name="update_shopping_list">更新购物清单</string>
+    <string name="update_shopping_list">更新购物�����单</string>
     <string name="main_shopping_list">主购物清单</string>
     <string name="secondary_shopping_list">次购物清单</string>
     <string name="title_activity_track_shopping">TrackShoppingActivity</string>
@@ -83,4 +83,16 @@
     <string name="currency_settings">货币</string>
     <string name="save_settings">保存</string>
     <string name="settings_saved">设置已保存</string>
+    <string name="welcome_back">欢迎回来！</string>
+    <string name="or_continue_with">或继续使用</string>
+    <string name="don_t_have_account">没有账号？</string>
+    <string name="register_here">在此注册</string>
+    <string name="email">电子邮箱</string>
+    <string name="welcome">欢迎！</string>
+    <string name="create_your_account">创建您的账户</string>
+    <string name="full_name">全名</string>
+    <string name="confirm_password">确认密码</string>
+    <string name="register">注册</string>
+    <string name="already_have_account">已有账户？</string>
+    <string name="login_here">在此登录</string>
 </resources>

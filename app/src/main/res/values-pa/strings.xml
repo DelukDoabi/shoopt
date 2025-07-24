@@ -45,7 +45,7 @@
     <string name="clear_shopping_cart">ਕਾਰਟ ਸਾਫ਼ ਕਰੋ</string>
     <string name="clear_shopping_cart_confirm">ਕੀ ਤੁਸੀਂ ਯਕੀਨਨ ਕਾਰਟ ਸਾਫ਼ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ? ਇਹ ਕਾਰਵਾਈ ਵਾਪਸ ਨਹੀਂ ਹੋ ਸਕਦੀ।</string>
     <string name="shopping_cart_emptied">ਕਾਰਟ ਸਾਫ਼ ਕੀਤਾ ਗਿਆ</string>
-    <string name="failed_to_empty_shopping_cart">ਕਾਰਟ ਸਾਫ਼ ਕਰਨ ਵਿੱਚ ਅਸਫਲ</string>
+    <string name="failed_to_empty_shopping_cart">ਕਾਰਟ ਸਾਫ਼ ਕਰਨ ਵਿੱਚ ਅਸ���ਲ</string>
     <string name="delete_product">ਉਤਪਾਦ ਮਿਟਾਓ</string>
     <string name="delete_product_confirm">ਕੀ ਤੁਸੀਂ ਯਕੀਨਨ ਇਹ ਉਤਪਾਦ ਮਿਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?</string>
     <string name="delete">ਮਿਟਾਓ</string>
@@ -60,7 +60,7 @@
     <string name="insert_product_price">ਕੀਮਤ ਦਰਜ ਕਰੋ</string>
     <string name="insert_product_shop">ਦੁਕਾਨ ਦਰਜ ਕਰੋ</string>
     <string name="add_product">ਉਤਪਾਦ ਸ਼ਾਮਲ ਕਰੋ</string>
-    <string name="empty_cart">ਕਾਰਟ ਖਾਲੀ ਕਰੋ</string>
+    <string name="empty_cart">ਕਾ��ਟ ਖਾਲੀ ਕਰੋ</string>
     <string name="save_product">ਉਤਪਾਦ ਸੰਭਾਲੋ</string>
     <string name="product_picture">ਉਤਪਾਦ ਦੀ ਤਸਵੀਰ</string>
     <string name="take_picture">ਤਸਵੀਰ ਲਓ</string>
@@ -83,4 +83,16 @@
     <string name="currency_settings">ਮੁਦਰਾ</string>
     <string name="save_settings">ਸੇਵ ਕਰੋ</string>
     <string name="settings_saved">ਸੈਟਿੰਗਾਂ ਸੇਵ ਕੀਤੀਆਂ ਗਈਆਂ</string>
+    <string name="welcome_back">ਵਾਪਸ ਆਉਣ \'ਤੇ ਸਵਾਗਤ ਹੈ!</string>
+    <string name="or_continue_with">ਜਾਂ ਇਸ ਨਾਲ ਜਾਰੀ ਰੱਖੋ</string>
+    <string name="don_t_have_account">ਖਾਤਾ ਨਹੀਂ ਹੈ?</string>
+    <string name="register_here">ਇੱਥੇ ਰਜਿਸਟਰ ਕਰੋ</string>
+    <string name="email">ਈਮੇਲ</string>
+    <string name="welcome">ਜੀ ��ਇਆਂ ਨੂੰ!</string>
+    <string name="create_your_account">ਆਪਣਾ ਖਾਤਾ ਬਣਾਓ</string>
+    <string name="full_name">ਪੂਰਾ ਨਾਮ</string>
+    <string name="confirm_password">ਪਾਸਵਰਡ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ</string>
+    <string name="register">ਰਜਿਸਟਰ ਕਰੋ</string>
+    <string name="already_have_account">ਪਹਿਲਾਂ ਤੋਂ ਹੀ ਖਾਤਾ ਹੈ?</string>
+    <string name="login_here">ਇੱਥੇ ਲੌਗਇਨ ਕਰੋ</string>
 </resources>

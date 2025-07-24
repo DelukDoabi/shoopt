@@ -3,7 +3,7 @@
     <string name="total">الإجمالي: </string>
     <string name="password">كلمة المرور</string>
     <string name="don_t_have_an_account_register_here">ليس لديك حساب؟ سجل هنا</string>
-    <string name="sign_in_with_email">تسجيل الدخول بالبريد الإلكتروني</string>
+    <string name="sign_in_with_email">تسجيل ��لدخول بالبريد الإلكتروني</string>
     <string name="sign_in_with_google">تسجيل الدخول بجوجل</string>
     <string name="title_activity_register">تسجيل</string>
     <string name="forgot_password">هل نسيت كلمة المرور؟</string>
@@ -83,4 +83,16 @@
     <string name="currency_settings">إعدادات العملة</string>
     <string name="save_settings">حفظ الإعدادات</string>
     <string name="settings_saved">تم حفظ الإعدادات بنجاح</string>
+    <string name="welcome_back">مرحباً بعودتك!</string>
+    <string name="or_continue_with">أو متابعة باستخدام</string>
+    <string name="don_t_have_account">ليس لديك حساب؟</string>
+    <string name="register_here">سجل هنا</string>
+    <string name="email">البريد الإلكتروني</string>
+    <string name="welcome">مرحباً!</string>
+    <string name="create_your_account">إنشاء حسابك</string>
+    <string name="full_name">الاسم الكامل</string>
+    <string name="confirm_password">تأكيد كلمة المرور</string>
+    <string name="register">تسجيل</string>
+    <string name="already_have_account">هل لديك حساب بالفعل؟</string>
+    <string name="login_here">تسجيل الدخول هنا</string>
 </resources>
