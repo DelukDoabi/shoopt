@@ -95,4 +95,9 @@
     <string name="register">Registrarse</string>
     <string name="already_have_account">¿Ya tienes una cuenta?</string>
     <string name="login_here">Inicia sesión aquí</string>
+    <string name="logout_confirmation_title">Confirmar cierre de sesión</string>
+    <string name="logout_confirmation_message">¿Está seguro de que desea cerrar sesión?</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
+    <string name="logout_error">Error al cerrar sesión</string>
 </resources>

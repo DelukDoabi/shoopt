@@ -95,4 +95,9 @@
     <string name="register">नोंदणी करा</string>
     <string name="already_have_account">आधीपासूनच खाते आहे?</string>
     <string name="login_here">येथे लॉगिन करा</string>
+    <string name="logout_confirmation_title">लॉगआउट पुष्टी</string>
+    <string name="logout_confirmation_message">तुम्हाला खात्री आहे की तुम्ही लॉगआउट करू इच्छिता?</string>
+    <string name="yes">होय</string>
+    <string name="no">नाही</string>
+    <string name="logout_error">लॉगआउट करताना त्रुटी</string>
 </resources>

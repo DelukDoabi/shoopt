@@ -95,4 +95,9 @@
     <string name="register">Registrar</string>
     <string name="already_have_account">Já tem uma conta?</string>
     <string name="login_here">Entre aqui</string>
+    <string name="logout_confirmation_title">Confirmar saída</string>
+    <string name="logout_confirmation_message">Tem certeza que deseja sair?</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="logout_error">Erro ao fazer logout</string>
 </resources>

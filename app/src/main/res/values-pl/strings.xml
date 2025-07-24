@@ -95,4 +95,9 @@
     <string name="register">Zarejestruj się</string>
     <string name="already_have_account">Masz już konto?</string>
     <string name="login_here">Zaloguj się tutaj</string>
+    <string name="logout_confirmation_title">Potwierdzenie wylogowania</string>
+    <string name="logout_confirmation_message">Czy na pewno chcesz się wylogować?</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
+    <string name="logout_error">Błąd podczas wylogowywania</string>
 </resources>

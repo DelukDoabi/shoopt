@@ -95,4 +95,9 @@
     <string name="register">회원가입</string>
     <string name="already_have_account">이미 계정이 있으신가요?</string>
     <string name="login_here">여기서 로그인</string>
+    <string name="logout_confirmation_title">로그아웃 확인</string>
+    <string name="logout_confirmation_message">정말로 로그아웃하시겠습니까?</string>
+    <string name="yes">예</string>
+    <string name="no">아니오</string>
+    <string name="logout_error">로그아웃 중 오류 발생</string>
 </resources>

@@ -95,4 +95,9 @@
     <string name="register">নিবন্ধন করুন</string>
     <string name="already_have_account">ইতিমধ্যে একটি অ্যাকাউন্ট আছে?</string>
     <string name="login_here">এখানে লগইন করুন</string>
+    <string name="logout_confirmation_title">লগআউট নিশ্চিত করুন</string>
+    <string name="logout_confirmation_message">আপনি কি নিশ্চিত যে আপনি লগআউট করতে চান?</string>
+    <string name="yes">হ্যাঁ</string>
+    <string name="no">না</string>
+    <string name="logout_error">লগআউট করার সময় ত্রুটি</string>
 </resources>

@@ -95,4 +95,9 @@
     <string name="register">Registrera</string>
     <string name="already_have_account">Har du redan ett konto?</string>
     <string name="login_here">Logga in här</string>
+    <string name="logout_confirmation_title">Bekräfta utloggning</string>
+    <string name="logout_confirmation_message">Är du säker på att du vill logga ut?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nej</string>
+    <string name="logout_error">Fel vid utloggning</string>
 </resources>

@@ -95,4 +95,9 @@
     <string name="register">पंजीकरण करें</string>
     <string name="already_have_account">पहले से ही एक खाता है?</string>
     <string name="login_here">यहां लॉगिन करें</string>
+    <string name="logout_confirmation_title">लॉगआउट की पुष्टि करें</string>
+    <string name="logout_confirmation_message">क्या आप वाकई लॉगआउट करना चाहते हैं?</string>
+    <string name="yes">हां</string>
+    <string name="no">नहीं</string>
+    <string name="logout_error">लॉगआउट के दौरान त्रुटि</string>
 </resources>

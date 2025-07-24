@@ -95,4 +95,9 @@
     <string name="or_continue_with">Ou continuer avec</string>
     <string name="don_t_have_account">Vous n\'avez pas de compte?</string>
     <string name="register_here">S\'inscrire ici</string>
+    <string name="logout_confirmation_title">Confirmer la déconnexion</string>
+    <string name="logout_confirmation_message">Êtes-vous sûr de vouloir vous déconnecter ?</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="logout_error">Erreur lors de la déconnexion</string>
 </resources>

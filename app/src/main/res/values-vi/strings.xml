@@ -95,4 +95,9 @@
     <string name="register">Đăng ký</string>
     <string name="already_have_account">Đã có tài khoản?</string>
     <string name="login_here">Đăng nhập tại đây</string>
+    <string name="logout_confirmation_title">Xác nhận đăng xuất</string>
+    <string name="logout_confirmation_message">Bạn có chắc chắn muốn đăng xuất?</string>
+    <string name="yes">Có</string>
+    <string name="no">Không</string>
+    <string name="logout_error">Lỗi khi đăng xuất</string>
 </resources>

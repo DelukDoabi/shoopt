@@ -67,7 +67,7 @@
     <string name="back">返回</string>
     <string name="insert_product_unit_price">输入单价</string>
     <string name="insert_product_barcode">输入条码</string>
-    <string name="update_shopping_list">更新购物�����单</string>
+    <string name="update_shopping_list">更新购物�������单</string>
     <string name="main_shopping_list">主购物清单</string>
     <string name="secondary_shopping_list">次购物清单</string>
     <string name="title_activity_track_shopping">TrackShoppingActivity</string>
@@ -95,4 +95,9 @@
     <string name="register">注册</string>
     <string name="already_have_account">已有账户？</string>
     <string name="login_here">在此登录</string>
+    <string name="logout_confirmation_title">确认登出</string>
+    <string name="logout_confirmation_message">您确定要登出吗？</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="logout_error">登出时出错</string>
 </resources>

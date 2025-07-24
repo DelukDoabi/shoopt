@@ -95,4 +95,9 @@
     <string name="register">Daftar</string>
     <string name="already_have_account">Sampun gadhah akun?</string>
     <string name="login_here">Login ing kene</string>
+    <string name="logout_confirmation_title">Konfirmasi metu</string>
+    <string name="logout_confirmation_message">Apa sampeyan yakin arep metu?</string>
+    <string name="yes">Iya</string>
+    <string name="no">Ora</string>
+    <string name="logout_error">Kesalahan nalika metu</string>
 </resources>

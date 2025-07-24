@@ -95,4 +95,9 @@
     <string name="register">నమోదు</string>
     <string name="already_have_account">ఇప్పటికే ఖాతా ఉందా?</string>
     <string name="login_here">ఇక్కడ లాగిన్ చేయండి</string>
+    <string name="logout_confirmation_title">లాగౌట్ నిర్ధారించండి</string>
+    <string name="logout_confirmation_message">మీరు ఖచ్చితంగా లాగౌట్ చేయాలనుకుంటున్నారా?</string>
+    <string name="yes">అవును</string>
+    <string name="no">కాదు</string>
+    <string name="logout_error">లాగౌట్ చేయడంలో లోపం</string>
 </resources>

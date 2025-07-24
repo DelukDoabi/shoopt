@@ -95,4 +95,9 @@
     <string name="register">Εγγραφή</string>
     <string name="already_have_account">Έχετε ήδη λογαριασμό;</string>
     <string name="login_here">Συνδεθείτε εδώ</string>
+    <string name="logout_confirmation_title">Επιβεβαίωση αποσύνδεσης</string>
+    <string name="logout_confirmation_message">Είστε βέβαιοι ότι θέλετε να αποσυνδεθείτε;</string>
+    <string name="yes">Ναι</string>
+    <string name="no">Όχι</string>
+    <string name="logout_error">Σφάλμα κατά την αποσύνδεση</string>
 </resources>

@@ -95,4 +95,9 @@
     <string name="register">تسجيل</string>
     <string name="already_have_account">هل لديك حساب بالفعل؟</string>
     <string name="login_here">تسجيل الدخول هنا</string>
+    <string name="logout_confirmation_title">تأكيد تسجيل الخروج</string>
+    <string name="logout_confirmation_message">هل أنت متأكد أنك تريد تسجيل الخروج؟</string>
+    <string name="yes">نعم</string>
+    <string name="no">لا</string>
+    <string name="logout_error">خطأ أثناء تسجيل الخروج</string>
 </resources>

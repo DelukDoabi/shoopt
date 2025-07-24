@@ -95,4 +95,9 @@
     <string name="register">Зарегистрироваться</string>
     <string name="already_have_account">Уже есть аккаунт?</string>
     <string name="login_here">Войти здесь</string>
+    <string name="logout_confirmation_title">Подтверждение выхода</string>
+    <string name="logout_confirmation_message">Вы уверены, что хотите выйти?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="logout_error">Ошибка при выходе</string>
 </resources>

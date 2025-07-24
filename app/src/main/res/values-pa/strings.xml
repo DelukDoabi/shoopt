@@ -95,4 +95,9 @@
     <string name="register">ਰਜਿਸਟਰ ਕਰੋ</string>
     <string name="already_have_account">ਪਹਿਲਾਂ ਤੋਂ ਹੀ ਖਾਤਾ ਹੈ?</string>
     <string name="login_here">ਇੱਥੇ ਲੌਗਇਨ ਕਰੋ</string>
+    <string name="logout_confirmation_title">ਲੌਗਆਊਟ ਦੀ ਪੁਸ਼ਟੀ</string>
+    <string name="logout_confirmation_message">ਕੀ ਤੁਸੀਂ ਯਕੀਨੀ ਲੌਗਆਊਟ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?</string>
+    <string name="yes">ਹਾਂ</string>
+    <string name="no">ਨਹੀਂ</string>
+    <string name="logout_error">ਲੌਗਆਊਟ ਕਰਨ ਵੇਲੇ ਤਰੁੱਟੀ</string>
 </resources>

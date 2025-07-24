@@ -95,4 +95,9 @@
     <string name="register">Registrati</string>
     <string name="already_have_account">Hai già un account?</string>
     <string name="login_here">Accedi qui</string>
+    <string name="logout_confirmation_title">Conferma disconnessione</string>
+    <string name="logout_confirmation_message">Sei sicuro di voler disconnetterti?</string>
+    <string name="yes">Sì</string>
+    <string name="no">No</string>
+    <string name="logout_error">Errore durante la disconnessione</string>
 </resources>

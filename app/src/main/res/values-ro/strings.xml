@@ -95,4 +95,9 @@
     <string name="register">Înregistrare</string>
     <string name="already_have_account">Aveți deja un cont?</string>
     <string name="login_here">Conectați-vă aici</string>
+    <string name="logout_confirmation_title">Confirmare deconectare</string>
+    <string name="logout_confirmation_message">Sigur doriți să vă deconectați?</string>
+    <string name="yes">Da</string>
+    <string name="no">Nu</string>
+    <string name="logout_error">Eroare la deconectare</string>
 </resources>

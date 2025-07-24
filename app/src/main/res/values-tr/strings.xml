@@ -95,4 +95,9 @@
     <string name="register">Kayıt Ol</string>
     <string name="already_have_account">Zaten hesabınız var mı?</string>
     <string name="login_here">Buradan giriş yapın</string>
+    <string name="logout_confirmation_title">Çıkışı Onayla</string>
+    <string name="logout_confirmation_message">Çıkış yapmak istediğinizden emin misiniz?</string>
+    <string name="yes">Evet</string>
+    <string name="no">Hayır</string>
+    <string name="logout_error">Çıkış yapılırken hata oluştu</string>
 </resources>

@@ -95,4 +95,9 @@
     <string name="register">登録</string>
     <string name="already_have_account">アカウントをお持ちですか？</string>
     <string name="login_here">ログインはこちら</string>
+    <string name="logout_confirmation_title">ログアウト確認</string>
+    <string name="logout_confirmation_message">本当にログアウトしますか？</string>
+    <string name="yes">はい</string>
+    <string name="no">いいえ</string>
+    <string name="logout_error">ログアウト中にエラーが発生しました</string>
 </resources>

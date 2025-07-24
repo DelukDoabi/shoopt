@@ -9,7 +9,7 @@
     <string name="forgot_password">கடவுச்சொல்லை மறந்துவிட்டீர்களா?</string>
     <string name="unknown_error">அறியப்படாத ���ிழை ஏற்பட்டுள்ளது.</string>
     <string name="hf_key_empty">Hugging Face API ��ீ காலியாக உள்ளது.</string>
-    <string name="unknown_shop">அறியப்படாத கடை</string>
+    <string name="unknown_shop">அறியப்பட���த கடை</string>
     <string name="scan_barcode">பார்கோடு ஸ்கேன் செய்யவும்</string>
     <string name="logout">வெளியேறு</string>
     <string name="welcome_user">வரவேற்கிறோம், %1$s!</string>
@@ -41,9 +41,9 @@
     <string name="send">அனுப்பு</string>
     <string name="clear">வெறுமையாக்கவும்</string>
     <string name="product_added_to_cart">பொருள் வண்டியில் சேர்க்கப்பட்டது</string>
-    <string name="failed_to_add_product_to_cart">பொருளை வண்டியில் சேர்க்க முடியவில்லை</string>
-    <string name="clear_shopping_cart">வண்டியை வெறுமையாக்கவும்</string>
-    <string name="clear_shopping_cart_confirm">நீங்கள் உண்மையில் வண்டியை வெறுமையாக்க விரும்புகிறீர்களா? இந்த செயலை மீள முடியாது.</string>
+    <string name="failed_to_add_product_to_cart">பொருளை வண்டியில் சேர்க்க முடியவில்���ை</string>
+    <string name="clear_shopping_cart">வண்டியை வெறுமையாக்கவ���ம்</string>
+    <string name="clear_shopping_cart_confirm">நீங்கள் உண்மையில் வண���டியை வெறுமையாக்க விரும்புகிறீர்களா? இந்த செயலை மீள முடியாது.</string>
     <string name="shopping_cart_emptied">வண்டி வெறுமையாக்கப்பட்டது</string>
     <string name="failed_to_empty_shopping_cart">வண்டியை வெறுமையாக்க முடியவில்லை</string>
     <string name="delete_product">பொருளை நீக்கவும்</string>
@@ -52,8 +52,8 @@
     <string name="product_deleted">%1$s பொருள் நீக்கப்பட்டது</string>
     <string name="failed_to_delete_product">பொருளை நீக்க முடியவில்லை</string>
     <string name="failed_to_load_shopping_cart">வண்டியை ஏற்ற முடியவில்லை</string>
-    <string name="add_or_update_product">பொருளை சேர்க்கவும் அல்லது புதுப்பிக்���வும்</string>
-    <string name="track_shopping">வாங்கும் பட்டியலை கண்காணிக்கவும்</string>
+    <string name="add_or_update_product">பொருளை சேர்க்கவும் அல்லது புதுப்பிக்கவும்</string>
+    <string name="track_shopping">வாங்கும் பட்டியலை ���ண்காணிக்கவும்</string>
     <string name="analyse">பகுப்பாய்வு</string>
     <string name="insert_product_name">பெயரை உள்ளிடவும்</string>
     <string name="insert_product_price">விலையை உள்ளிடவும்</string>
@@ -66,7 +66,7 @@
     <string name="back">பின்செல்</string>
     <string name="insert_product_unit_price">யூனிட் விலையை உள்ளிடவும்</string>
     <string name="insert_product_barcode">பார்கோடு உள்ளிடவும்</string>
-    <string name="update_shopping_list">வாங்கும் பட்டியலை புதுப்பிக்கவும்</string>
+    <string name="update_shopping_list">வாங்கும் பட்டியலை ���ுதுப்பிக்கவும்</string>
     <string name="main_shopping_list">முக்கிய வாங்கும் பட்டியல்</string>
     <string name="secondary_shopping_list">இரண்டாம் வாங்கும் பட்டியல்</string>
     <string name="title_activity_track_shopping">TrackShoppingActivity</string>
@@ -84,9 +84,9 @@
     <string name="save_settings">சேமி</string>
     <string name="settings_saved">அமைப்புகள் சேமிக்கப்பட்டன</string>
     <string name="welcome_back">மீண்டும் வரவேற்கிறோம்!</string>
-    <string name="or_continue_with">அல்லது இதனுடன் தொடரவும்</string>
+    <string name="or_continue_with">அல்லது இதனுட���் தொடரவும்</string>
     <string name="don_t_have_account">கணக்கு இல்லையா?</string>
-    <string name="register_here">இங்கே பதிவு செய்யுங்கள்</string>
+    <string name="register_here">��ங்கே பதிவு செய்யுங்கள்</string>
     <string name="email">மின்னஞ்சல்</string>
     <string name="welcome">வரவேற்கிறோம்!</string>
     <string name="create_your_account">உங்கள் கணக்கை உருவாக்கவும்</string>
@@ -95,4 +95,9 @@
     <string name="register">பதிவு செய்க</string>
     <string name="already_have_account">ஏற்கனவே கணக்கு உள்ளதா?</string>
     <string name="login_here">இங்கே உள்நுழையவும்</string>
+    <string name="logout_confirmation_title">வெளியேறுவதை உறுதிப்படுத்தவும்</string>
+    <string name="logout_confirmation_message">நிச்சயமாக வெளியேற விரும்புகிறீர்களா?</string>
+    <string name="yes">ஆம்</string>
+    <string name="no">இல்லை</string>
+    <string name="logout_error">வெளியேறுவதில் பிழை</string>
 </resources>
