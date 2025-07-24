@@ -88,4 +88,11 @@
     <string name="don_t_have_account">Нет учетной записи?</string>
     <string name="register_here">Зарегистрироваться здесь</string>
     <string name="email">Электронная почта</string>
+    <string name="welcome">Добро пожаловать!</string>
+    <string name="create_your_account">Создайте свой аккаунт</string>
+    <string name="full_name">Полное имя</string>
+    <string name="confirm_password">Подтвердите пароль</string>
+    <string name="register">Зарегистрироваться</string>
+    <string name="already_have_account">Уже есть аккаунт?</string>
+    <string name="login_here">Войти здесь</string>
 </resources>

@@ -88,4 +88,11 @@
     <string name="don_t_have_account">Nu ai un cont?</string>
     <string name="register_here">Înregistrează-te aici</string>
     <string name="email">Email</string>
+    <string name="welcome">Bun venit!</string>
+    <string name="create_your_account">Creați contul dvs.</string>
+    <string name="full_name">Nume complet</string>
+    <string name="confirm_password">Confirmă parola</string>
+    <string name="register">Înregistrare</string>
+    <string name="already_have_account">Aveți deja un cont?</string>
+    <string name="login_here">Conectați-vă aici</string>
 </resources>

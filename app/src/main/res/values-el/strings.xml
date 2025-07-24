@@ -1,7 +1,7 @@
 <resources>
     <string name="products">Προϊόντα: </string>
     <string name="total">Σύνολο: </string>
-    <string name="password">Κωδικός πρόσβασης</string>
+    <string name="password">Κωδικός πρόσβ��σης</string>
     <string name="don_t_have_an_account_register_here">Δεν έχετε λογαριασμό; Εγγραφείτε εδώ</string>
     <string name="sign_in_with_email">Σύνδεση με email</string>
     <string name="sign_in_with_google">Σύνδεση με Google</string>
@@ -88,4 +88,11 @@
     <string name="don_t_have_account">Δεν έχετε λογαριασμό;</string>
     <string name="register_here">Εγγραφείτε εδώ</string>
     <string name="email">Email</string>
+    <string name="welcome">Καλώς ήρθατε!</string>
+    <string name="create_your_account">Δημιουργία λογαριασμού</string>
+    <string name="full_name">Πλήρες όνομα</string>
+    <string name="confirm_password">Επιβεβαίωση κωδικού</string>
+    <string name="register">Εγγραφή</string>
+    <string name="already_have_account">Έχετε ήδη λογαριασμό;</string>
+    <string name="login_here">Συνδεθείτε εδώ</string>
 </resources>

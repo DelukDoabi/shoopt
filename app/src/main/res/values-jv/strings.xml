@@ -88,4 +88,11 @@
     <string name="don_t_have_account">Durung duwe akun?</string>
     <string name="register_here">Daftar ing kene</string>
     <string name="email">Email</string>
+    <string name="welcome">Sugeng rawuh!</string>
+    <string name="create_your_account">Gawe akun panjenengan</string>
+    <string name="full_name">Jeneng lengkap</string>
+    <string name="confirm_password">Konfirmasi password</string>
+    <string name="register">Daftar</string>
+    <string name="already_have_account">Sampun gadhah akun?</string>
+    <string name="login_here">Login ing kene</string>
 </resources>

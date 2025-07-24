@@ -88,4 +88,11 @@
     <string name="don_t_have_account">Bạn chưa có tài khoản?</string>
     <string name="register_here">Đăng ký tại đây</string>
     <string name="email">Email</string>
+    <string name="welcome">Chào mừng!</string>
+    <string name="create_your_account">Tạo tài khoản của bạn</string>
+    <string name="full_name">Họ và tên</string>
+    <string name="confirm_password">Xác nhận mật khẩu</string>
+    <string name="register">Đăng ký</string>
+    <string name="already_have_account">Đã có tài khoản?</string>
+    <string name="login_here">Đăng nhập tại đây</string>
 </resources>

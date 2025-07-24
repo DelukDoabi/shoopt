@@ -1,8 +1,10 @@
 package com.dedoware.shoopt.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dedoware.shoopt.R
@@ -43,6 +45,24 @@ class RegisterActivity : AppCompatActivity() {
             val passwordEditText = findViewById<EditText>(R.id.password)
             val confirmPasswordEditText = findViewById<TextInputEditText>(R.id.confirm_password)
             val registerButton = findViewById<Button>(R.id.register_button)
+
+            // Récupération du lien de connexion
+            val loginLink = findViewById<TextView>(R.id.login_link)
+
+            // Ajout d'un click listener pour rediriger vers l'écran de connexion
+            loginLink.setOnClickListener {
+                // Suivre le clic sur le lien de connexion
+                AnalyticsManager.logUserAction(
+                    action = "click",
+                    category = "navigation",
+                    additionalParams = mapOf("button" to "login_link")
+                )
+
+                // Redirection vers LoginActivity
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish() // Fermer l'activité d'inscription
+            }
 
             registerButton.setOnClickListener {
                 try {

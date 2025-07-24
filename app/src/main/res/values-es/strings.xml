@@ -88,4 +88,11 @@
     <string name="currency_settings">Moneda</string>
     <string name="save_settings">Guardar</string>
     <string name="settings_saved">Ajustes guardados</string>
+    <string name="welcome">¡Bienvenido!</string>
+    <string name="create_your_account">Crea tu cuenta</string>
+    <string name="full_name">Nombre completo</string>
+    <string name="confirm_password">Confirmar contraseña</string>
+    <string name="register">Registrarse</string>
+    <string name="already_have_account">¿Ya tienes una cuenta?</string>
+    <string name="login_here">Inicia sesión aquí</string>
 </resources>

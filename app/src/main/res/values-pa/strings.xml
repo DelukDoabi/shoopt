@@ -88,4 +88,11 @@
     <string name="don_t_have_account">ਖਾਤਾ ਨਹੀਂ ਹੈ?</string>
     <string name="register_here">ਇੱਥੇ ਰਜਿਸਟਰ ਕਰੋ</string>
     <string name="email">ਈਮੇਲ</string>
+    <string name="welcome">ਜੀ ��ਇਆਂ ਨੂੰ!</string>
+    <string name="create_your_account">ਆਪਣਾ ਖਾਤਾ ਬਣਾਓ</string>
+    <string name="full_name">ਪੂਰਾ ਨਾਮ</string>
+    <string name="confirm_password">ਪਾਸਵਰਡ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ</string>
+    <string name="register">ਰਜਿਸਟਰ ਕਰੋ</string>
+    <string name="already_have_account">ਪਹਿਲਾਂ ਤੋਂ ਹੀ ਖਾਤਾ ਹੈ?</string>
+    <string name="login_here">ਇੱਥੇ ਲੌਗਇਨ ਕਰੋ</string>
 </resources>

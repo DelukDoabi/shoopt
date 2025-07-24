@@ -88,4 +88,11 @@
     <string name="don_t_have_account">Nie masz konta?</string>
     <string name="register_here">Zarejestruj się tutaj</string>
     <string name="email">Email</string>
+    <string name="welcome">Witamy!</string>
+    <string name="create_your_account">Utwórz swoje konto</string>
+    <string name="full_name">Pełne imię i nazwisko</string>
+    <string name="confirm_password">Potwierdź hasło</string>
+    <string name="register">Zarejestruj się</string>
+    <string name="already_have_account">Masz już konto?</string>
+    <string name="login_here">Zaloguj się tutaj</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.dedoware.shoopt.activities
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -25,6 +26,7 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var welcomeText: TextView
 
     override fun onStart() {
         super.onStart()
@@ -37,6 +39,23 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         auth = FirebaseAuth.getInstance()
+
+        // Récupérer la référence au TextView de bienvenue
+        welcomeText = findViewById(R.id.welcome_text)
+
+        // Vérifier si c'est la première utilisation de l'application
+        val sharedPrefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val isFirstLaunch = sharedPrefs.getBoolean("is_first_launch", true)
+
+        // Définir le message de bienvenue en fonction de la première utilisation
+        if (isFirstLaunch) {
+            welcomeText.text = getString(R.string.welcome)
+
+            // Marquer l'application comme déjà utilisée pour les prochains lancements
+            sharedPrefs.edit().putBoolean("is_first_launch", false).apply()
+        } else {
+            welcomeText.text = getString(R.string.welcome_back)
+        }
 
         val emailEditText = findViewById<EditText>(R.id.editTextEmail)
         val passwordEditText = findViewById<EditText>(R.id.editTextPassword)

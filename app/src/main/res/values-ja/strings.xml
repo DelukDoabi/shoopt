@@ -84,8 +84,15 @@
     <string name="save_settings">保存</string>
     <string name="settings_saved">設定を保存しました</string>
     <string name="welcome_back">お帰りなさい！</string>
-    <string name="or_continue_with">または���で続行</string>
+    <string name="or_continue_with">または�����で続行</string>
     <string name="don_t_have_account">アカウントをお持ちでないですか？</string>
     <string name="register_here">こちらで登録</string>
     <string name="email">Eメール</string>
+    <string name="welcome">ようこそ！</string>
+    <string name="create_your_account">アカウントを作成</string>
+    <string name="full_name">氏���</string>
+    <string name="confirm_password">パスワード確認</string>
+    <string name="register">登録</string>
+    <string name="already_have_account">アカウントをお持ちですか？</string>
+    <string name="login_here">ログインはこちら</string>
 </resources>

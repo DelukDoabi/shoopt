@@ -8,13 +8,13 @@
     <string name="title_activity_register">பதிவு</string>
     <string name="forgot_password">கடவுச்சொல்லை மறந்துவிட்டீர்களா?</string>
     <string name="unknown_error">அறியப்படாத ���ிழை ஏற்பட்டுள்ளது.</string>
-    <string name="hf_key_empty">Hugging Face API ��ிசை காலியாக உள்ளது.</string>
+    <string name="hf_key_empty">Hugging Face API ��ீ காலியாக உள்ளது.</string>
     <string name="unknown_shop">அறியப்படாத கடை</string>
-    <string name="scan_barcode">பார்கோடு ஸ்கேன் செய்யவ��ம்</string>
+    <string name="scan_barcode">பார்கோடு ஸ்கேன் செய்யவும்</string>
     <string name="logout">வெளியேறு</string>
     <string name="welcome_user">வரவேற்கிறோம், %1$s!</string>
-    <string name="choose_option">ஒரு விருப்பத்தை தேர்ந்தெடுக்��வும்</string>
-    <string name="scan_barcode_or_add_manually">பார்கோடு ஸ்கேன் செய்யவும் அல்லது பொருளை கை��ுறையாக சேர்க்கவும்</string>
+    <string name="choose_option">ஒரு விருப்பத்தை தேர்ந்தெடுங்கள்</string>
+    <string name="scan_barcode_or_add_manually">பார்கோடு ஸ்கேன் செய்யவும் அல்லது பொருளை கைமுறையாக சேர்க்கவும்</string>
     <string name="add_product_manually">பொருளை கைமுறையாக சேர்க்கவும்</string>
     <string name="cancelled">ரத்து செய்யப்பட்டது</string>
     <string name="analyzing_image">படத்தை பகுப்பாய்வு செய்கிறது</string>
@@ -52,7 +52,7 @@
     <string name="product_deleted">%1$s பொருள் நீக்கப்பட்டது</string>
     <string name="failed_to_delete_product">பொருளை நீக்க முடியவில்லை</string>
     <string name="failed_to_load_shopping_cart">வண்டியை ஏற்ற முடியவில்லை</string>
-    <string name="add_or_update_product">பொருளை சேர்க்கவும் அல்லது புதுப்பிக்கவும்</string>
+    <string name="add_or_update_product">பொருளை சேர்க்கவும் அல்லது புதுப்பிக்���வும்</string>
     <string name="track_shopping">வாங்கும் பட்டியலை கண்காணிக்கவும்</string>
     <string name="analyse">பகுப்பாய்வு</string>
     <string name="insert_product_name">பெயரை உள்ளிடவும்</string>
@@ -65,7 +65,7 @@
     <string name="take_picture">படம் எடுக்கவும்</string>
     <string name="back">பின்செல்</string>
     <string name="insert_product_unit_price">யூனிட் விலையை உள்ளிடவும்</string>
-    <string name="insert_product_barcode">பார்கோடு உள்ளிட��ும்</string>
+    <string name="insert_product_barcode">பார்கோடு உள்ளிடவும்</string>
     <string name="update_shopping_list">வாங்கும் பட்டியலை புதுப்பிக்கவும்</string>
     <string name="main_shopping_list">முக்கிய வாங்கும் பட்டியல்</string>
     <string name="secondary_shopping_list">இரண்டாம் வாங்கும் பட்டியல்</string>
@@ -88,4 +88,11 @@
     <string name="don_t_have_account">கணக்கு இல்லையா?</string>
     <string name="register_here">இங்கே பதிவு செய்யுங்கள்</string>
     <string name="email">மின்னஞ்சல்</string>
+    <string name="welcome">வரவேற்கிறோம்!</string>
+    <string name="create_your_account">உங்கள் கணக்கை உருவாக்கவும்</string>
+    <string name="full_name">முழுப் பெயர்</string>
+    <string name="confirm_password">கடவுச்சொல்லை உறுதிப்படுத்தவும்</string>
+    <string name="register">பதிவு செய்க</string>
+    <string name="already_have_account">ஏற்கனவே கணக்கு உள்ளதா?</string>
+    <string name="login_here">இங்கே உள்நுழையவும்</string>
 </resources>
