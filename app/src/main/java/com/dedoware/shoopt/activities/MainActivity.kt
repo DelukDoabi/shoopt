@@ -20,10 +20,6 @@ import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.UpdateManager
 import com.dedoware.shoopt.utils.UserPreferences
-import com.google.android.play.core.install.model.InstallStatus
-import com.journeyapps.barcodescanner.ScanContract
-import com.journeyapps.barcodescanner.ScanIntentResult
-import com.journeyapps.barcodescanner.ScanOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.android.material.card.MaterialCardView
@@ -290,34 +286,6 @@ class MainActivity : AppCompatActivity() {
             .setNegativeButton(getString(R.string.no), null)
             .create()
             .show()
-    }
-
-    // Register the launcher and result handler
-    private val barcodeLauncher = registerForActivityResult(
-        ScanContract()
-    ) { result: ScanIntentResult ->
-        try {
-            if (result.contents == null) {
-                Toast.makeText(this@MainActivity, getString(R.string.cancelled), Toast.LENGTH_LONG).show()
-            } else {
-                try {
-                    // Vérifier si le produit existe déjà avant de lancer l'activité
-                    checkProductExistenceAndNavigate(result.contents)
-                } catch (e: Exception) {
-                    CrashlyticsManager.log("Erreur lors du traitement du code-barres: ${e.message ?: "Message non disponible"}")
-                    CrashlyticsManager.setCustomKey("error_location", "barcode_processing")
-                    CrashlyticsManager.setCustomKey("barcode", result.contents)
-                    CrashlyticsManager.logException(e)
-
-                    Toast.makeText(this, getString(R.string.barcode_processing_error), Toast.LENGTH_SHORT).show()
-                }
-            }
-        } catch (e: Exception) {
-            CrashlyticsManager.log("Erreur lors du traitement du résultat du scan: ${e.message ?: "Message non disponible"}")
-            CrashlyticsManager.setCustomKey("error_location", "barcode_scan_result")
-            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
-            CrashlyticsManager.logException(e)
-        }
     }
 
     // Register the launcher for our new ML Kit-based scanner
