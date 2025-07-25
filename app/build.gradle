@@ -44,6 +44,10 @@ android {
             }
             // Activer l'envoi automatique des rapports en utilisant une propriété du manifeste
             manifestPlaceholders = [crashlyticsCollectionEnabled: "true"]
+
+            ndk {
+                debugSymbolLevel = 'FULL'
+            }
         }
     }
     compileOptions {
