@@ -100,6 +100,11 @@
     <string name="logout_confirmation_message">Êtes-vous sûr de vouloir vous déconnecter ?</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
+    <string name="scan_barcode_instructions">Positionnez le code-barre dans le cadre</string>
+    <string name="camera_permission_required">La permission d\'accès à la caméra est nécessaire</string>
+    <string name="close">Fermer</string>
+    <string name="toggle_flash">Activer/désactiver le flash</string>
+    <string name="barcode_detected">Code-barre détecté</string>
     <string name="logout_error">Erreur lors de la déconnexion</string>
     <string name="cancel">Annuler</string>
     <string name="settings_open_error">Impossible d\'ouvrir les paramètres. Veuillez réessayer.</string>

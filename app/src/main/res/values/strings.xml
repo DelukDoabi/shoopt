@@ -122,4 +122,15 @@
     <string name="update_now">Update now</string>
     <string name="update_later">Later</string>
     <string name="update_description">New features and improvements await you!</string>
+    <string name="close_scan">Fermer le scanner</string>
+    <string name="toggle_torch">Activer/Désactiver la lampe torche</string>
+    <string name="camera_permission_required">L\'autorisation de la caméra est nécessaire pour scanner les codes-barres</string>
+    <string name="scanning">Scan en cours...</string>
+    <string name="scan_successful">Code détecté</string>
+
+    <!-- Chaînes manquantes pour le scanner de codes-barres -->
+    <string name="scan_barcode_instructions">Position the barcode within the frame</string>
+    <string name="close">Close</string>
+    <string name="toggle_flash">Toggle flash</string>
+    <string name="barcode_detected">Barcode detected</string>
 </resources>

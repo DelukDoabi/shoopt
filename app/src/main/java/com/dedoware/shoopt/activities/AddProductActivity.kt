@@ -28,6 +28,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -46,6 +47,7 @@ import com.dedoware.shoopt.persistence.IProductRepository
 import com.dedoware.shoopt.persistence.LocalImageStorage
 import com.dedoware.shoopt.persistence.LocalProductRepository
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
+import com.dedoware.shoopt.scanner.BarcodeScannerActivity
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.ShooptUtils
@@ -615,37 +617,32 @@ class AddProductActivity : AppCompatActivity() {
         // Analytique pour le scan de code-barres
         AnalyticsManager.logSelectContent("barcode_scan", "scanner", "product_barcode")
 
-        val options = ScanOptions()
-        options.setOrientationLocked(false)  // Permet à l'utilisateur de tourner son appareil
-        options.setDesiredBarcodeFormats(ScanOptions.ONE_D_CODE_TYPES)  // Optimise pour les codes-barres 1D (linéaires)
-        options.setPrompt(getString(R.string.scan_barcode_prompt))  // Message d'instruction pour l'utilisateur
-        options.setBeepEnabled(true)  // Son lors de la détection
-        options.setBarcodeImageEnabled(true)  // Capture l'image du code-barres
-
-        // Configuration spécifique pour le mode horizontal
-        options.setCameraId(0) // Utiliser la caméra arrière
-        options.setOrientationLocked(true) // Verrouiller l'orientation
-        options.setCaptureActivity(HorizontalCaptureActivity::class.java) // Utiliser notre activité personnalisée pour la capture horizontale
-
-        // Ajouter une configuration supplémentaire pour améliorer la détection
-        options.setTimeout(10000) // Timeout après 10 secondes si aucun code n'est détecté
-
-        barcodeLauncher.launch(options)
+        try {
+            // Utilisation de notre nouvelle implémentation basée sur ML Kit
+            val intent = Intent(this, BarcodeScannerActivity::class.java)
+            barcodeScannerLauncher.launch(intent)
+        } catch (e: Exception) {
+            Log.e("BarcodeScanner", "Erreur lors du lancement du scanner: ${e.message}", e)
+            Toast.makeText(this, getString(R.string.scanner_launch_error), Toast.LENGTH_LONG).show()
+        }
     }
 
-    private val barcodeLauncher = registerForActivityResult(
-        ScanContract()
-    ) { result: ScanIntentResult ->
-        if (result.contents == null) {
-            Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show()
-        } else {
-            productBarcodeEditText.setText(result.contents)
+    private val barcodeScannerLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val barcodeValue = result.data?.getStringExtra(BarcodeScannerActivity.BARCODE_RESULT)
+            if (barcodeValue != null) {
+                productBarcodeEditText.setText(barcodeValue)
 
-            // Analytique pour le code-barres scanné
-            val params = Bundle().apply {
-                putString("barcode_length", result.contents.length.toString())
+                // Analytique pour le code-barres scanné
+                val params = Bundle().apply {
+                    putString("barcode_length", barcodeValue.length.toString())
+                }
+                AnalyticsManager.logCustomEvent("barcode_scanned", params)
             }
-            AnalyticsManager.logCustomEvent("barcode_scanned", params)
+        } else if (result.resultCode == Activity.RESULT_CANCELED) {
+            Toast.makeText(this, getString(R.string.cancelled), Toast.LENGTH_LONG).show()
         }
     }
 
