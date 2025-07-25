@@ -474,11 +474,14 @@ class AddProductActivity : AppCompatActivity() {
 
             try {
                 scanBarcodeButton = findViewById(R.id.scan_barcode_IB)
+                Log.d("DEBUG_SCANNER", "Button found: ${scanBarcodeButton != null}")
 
                 scanBarcodeButton.setOnClickListener {
+                    Log.d("DEBUG_SCANNER", "Button clicked, calling launchBarcodeScanner()")
                     try {
                         launchBarcodeScanner()
                     } catch (e: Exception) {
+                        Log.e("DEBUG_SCANNER", "Error in launchBarcodeScanner: ${e.message}", e)
                         CrashlyticsManager.log("Erreur lors du lancement du scanner de code-barres: ${e.message ?: "Message non disponible"}")
                         CrashlyticsManager.setCustomKey("error_location", "barcode_scanner_launch")
                         CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
@@ -489,6 +492,7 @@ class AddProductActivity : AppCompatActivity() {
                     }
                 }
             } catch (e: Exception) {
+                Log.e("DEBUG_SCANNER", "Error setting up barcode button: ${e.message}", e)
                 CrashlyticsManager.log("Erreur lors de l'initialisation du bouton de scan: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "scan_button_init")
                 CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
@@ -611,7 +615,22 @@ class AddProductActivity : AppCompatActivity() {
         // Analytique pour le scan de code-barres
         AnalyticsManager.logSelectContent("barcode_scan", "scanner", "product_barcode")
 
-        barcodeLauncher.launch(ScanOptions())
+        val options = ScanOptions()
+        options.setOrientationLocked(false)  // Permet à l'utilisateur de tourner son appareil
+        options.setDesiredBarcodeFormats(ScanOptions.ONE_D_CODE_TYPES)  // Optimise pour les codes-barres 1D (linéaires)
+        options.setPrompt(getString(R.string.scan_barcode_prompt))  // Message d'instruction pour l'utilisateur
+        options.setBeepEnabled(true)  // Son lors de la détection
+        options.setBarcodeImageEnabled(true)  // Capture l'image du code-barres
+
+        // Configuration spécifique pour le mode horizontal
+        options.setCameraId(0) // Utiliser la caméra arrière
+        options.setOrientationLocked(true) // Verrouiller l'orientation
+        options.setCaptureActivity(HorizontalCaptureActivity::class.java) // Utiliser notre activité personnalisée pour la capture horizontale
+
+        // Ajouter une configuration supplémentaire pour améliorer la détection
+        options.setTimeout(10000) // Timeout après 10 secondes si aucun code n'est détecté
+
+        barcodeLauncher.launch(options)
     }
 
     private val barcodeLauncher = registerForActivityResult(

@@ -11,6 +11,7 @@
     <string name="hf_key_empty">Klucz API Hugging Face jest pusty.</string>
     <string name="unknown_shop">Nieznany sklep</string>
     <string name="scan_barcode">Skanuj kod kreskowy</string>
+    <string name="scan_barcode_prompt">Ustaw kod kreskowy w ramce, aby zeskanować</string>
     <string name="logout">Wyloguj się</string>
     <string name="welcome_user">Witaj, %1$s!</string>
     <string name="choose_option">Wybierz opcję</string>

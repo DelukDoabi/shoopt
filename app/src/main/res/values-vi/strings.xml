@@ -11,6 +11,7 @@
     <string name="hf_key_empty">Khóa API Hugging Face trống.</string>
     <string name="unknown_shop">Cửa hàng không xác định</string>
     <string name="scan_barcode">Quét mã vạch</string>
+    <string name="scan_barcode_prompt">Căn chỉnh mã vạch trong khung để quét</string>
     <string name="logout">Đăng xuất</string>
     <string name="welcome_user">Chào mừng, %1$s!</string>
     <string name="choose_option">Chọn một tùy chọn</string>

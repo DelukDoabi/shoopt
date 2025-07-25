@@ -11,6 +11,7 @@
     <string name="hf_key_empty">Ключ Hugging Face пуст.</string>
     <string name="unknown_shop">Неизвестный магазин</string>
     <string name="scan_barcode">Сканировать штрих-код</string>
+    <string name="scan_barcode_prompt">Наведите штрих-код в рамку для сканирования</string>
     <string name="logout">Выйти</string>
     <string name="welcome_user">Добро пожаловать, %1$s!</string>
     <string name="choose_option">Выберите опцию</string>

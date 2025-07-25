@@ -11,6 +11,7 @@
     <string name="hf_key_empty">Cheia API Hugging Face este goală.</string>
     <string name="unknown_shop">Magazin necunoscut</string>
     <string name="scan_barcode">Scanează codul de bare</string>
+    <string name="scan_barcode_prompt">Aliniați codul de bare în cadru pentru a-l scana</string>
     <string name="logout">Deconectare</string>
     <string name="welcome_user">Bine ai venit, %1$s!</string>
     <string name="choose_option">Alege o opțiune</string>

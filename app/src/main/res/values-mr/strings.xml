@@ -11,7 +11,8 @@
     <string name="hf_key_empty">Hugging Face API की रिकामी आहे.</string>
     <string name="unknown_shop">अज्ञात दुकान</string>
     <string name="scan_barcode">बारकोड स्कॅन करा</string>
-    <string name="logout">लॉगआउट</string>
+    <string name="scan_barcode_prompt">स्कॅन करण्यासाठी बारकोड फ्रेममध्ये संरेखित करा</string>
+    <string name="logout">लॉग आउट</string>
     <string name="welcome_user">स्वागत आहे, %1$s!</string>
     <string name="choose_option">एक पर्याय निवडा</string>
     <string name="scan_barcode_or_add_manually">बारकोड स्कॅन करा किंवा उत्पादन हाताने जोडा</string>

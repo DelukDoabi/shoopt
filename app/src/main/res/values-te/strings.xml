@@ -11,6 +11,7 @@
     <string name="hf_key_empty">Hugging Face API కీ ఖాళీగా ఉంది.</string>
     <string name="unknown_shop">తెలియని షాప్</string>
     <string name="scan_barcode">బార్కోడ్ స్కాన్ చేయండి</string>
+    <string name="scan_barcode_prompt">స్కాన్ చేయడానికి బార్కోడ్‌ను ఫ్రేమ్‌లోకి సరిపోల్చండి</string>
     <string name="logout">లాగ్ అవుట్</string>
     <string name="welcome_user">స్వాగతం, %1$s!</string>
     <string name="choose_option">ఒక ఎంపికను ఎంచుకోండి</string>

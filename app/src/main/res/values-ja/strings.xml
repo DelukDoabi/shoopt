@@ -11,6 +11,7 @@
     <string name="hf_key_empty">Hugging Face APIキーが空です。</string>
     <string name="unknown_shop">不明な店舗</string>
     <string name="scan_barcode">バーコードをスキャン</string>
+    <string name="scan_barcode_prompt">スキャンするにはバーコードをフレーム内に合わせてください</string>
     <string name="logout">ログアウト</string>
     <string name="welcome_user">ようこそ, %1$s!</string>
     <string name="choose_option">オプションを選択してください</string>

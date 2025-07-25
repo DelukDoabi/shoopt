@@ -10,7 +10,8 @@
     <string name="unknown_error">அறியப்படாத ���ிழை ஏற்பட்டுள்ளது.</string>
     <string name="hf_key_empty">Hugging Face API ��ீ காலியாக உள்ளது.</string>
     <string name="unknown_shop">அறியப்பட���த கடை</string>
-    <string name="scan_barcode">பார்கோடு ஸ்கேன் செய்யவும்</string>
+    <string name="scan_barcode">பார்கோடை ஸ்கேன் செய்க</string>
+    <string name="scan_barcode_prompt">ஸ்கேன் செய்ய பார்கோடை சட்டத்திற்குள் சீரமைக்கவும்</string>
     <string name="logout">வெளியேறு</string>
     <string name="welcome_user">வரவேற்கிறோம், %1$s!</string>
     <string name="choose_option">ஒரு விருப்பத்தை தேர்ந்தெடுங்கள்</string>

@@ -30,6 +30,7 @@
     <string name="hf_key_empty">The Hugging Face API key is empty.</string>
     <string name="unknown_shop">Unknown Shop</string>
     <string name="scan_barcode">Scan Barcode</string>
+    <string name="scan_barcode_prompt">Align the barcode within the frame to scan</string>
     <string name="logout">Logout</string>
     <string name="welcome_user">Welcome, %1$s!</string>
     <string name="choose_option">Choose an option</string>

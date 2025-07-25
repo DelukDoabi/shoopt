@@ -11,6 +11,7 @@
     <string name="hf_key_empty">Hugging Face API ਕੁੰਜੀ ਖਾਲੀ ਹੈ।</string>
     <string name="unknown_shop">ਅਣਜਾਣ ਦੁਕਾਨ</string>
     <string name="scan_barcode">ਬਾਰਕੋਡ ਸਕੈਨ ਕਰੋ</string>
+    <string name="scan_barcode_prompt">ਸਕੈਨ ਕਰਨ ਲਈ ਬਾਰਕੋਡ ਨੂੰ ਫਰੇਮ ਦੇ ਅੰਦਰ ਸੇਧ ਦਿਓ</string>
     <string name="logout">ਲੌਗਆਉਟ</string>
     <string name="welcome_user">ਸਵਾਗਤ ਹੈ, %1$s!</string>
     <string name="choose_option">ਇੱਕ ਵਿਕਲਪ ਚੁਣੋ</string>

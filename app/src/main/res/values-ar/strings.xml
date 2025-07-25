@@ -10,7 +10,8 @@
     <string name="unknown_error">حدث خطأ غير معروف.</string>
     <string name="hf_key_empty">مفتاح Hugging Face فارغ.</string>
     <string name="unknown_shop">متجر غير معروف</string>
-    <string name="scan_barcode">مسح الباركود</string>
+    <string name="scan_barcode">مسح الرمز الشريطي</string>
+    <string name="scan_barcode_prompt">قم بمحاذاة الرمز الشريطي داخل الإطار للمسح</string>
     <string name="logout">تسجيل الخروج</string>
     <string name="welcome_user">مرحبًا، %1$s!</string>
     <string name="choose_option">اختر خيارًا</string>

@@ -10,7 +10,8 @@
     <string name="unknown_error">Bilinmeyen bir hata oluştu.</string>
     <string name="hf_key_empty">Hugging Face API anahtarı boş.</string>
     <string name="unknown_shop">Bilinmeyen mağaza</string>
-    <string name="scan_barcode">Barkod tara</string>
+    <string name="scan_barcode">Barkodu tara</string>
+    <string name="scan_barcode_prompt">Taramak için barkodu çerçevenin içine hizalayın</string>
     <string name="logout">Çıkış yap</string>
     <string name="welcome_user">Hoş geldiniz, %1$s!</string>
     <string name="choose_option">Bir seçenek seçin</string>

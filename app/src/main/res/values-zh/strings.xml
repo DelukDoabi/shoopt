@@ -10,7 +10,8 @@
     <string name="unknown_error">发生未知错误。</string>
     <string name="hf_key_empty">Hugging Face API 密钥为空。</string>
     <string name="unknown_shop">未知商店</string>
-    <string name="scan_barcode">扫描条码</string>
+    <string name="scan_barcode">扫描条形码</string>
+    <string name="scan_barcode_prompt">将条形码对准框内以进行扫描</string>
     <string name="logout">注销</string>
     <string name="welcome_user">欢迎, %1$s!</string>
     <string name="choose_option">请选择一个选项</string>

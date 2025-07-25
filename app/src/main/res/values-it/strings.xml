@@ -10,7 +10,8 @@
     <string name="unknown_error">Si è verificato un errore sconosciuto.</string>
     <string name="hf_key_empty">La chiave API Hugging Face è vuota.</string>
     <string name="unknown_shop">Negozio sconosciuto</string>
-    <string name="scan_barcode">Scansiona il codice a barre</string>
+    <string name="scan_barcode">Scansiona codice a barre</string>
+    <string name="scan_barcode_prompt">Allinea il codice a barre all\'interno della cornice per scansionarlo</string>
     <string name="logout">Disconnetti</string>
     <string name="welcome_user">Benvenuto, %1$s!</string>
     <string name="choose_option">Scegli un\'opzione</string>

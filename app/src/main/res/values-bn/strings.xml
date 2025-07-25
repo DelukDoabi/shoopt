@@ -121,4 +121,5 @@
     <string name="update_now">এখন আপডেট করুন</string>
     <string name="update_later">পরে</string>
     <string name="update_description">নতুন বৈশিষ্ট্য এবং উন্নতি আপনার জন্য অপেক্ষা করছে!</string>
+    <string name="scan_barcode_prompt">স্ক্যান করার জন্য বারকোডটি ফ্রেমের মধ্যে সারিবদ্ধ করুন</string>
 </resources>

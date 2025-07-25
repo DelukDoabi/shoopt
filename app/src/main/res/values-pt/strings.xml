@@ -11,6 +11,7 @@
     <string name="hf_key_empty">A chave da Hugging Face está vazia.</string>
     <string name="unknown_shop">Loja desconhecida</string>
     <string name="scan_barcode">Escanear código de barras</string>
+    <string name="scan_barcode_prompt">Alinhe o código de barras dentro do quadro para escanear</string>
     <string name="logout">Sair</string>
     <string name="welcome_user">Bem-vindo, %1$s!</string>
     <string name="choose_option">Escolha uma opção</string>

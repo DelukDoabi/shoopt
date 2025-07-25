@@ -11,6 +11,7 @@
     <string name="hf_key_empty">Kunci Hugging Face kosong.</string>
     <string name="unknown_shop">Toko ora dingerteni</string>
     <string name="scan_barcode">Scan barcode</string>
+    <string name="scan_barcode_prompt">Selarasaken barcode ing jerone frame kanggo scan</string>
     <string name="logout">Metu</string>
     <string name="welcome_user">Sugeng rawuh, %1$s!</string>
     <string name="choose_option">Pilih pilihan</string>
@@ -122,4 +123,3 @@
     <string name="update_later">Mengko dhisik</string>
     <string name="update_description">Fitur lan perbaikan anyar ngenteni sampeyan!</string>
 </resources>
-

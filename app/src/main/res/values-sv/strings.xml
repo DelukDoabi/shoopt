@@ -11,6 +11,7 @@
     <string name="hf_key_empty">Hugging Face API-nyckeln är tom.</string>
     <string name="unknown_shop">Okänd butik</string>
     <string name="scan_barcode">Skanna streckkod</string>
+    <string name="scan_barcode_prompt">Rikta in streckkoden inom ramen för att skanna</string>
     <string name="logout">Logga ut</string>
     <string name="welcome_user">Välkommen, %1$s!</string>
     <string name="choose_option">Välj ett alternativ</string>

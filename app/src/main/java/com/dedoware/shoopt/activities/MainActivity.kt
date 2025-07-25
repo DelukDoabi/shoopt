@@ -405,10 +405,20 @@ class MainActivity : AppCompatActivity() {
                         // Option: Scan barcode or add manually
                         try {
                             AnalyticsManager.logUserAction("scan_barcode", "product")
+
+                            // Configuration pour utiliser HorizontalCaptureActivity
                             val options = ScanOptions()
-                            options.setPrompt(getString(R.string.scan_barcode))
-                            options.setOrientationLocked(false)
+                            options.setPrompt(getString(R.string.scan_barcode_prompt))
+                            options.setDesiredBarcodeFormats(ScanOptions.ONE_D_CODE_TYPES)
                             options.setBeepEnabled(true)
+                            options.setBarcodeImageEnabled(true)
+
+                            // Configuration spécifique pour le mode horizontal
+                            options.setCameraId(0) // Utiliser la caméra arrière
+                            options.setOrientationLocked(true) // Verrouiller l'orientation
+                            options.setCaptureActivity(HorizontalCaptureActivity::class.java) // Utiliser notre activité personnalisée pour la capture horizontale
+                            options.setTimeout(10000) // Timeout après 10 secondes
+
                             barcodeLauncher.launch(options)
                         } catch (e: Exception) {
                             CrashlyticsManager.log("Erreur lors du lancement du scanner de code-barres: ${e.message ?: "Message non disponible"}")
