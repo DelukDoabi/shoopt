@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
                     CrashlyticsManager.logException(e)
 
                     // Afficher un message à l'utilisateur
-                    Toast.makeText(this, "Impossible d'ouvrir les paramètres. Veuillez réessayer.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.settings_open_error), Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity() {
             CrashlyticsManager.logException(e)
 
             // Afficher un message à l'utilisateur
-            Toast.makeText(this, "Une erreur s'est produite lors du chargement de l'application", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.app_loading_error), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -145,7 +145,7 @@ class MainActivity : AppCompatActivity() {
                     // Capture des erreurs
                     CrashlyticsManager.log("Erreur lors du lancement de UpdateShoppingListActivity: ${e.message ?: "Message non disponible"}")
                     CrashlyticsManager.logException(e)
-                    Toast.makeText(this, "Impossible d'ouvrir la liste d'achats", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.shopping_list_open_error), Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -165,7 +165,7 @@ class MainActivity : AppCompatActivity() {
                     // Capture des erreurs
                     CrashlyticsManager.log("Erreur lors de l'affichage des options d'ajout de produit: ${e.message ?: "Message non disponible"}")
                     CrashlyticsManager.logException(e)
-                    Toast.makeText(this, "Impossible d'afficher les options d'ajout de produit", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.add_product_options_error), Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -185,7 +185,7 @@ class MainActivity : AppCompatActivity() {
                     // Capture des erreurs
                     CrashlyticsManager.log("Erreur lors du lancement de TrackShoppingActivity: ${e.message ?: "Message non disponible"}")
                     CrashlyticsManager.logException(e)
-                    Toast.makeText(this, "Impossible d'ouvrir le suivi des achats", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.track_shopping_open_error), Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -205,7 +205,7 @@ class MainActivity : AppCompatActivity() {
                     // Capture des erreurs
                     CrashlyticsManager.log("Erreur lors du lancement de AnalyseActivity: ${e.message ?: "Message non disponible"}")
                     CrashlyticsManager.logException(e)
-                    Toast.makeText(this, "Impossible d'ouvrir l'écran d'analyse", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.analyse_open_error), Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -270,7 +270,7 @@ class MainActivity : AppCompatActivity() {
                     CrashlyticsManager.setCustomKey("barcode", result.contents)
                     CrashlyticsManager.logException(e)
 
-                    Toast.makeText(this, "Impossible de traiter le code-barres. Veuillez réessayer.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.barcode_processing_error), Toast.LENGTH_SHORT).show()
                 }
             }
         } catch (e: Exception) {
@@ -303,7 +303,7 @@ class MainActivity : AppCompatActivity() {
                         } catch (e: Exception) {
                             CrashlyticsManager.log("Erreur lors du lancement du scanner de code-barres: ${e.message ?: "Message non disponible"}")
                             CrashlyticsManager.logException(e)
-                            Toast.makeText(this, "Impossible de lancer le scanner. Veuillez réessayer.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, getString(R.string.scanner_launch_error), Toast.LENGTH_SHORT).show()
                         }
                     }
                     1 -> {
@@ -314,7 +314,7 @@ class MainActivity : AppCompatActivity() {
                         } catch (e: Exception) {
                             CrashlyticsManager.log("Erreur lors du lancement de AddProductActivity: ${e.message ?: "Message non disponible"}")
                             CrashlyticsManager.logException(e)
-                            Toast.makeText(this, "Impossible d'ouvrir l'écran d'ajout de produit", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, getString(R.string.product_screen_open_error), Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

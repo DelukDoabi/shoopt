@@ -100,4 +100,14 @@
     <string name="yes">Oui</string>
     <string name="no">Non</string>
     <string name="logout_error">Erreur lors de la déconnexion</string>
+    <string name="cancel">Annuler</string>
+    <string name="settings_open_error">Impossible d\'ouvrir les paramètres. Veuillez réessayer.</string>
+    <string name="app_loading_error">Une erreur s\'est produite lors du chargement de l\'application</string>
+    <string name="shopping_list_open_error">Impossible d\'ouvrir la liste d\'achats</string>
+    <string name="add_product_options_error">Impossible d\'afficher les options d\'ajout de produit</string>
+    <string name="track_shopping_open_error">Impossible d\'ouvrir le suivi des achats</string>
+    <string name="analyse_open_error">Impossible d\'ouvrir l\'écran d\'analyse</string>
+    <string name="scanner_launch_error">Impossible de lancer le scanner. Veuillez réessayer.</string>
+    <string name="barcode_processing_error">Impossible de traiter le code-barres. Veuillez réessayer.</string>
+    <string name="product_screen_open_error">Impossible d\'ouvrir l\'écran d\'ajout de produit</string>
 </resources>
