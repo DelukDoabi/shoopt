@@ -131,4 +131,10 @@
     <string name="close">Stäng</string>
     <string name="toggle_flash">Växla blixt</string>
     <string name="barcode_detected">Streckkod upptäckt</string>
+    <string name="add_product_options_title">Lägg till produkt</string>
+    <string name="add_product_options_message">Hur vill du lägga till en produkt?</string>
+    <string name="manual_entry">Manuell inmatning</string>
+    <string name="manual_entry_error">Fel vid öppning av manuell inmatning</string>
+    <string name="dialog_display_error">Fel vid visning av dialogruta</string>
+    <string name="product_check_error">Fel vid kontroll av produkt</string>
 </resources>

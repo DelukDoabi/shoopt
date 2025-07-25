@@ -131,4 +131,10 @@
     <string name="close">Закрыть</string>
     <string name="toggle_flash">Переключить вспышку</string>
     <string name="barcode_detected">Штрих-код обнаружен</string>
+    <string name="add_product_options_title">Добавить товар</string>
+    <string name="add_product_options_message">Как вы хотите добавить товар?</string>
+    <string name="manual_entry">Ручной ввод</string>
+    <string name="manual_entry_error">Ошибка при открытии ручного ввода</string>
+    <string name="dialog_display_error">Ошибка отображения диалога</string>
+    <string name="product_check_error">Ошибка при проверке товара</string>
 </resources>

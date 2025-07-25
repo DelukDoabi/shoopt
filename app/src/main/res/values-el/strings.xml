@@ -131,4 +131,10 @@
     <string name="close">Κλείσιμο</string>
     <string name="toggle_flash">Εναλλαγή φλας</string>
     <string name="barcode_detected">Εντοπίστηκε γραμμωτός κώδικας</string>
+    <string name="add_product_options_title">Προσθήκη προϊόντος</string>
+    <string name="add_product_options_message">Πώς θα θέλατε να προσθέσετε ένα προϊόν;</string>
+    <string name="manual_entry">Χειροκίνητη εισαγωγή</string>
+    <string name="manual_entry_error">Σφάλμα κατά το άνοιγμα χειροκίνητης εισαγωγής</string>
+    <string name="dialog_display_error">Σφάλμα εμφάνισης παραθύρου διαλόγου</string>
+    <string name="product_check_error">Σφάλμα ελέγχου προϊόντος</string>
 </resources>

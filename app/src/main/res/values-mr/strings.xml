@@ -131,4 +131,10 @@
     <string name="close">बंद करा</string>
     <string name="toggle_flash">फ्लॅश टॉगल करा</string>
     <string name="barcode_detected">बारकोड सापडला</string>
+    <string name="add_product_options_title">उत्पाद जोडा</string>
+    <string name="add_product_options_message">आपण उत्पाद कसे जोडू इच्छिता?</string>
+    <string name="manual_entry">मॅन्युअल प्रविष्टी</string>
+    <string name="manual_entry_error">मॅन्युअल प्रविष्टी उघडताना त्रुटी</string>
+    <string name="dialog_display_error">संवाद प्रदर्शित करताना त्रुटी</string>
+    <string name="product_check_error">उत्पाद तपासताना त्रुटी</string>
 </resources>

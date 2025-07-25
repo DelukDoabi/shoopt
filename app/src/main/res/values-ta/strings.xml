@@ -131,4 +131,10 @@
     <string name="close">மூடு</string>
     <string name="toggle_flash">ஃப்ளாஷ் விளக்கை மாற்று</string>
     <string name="barcode_detected">பார்கோடு கண்டறியப்பட்டது</string>
+    <string name="add_product_options_title">பொருளை சேர்க்க</string>
+    <string name="add_product_options_message">பொருளை எவ்வாறு சேர்க்க விரும்புகிறீர்கள்?</string>
+    <string name="manual_entry">கைமுறை உள்ளீடு</string>
+    <string name="manual_entry_error">கைமுறை உள்ளீட்டைத் திறப்பதில் பிழை</string>
+    <string name="dialog_display_error">உரையாடலைக் காட்டுவதில் பிழை</string>
+    <string name="product_check_error">பொருளை சரிபார்ப்பதில் பிழை</string>
 </resources>

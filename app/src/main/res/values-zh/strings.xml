@@ -131,4 +131,10 @@
     <string name="close">关闭</string>
     <string name="toggle_flash">切换闪光灯</string>
     <string name="barcode_detected">已检测到条形码</string>
+    <string name="add_product_options_title">添加产品</string>
+    <string name="add_product_options_message">您想如何添加产品？</string>
+    <string name="manual_entry">手动输入</string>
+    <string name="manual_entry_error">打开手动输入时出错</string>
+    <string name="dialog_display_error">显示对话框时出错</string>
+    <string name="product_check_error">检查产品时出错</string>
 </resources>

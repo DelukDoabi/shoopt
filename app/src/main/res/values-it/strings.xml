@@ -131,4 +131,10 @@
     <string name="close">Chiudi</string>
     <string name="toggle_flash">Attiva/disattiva flash</string>
     <string name="barcode_detected">Codice a barre rilevato</string>
+    <string name="add_product_options_title">Aggiungi prodotto</string>
+    <string name="add_product_options_message">Come desideri aggiungere un prodotto?</string>
+    <string name="manual_entry">Inserimento manuale</string>
+    <string name="manual_entry_error">Errore nell\'aprire l\'inserimento manuale</string>
+    <string name="dialog_display_error">Errore nella visualizzazione del dialogo</string>
+    <string name="product_check_error">Errore nel controllo del prodotto</string>
 </resources>

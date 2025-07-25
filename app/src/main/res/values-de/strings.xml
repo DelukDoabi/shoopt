@@ -131,4 +131,10 @@
     <string name="close">Schließen</string>
     <string name="toggle_flash">Blitz umschalten</string>
     <string name="barcode_detected">Barcode erkannt</string>
+    <string name="add_product_options_title">Produkt hinzufügen</string>
+    <string name="add_product_options_message">Wie möchten Sie ein Produkt hinzufügen?</string>
+    <string name="manual_entry">Manuelle Eingabe</string>
+    <string name="manual_entry_error">Fehler beim Öffnen der manuellen Eingabe</string>
+    <string name="dialog_display_error">Fehler beim Anzeigen des Dialogs</string>
+    <string name="product_check_error">Fehler beim Überprüfen des Produkts</string>
 </resources>

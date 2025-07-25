@@ -131,4 +131,10 @@
     <string name="close">మూసివేయండి</string>
     <string name="toggle_flash">ఫ్లాష్ టోగుల్ చేయండి</string>
     <string name="barcode_detected">బార్కోడ్ గుర్తించబడింది</string>
+    <string name="add_product_options_title">ఉత్పత్తిని జోడించండి</string>
+    <string name="add_product_options_message">ఉత్పత్తిని ఎలా జోడించాలనుకుంటున్నారు?</string>
+    <string name="manual_entry">మాన్యువల్ ఎంట్రీ</string>
+    <string name="manual_entry_error">మాన్యువల్ ఎంట్రీని తెరవడంలో లోపం</string>
+    <string name="dialog_display_error">డైలాగ్ ప్రదర్శించడంలో లోపం</string>
+    <string name="product_check_error">ఉత్పత్తిని తనిఖీ చేయడంలో లోపం</string>
 </resources>

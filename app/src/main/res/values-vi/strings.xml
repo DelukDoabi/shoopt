@@ -131,4 +131,10 @@
     <string name="close">Đóng</string>
     <string name="toggle_flash">Bật/tắt đèn flash</string>
     <string name="barcode_detected">Đã phát hiện mã vạch</string>
+    <string name="add_product_options_title">Thêm sản phẩm</string>
+    <string name="add_product_options_message">Bạn muốn thêm sản phẩm bằng cách nào?</string>
+    <string name="manual_entry">Nhập thủ công</string>
+    <string name="manual_entry_error">Lỗi khi mở phần nhập thủ công</string>
+    <string name="dialog_display_error">Lỗi hiển thị hộp thoại</string>
+    <string name="product_check_error">Lỗi khi kiểm tra sản phẩm</string>
 </resources>

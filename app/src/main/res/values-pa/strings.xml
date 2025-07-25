@@ -131,4 +131,10 @@
     <string name="close">ਬੰਦ ਕਰੋ</string>
     <string name="toggle_flash">ਫਲੈਸ਼ ਟੌਗਲ ਕਰੋ</string>
     <string name="barcode_detected">ਬਾਰਕੋਡ ਮਿਲਿਆ</string>
+    <string name="add_product_options_title">ਉਤਪਾਦ ਜੋੜੋ</string>
+    <string name="add_product_options_message">ਤੁਸੀਂ ਉਤਪਾਦ ਕਿਵੇਂ ਜੋੜਨਾ ਚਾਹੋਗੇ?</string>
+    <string name="manual_entry">ਮੈਨੂਅਲ ਦਾਖਲਾ</string>
+    <string name="manual_entry_error">ਮੈਨੂਅਲ ਦਾਖਲਾ ਖੋਲ੍ਹਣ ਵਿੱਚ ਤਰੁੱਟੀ</string>
+    <string name="dialog_display_error">ਡਾਇਲਾਗ ਦਿਖਾਉਣ ਵਿੱਚ ਤਰੁੱਟੀ</string>
+    <string name="product_check_error">ਉਤਪਾਦ ਦੀ ਜਾਂਚ ਕਰਨ ਵਿੱਚ ਤਰੁੱਟੀ</string>
 </resources>

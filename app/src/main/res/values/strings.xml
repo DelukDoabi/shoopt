@@ -96,39 +96,51 @@
     <string name="register">Register</string>
     <string name="already_have_account">Already have an account?</string>
     <string name="login_here">Login here</string>
-    <string name="logout_confirmation_title">Confirmer la déconnexion</string>
-    <string name="logout_confirmation_message">Êtes-vous sûr de vouloir vous déconnecter ?</string>
-    <string name="yes">Oui</string>
-    <string name="no">Non</string>
-    <string name="logout_error">Erreur lors de la déconnexion</string>
-    <string name="cancel">Cancel</string>
-    <string name="settings_open_error">Unable to open settings. Please try again.</string>
-    <string name="app_loading_error">An error occurred while loading the application</string>
-    <string name="shopping_list_open_error">Unable to open shopping list</string>
-    <string name="add_product_options_error">Unable to display product addition options</string>
-    <string name="track_shopping_open_error">Unable to open shopping tracking</string>
-    <string name="analyse_open_error">Unable to open analysis screen</string>
-    <string name="scanner_launch_error">Unable to launch scanner. Please try again.</string>
-    <string name="barcode_processing_error">Unable to process barcode. Please try again.</string>
-    <string name="product_screen_open_error">Unable to open product addition screen</string>
-    <string name="empty_products_image">Empty product list image</string>
-    <string name="no_products_yet">No products available</string>
-    <string name="add_your_first_product_message">You haven\'t added any products yet. Start by adding your first product to track your shopping.</string>
-    <string name="add_first_product">Add a product</string>
-    <string name="update_downloaded">New update downloaded!</string>
-    <string name="install">Install</string>
-    <string name="update_available">New version available</string>
-    <string name="update_required">Update required</string>
-    <string name="update_now">Update now</string>
-    <string name="update_later">Later</string>
-    <string name="update_description">New features and improvements await you!</string>
-    <string name="close_scan">Close scanner</string>
-    <string name="toggle_torch">Toggle flashlight</string>
-    <string name="camera_permission_required">Camera permission is required to scan barcodes</string>
-    <string name="scanning">Scanning...</string>
-    <string name="scan_successful">Code detected</string>
-    <string name="scan_barcode_instructions">Position the barcode within the frame</string>
+    <string name="logout_confirmation_title">Confirm logout</string>
+    <string name="logout_confirmation_message">Are you sure you want to log out?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="add_product_options_title">Add product</string>
+    <string name="add_product_options_message">How would you like to add a product?</string>
+    <string name="manual_entry">Manual entry</string>
+    <string name="manual_entry_error">Error opening manual entry</string>
+    <string name="dialog_display_error">Error displaying dialog</string>
+    <string name="product_check_error">Error checking product</string>
+    <string name="shopping_list_open_error">Error opening shopping list</string>
+    <string name="settings_open_error">Error opening settings</string>
+    <string name="add_product_options_error">Error displaying add product options</string>
+    <string name="track_shopping_open_error">Error opening shopping tracking</string>
+    <string name="analyse_open_error">Error opening analysis</string>
+    <string name="logout_error">Error during logout</string>
+    <string name="scanner_launch_error">Error launching scanner</string>
+    <string name="barcode_processing_error">Error processing barcode</string>
+    <string name="app_loading_error">Error loading application</string>
+
+    <!-- Empty products screen strings -->
+    <string name="empty_products_image">Image for empty products state</string>
+    <string name="no_products_yet">No products yet</string>
+    <string name="add_your_first_product_message">Add your first product to start tracking your shopping</string>
+    <string name="add_first_product">Add First Product</string>
+
+    <!-- Barcode scanner screen strings -->
+    <string name="scan_barcode_instructions">Position the barcode in the center of the screen</string>
     <string name="close">Close</string>
-    <string name="toggle_flash">Toggle flash</string>
-    <string name="barcode_detected">Barcode detected</string>
+    <string name="toggle_flash">Toggle Flash</string>
+    <string name="close_scan">Close Scanner</string>
+    <string name="barcode_detected">Barcode Detected</string>
+    <string name="camera_permission_required">Camera permission is required to scan barcodes</string>
+    <string name="cancel">Cancel</string>
+    <string name="scanning">Scanning...</string>
+    <string name="scan_successful">Scan Successful</string>
+    <string name="toggle_torch">Toggle Torch</string>
+    <string name="product_screen_open_error">Error opening product screen</string>
+
+    <!-- Update dialog strings -->
+    <string name="update_available">Update Available</string>
+    <string name="update_description">A new version of the app is available with new features and improvements</string>
+    <string name="update_later">Later</string>
+    <string name="update_now">Update Now</string>
+    <string name="update_downloaded">Update Downloaded</string>
+    <string name="update_required">Update Required</string>
+    <string name="install">Install</string>
 </resources>

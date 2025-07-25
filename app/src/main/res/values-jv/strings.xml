@@ -131,4 +131,10 @@
     <string name="close">Tutup</string>
     <string name="toggle_flash">Ganti lampu kilat</string>
     <string name="barcode_detected">Barcode kadeteksi</string>
+    <string name="add_product_options_title">Tambah produk</string>
+    <string name="add_product_options_message">Kepiye carane arep nambah produk?</string>
+    <string name="manual_entry">Entri manual</string>
+    <string name="manual_entry_error">Kesalahan mbukak entri manual</string>
+    <string name="dialog_display_error">Kesalahan tampilan dialog</string>
+    <string name="product_check_error">Kesalahan mriksa produk</string>
 </resources>

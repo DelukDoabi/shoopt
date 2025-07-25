@@ -131,4 +131,10 @@
     <string name="close">Închide</string>
     <string name="toggle_flash">Comută blițul</string>
     <string name="barcode_detected">Cod de bare detectat</string>
+    <string name="add_product_options_title">Adăugare produs</string>
+    <string name="add_product_options_message">Cum doriți să adăugați un produs?</string>
+    <string name="manual_entry">Introducere manuală</string>
+    <string name="manual_entry_error">Eroare la deschiderea introducerii manuale</string>
+    <string name="dialog_display_error">Eroare la afișarea dialogului</string>
+    <string name="product_check_error">Eroare la verificarea produsului</string>
 </resources>

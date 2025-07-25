@@ -131,4 +131,10 @@
     <string name="close">Zamknij</string>
     <string name="toggle_flash">Przełącz lampę błyskową</string>
     <string name="barcode_detected">Wykryto kod kreskowy</string>
+    <string name="add_product_options_title">Dodaj produkt</string>
+    <string name="add_product_options_message">W jaki sposób chcesz dodać produkt?</string>
+    <string name="manual_entry">Wprowadzanie ręczne</string>
+    <string name="manual_entry_error">Błąd podczas otwierania ręcznego wprowadzania</string>
+    <string name="dialog_display_error">Błąd wyświetlania okna dialogowego</string>
+    <string name="product_check_error">Błąd podczas sprawdzania produktu</string>
 </resources>
