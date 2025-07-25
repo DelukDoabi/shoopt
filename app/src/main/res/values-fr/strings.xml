@@ -11,7 +11,7 @@
     <string name="unknown_error">Une erreur inconnue est survenue.</string>
     <string name="hf_key_empty">La clé Hugging Face est vide.</string>
     <string name="unknown_shop">Magasin inconnu</string>
-    <string name="scan_barcode">Scanner le code-barres</string>
+    <string name="scan_barcode">Scanner le code-barre</string>
     <string name="logout">Déconnexion</string>
     <string name="welcome_user">Bienvenue, %1$s!</string>
     <string name="choose_option">Choisissez une option</string>
