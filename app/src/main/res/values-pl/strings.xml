@@ -11,6 +11,7 @@
     <string name="hf_key_empty">Klucz API Hugging Face jest pusty.</string>
     <string name="unknown_shop">Nieznany sklep</string>
     <string name="scan_barcode">Skanuj kod kreskowy</string>
+    <string name="scan_barcode_prompt">Ustaw kod kreskowy w ramce, aby zeskanować</string>
     <string name="logout">Wyloguj się</string>
     <string name="welcome_user">Witaj, %1$s!</string>
     <string name="choose_option">Wybierz opcję</string>
@@ -121,4 +122,19 @@
     <string name="update_now">Aktualizuj teraz</string>
     <string name="update_later">Później</string>
     <string name="update_description">Nowe funkcje i ulepszenia czekają na Ciebie!</string>
+    <string name="close_scan">Zamknij skaner</string>
+    <string name="toggle_torch">Przełącz latarkę</string>
+    <string name="camera_permission_required">Wymagane jest uprawnienie do kamery, aby skanować kody kreskowe</string>
+    <string name="scanning">Skanowanie&#8230;</string>
+    <string name="scan_successful">Wykryto kod</string>
+    <string name="scan_barcode_instructions">Umieść kod kreskowy w ramce</string>
+    <string name="close">Zamknij</string>
+    <string name="toggle_flash">Przełącz lampę błyskową</string>
+    <string name="barcode_detected">Wykryto kod kreskowy</string>
+    <string name="add_product_options_title">Dodaj produkt</string>
+    <string name="add_product_options_message">W jaki sposób chcesz dodać produkt?</string>
+    <string name="manual_entry">Wprowadzanie ręczne</string>
+    <string name="manual_entry_error">Błąd podczas otwierania ręcznego wprowadzania</string>
+    <string name="dialog_display_error">Błąd wyświetlania okna dialogowego</string>
+    <string name="product_check_error">Błąd podczas sprawdzania produktu</string>
 </resources>

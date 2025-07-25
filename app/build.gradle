@@ -55,6 +55,7 @@ android {
     }
     buildFeatures {
         compose true
+        viewBinding true
     }
 }
 
@@ -121,4 +122,14 @@ dependencies {
     // Bibliothèque pour la gestion des mises à jour in-app
     implementation 'com.google.android.play:app-update:2.1.0'
     implementation 'com.google.android.play:app-update-ktx:2.1.0'
+
+    // ML Kit pour la détection de codes-barres
+    implementation 'com.google.mlkit:barcode-scanning:17.2.0'
+    // CameraX
+    def camerax_version = "1.4.0-alpha04"
+    implementation "androidx.camera:camera-core:$camerax_version"
+    implementation "androidx.camera:camera-camera2:$camerax_version"
+    implementation "androidx.camera:camera-lifecycle:$camerax_version"
+    implementation "androidx.camera:camera-view:$camerax_version"
+    implementation "androidx.camera:camera-extensions:$camerax_version"
 }

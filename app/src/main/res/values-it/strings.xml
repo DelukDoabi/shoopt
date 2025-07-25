@@ -10,7 +10,8 @@
     <string name="unknown_error">Si è verificato un errore sconosciuto.</string>
     <string name="hf_key_empty">La chiave API Hugging Face è vuota.</string>
     <string name="unknown_shop">Negozio sconosciuto</string>
-    <string name="scan_barcode">Scansiona il codice a barre</string>
+    <string name="scan_barcode">Scansiona codice a barre</string>
+    <string name="scan_barcode_prompt">Allinea il codice a barre all\'interno della cornice per scansionarlo</string>
     <string name="logout">Disconnetti</string>
     <string name="welcome_user">Benvenuto, %1$s!</string>
     <string name="choose_option">Scegli un\'opzione</string>
@@ -121,4 +122,19 @@
     <string name="update_now">Aggiorna ora</string>
     <string name="update_later">Più tardi</string>
     <string name="update_description">Nuove funzionalità e miglioramenti ti aspettano!</string>
+    <string name="close_scan">Chiudi scanner</string>
+    <string name="toggle_torch">Attiva/disattiva torcia</string>
+    <string name="camera_permission_required">È richiesta l\'autorizzazione della fotocamera per scansionare i codici a barre</string>
+    <string name="scanning">Scansione in corso&#8230;</string>
+    <string name="scan_successful">Codice rilevato</string>
+    <string name="scan_barcode_instructions">Posiziona il codice a barre all\'interno della cornice</string>
+    <string name="close">Chiudi</string>
+    <string name="toggle_flash">Attiva/disattiva flash</string>
+    <string name="barcode_detected">Codice a barre rilevato</string>
+    <string name="add_product_options_title">Aggiungi prodotto</string>
+    <string name="add_product_options_message">Come desideri aggiungere un prodotto?</string>
+    <string name="manual_entry">Inserimento manuale</string>
+    <string name="manual_entry_error">Errore nell\'aprire l\'inserimento manuale</string>
+    <string name="dialog_display_error">Errore nella visualizzazione del dialogo</string>
+    <string name="product_check_error">Errore nel controllo del prodotto</string>
 </resources>

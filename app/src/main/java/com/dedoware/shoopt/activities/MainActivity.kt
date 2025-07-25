@@ -320,8 +320,89 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Register the launcher for our new ML Kit-based scanner
+    private val barcodeScannerLauncher = registerForActivityResult(
+        androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult()
+    ) { result: ActivityResult ->
+        if (result.resultCode == RESULT_OK) {
+            val barcodeValue = result.data?.getStringExtra(com.dedoware.shoopt.scanner.BarcodeScannerActivity.BARCODE_RESULT)
+            if (barcodeValue != null) {
+                try {
+                    // Vérifier si le produit existe déjà avant de lancer l'activité
+                    checkProductExistenceAndNavigate(barcodeValue)
+
+                    // Analytics pour le scan de code-barres
+                    val params = Bundle().apply {
+                        putString("barcode_length", barcodeValue.length.toString())
+                    }
+                    AnalyticsManager.logCustomEvent("barcode_scanned", params)
+                } catch (e: Exception) {
+                    CrashlyticsManager.log("Erreur lors du traitement du code-barres: ${e.message ?: "Message non disponible"}")
+                    CrashlyticsManager.setCustomKey("error_location", "barcode_processing")
+                    CrashlyticsManager.setCustomKey("barcode", barcodeValue)
+                    CrashlyticsManager.logException(e)
+
+                    Toast.makeText(this, getString(R.string.barcode_processing_error), Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else if (result.resultCode == RESULT_CANCELED) {
+            Toast.makeText(this, getString(R.string.cancelled), Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun showAddProductOptions() {
+        try {
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle(getString(R.string.add_product_options_title))
+                .setMessage(getString(R.string.add_product_options_message))
+                .setPositiveButton(getString(R.string.scan_barcode)) { _, _ ->
+                    try {
+                        // Analytics pour l'utilisation du scanner de code-barres
+                        AnalyticsManager.logUserAction(
+                            action = "open_barcode_scanner",
+                            category = "product_management"
+                        )
+
+                        // Utilisation de notre nouvelle implémentation ML Kit au lieu de ZXing
+                        val intent = Intent(this, com.dedoware.shoopt.scanner.BarcodeScannerActivity::class.java)
+                        barcodeScannerLauncher.launch(intent)
+                    } catch (e: Exception) {
+                        CrashlyticsManager.log("Erreur lors du lancement du scanner: ${e.message ?: "Message non disponible"}")
+                        CrashlyticsManager.setCustomKey("error_location", "launch_barcode_scanner")
+                        CrashlyticsManager.logException(e)
+
+                        Toast.makeText(this, getString(R.string.scanner_launch_error), Toast.LENGTH_SHORT).show()
+                    }
+                }
+                .setNegativeButton(getString(R.string.manual_entry)) { _, _ ->
+                    try {
+                        // Analytics pour l'ajout manuel de produit
+                        AnalyticsManager.logUserAction(
+                            action = "manual_product_entry",
+                            category = "product_management"
+                        )
+
+                        val intent = Intent(this, AddProductActivity::class.java)
+                        startActivity(intent)
+                    } catch (e: Exception) {
+                        CrashlyticsManager.log("Erreur lors du lancement de l'activité d'ajout manuel: ${e.message ?: "Message non disponible"}")
+                        CrashlyticsManager.logException(e)
+
+                        Toast.makeText(this, getString(R.string.manual_entry_error), Toast.LENGTH_SHORT).show()
+                    }
+                }
+                .create()
+                .show()
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de l'affichage des options d'ajout: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "show_add_product_options")
+            CrashlyticsManager.logException(e)
+
+            Toast.makeText(this, getString(R.string.dialog_display_error), Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun checkProductExistenceAndNavigate(barcode: String) {
-        // Utilisation de coroutines pour vérifier l'existence du produit en arrière-plan
         val productRepository: IProductRepository = if (useFirebase) {
             FirebaseProductRepository()
         } else {
@@ -333,19 +414,19 @@ class MainActivity : AppCompatActivity() {
                 database.cartItemDao()
             )
         }
-        
+
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 val barcodeAsLong = barcode.toLongOrNull() ?: 0L
-                
+
                 // Vérifier si le produit existe déjà dans la base de données
                 val existingProduct = withContext(Dispatchers.IO) {
                     productRepository.getProductByBarcode(barcodeAsLong)
                 }
-                
+
                 // Préparer l'intent avec les données appropriées
                 val addProductIntent = Intent(this@MainActivity, AddProductActivity::class.java)
-                
+
                 if (existingProduct != null) {
                     // Si le produit existe, ajouter toutes ses informations à l'intent
                     addProductIntent.apply {
@@ -357,7 +438,7 @@ class MainActivity : AppCompatActivity() {
                         putExtra("unitPrice", existingProduct.unitPrice)
                         putExtra("pictureUrl", existingProduct.pictureUrl)
                     }
-                    
+
                     // Analytics pour le chargement d'un produit existant
                     val params = Bundle().apply {
                         putString("source", "barcode_scan")
@@ -367,91 +448,23 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     // Si le produit n'existe pas, simplement passer le code-barres
                     addProductIntent.putExtra("barcode", barcode)
-                    
+
                     // Analytics pour la création d'un nouveau produit
                     val params = Bundle().apply {
                         putString("source", "barcode_scan")
-                        putString("product_found", "false") 
+                        putString("product_found", "false")
                     }
-                    AnalyticsManager.logCustomEvent("new_product_scan", params)
+                    AnalyticsManager.logCustomEvent("new_product_created", params)
                 }
-                
+
                 startActivity(addProductIntent)
-                
             } catch (e: Exception) {
-                CrashlyticsManager.log("Erreur lors de la vérification du produit existant: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.log("Erreur lors de la vérification du produit: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "product_existence_check")
+                CrashlyticsManager.setCustomKey("barcode", barcode)
                 CrashlyticsManager.logException(e)
-                
-                // En cas d'erreur, essayer de poursuivre avec juste le code-barres
-                val addProductIntent = Intent(this@MainActivity, AddProductActivity::class.java)
-                addProductIntent.putExtra("barcode", barcode)
-                startActivity(addProductIntent)
-            }
-        }
-    }
 
-    private fun showAddProductOptions() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle(getString(R.string.choose_option))
-            .setItems(
-                arrayOf(
-                    getString(R.string.scan_barcode),
-                    getString(R.string.add_product_manually)
-                )
-            ) { _, which ->
-                when (which) {
-                    0 -> {
-                        // Option: Scan barcode or add manually
-                        try {
-                            AnalyticsManager.logUserAction("scan_barcode", "product")
-                            val options = ScanOptions()
-                            options.setPrompt(getString(R.string.scan_barcode))
-                            options.setOrientationLocked(false)
-                            options.setBeepEnabled(true)
-                            barcodeLauncher.launch(options)
-                        } catch (e: Exception) {
-                            CrashlyticsManager.log("Erreur lors du lancement du scanner de code-barres: ${e.message ?: "Message non disponible"}")
-                            CrashlyticsManager.logException(e)
-                            Toast.makeText(this, getString(R.string.scanner_launch_error), Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                    1 -> {
-                        // Option: Add product manually
-                        try {
-                            AnalyticsManager.logUserAction("add_manually", "product")
-                            startActivity(Intent(this, AddProductActivity::class.java))
-                        } catch (e: Exception) {
-                            CrashlyticsManager.log("Erreur lors du lancement de AddProductActivity: ${e.message ?: "Message non disponible"}")
-                            CrashlyticsManager.logException(e)
-                            Toast.makeText(this, getString(R.string.product_screen_open_error), Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
-            }
-            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            .create()
-            .show()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == UpdateManager.UPDATE_REQUEST_CODE) {
-            when (resultCode) {
-                InstallStatus.FAILED -> {
-                    // La mise à jour a échoué
-                    CrashlyticsManager.log("La mise à jour in-app a échoué.")
-                    val bundle = Bundle()
-                    bundle.putString("reason", "update_flow_failed")
-                    AnalyticsManager.logEvent("update_failed", bundle)
-                }
-                InstallStatus.CANCELED -> {
-                    // L'utilisateur a annulé la mise à jour
-                    AnalyticsManager.logEvent("update_canceled", Bundle())
-                }
+                Toast.makeText(this@MainActivity, getString(R.string.product_check_error), Toast.LENGTH_SHORT).show()
             }
         }
     }

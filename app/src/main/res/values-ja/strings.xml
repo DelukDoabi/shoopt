@@ -11,6 +11,7 @@
     <string name="hf_key_empty">Hugging Face APIキーが空です。</string>
     <string name="unknown_shop">不明な店舗</string>
     <string name="scan_barcode">バーコードをスキャン</string>
+    <string name="scan_barcode_prompt">スキャンするにはバーコードをフレーム内に合わせてください</string>
     <string name="logout">ログアウト</string>
     <string name="welcome_user">ようこそ, %1$s!</string>
     <string name="choose_option">オプションを選択してください</string>
@@ -121,4 +122,19 @@
     <string name="update_now">今すぐ更新</string>
     <string name="update_later">後で</string>
     <string name="update_description">新機能と改善点があなたを待っています！</string>
+    <string name="close_scan">スキャナーを閉じる</string>
+    <string name="toggle_torch">ライトを切り替え</string>
+    <string name="camera_permission_required">バーコードをスキャンするにはカメラの許可が必要です</string>
+    <string name="scanning">スキャン中&#8230;</string>
+    <string name="scan_successful">コードが検出されました</string>
+    <string name="scan_barcode_instructions">バーコードをフレーム内に配置してください</string>
+    <string name="close">閉じる</string>
+    <string name="toggle_flash">フラッシュを切り替え</string>
+    <string name="barcode_detected">バーコードが検出されました</string>
+    <string name="add_product_options_title">商品を追加</string>
+    <string name="add_product_options_message">商品をどのように追加しますか？</string>
+    <string name="manual_entry">手動入力</string>
+    <string name="manual_entry_error">手動入力の開始中にエラーが発生しました</string>
+    <string name="dialog_display_error">ダイアログの表示中にエラーが発生しました</string>
+    <string name="product_check_error">商品の確認中にエラーが発生しました</string>
 </resources>

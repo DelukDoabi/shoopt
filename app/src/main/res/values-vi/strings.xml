@@ -11,6 +11,7 @@
     <string name="hf_key_empty">Khóa API Hugging Face trống.</string>
     <string name="unknown_shop">Cửa hàng không xác định</string>
     <string name="scan_barcode">Quét mã vạch</string>
+    <string name="scan_barcode_prompt">Căn chỉnh mã vạch trong khung để quét</string>
     <string name="logout">Đăng xuất</string>
     <string name="welcome_user">Chào mừng, %1$s!</string>
     <string name="choose_option">Chọn một tùy chọn</string>
@@ -121,4 +122,19 @@
     <string name="update_now">Cập nhật ngay</string>
     <string name="update_later">Để sau</string>
     <string name="update_description">Các tính năng và cải tiến mới đang chờ bạn!</string>
+    <string name="close_scan">Đóng máy quét</string>
+    <string name="toggle_torch">Bật/tắt đèn pin</string>
+    <string name="camera_permission_required">Cần quyền truy cập camera để quét mã vạch</string>
+    <string name="scanning">Đang quét...</string>
+    <string name="scan_successful">Đã phát hiện mã</string>
+    <string name="scan_barcode_instructions">Đặt mã vạch vào trong khung</string>
+    <string name="close">Đóng</string>
+    <string name="toggle_flash">Bật/tắt đèn flash</string>
+    <string name="barcode_detected">Đã phát hiện mã vạch</string>
+    <string name="add_product_options_title">Thêm sản phẩm</string>
+    <string name="add_product_options_message">Bạn muốn thêm sản phẩm bằng cách nào?</string>
+    <string name="manual_entry">Nhập thủ công</string>
+    <string name="manual_entry_error">Lỗi khi mở phần nhập thủ công</string>
+    <string name="dialog_display_error">Lỗi hiển thị hộp thoại</string>
+    <string name="product_check_error">Lỗi khi kiểm tra sản phẩm</string>
 </resources>

@@ -11,6 +11,7 @@
     <string name="hf_key_empty">A chave da Hugging Face está vazia.</string>
     <string name="unknown_shop">Loja desconhecida</string>
     <string name="scan_barcode">Escanear código de barras</string>
+    <string name="scan_barcode_prompt">Alinhe o código de barras dentro do quadro para escanear</string>
     <string name="logout">Sair</string>
     <string name="welcome_user">Bem-vindo, %1$s!</string>
     <string name="choose_option">Escolha uma opção</string>
@@ -121,4 +122,19 @@
     <string name="update_now">Atualizar agora</string>
     <string name="update_later">Depois</string>
     <string name="update_description">Novos recursos e melhorias estão esperando por você!</string>
+    <string name="close_scan">Fechar scanner</string>
+    <string name="toggle_torch">Alternar lanterna</string>
+    <string name="camera_permission_required">Permissão de câmera é necessária para escanear códigos de barras</string>
+    <string name="scanning">Escaneando&#8230;</string>
+    <string name="scan_successful">Código detectado</string>
+    <string name="scan_barcode_instructions">Posicione o código de barras dentro do quadro</string>
+    <string name="close">Fechar</string>
+    <string name="toggle_flash">Alternar flash</string>
+    <string name="barcode_detected">Código de barras detectado</string>
+    <string name="add_product_options_title">Adicionar produto</string>
+    <string name="add_product_options_message">Como você gostaria de adicionar um produto?</string>
+    <string name="manual_entry">Entrada manual</string>
+    <string name="manual_entry_error">Erro ao abrir entrada manual</string>
+    <string name="dialog_display_error">Erro ao exibir diálogo</string>
+    <string name="product_check_error">Erro ao verificar produto</string>
 </resources>

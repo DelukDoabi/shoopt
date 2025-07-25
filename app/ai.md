@@ -28,4 +28,6 @@ when you add any new entry to values\string.xml file you should immediately tran
 when you add any new entry to values\string.xml file you should immediately add it to the app's localization files.
 when you add any new entry to values\string.xml file you should immediately add it to the app's localization files in all languages.
 when you add any new entry to values\string.xml file you should immediately add it to the app's localization files in all languages and ensure that it is properly translated.
-
+when you add any new entry to values\string.xml file do not forget to escape any special characters that may cause issues in the localization files.
+when you add any new entry to values\string.xml file do not forget to use the correct format for plurals, strings, and other types of resources as defined in the Android documentation.
+when you add any new entry to values\string.xml file do not forget to use the correct naming conventions for resource identifiers to ensure consistency and avoid conflicts.

@@ -11,6 +11,7 @@
     <string name="hf_key_empty">Hugging Face API-nyckeln är tom.</string>
     <string name="unknown_shop">Okänd butik</string>
     <string name="scan_barcode">Skanna streckkod</string>
+    <string name="scan_barcode_prompt">Rikta in streckkoden inom ramen för att skanna</string>
     <string name="logout">Logga ut</string>
     <string name="welcome_user">Välkommen, %1$s!</string>
     <string name="choose_option">Välj ett alternativ</string>
@@ -121,4 +122,19 @@
     <string name="update_now">Uppdatera nu</string>
     <string name="update_later">Senare</string>
     <string name="update_description">Nya funktioner och förbättringar väntar på dig!</string>
+    <string name="close_scan">Stäng skanner</string>
+    <string name="toggle_torch">Växla ficklampa</string>
+    <string name="camera_permission_required">Kameratillstånd krävs för att skanna streckkoder</string>
+    <string name="scanning">Skannar...</string>
+    <string name="scan_successful">Kod upptäckt</string>
+    <string name="scan_barcode_instructions">Placera streckkoden inom ramen</string>
+    <string name="close">Stäng</string>
+    <string name="toggle_flash">Växla blixt</string>
+    <string name="barcode_detected">Streckkod upptäckt</string>
+    <string name="add_product_options_title">Lägg till produkt</string>
+    <string name="add_product_options_message">Hur vill du lägga till en produkt?</string>
+    <string name="manual_entry">Manuell inmatning</string>
+    <string name="manual_entry_error">Fel vid öppning av manuell inmatning</string>
+    <string name="dialog_display_error">Fel vid visning av dialogruta</string>
+    <string name="product_check_error">Fel vid kontroll av produkt</string>
 </resources>

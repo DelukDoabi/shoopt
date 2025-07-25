@@ -11,6 +11,7 @@
     <string name="hf_key_empty">Hugging Face API కీ ఖాళీగా ఉంది.</string>
     <string name="unknown_shop">తెలియని షాప్</string>
     <string name="scan_barcode">బార్కోడ్ స్కాన్ చేయండి</string>
+    <string name="scan_barcode_prompt">స్కాన్ చేయడానికి బార్కోడ్‌ను ఫ్రేమ్‌లోకి సరిపోల్చండి</string>
     <string name="logout">లాగ్ అవుట్</string>
     <string name="welcome_user">స్వాగతం, %1$s!</string>
     <string name="choose_option">ఒక ఎంపికను ఎంచుకోండి</string>
@@ -121,4 +122,19 @@
     <string name="update_now">ఇప్పుడే అప్‌డేట్ చేయండి</string>
     <string name="update_later">తర్వాత</string>
     <string name="update_description">కొత్త ఫీచర్లు మరియు మెరుగుదలలు మిమ్మల్ని వేచి ఉన్నాయి!</string>
+    <string name="close_scan">స్కానర్ మూసివేయండి</string>
+    <string name="toggle_torch">టార్చ్ టోగుల్ చేయండి</string>
+    <string name="camera_permission_required">బార్కోడ్‌లను స్కాన్ చేయడానికి కెమెరా అనుమతి అవసరం</string>
+    <string name="scanning">స్కాన్ చేస్తోంది...</string>
+    <string name="scan_successful">కోడ్ గుర్తించబడింది</string>
+    <string name="scan_barcode_instructions">బార్కోడ్‌ను ఫ్రేమ్‌లోపల ఉంచండి</string>
+    <string name="close">మూసివేయండి</string>
+    <string name="toggle_flash">ఫ్లాష్ టోగుల్ చేయండి</string>
+    <string name="barcode_detected">బార్కోడ్ గుర్తించబడింది</string>
+    <string name="add_product_options_title">ఉత్పత్తిని జోడించండి</string>
+    <string name="add_product_options_message">ఉత్పత్తిని ఎలా జోడించాలనుకుంటున్నారు?</string>
+    <string name="manual_entry">మాన్యువల్ ఎంట్రీ</string>
+    <string name="manual_entry_error">మాన్యువల్ ఎంట్రీని తెరవడంలో లోపం</string>
+    <string name="dialog_display_error">డైలాగ్ ప్రదర్శించడంలో లోపం</string>
+    <string name="product_check_error">ఉత్పత్తిని తనిఖీ చేయడంలో లోపం</string>
 </resources>

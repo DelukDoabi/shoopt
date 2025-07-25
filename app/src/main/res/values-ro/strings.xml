@@ -11,6 +11,7 @@
     <string name="hf_key_empty">Cheia API Hugging Face este goală.</string>
     <string name="unknown_shop">Magazin necunoscut</string>
     <string name="scan_barcode">Scanează codul de bare</string>
+    <string name="scan_barcode_prompt">Aliniați codul de bare în cadru pentru a-l scana</string>
     <string name="logout">Deconectare</string>
     <string name="welcome_user">Bine ai venit, %1$s!</string>
     <string name="choose_option">Alege o opțiune</string>
@@ -121,4 +122,19 @@
     <string name="update_now">Actualizează acum</string>
     <string name="update_later">Mai târziu</string>
     <string name="update_description">Funcții și îmbunătățiri noi te așteaptă!</string>
+    <string name="close_scan">Închide scanner-ul</string>
+    <string name="toggle_torch">Comută lanterna</string>
+    <string name="camera_permission_required">Permisiunea camerei este necesară pentru scanarea codurilor de bare</string>
+    <string name="scanning">Scanare...</string>
+    <string name="scan_successful">Cod detectat</string>
+    <string name="scan_barcode_instructions">Poziționează codul de bare în cadru</string>
+    <string name="close">Închide</string>
+    <string name="toggle_flash">Comută blițul</string>
+    <string name="barcode_detected">Cod de bare detectat</string>
+    <string name="add_product_options_title">Adăugare produs</string>
+    <string name="add_product_options_message">Cum doriți să adăugați un produs?</string>
+    <string name="manual_entry">Introducere manuală</string>
+    <string name="manual_entry_error">Eroare la deschiderea introducerii manuale</string>
+    <string name="dialog_display_error">Eroare la afișarea dialogului</string>
+    <string name="product_check_error">Eroare la verificarea produsului</string>
 </resources>

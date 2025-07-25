@@ -11,6 +11,7 @@
     <string name="hf_key_empty">Hugging Face API ਕੁੰਜੀ ਖਾਲੀ ਹੈ।</string>
     <string name="unknown_shop">ਅਣਜਾਣ ਦੁਕਾਨ</string>
     <string name="scan_barcode">ਬਾਰਕੋਡ ਸਕੈਨ ਕਰੋ</string>
+    <string name="scan_barcode_prompt">ਸਕੈਨ ਕਰਨ ਲਈ ਬਾਰਕੋਡ ਨੂੰ ਫਰੇਮ ਦੇ ਅੰਦਰ ਸੇਧ ਦਿਓ</string>
     <string name="logout">ਲੌਗਆਉਟ</string>
     <string name="welcome_user">ਸਵਾਗਤ ਹੈ, %1$s!</string>
     <string name="choose_option">ਇੱਕ ਵਿਕਲਪ ਚੁਣੋ</string>
@@ -121,4 +122,19 @@
     <string name="update_now">ਹੁਣੇ ਅਪਡੇਟ ਕਰੋ</string>
     <string name="update_later">ਬਾਅਦ ਵਿੱਚ</string>
     <string name="update_description">ਨਵੀਆਂ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ ਅਤੇ ਸੁਧਾਰ ਤੁਹਾਡਾ ਇੰਤਜ਼ਾਰ ਕਰ ਰਹੇ ਹਨ!</string>
+    <string name="close_scan">ਸਕੈਨਰ ਬੰਦ ਕਰੋ</string>
+    <string name="toggle_torch">ਟੋਰਚ ਟੌਗਲ ਕਰੋ</string>
+    <string name="camera_permission_required">ਬਾਰਕੋਡ ਸਕੈਨ ਕਰਨ ਲਈ ਕੈਮਰਾ ਦੀ ਇਜਾਜ਼ਤ ਦੀ ਲੋੜ ਹੈ</string>
+    <string name="scanning">ਸਕੈਨ ਕਰ ਰਿਹਾ ਹੈ&#8230;</string>
+    <string name="scan_successful">ਕੋਡ ਮਿਲਿਆ</string>
+    <string name="scan_barcode_instructions">ਬਾਰਕੋਡ ਨੂੰ ਫਰੇਮ ਦੇ ਅੰਦਰ ਰੱਖੋ</string>
+    <string name="close">ਬੰਦ ਕਰੋ</string>
+    <string name="toggle_flash">ਫਲੈਸ਼ ਟੌਗਲ ਕਰੋ</string>
+    <string name="barcode_detected">ਬਾਰਕੋਡ ਮਿਲਿਆ</string>
+    <string name="add_product_options_title">ਉਤਪਾਦ ਜੋੜੋ</string>
+    <string name="add_product_options_message">ਤੁਸੀਂ ਉਤਪਾਦ ਕਿਵੇਂ ਜੋੜਨਾ ਚਾਹੋਗੇ?</string>
+    <string name="manual_entry">ਮੈਨੂਅਲ ਦਾਖਲਾ</string>
+    <string name="manual_entry_error">ਮੈਨੂਅਲ ਦਾਖਲਾ ਖੋਲ੍ਹਣ ਵਿੱਚ ਤਰੁੱਟੀ</string>
+    <string name="dialog_display_error">ਡਾਇਲਾਗ ਦਿਖਾਉਣ ਵਿੱਚ ਤਰੁੱਟੀ</string>
+    <string name="product_check_error">ਉਤਪਾਦ ਦੀ ਜਾਂਚ ਕਰਨ ਵਿੱਚ ਤਰੁੱਟੀ</string>
 </resources>

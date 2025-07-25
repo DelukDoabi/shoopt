@@ -11,6 +11,7 @@
     <string name="hf_key_empty">Kunci Hugging Face kosong.</string>
     <string name="unknown_shop">Toko ora dingerteni</string>
     <string name="scan_barcode">Scan barcode</string>
+    <string name="scan_barcode_prompt">Selarasaken barcode ing jerone frame kanggo scan</string>
     <string name="logout">Metu</string>
     <string name="welcome_user">Sugeng rawuh, %1$s!</string>
     <string name="choose_option">Pilih pilihan</string>
@@ -121,5 +122,19 @@
     <string name="update_now">Update saiki</string>
     <string name="update_later">Mengko dhisik</string>
     <string name="update_description">Fitur lan perbaikan anyar ngenteni sampeyan!</string>
+    <string name="close_scan">Tutup pemindai</string>
+    <string name="toggle_torch">Ganti lampu senter</string>
+    <string name="camera_permission_required">Ijin kamera dibutuhake kanggo scan barcode</string>
+    <string name="scanning">Nyecan&#8230;</string>
+    <string name="scan_successful">Kode kadeteksi</string>
+    <string name="scan_barcode_instructions">Tempataken barcode ing jerone frame</string>
+    <string name="close">Tutup</string>
+    <string name="toggle_flash">Ganti lampu kilat</string>
+    <string name="barcode_detected">Barcode kadeteksi</string>
+    <string name="add_product_options_title">Tambah produk</string>
+    <string name="add_product_options_message">Kepiye carane arep nambah produk?</string>
+    <string name="manual_entry">Entri manual</string>
+    <string name="manual_entry_error">Kesalahan mbukak entri manual</string>
+    <string name="dialog_display_error">Kesalahan tampilan dialog</string>
+    <string name="product_check_error">Kesalahan mriksa produk</string>
 </resources>
-

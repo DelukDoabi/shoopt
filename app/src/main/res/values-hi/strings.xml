@@ -15,6 +15,7 @@
     <string name="hf_key_empty">Hugging Face API कुंजी खाली है।</string>
     <string name="unknown_shop">अज्ञात दुकान</string>
     <string name="scan_barcode">बारकोड स्कैन करें</string>
+    <string name="scan_barcode_prompt">स्कैन करने के लिए बारकोड को फ्रेम के अंदर संरेखित करें</string>
     <string name="logout">लॉगआउट</string>
     <string name="welcome_user">स्वागत है, %1$s!</string>
     <string name="choose_option">एक विकल्प चुनें</string>
@@ -121,4 +122,19 @@
     <string name="update_now">अभी अपडेट करें</string>
     <string name="update_later">बाद में</string>
     <string name="update_description">नई सुविधाएँ और सुधार आपका इंतज़ार कर रहे हैं!</string>
+    <string name="close_scan">स्कैनर बंद करें</string>
+    <string name="toggle_torch">टॉर्च टॉगल करें</string>
+    <string name="camera_permission_required">बारकोड स्कैन करने के लिए कैमरा अनुमति आवश्यक है</string>
+    <string name="scanning">स्कैन हो रहा है&#8230;</string>
+    <string name="scan_successful">कोड मिला</string>
+    <string name="scan_barcode_instructions">बारकोड को फ्रेम के अंदर रखें</string>
+    <string name="close">बंद करें</string>
+    <string name="toggle_flash">फ्लैश टॉगल करें</string>
+    <string name="barcode_detected">बारकोड मिला</string>
+    <string name="add_product_options_title">उत्पाद जोड़ें</string>
+    <string name="add_product_options_message">आप उत्पाद कैसे जोड़ना चाहेंगे?</string>
+    <string name="manual_entry">मैन्युअल प्रविष्टि</string>
+    <string name="manual_entry_error">मैन्युअल प्रविष्टि खोलने में त्रुटि</string>
+    <string name="dialog_display_error">संवाद प्रदर्शित करने में त्रुटि</string>
+    <string name="product_check_error">उत्पाद की जांच करने में त्रुटि</string>
 </resources>

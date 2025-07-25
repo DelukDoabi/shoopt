@@ -10,7 +10,8 @@
     <string name="unknown_error">Bilinmeyen bir hata oluştu.</string>
     <string name="hf_key_empty">Hugging Face API anahtarı boş.</string>
     <string name="unknown_shop">Bilinmeyen mağaza</string>
-    <string name="scan_barcode">Barkod tara</string>
+    <string name="scan_barcode">Barkodu tara</string>
+    <string name="scan_barcode_prompt">Taramak için barkodu çerçevenin içine hizalayın</string>
     <string name="logout">Çıkış yap</string>
     <string name="welcome_user">Hoş geldiniz, %1$s!</string>
     <string name="choose_option">Bir seçenek seçin</string>
@@ -121,4 +122,19 @@
     <string name="update_now">Şimdi güncelle</string>
     <string name="update_later">Daha sonra</string>
     <string name="update_description">Yeni özellikler ve iyileştirmeler sizi bekliyor!</string>
+    <string name="close_scan">Tarayıcıyı kapat</string>
+    <string name="toggle_torch">Flaşı aç/kapat</string>
+    <string name="camera_permission_required">Barkod taramak için kamera izni gerekiyor</string>
+    <string name="scanning">Taranıyor...</string>
+    <string name="scan_successful">Kod tespit edildi</string>
+    <string name="scan_barcode_instructions">Barkodu çerçeve içine yerleştirin</string>
+    <string name="close">Kapat</string>
+    <string name="toggle_flash">Flaşı aç/kapat</string>
+    <string name="barcode_detected">Barkod tespit edildi</string>
+    <string name="add_product_options_title">Ürün ekle</string>
+    <string name="add_product_options_message">Ürün nasıl eklemek istersiniz?</string>
+    <string name="manual_entry">Manuel giriş</string>
+    <string name="manual_entry_error">Manuel giriş açılırken hata</string>
+    <string name="dialog_display_error">İletişim kutusu görüntülenirken hata</string>
+    <string name="product_check_error">Ürün kontrol edilirken hata</string>
 </resources>

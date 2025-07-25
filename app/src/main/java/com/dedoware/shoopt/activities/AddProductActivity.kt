@@ -28,6 +28,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -46,6 +47,7 @@ import com.dedoware.shoopt.persistence.IProductRepository
 import com.dedoware.shoopt.persistence.LocalImageStorage
 import com.dedoware.shoopt.persistence.LocalProductRepository
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
+import com.dedoware.shoopt.scanner.BarcodeScannerActivity
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.ShooptUtils
@@ -474,11 +476,14 @@ class AddProductActivity : AppCompatActivity() {
 
             try {
                 scanBarcodeButton = findViewById(R.id.scan_barcode_IB)
+                Log.d("DEBUG_SCANNER", "Button found: ${scanBarcodeButton != null}")
 
                 scanBarcodeButton.setOnClickListener {
+                    Log.d("DEBUG_SCANNER", "Button clicked, calling launchBarcodeScanner()")
                     try {
                         launchBarcodeScanner()
                     } catch (e: Exception) {
+                        Log.e("DEBUG_SCANNER", "Error in launchBarcodeScanner: ${e.message}", e)
                         CrashlyticsManager.log("Erreur lors du lancement du scanner de code-barres: ${e.message ?: "Message non disponible"}")
                         CrashlyticsManager.setCustomKey("error_location", "barcode_scanner_launch")
                         CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
@@ -489,6 +494,7 @@ class AddProductActivity : AppCompatActivity() {
                     }
                 }
             } catch (e: Exception) {
+                Log.e("DEBUG_SCANNER", "Error setting up barcode button: ${e.message}", e)
                 CrashlyticsManager.log("Erreur lors de l'initialisation du bouton de scan: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "scan_button_init")
                 CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
@@ -611,22 +617,32 @@ class AddProductActivity : AppCompatActivity() {
         // Analytique pour le scan de code-barres
         AnalyticsManager.logSelectContent("barcode_scan", "scanner", "product_barcode")
 
-        barcodeLauncher.launch(ScanOptions())
+        try {
+            // Utilisation de notre nouvelle implémentation basée sur ML Kit
+            val intent = Intent(this, BarcodeScannerActivity::class.java)
+            barcodeScannerLauncher.launch(intent)
+        } catch (e: Exception) {
+            Log.e("BarcodeScanner", "Erreur lors du lancement du scanner: ${e.message}", e)
+            Toast.makeText(this, getString(R.string.scanner_launch_error), Toast.LENGTH_LONG).show()
+        }
     }
 
-    private val barcodeLauncher = registerForActivityResult(
-        ScanContract()
-    ) { result: ScanIntentResult ->
-        if (result.contents == null) {
-            Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show()
-        } else {
-            productBarcodeEditText.setText(result.contents)
+    private val barcodeScannerLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val barcodeValue = result.data?.getStringExtra(BarcodeScannerActivity.BARCODE_RESULT)
+            if (barcodeValue != null) {
+                productBarcodeEditText.setText(barcodeValue)
 
-            // Analytique pour le code-barres scanné
-            val params = Bundle().apply {
-                putString("barcode_length", result.contents.length.toString())
+                // Analytique pour le code-barres scanné
+                val params = Bundle().apply {
+                    putString("barcode_length", barcodeValue.length.toString())
+                }
+                AnalyticsManager.logCustomEvent("barcode_scanned", params)
             }
-            AnalyticsManager.logCustomEvent("barcode_scanned", params)
+        } else if (result.resultCode == Activity.RESULT_CANCELED) {
+            Toast.makeText(this, getString(R.string.cancelled), Toast.LENGTH_LONG).show()
         }
     }
 

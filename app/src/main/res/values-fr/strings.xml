@@ -12,6 +12,7 @@
     <string name="hf_key_empty">La clé Hugging Face est vide.</string>
     <string name="unknown_shop">Magasin inconnu</string>
     <string name="scan_barcode">Scanner le code-barre</string>
+    <string name="scan_barcode_prompt">Alignez le code-barre dans le cadre pour le scanner</string>
     <string name="logout">Déconnexion</string>
     <string name="welcome_user">Bienvenue, %1$s!</string>
     <string name="choose_option">Choisissez une option</string>
@@ -99,6 +100,11 @@
     <string name="logout_confirmation_message">Êtes-vous sûr de vouloir vous déconnecter ?</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
+    <string name="scan_barcode_instructions">Positionnez le code-barre dans le cadre</string>
+    <string name="camera_permission_required">La permission d\'accès à la caméra est nécessaire</string>
+    <string name="close">Fermer</string>
+    <string name="toggle_flash">Activer/désactiver le flash</string>
+    <string name="barcode_detected">Code-barre détecté</string>
     <string name="logout_error">Erreur lors de la déconnexion</string>
     <string name="cancel">Annuler</string>
     <string name="settings_open_error">Impossible d\'ouvrir les paramètres. Veuillez réessayer.</string>
@@ -121,4 +127,14 @@
     <string name="update_now">Mettre à jour maintenant</string>
     <string name="update_later">Plus tard</string>
     <string name="update_description">De nouvelles fonctionnalités et améliorations vous attendent !</string>
+    <string name="close_scan">Fermer le scanner</string>
+    <string name="toggle_torch">Activer/désactiver la lampe torche</string>
+    <string name="scanning">Scan en cours&#8230;</string>
+    <string name="scan_successful">Code détecté</string>
+    <string name="add_product_options_title">Ajouter un produit</string>
+    <string name="add_product_options_message">Comment souhaitez-vous ajouter un produit ?</string>
+    <string name="manual_entry">Saisie manuelle</string>
+    <string name="manual_entry_error">Erreur lors de l\'ouverture de la saisie manuelle</string>
+    <string name="dialog_display_error">Erreur d\'affichage de la boîte de dialogue</string>
+    <string name="product_check_error">Erreur lors de la vérification du produit</string>
 </resources>

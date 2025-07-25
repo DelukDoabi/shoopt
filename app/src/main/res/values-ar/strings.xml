@@ -10,7 +10,8 @@
     <string name="unknown_error">حدث خطأ غير معروف.</string>
     <string name="hf_key_empty">مفتاح Hugging Face فارغ.</string>
     <string name="unknown_shop">متجر غير معروف</string>
-    <string name="scan_barcode">مسح الباركود</string>
+    <string name="scan_barcode">مسح الرمز الشريطي</string>
+    <string name="scan_barcode_prompt">قم بمحاذاة الرمز الشريطي داخل الإطار للمسح</string>
     <string name="logout">تسجيل الخروج</string>
     <string name="welcome_user">مرحبًا، %1$s!</string>
     <string name="choose_option">اختر خيارًا</string>
@@ -121,4 +122,19 @@
     <string name="update_now">التحديث الآن</string>
     <string name="update_later">لاحقاً</string>
     <string name="update_description">تنتظرك ميزات وتحسينات جديدة!</string>
+    <string name="close_scan">إغلاق الماسح</string>
+    <string name="toggle_torch">تبديل الإضاءة</string>
+    <string name="camera_permission_required">إذن الكاميرا مطلوب لمسح الرموز الشريطية</string>
+    <string name="scanning">جاري المسح&#8230;</string>
+    <string name="scan_successful">تم اكتشاف الرمز</string>
+    <string name="scan_barcode_instructions">ضع الرمز الشريطي داخل الإطار</string>
+    <string name="close">إغلاق</string>
+    <string name="toggle_flash">تبديل الفلاش</string>
+    <string name="barcode_detected">تم اكتشاف الرمز الشريطي</string>
+    <string name="add_product_options_title">إضافة منتج</string>
+    <string name="add_product_options_message">كيف ترغب في إضافة منتج؟</string>
+    <string name="manual_entry">إدخال يدوي</string>
+    <string name="manual_entry_error">خطأ في فتح الإدخال اليدوي</string>
+    <string name="dialog_display_error">خطأ في عرض مربع الحوار</string>
+    <string name="product_check_error">خطأ في التحقق من المنتج</string>
 </resources>
