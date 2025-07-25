@@ -100,4 +100,7 @@
     <string name="yes">Oui</string>
     <string name="no">Non</string>
     <string name="logout_error">Erreur lors de la déconnexion</string>
+
+    <!-- String pour annulation d'actions -->
+    <string name="cancel">Cancel</string>
 </resources>

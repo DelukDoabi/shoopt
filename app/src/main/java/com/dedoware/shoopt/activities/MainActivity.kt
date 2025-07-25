@@ -160,12 +160,12 @@ class MainActivity : AppCompatActivity() {
 
                     // Analytics pour le passage à l'écran d'ajout de produit
                     AnalyticsManager.logSelectContent("navigation", "card", "add_update_product")
-                    startActivity(Intent(this, AddProductActivity::class.java))
+                    showAddProductOptions()
                 } catch (e: Exception) {
                     // Capture des erreurs
-                    CrashlyticsManager.log("Erreur lors du lancement de AddProductActivity: ${e.message ?: "Message non disponible"}")
+                    CrashlyticsManager.log("Erreur lors de l'affichage des options d'ajout de produit: ${e.message ?: "Message non disponible"}")
                     CrashlyticsManager.logException(e)
-                    Toast.makeText(this, "Impossible d'ouvrir l'écran de produit", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Impossible d'afficher les options d'ajout de produit", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -279,5 +279,50 @@ class MainActivity : AppCompatActivity() {
             CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
             CrashlyticsManager.logException(e)
         }
+    }
+
+    private fun showAddProductOptions() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.choose_option))
+            .setItems(
+                arrayOf(
+                    getString(R.string.scan_barcode_or_add_manually),
+                    getString(R.string.add_product_manually)
+                )
+            ) { _, which ->
+                when (which) {
+                    0 -> {
+                        // Option: Scan barcode or add manually
+                        try {
+                            AnalyticsManager.logUserAction("scan_barcode", "product")
+                            val options = ScanOptions()
+                            options.setPrompt(getString(R.string.scan_barcode))
+                            options.setOrientationLocked(false)
+                            options.setBeepEnabled(true)
+                            barcodeLauncher.launch(options)
+                        } catch (e: Exception) {
+                            CrashlyticsManager.log("Erreur lors du lancement du scanner de code-barres: ${e.message ?: "Message non disponible"}")
+                            CrashlyticsManager.logException(e)
+                            Toast.makeText(this, "Impossible de lancer le scanner. Veuillez réessayer.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    1 -> {
+                        // Option: Add product manually
+                        try {
+                            AnalyticsManager.logUserAction("add_manually", "product")
+                            startActivity(Intent(this, AddProductActivity::class.java))
+                        } catch (e: Exception) {
+                            CrashlyticsManager.log("Erreur lors du lancement de AddProductActivity: ${e.message ?: "Message non disponible"}")
+                            CrashlyticsManager.logException(e)
+                            Toast.makeText(this, "Impossible d'ouvrir l'écran d'ajout de produit", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
     }
 }
