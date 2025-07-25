@@ -120,10 +120,11 @@ dependencies {
     implementation 'com.google.android.play:app-update:2.1.0'
     implementation 'com.google.android.play:app-update-ktx:2.1.0'
 
-    // ML Kit pour la détection de codes-barres
-    implementation 'com.google.mlkit:barcode-scanning:17.2.0'
-    // CameraX
-    def camerax_version = "1.4.0-alpha04"
+    // ML Kit pour la détection de codes-barres - mise à jour vers la dernière version
+    implementation 'com.google.mlkit:barcode-scanning:17.3.0'
+
+    // CameraX - mise à jour vers la version stable pour résoudre le problème d'alignement 16 KB
+    def camerax_version = "1.4.0"
     implementation "androidx.camera:camera-core:$camerax_version"
     implementation "androidx.camera:camera-camera2:$camerax_version"
     implementation "androidx.camera:camera-lifecycle:$camerax_version"
