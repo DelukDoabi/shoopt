@@ -25,8 +25,6 @@ import com.google.android.play.core.install.model.UpdateAvailability
  */
 object UpdateManager {
     const val UPDATE_REQUEST_CODE = 500
-    private const val DAYS_FOR_FLEXIBLE_UPDATE = 3 // Nombre de jours avant de proposer une mise à jour flexible
-    private const val DAYS_FOR_IMMEDIATE_UPDATE = 7 // Nombre de jours avant de forcer une mise à jour immédiate
 
     private var appUpdateManager: AppUpdateManager? = null
     private var installStateUpdatedListener: InstallStateUpdatedListener? = null
@@ -49,15 +47,11 @@ object UpdateManager {
                 AnalyticsManager.logEvent("update_check", bundle)
 
                 if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
-                    // Vérifier si la mise à jour est éligible (selon les critères Google)
-                    if (appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
-                        && appUpdateInfo.clientVersionStalenessDays() != null
-                        && appUpdateInfo.clientVersionStalenessDays()!! >= DAYS_FOR_FLEXIBLE_UPDATE) {
+                    // Proposer la mise à jour dès qu'elle est disponible, sans attendre un délai
+                    if (appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
                         // Mise à jour flexible (non bloquante)
                         showUpdateDialog(activity, appUpdateInfo, AppUpdateType.FLEXIBLE)
-                    } else if (appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
-                        && appUpdateInfo.clientVersionStalenessDays() != null
-                        && appUpdateInfo.clientVersionStalenessDays()!! >= DAYS_FOR_IMMEDIATE_UPDATE) {
+                    } else if (appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
                         // Mise à jour immédiate (bloquante)
                         initiateImmediateUpdate(activity, appUpdateInfo)
                     }
