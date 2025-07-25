@@ -23,11 +23,9 @@ import com.dedoware.shoopt.persistence.IProductRepository
 import com.dedoware.shoopt.persistence.FirebaseProductRepository
 import com.dedoware.shoopt.persistence.LocalProductRepository
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
+import com.dedoware.shoopt.scanner.BarcodeScannerActivity
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
-import com.journeyapps.barcodescanner.ScanContract
-import com.journeyapps.barcodescanner.ScanIntentResult
-import com.journeyapps.barcodescanner.ScanOptions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -157,7 +155,8 @@ class TrackShoppingActivity : ComponentActivity() {
                         CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
                     }
 
-                    barcodeLauncher.launch(ScanOptions())
+                    val intent = Intent(this, BarcodeScannerActivity::class.java)
+                    barcodeLauncher.launch(intent)
                 } catch (e: Exception) {
                     CrashlyticsManager.log("Erreur lors du lancement du scanner de code-barres: ${e.message ?: "Message non disponible"}")
                     CrashlyticsManager.setCustomKey("error_location", "barcode_scanner_launch")
@@ -253,9 +252,119 @@ class TrackShoppingActivity : ComponentActivity() {
         }
 
     private val barcodeLauncher = registerForActivityResult(
-        ScanContract()
-    ) { result: ScanIntentResult ->
-        if (result.contents == null) {
+        ActivityResultContracts.StartActivityForResult()
+    ) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val barcodeValue = result.data?.getStringExtra(BarcodeScannerActivity.BARCODE_RESULT)
+            if (barcodeValue != null) {
+                GlobalScope.launch(Dispatchers.Main) {
+                    try {
+                        val product = productRepository.getProductByBarcode(barcodeValue.toLong())
+                        if (product != null) {
+                            // Analytics pour le scan réussi d'un code-barres existant
+                            try {
+                                AnalyticsManager.logUserAction(
+                                    "barcode_scan_success",
+                                    "shopping_cart",
+                                    mapOf(
+                                        "product_found" to true
+                                    )
+                                )
+                            } catch (e: Exception) {
+                                CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
+                            }
+
+                            val success = productRepository.addProductToCart(product)
+                            if (success) {
+                                // Analytics pour l'ajout réussi d'un produit au panier via scan
+                                try {
+                                    AnalyticsManager.logUserAction(
+                                        "add_product_to_cart",
+                                        "shopping_cart",
+                                        mapOf(
+                                            "method" to "barcode_scan",
+                                            "success" to true
+                                        )
+                                    )
+                                } catch (e: Exception) {
+                                    CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
+                                }
+
+                                loadShoppingCart()  // Reload cart after adding the product
+                                showToast(getString(R.string.product_added_to_cart))
+                            } else {
+                                // Analytics pour l'échec d'ajout d'un produit au panier via scan
+                                try {
+                                    AnalyticsManager.logUserAction(
+                                        "add_product_to_cart",
+                                        "shopping_cart",
+                                        mapOf(
+                                            "method" to "barcode_scan",
+                                            "success" to false
+                                        )
+                                    )
+                                } catch (e: Exception) {
+                                    CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
+                                }
+
+                                showToast(getString(R.string.failed_to_add_product_to_cart))
+                            }
+                        } else {
+                            // Analytics pour le scan d'un produit non trouvé
+                            try {
+                                AnalyticsManager.logUserAction(
+                                    "barcode_scan_success",
+                                    "shopping_cart",
+                                    mapOf(
+                                        "product_found" to false
+                                    )
+                                )
+                            } catch (e: Exception) {
+                                CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
+                            }
+
+                            try {
+                                val addProductIntent = Intent(this@TrackShoppingActivity, AddProductActivity::class.java)
+                                addProductIntent.putExtra("source", "TrackShoppingActivity")
+                                addProductIntent.putExtra("barcode", barcodeValue)
+                                addProductContract.launch(addProductIntent)
+                            } catch (e: Exception) {
+                                CrashlyticsManager.log("Erreur lors du lancement de l'activité d'ajout avec code-barres: ${e.message ?: "Message non disponible"}")
+                                CrashlyticsManager.setCustomKey("error_location", "add_product_with_barcode")
+                                CrashlyticsManager.setCustomKey("barcode", barcodeValue)
+                                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                                CrashlyticsManager.logException(e)
+
+                                showToast("Impossible d'ouvrir l'écran d'ajout de produit avec le code-barres")
+                            }
+                        }
+                    } catch (e: Exception) {
+                        // Analytics pour l'erreur de scan
+                        try {
+                            AnalyticsManager.logUserAction(
+                                "barcode_scan_error",
+                                "shopping_cart",
+                                mapOf(
+                                    "error_message" to (e.message ?: "Message non disponible")
+                                )
+                            )
+                        } catch (ex: Exception) {
+                            CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${ex.message ?: "Message non disponible"}")
+                        }
+
+                        CrashlyticsManager.log("Erreur lors du traitement du code-barres: ${e.message ?: "Message non disponible"}")
+                        CrashlyticsManager.setCustomKey("error_location", "process_barcode_scan")
+                        CrashlyticsManager.setCustomKey("barcode_content", barcodeValue)
+                        CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                        CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                        CrashlyticsManager.logException(e)
+
+                        showToast("Erreur lors du traitement du code-barres")
+                    }
+                }
+            }
+        } else if (result.resultCode == Activity.RESULT_CANCELED) {
             // Analytics pour l'annulation du scan
             try {
                 AnalyticsManager.logUserAction(
@@ -268,113 +377,6 @@ class TrackShoppingActivity : ComponentActivity() {
             }
 
             showToast(getString(R.string.cancelled))
-        } else {
-            GlobalScope.launch(Dispatchers.Main) {
-                try {
-                    val product = productRepository.getProductByBarcode(result.contents.toLong())
-                    if (product != null) {
-                        // Analytics pour le scan réussi d'un code-barres existant
-                        try {
-                            AnalyticsManager.logUserAction(
-                                "barcode_scan_success",
-                                "shopping_cart",
-                                mapOf(
-                                    "product_found" to true
-                                )
-                            )
-                        } catch (e: Exception) {
-                            CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
-                        }
-
-                        val success = productRepository.addProductToCart(product)
-                        if (success) {
-                            // Analytics pour l'ajout réussi d'un produit au panier via scan
-                            try {
-                                AnalyticsManager.logUserAction(
-                                    "add_product_to_cart",
-                                    "shopping_cart",
-                                    mapOf(
-                                        "method" to "barcode_scan",
-                                        "success" to true
-                                    )
-                                )
-                            } catch (e: Exception) {
-                                CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
-                            }
-
-                            loadShoppingCart()  // Reload cart after adding the product
-                            showToast(getString(R.string.product_added_to_cart))
-                        } else {
-                            // Analytics pour l'échec d'ajout d'un produit au panier via scan
-                            try {
-                                AnalyticsManager.logUserAction(
-                                    "add_product_to_cart",
-                                    "shopping_cart",
-                                    mapOf(
-                                        "method" to "barcode_scan",
-                                        "success" to false
-                                    )
-                                )
-                            } catch (e: Exception) {
-                                CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
-                            }
-
-                            showToast(getString(R.string.failed_to_add_product_to_cart))
-                        }
-                    } else {
-                        // Analytics pour le scan d'un produit non trouvé
-                        try {
-                            AnalyticsManager.logUserAction(
-                                "barcode_scan_success",
-                                "shopping_cart",
-                                mapOf(
-                                    "product_found" to false
-                                )
-                            )
-                        } catch (e: Exception) {
-                            CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
-                        }
-
-                        try {
-                            val addProductIntent = Intent(this@TrackShoppingActivity, AddProductActivity::class.java)
-                            addProductIntent.putExtra("source", "TrackShoppingActivity")
-                            addProductIntent.putExtra("barcode", result.contents)
-                            addProductContract.launch(addProductIntent)
-                        } catch (e: Exception) {
-                            CrashlyticsManager.log("Erreur lors du lancement de l'activité d'ajout avec code-barres: ${e.message ?: "Message non disponible"}")
-                            CrashlyticsManager.setCustomKey("error_location", "add_product_with_barcode")
-                            CrashlyticsManager.setCustomKey("barcode", result.contents)
-                            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
-                            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
-                            CrashlyticsManager.logException(e)
-
-                            showToast("Impossible d'ouvrir l'écran d'ajout de produit avec le code-barres")
-                        }
-                    }
-                } catch (e: Exception) {
-                    // Analytics pour l'erreur de scan
-                    try {
-                        AnalyticsManager.logUserAction(
-                            "barcode_scan_error",
-                            "shopping_cart",
-                            mapOf(
-                                "error_message" to (e.message ?: "Message non disponible")
-                            )
-                        )
-                    } catch (ex: Exception) {
-                        CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${ex.message ?: "Message non disponible"}")
-                    }
-
-                    CrashlyticsManager.log("Erreur lors du traitement du code-barres: ${e.message ?: "Message non disponible"}")
-                    CrashlyticsManager.setCustomKey("error_location", "process_barcode_scan")
-                    CrashlyticsManager.setCustomKey("barcode_content", result.contents)
-                    CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
-                    CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
-                    CrashlyticsManager.logException(e)
-
-                    showToast("Erreur lors du traitement du code-barres")
-                }
-            }
         }
     }
 

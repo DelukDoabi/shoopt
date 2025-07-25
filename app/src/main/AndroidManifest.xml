@@ -34,11 +34,6 @@
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <activity
-            android:name=".activities.HorizontalCaptureActivity"
-            android:exported="false"
-            android:screenOrientation="landscape"
-            android:theme="@style/Theme.AppCompat" />
-        <activity
             android:name=".activities.SettingsActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
