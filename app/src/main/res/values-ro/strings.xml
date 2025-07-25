@@ -110,4 +110,8 @@
     <string name="scanner_launch_error">Nu s-a putut lansa scanner-ul. Vă rugăm să încercați din nou.</string>
     <string name="barcode_processing_error">Nu s-a putut procesa codul de bare. Vă rugăm să încercați din nou.</string>
     <string name="product_screen_open_error">Nu s-a putut deschide ecranul de adăugare a produsului</string>
+    <string name="empty_products_image">Imagine pentru listă goală de produse</string>
+    <string name="no_products_yet">Niciun produs disponibil</string>
+    <string name="add_your_first_product_message">Nu ai adăugat încă niciun produs. Începe prin a adăuga primul tău produs pentru a-ți urmări cumpărăturile.</string>
+    <string name="add_first_product">Adaugă un produs</string>
 </resources>

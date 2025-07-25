@@ -110,4 +110,8 @@
     <string name="scanner_launch_error">Не удалось запустить сканер. Пожалуйста, попробуйте снова.</string>
     <string name="barcode_processing_error">Не удалось обработать штрих-код. Пожалуйста, попробуйте снова.</string>
     <string name="product_screen_open_error">Не удалось открыть экран добавления продукта</string>
+    <string name="empty_products_image">Изображение пустого списка продуктов</string>
+    <string name="no_products_yet">Нет доступных продуктов</string>
+    <string name="add_your_first_product_message">Вы еще не добавили ни одного продукта. Начните с добавления первого продукта для отслеживания ваших покупок.</string>
+    <string name="add_first_product">Добавить продукт</string>
 </resources>

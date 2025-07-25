@@ -102,12 +102,16 @@
     <string name="logout_error">登出时出错</string>
     <string name="cancel">取消</string>
     <string name="settings_open_error">无法打开设置。请重试。</string>
-    <string name="app_loading_error">加载应用程序时出错</string>
+    <string name="app_loading_error">加载应用程序时发生错误</string>
     <string name="shopping_list_open_error">无法打开购物清单</string>
-    <string name="add_product_options_error">无法显示添加产品选项</string>
+    <string name="add_product_options_error">无法显示产品添加选项</string>
     <string name="track_shopping_open_error">无法打开购物跟踪</string>
-    <string name="analyse_open_error">无法打开分析屏幕</string>
-    <string name="scanner_launch_error">无法启动扫描仪。请重试。</string>
-    <string name="barcode_processing_error">无法处理条形码。请重试。</string>
-    <string name="product_screen_open_error">无法打开添加产品屏幕</string>
+    <string name="analyse_open_error">无法打开分析界面</string>
+    <string name="scanner_launch_error">无法启动扫描器。请重试。</string>
+    <string name="barcode_processing_error">无法处理条码。请重试。</string>
+    <string name="product_screen_open_error">无法打开产品添加界面</string>
+    <string name="empty_products_image">空产品列表图片</string>
+    <string name="no_products_yet">暂无可用产品</string>
+    <string name="add_your_first_product_message">您尚未添加任何产品。从添加您的第一个产品开始，以跟踪您的购物。</string>
+    <string name="add_first_product">添加产品</string>
 </resources>

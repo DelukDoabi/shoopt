@@ -286,7 +286,7 @@ class MainActivity : AppCompatActivity() {
         builder.setTitle(getString(R.string.choose_option))
             .setItems(
                 arrayOf(
-                    getString(R.string.scan_barcode_or_add_manually),
+                    getString(R.string.scan_barcode),
                     getString(R.string.add_product_manually)
                 )
             ) { _, which ->

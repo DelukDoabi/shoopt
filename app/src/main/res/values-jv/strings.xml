@@ -110,4 +110,8 @@
     <string name="scanner_launch_error">Ora bisa mbukak pemindai. Mangga dicoba maneh.</string>
     <string name="barcode_processing_error">Ora bisa ngolah barcode. Mangga dicoba maneh.</string>
     <string name="product_screen_open_error">Ora bisa mbukak layar nambah produk</string>
+    <string name="empty_products_image">Gambar dhaftar produk kosong</string>
+    <string name="no_products_yet">Durung ana produk sing cumawis</string>
+    <string name="add_your_first_product_message">Sampeyan durung nambahake produk apa wae. Wiwiti kanthi nambah produk pisanan kanggo nglacak blanjan sampeyan.</string>
+    <string name="add_first_product">Tambah produk</string>
 </resources>

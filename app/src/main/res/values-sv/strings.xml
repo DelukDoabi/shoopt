@@ -110,4 +110,8 @@
     <string name="scanner_launch_error">Det går inte att starta skannern. Försök igen.</string>
     <string name="barcode_processing_error">Det går inte att bearbeta streckkoden. Försök igen.</string>
     <string name="product_screen_open_error">Det går inte att öppna produkttilläggsskärmen</string>
+    <string name="empty_products_image">Bild för tom produktlista</string>
+    <string name="no_products_yet">Inga produkter tillgängliga</string>
+    <string name="add_your_first_product_message">Du har inte lagt till några produkter än. Börja med att lägga till din första produkt för att spåra dina inköp.</string>
+    <string name="add_first_product">Lägg till produkt</string>
 </resources>

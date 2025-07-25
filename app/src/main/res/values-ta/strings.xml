@@ -110,4 +110,8 @@
     <string name="scanner_launch_error">ஸ்கேனரைத் தொடங்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.</string>
     <string name="barcode_processing_error">பார்கோடை செயலாக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.</string>
     <string name="product_screen_open_error">தயாரிப்பு சேர்க்கும் திரையைத் திறக்க முடியவில்லை</string>
+    <string name="empty_products_image">காலியான பொருட்கள் பட்டியல் படம்</string>
+    <string name="no_products_yet">பொருட்கள் எதுவும் கிடைக்கவில்லை</string>
+    <string name="add_your_first_product_message">நீங்கள் இன்னும் எந்த பொருட்களையும் சேர்க்கவில்லை. உங்கள் ஷாப்பிங்கைக் கண்காணிக்க முதல் பொருளைச் சேர்த்துத் தொடங்குங்கள்.</string>
+    <string name="add_first_product">ஒரு பொருளைச் சேர்க்கவும்</string>
 </resources>

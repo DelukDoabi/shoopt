@@ -110,4 +110,8 @@
     <string name="scanner_launch_error">Tarayıcı başlatılamıyor. Lütfen tekrar deneyin.</string>
     <string name="barcode_processing_error">Barkod işlenemiyor. Lütfen tekrar deneyin.</string>
     <string name="product_screen_open_error">Ürün ekleme ekranı açılamıyor</string>
+    <string name="empty_products_image">Boş ürün listesi resmi</string>
+    <string name="no_products_yet">Henüz ürün yok</string>
+    <string name="add_your_first_product_message">Henüz hiç ürün eklemediniz. Alışverişlerinizi takip etmek için ilk ürününüzü ekleyerek başlayın.</string>
+    <string name="add_first_product">Ürün ekle</string>
 </resources>

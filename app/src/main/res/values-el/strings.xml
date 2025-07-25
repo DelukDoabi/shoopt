@@ -110,4 +110,8 @@
     <string name="scanner_launch_error">Αδυναμία εκκίν��σης σαρωτή. Παρακαλώ δοκιμάστε ξανά.</string>
     <string name="barcode_processing_error">Αδυναμία επεξεργασίας γραμμικού κώδικα. Παρακαλώ δοκιμάστε ξανά.</string>
     <string name="product_screen_open_error">Αδυναμία ανοίγματος οθόνης προσθήκης προϊόντος</string>
+    <string name="empty_products_image">Εικόνα κενής λίστας προϊόντων</string>
+    <string name="no_products_yet">Δεν υπάρχουν διαθέσιμα προϊόντα</string>
+    <string name="add_your_first_product_message">Δεν έχετε προσθέσει ακόμα προϊόντα. Ξεκινήστε προσθέτοντας το πρώτο σας προϊόν για να παρακολουθείτε τις αγορές σας.</string>
+    <string name="add_first_product">Προσθήκη προϊόντος</string>
 </resources>

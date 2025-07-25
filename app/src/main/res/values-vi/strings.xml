@@ -110,4 +110,8 @@
     <string name="scanner_launch_error">Không thể khởi chạy máy quét. Vui lòng thử lại.</string>
     <string name="barcode_processing_error">Không thể xử lý mã vạch. Vui lòng thử lại.</string>
     <string name="product_screen_open_error">Không thể mở màn hình thêm sản phẩm</string>
+    <string name="empty_products_image">Hình ảnh danh sách sản phẩm trống</string>
+    <string name="no_products_yet">Không có sản phẩm nào</string>
+    <string name="add_your_first_product_message">Bạn chưa thêm bất kỳ sản phẩm nào. Hãy bắt đầu bằng cách thêm sản phẩm đầu tiên để theo dõi việc mua sắm của bạn.</string>
+    <string name="add_first_product">Thêm sản phẩm</string>
 </resources>

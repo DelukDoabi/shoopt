@@ -110,4 +110,8 @@
     <string name="scanner_launch_error">スキャナーを起動できません。もう一度お試しください。</string>
     <string name="barcode_processing_error">バーコードを処理できません。もう一度お試しください。</string>
     <string name="product_screen_open_error">商品追加画面を開けません</string>
+    <string name="empty_products_image">空の製品リスト画像</string>
+    <string name="no_products_yet">利用可能な製品がありません</string>
+    <string name="add_your_first_product_message">まだ製品を追加していません。最初の製品を追加して、買い物を記録しましょう。</string>
+    <string name="add_first_product">製品を追加</string>
 </resources>

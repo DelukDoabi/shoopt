@@ -110,4 +110,8 @@
     <string name="scanner_launch_error">Impossible de lancer le scanner. Veuillez réessayer.</string>
     <string name="barcode_processing_error">Impossible de traiter le code-barres. Veuillez réessayer.</string>
     <string name="product_screen_open_error">Impossible d\'ouvrir l\'écran d\'ajout de produit</string>
+    <string name="empty_products_image">Image de liste de produits vide</string>
+    <string name="no_products_yet">Aucun produit disponible</string>
+    <string name="add_your_first_product_message">Vous n\'avez pas encore ajouté de produits. Commencez par ajouter votre premier produit pour suivre vos achats.</string>
+    <string name="add_first_product">Ajouter un produit</string>
 </resources>

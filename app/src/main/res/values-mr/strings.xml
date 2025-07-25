@@ -2,7 +2,7 @@
     <string name="products">उत्पादने: </string>
     <string name="total">एकूण: </string>
     <string name="password">पासवर्ड</string>
-    <string name="don_t_have_an_account_register_here">खाते नाही? येथे नोंद���ी करा</string>
+    <string name="don_t_have_an_account_register_here">खाते नाही? येथे नोंदणी करा</string>
     <string name="sign_in_with_email">ईमेलने साइन इन करा</string>
     <string name="sign_in_with_google">Google ने साइन इन करा</string>
     <string name="title_activity_register">नोंदणी</string>
@@ -25,7 +25,7 @@
     <string name="failed_to_add_shop">दुकान जोडण्यात अयशस्वी.</string>
     <string name="please_fill_all_fields">कृपया सर्व फील्ड भरा</string>
     <string name="registration_successful">नोंदणी यशस्वी</string>
-    <string name="registration_failed">��ोंदणी अयशस्वी: %1$s</string>
+    <string name="registration_failed">नोंदणी अयशस्वी: %1$s</string>
     <string name="login_successful">लॉगिन यशस्वी</string>
     <string name="login_failed">लॉगिन अयशस्वी: %1$s</string>
     <string name="google_sign_in_successful">Google साइन इन यशस्वी</string>
@@ -108,6 +108,10 @@
     <string name="track_shopping_open_error">खरेदी ट्रॅकिंग उघडण्यास अक्षम</string>
     <string name="analyse_open_error">विश्लेषण स्क्रीन उघडण्यास अक्षम</string>
     <string name="scanner_launch_error">स्कॅनर सुरू करण्यास अक्षम. कृपया पुन्हा प्रयत्न करा.</string>
-    <string name="barcode_processing_error">बारकोड प्रक्रिया करण्य��स अक्षम. कृपया पुन्हा प्रयत्न करा.</string>
+    <string name="barcode_processing_error">बारकोड प्रक्रिया करण्यास अक्षम. कृपया पुन्हा प्रयत्न करा.</string>
     <string name="product_screen_open_error">उत्पादन जोडण्याची स्क्रीन उघडण्यास अक्षम</string>
+    <string name="empty_products_image">रिक्त उत्पादन सूची प्रतिमा</string>
+    <string name="no_products_yet">कोणतेही उत्पादन उपलब्ध नाही</string>
+    <string name="add_your_first_product_message">आपण अद्याप कोणतेही उत्पादन जोडलेले नाही. आपल्या खरेदीचा मागोवा घेण्यासाठी आपले पहिले उत्पादन जोडून सुरुवात करा.</string>
+    <string name="add_first_product">उत्पादन जोडा</string>
 </resources>

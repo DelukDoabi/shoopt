@@ -110,4 +110,8 @@
     <string name="scanner_launch_error">స్కానర్‌ను ప్రారంభించడం సాధ్యం కాలేదు. దయచేసి మళ్లీ ప్రయత్నించండి.</string>
     <string name="barcode_processing_error">బార్‌కోడ్‌ను ప్రాసెస్ చేయడం సాధ్యం కాలేదు. దయచేసి మళ్లీ ప్రయత్నించండి.</string>
     <string name="product_screen_open_error">ప్రొడక్ట్ జోడింపు స్క్రీన్‌ను తెరవడం సాధ్యం కాలేదు</string>
+    <string name="empty_products_image">ఖాళీ ఉత్పత్తుల జాబితా చిత్రం</string>
+    <string name="no_products_yet">ఉత్పత్తులు అందుబాటులో లేవు</string>
+    <string name="add_your_first_product_message">మీరు ఇంకా ఎలాంటి ఉత్పత్తులను జోడించలేదు. మీ షాపింగ్‌ను ట్రాక్ చేయడానికి మీ మొదటి ఉత్పత్తిని జోడించడంతో ప్రారంభించండి.</string>
+    <string name="add_first_product">ఉత్పత్తిని జోడించండి</string>
 </resources>

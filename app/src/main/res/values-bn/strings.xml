@@ -110,4 +110,8 @@
     <string name="scanner_launch_error">স্ক্যানার চালু করতে অক্ষম। অনুগ্রহ করে আবার চেষ্টা করুন।</string>
     <string name="barcode_processing_error">বারকোড প্রক্রিয়া করতে অক্ষম। অনুগ্রহ করে আবার চেষ্টা করুন।</string>
     <string name="product_screen_open_error">পণ্য যোগ করার স্ক্রীন খুলতে অক্ষম</string>
+    <string name="empty_products_image">খালি পণ্য তালিকার ছবি</string>
+    <string name="no_products_yet">কোন পণ্য উপলব্ধ নেই</string>
+    <string name="add_your_first_product_message">আপনি এখনও কোন পণ্য যোগ করেননি। আপনার কেনাকাটা ট্র্যাক করতে আপনার প্রথম পণ্য যোগ করে শুরু করুন।</string>
+    <string name="add_first_product">একটি পণ্য যোগ করুন</string>
 </resources>

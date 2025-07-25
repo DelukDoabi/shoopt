@@ -110,4 +110,8 @@
     <string name="scanner_launch_error">تعذر تشغيل الماسح الضوئي. يرجى المحاولة مرة أخرى.</string>
     <string name="barcode_processing_error">تعذر معالجة الباركود. يرجى المحاولة مرة أخرى.</string>
     <string name="product_screen_open_error">تعذر فتح شاشة إضافة المنتج</string>
+    <string name="empty_products_image">صورة قائمة منتجات فارغة</string>
+    <string name="no_products_yet">لا توجد منتجات متاحة</string>
+    <string name="add_your_first_product_message">لم تقم بإضافة أي منتجات بعد. ابدأ بإضافة منتجك الأول لتتبع تسوقك.</string>
+    <string name="add_first_product">إضافة منتج</string>
 </resources>

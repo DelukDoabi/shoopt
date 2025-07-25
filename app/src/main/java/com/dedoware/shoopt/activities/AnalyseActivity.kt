@@ -5,7 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -35,6 +37,8 @@ class AnalyseActivity : AppCompatActivity() {
     private lateinit var searchView: SearchView
     private lateinit var backImageButton: ImageButton
     private lateinit var userPreferences: UserPreferences
+    private lateinit var emptyStateLayout: LinearLayout
+    private lateinit var addButton: Button
 
     private var products: List<Product> = emptyList()
     private lateinit var productRepository: IProductRepository
@@ -100,12 +104,19 @@ class AnalyseActivity : AppCompatActivity() {
                 searchView = findViewById(R.id.search_view)
                 productListRecyclerView = findViewById(R.id.product_list_recycler_view)
                 backImageButton = findViewById(R.id.back_IB)
+                emptyStateLayout = findViewById(R.id.empty_state_layout)
+                addButton = findViewById(R.id.add_product_button)
 
                 backImageButton.setOnClickListener { finish() }
 
                 progressBar.visibility = View.VISIBLE
                 productListRecyclerView.layoutManager = GridLayoutManager(this, 2)
                 productListRecyclerView.adapter = ProductListAdapter(emptyList(), userPreferences)
+
+                addButton.setOnClickListener {
+                    // Ouvrir l'activité d'ajout de produit
+                    openAddProductActivity(Product())
+                }
             } catch (e: Exception) {
                 CrashlyticsManager.log("Erreur lors de l'initialisation de l'interface: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "ui_init")
@@ -159,9 +170,11 @@ class AnalyseActivity : AppCompatActivity() {
                 if (products.isNotEmpty()) {
                     setupAdapter(products.sortedByDescending { it.timestamp })
                     progressBar.visibility = View.GONE
+                    emptyStateLayout.visibility = View.GONE
                 } else {
                     Log.d("SHOOPT_TAG", "No products found!")
                     progressBar.visibility = View.GONE
+                    emptyStateLayout.visibility = View.VISIBLE
                 }
             } catch (e: Exception) {
                 CrashlyticsManager.log("Erreur lors du chargement des produits: ${e.message ?: "Message non disponible"}")
