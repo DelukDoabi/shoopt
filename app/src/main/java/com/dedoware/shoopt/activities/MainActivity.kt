@@ -11,6 +11,11 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.appcompat.app.AppCompatActivity
 import com.dedoware.shoopt.R
+import com.dedoware.shoopt.ShooptApplication
+import com.dedoware.shoopt.model.Product
+import com.dedoware.shoopt.persistence.FirebaseProductRepository
+import com.dedoware.shoopt.persistence.IProductRepository
+import com.dedoware.shoopt.persistence.LocalProductRepository
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.UpdateManager
@@ -23,6 +28,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class MainActivity : AppCompatActivity() {
@@ -34,6 +43,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var trackShoppingTextView: TextView
     private lateinit var analyseTextView: TextView
     private lateinit var userPreferences: UserPreferences
+
+    private val useFirebase = false // Définition cohérente avec les autres activités
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -290,9 +301,8 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity, getString(R.string.cancelled), Toast.LENGTH_LONG).show()
             } else {
                 try {
-                    val addProductIntent = Intent(this@MainActivity, AddProductActivity::class.java)
-                    addProductIntent.putExtra("barcode", result.contents)
-                    startActivity(addProductIntent)
+                    // Vérifier si le produit existe déjà avant de lancer l'activité
+                    checkProductExistenceAndNavigate(result.contents)
                 } catch (e: Exception) {
                     CrashlyticsManager.log("Erreur lors du traitement du code-barres: ${e.message ?: "Message non disponible"}")
                     CrashlyticsManager.setCustomKey("error_location", "barcode_processing")
@@ -307,6 +317,77 @@ class MainActivity : AppCompatActivity() {
             CrashlyticsManager.setCustomKey("error_location", "barcode_scan_result")
             CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
             CrashlyticsManager.logException(e)
+        }
+    }
+
+    private fun checkProductExistenceAndNavigate(barcode: String) {
+        // Utilisation de coroutines pour vérifier l'existence du produit en arrière-plan
+        val productRepository: IProductRepository = if (useFirebase) {
+            FirebaseProductRepository()
+        } else {
+            val database = (application as ShooptApplication).database
+            LocalProductRepository(
+                database.productDao(),
+                database.shopDao(),
+                database.shoppingCartDao(),
+                database.cartItemDao()
+            )
+        }
+        
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val barcodeAsLong = barcode.toLongOrNull() ?: 0L
+                
+                // Vérifier si le produit existe déjà dans la base de données
+                val existingProduct = withContext(Dispatchers.IO) {
+                    productRepository.getProductByBarcode(barcodeAsLong)
+                }
+                
+                // Préparer l'intent avec les données appropriées
+                val addProductIntent = Intent(this@MainActivity, AddProductActivity::class.java)
+                
+                if (existingProduct != null) {
+                    // Si le produit existe, ajouter toutes ses informations à l'intent
+                    addProductIntent.apply {
+                        putExtra("productId", existingProduct.id)
+                        putExtra("barcode", existingProduct.barcode)
+                        putExtra("name", existingProduct.name)
+                        putExtra("shop", existingProduct.shop)
+                        putExtra("price", existingProduct.price)
+                        putExtra("unitPrice", existingProduct.unitPrice)
+                        putExtra("pictureUrl", existingProduct.pictureUrl)
+                    }
+                    
+                    // Analytics pour le chargement d'un produit existant
+                    val params = Bundle().apply {
+                        putString("source", "barcode_scan")
+                        putString("product_found", "true")
+                    }
+                    AnalyticsManager.logCustomEvent("existing_product_loaded", params)
+                } else {
+                    // Si le produit n'existe pas, simplement passer le code-barres
+                    addProductIntent.putExtra("barcode", barcode)
+                    
+                    // Analytics pour la création d'un nouveau produit
+                    val params = Bundle().apply {
+                        putString("source", "barcode_scan")
+                        putString("product_found", "false") 
+                    }
+                    AnalyticsManager.logCustomEvent("new_product_scan", params)
+                }
+                
+                startActivity(addProductIntent)
+                
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de la vérification du produit existant: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "product_existence_check")
+                CrashlyticsManager.logException(e)
+                
+                // En cas d'erreur, essayer de poursuivre avec juste le code-barres
+                val addProductIntent = Intent(this@MainActivity, AddProductActivity::class.java)
+                addProductIntent.putExtra("barcode", barcode)
+                startActivity(addProductIntent)
+            }
         }
     }
 
