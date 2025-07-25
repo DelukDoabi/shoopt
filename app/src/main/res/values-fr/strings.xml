@@ -134,7 +134,7 @@
     <string name="add_product_options_title">Ajouter un produit</string>
     <string name="add_product_options_message">Comment souhaitez-vous ajouter un produit ?</string>
     <string name="manual_entry">Saisie manuelle</string>
-    <string name="manual_entry_error">Erreur lors de l'ouverture de la saisie manuelle</string>
-    <string name="dialog_display_error">Erreur d'affichage de la boîte de dialogue</string>
+    <string name="manual_entry_error">Erreur lors de l\'ouverture de la saisie manuelle</string>
+    <string name="dialog_display_error">Erreur d\'affichage de la boîte de dialogue</string>
     <string name="product_check_error">Erreur lors de la vérification du produit</string>
 </resources>
