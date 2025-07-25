@@ -41,6 +41,7 @@ class BarcodeScannerActivity : AppCompatActivity() {
     private lateinit var previewView: PreviewView
     private lateinit var scanLine: View
     private lateinit var scanFrame: View
+    private lateinit var scanAreaContainer: View
     private lateinit var closeButton: ImageButton
     private lateinit var flashButton: ImageButton
 
@@ -74,6 +75,7 @@ class BarcodeScannerActivity : AppCompatActivity() {
         previewView = findViewById(R.id.previewView)
         scanLine = findViewById(R.id.scanLine)
         scanFrame = findViewById(R.id.scanFrame)
+        scanAreaContainer = findViewById(R.id.scanAreaContainer)
         closeButton = findViewById(R.id.closeButton)
         flashButton = findViewById(R.id.flashButton)
 
@@ -118,16 +120,33 @@ class BarcodeScannerActivity : AppCompatActivity() {
     }
 
     private fun setupScanLineAnimation() {
-        scanLineAnimator = ObjectAnimator.ofFloat(
-            scanLine,
-            "translationY",
-            0f,
-            scanFrame.height.toFloat()
-        ).apply {
-            duration = 2000
-            repeatMode = ValueAnimator.REVERSE
-            repeatCount = ValueAnimator.INFINITE
-            start()
+        // Attendre que le conteneur soit mesuré
+        scanAreaContainer.post {
+            // Réinitialiser toute animation précédente
+            if (::scanLineAnimator.isInitialized) {
+                scanLineAnimator.cancel()
+            }
+
+            // La ligne commence tout en haut du conteneur
+            scanLine.translationY = 0f
+
+            // Calculer la distance exacte à parcourir (hauteur du conteneur moins hauteur de la ligne)
+            val containerHeight = scanAreaContainer.height.toFloat()
+            val lineHeight = scanLine.height.toFloat()
+            val distance = containerHeight - lineHeight
+
+            // Créer l'animation avec les limites précises du conteneur
+            scanLineAnimator = ObjectAnimator.ofFloat(
+                scanLine,
+                "translationY",
+                0f,  // Démarre du haut du conteneur
+                distance  // S'arrête exactement au bas du conteneur
+            ).apply {
+                duration = 2000
+                repeatMode = ValueAnimator.REVERSE
+                repeatCount = ValueAnimator.INFINITE
+                start()
+            }
         }
     }
 
