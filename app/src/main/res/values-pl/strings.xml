@@ -100,4 +100,14 @@
     <string name="yes">Tak</string>
     <string name="no">Nie</string>
     <string name="logout_error">Błąd podczas wylogowywania</string>
+    <string name="cancel">Anuluj</string>
+    <string name="settings_open_error">Nie można otworzyć ustawień. Spróbuj ponownie.</string>
+    <string name="app_loading_error">Wystąpił błąd podczas ładowania aplikacji</string>
+    <string name="shopping_list_open_error">Nie można otworzyć listy zakupów</string>
+    <string name="add_product_options_error">Nie można wyświetlić opcji dodawania produktu</string>
+    <string name="track_shopping_open_error">Nie można otworzyć śledzenia zakupów</string>
+    <string name="analyse_open_error">Nie można otworzyć ekranu analizy</string>
+    <string name="scanner_launch_error">Nie można uruchomić skanera. Spróbuj ponownie.</string>
+    <string name="barcode_processing_error">Nie można przetworzyć kodu kreskowego. Spróbuj ponownie.</string>
+    <string name="product_screen_open_error">Nie można otworzyć ekranu dodawania produktu</string>
 </resources>

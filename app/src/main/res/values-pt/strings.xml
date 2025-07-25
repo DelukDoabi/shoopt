@@ -100,4 +100,14 @@
     <string name="yes">Sim</string>
     <string name="no">Não</string>
     <string name="logout_error">Erro ao fazer logout</string>
+    <string name="cancel">Cancelar</string>
+    <string name="settings_open_error">Não foi possível abrir as configurações. Tente novamente.</string>
+    <string name="app_loading_error">Ocorreu um erro ao carregar o aplicativo</string>
+    <string name="shopping_list_open_error">Não foi possível abrir a lista de compras</string>
+    <string name="add_product_options_error">Não foi possível exibir as opções de adição de produto</string>
+    <string name="track_shopping_open_error">Não foi possível abrir o rastreamento de compras</string>
+    <string name="analyse_open_error">Não foi possível abrir a tela de análise</string>
+    <string name="scanner_launch_error">Não foi possível iniciar o scanner. Tente novamente.</string>
+    <string name="barcode_processing_error">Não foi possível processar o código de barras. Tente novamente.</string>
+    <string name="product_screen_open_error">Não foi possível abrir a tela de adição de produto</string>
 </resources>

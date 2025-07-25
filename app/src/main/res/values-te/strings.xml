@@ -2,8 +2,8 @@
     <string name="products">ఉత్పత్తులు: </string>
     <string name="total">మొత్తం: </string>
     <string name="password">పాస్వర్డ్</string>
-    <string name="don_t_have_an_account_register_here">ఖాతా లేదు? ఇక్కడ నమోదు చేసుకోండి</string>
-    <string name="sign_in_with_email">ఇమెయిల్‌తో సైన్ ఇన్ చేయండి</string>
+    <string name="don_t_have_an_account_register_here">ఖాతా లేదు? ఇక��కడ నమోదు చేసుకోండి</string>
+    <string name="sign_in_with_email">ఇమెయిల్‌���ో సైన్ ఇన్ చేయండి</string>
     <string name="sign_in_with_google">Googleతో సైన్ ఇన్ చేయండి</string>
     <string name="title_activity_register">నమోదు</string>
     <string name="forgot_password">పాస్వర్డ్ మర్చిపోయారా?</string>
@@ -17,10 +17,10 @@
     <string name="scan_barcode_or_add_manually">బార్కోడ్ స్కాన్ చేయండి లేదా ఉత్పత్తిని మాన్యువల్‌గా జోడించండి</string>
     <string name="add_product_manually">ఉత్పత్తిని మాన్యువల్‌గా జోడించండి</string>
     <string name="cancelled">రద్దు చేయబడింది</string>
-    <string name="analyzing_image">చి��్రాన్ని విశ్లేషించబడుతోంది</string>
+    <string name="analyzing_image">చిత్రాన్ని విశ్లేషించబడుతోంది</string>
     <string name="fetching_location_and_shop">స్థానం మరియు షాప్ పేరు తీసుకుంటోంది</string>
     <string name="price_unit_required">ధర మరియు యూనిట్ ధర అవసరం</string>
-    <string name="failed_to_load_shops">షాప్స్ లోడ్ చేయడంలో విఫలమైంది: %1$s</string>
+    <string name="failed_to_load_shops">షాప్స్ లోడ్ చేయడంలో విఫలమైంద��: %1$s</string>
     <string name="new_shop_added">కొత్త షాప్ విజయవంతంగా జోడించబడింది!</string>
     <string name="failed_to_add_shop">షాప్ జోడించడంలో విఫలమైంది.</string>
     <string name="please_fill_all_fields">దయచేసి అన్ని ఫీల్డ్స్ నింపండి</string>
@@ -100,4 +100,14 @@
     <string name="yes">అవును</string>
     <string name="no">కాదు</string>
     <string name="logout_error">లాగౌట్ చేయడంలో లోపం</string>
+    <string name="cancel">రద్దు చేయి</string>
+    <string name="settings_open_error">సెట్టింగ్‌లను తెరవడం సాధ్యం కాలేదు. దయచేసి మళ్లీ ప్రయత్నించండి.</string>
+    <string name="app_loading_error">అప్లికేషన్‌ను లోడ్ చేస్తున్నప్పుడు లోపం సంభవించింది</string>
+    <string name="shopping_list_open_error">షాపింగ్ జాబితాను తెరవడం సాధ్యం కాలేదు</string>
+    <string name="add_product_options_error">ప్రొడక్ట్ జోడింపు ఎంపికలను ప్రదర్శించడ��� సాధ్యం కాలేదు</string>
+    <string name="track_shopping_open_error">షాపింగ్ ట్రాకింగ్‌ను తెరవడం సాధ్యం కాలేదు</string>
+    <string name="analyse_open_error">విశ్లేషణ స్క్రీన్‌ను తెరవడం సాధ్యం కాలేదు</string>
+    <string name="scanner_launch_error">స్కానర్‌ను ప్రారంభించడం సాధ్యం కాలేదు. దయచేసి మళ్లీ ప్రయత్నించండి.</string>
+    <string name="barcode_processing_error">బార్‌కోడ్‌ను ప్రాసెస్ చేయడం సాధ్యం కాలేదు. దయచేసి మళ్లీ ప్రయత్నించండి.</string>
+    <string name="product_screen_open_error">ప్రొడక్ట్ జోడింపు స్క్రీన్‌ను తెరవడం సాధ్యం కాలేదు</string>
 </resources>

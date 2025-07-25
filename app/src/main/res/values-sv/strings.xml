@@ -100,4 +100,14 @@
     <string name="yes">Ja</string>
     <string name="no">Nej</string>
     <string name="logout_error">Fel vid utloggning</string>
+    <string name="cancel">Avbryt</string>
+    <string name="settings_open_error">Det går inte att öppna inställningarna. Försök igen.</string>
+    <string name="app_loading_error">Ett fel uppstod när applikationen laddades</string>
+    <string name="shopping_list_open_error">Det går inte att öppna inköpslistan</string>
+    <string name="add_product_options_error">Det går inte att visa alternativ för produkttillägg</string>
+    <string name="track_shopping_open_error">Det går inte att öppna inköpsspårning</string>
+    <string name="analyse_open_error">Det går inte att öppna analysskärmen</string>
+    <string name="scanner_launch_error">Det går inte att starta skannern. Försök igen.</string>
+    <string name="barcode_processing_error">Det går inte att bearbeta streckkoden. Försök igen.</string>
+    <string name="product_screen_open_error">Det går inte att öppna produkttilläggsskärmen</string>
 </resources>

@@ -100,4 +100,14 @@
     <string name="yes">Có</string>
     <string name="no">Không</string>
     <string name="logout_error">Lỗi khi đăng xuất</string>
+    <string name="cancel">Hủy</string>
+    <string name="settings_open_error">Không thể mở cài đặt. Vui lòng thử lại.</string>
+    <string name="app_loading_error">Đã xảy ra lỗi khi tải ứng dụng</string>
+    <string name="shopping_list_open_error">Không thể mở danh sách mua sắm</string>
+    <string name="add_product_options_error">Không thể hiển thị tùy chọn thêm sản phẩm</string>
+    <string name="track_shopping_open_error">Không thể mở theo dõi mua sắm</string>
+    <string name="analyse_open_error">Không thể mở màn hình phân tích</string>
+    <string name="scanner_launch_error">Không thể khởi chạy máy quét. Vui lòng thử lại.</string>
+    <string name="barcode_processing_error">Không thể xử lý mã vạch. Vui lòng thử lại.</string>
+    <string name="product_screen_open_error">Không thể mở màn hình thêm sản phẩm</string>
 </resources>

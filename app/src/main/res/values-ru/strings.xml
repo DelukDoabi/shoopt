@@ -100,4 +100,14 @@
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="logout_error">Ошибка при выходе</string>
+    <string name="cancel">Отмена</string>
+    <string name="settings_open_error">Не удалось открыть настройки. Пожалуйста, попробуйте снова.</string>
+    <string name="app_loading_error">Произошла ошибка при загрузке приложения</string>
+    <string name="shopping_list_open_error">Не удалось открыть список покупок</string>
+    <string name="add_product_options_error">Не удалось отобразить варианты добавления продукта</string>
+    <string name="track_shopping_open_error">Не удалось открыть отслеживание покупок</string>
+    <string name="analyse_open_error">Не удалось открыть экран анализа</string>
+    <string name="scanner_launch_error">Не удалось запустить сканер. Пожалуйста, попробуйте снова.</string>
+    <string name="barcode_processing_error">Не удалось обработать штрих-код. Пожалуйста, попробуйте снова.</string>
+    <string name="product_screen_open_error">Не удалось открыть экран добавления продукта</string>
 </resources>

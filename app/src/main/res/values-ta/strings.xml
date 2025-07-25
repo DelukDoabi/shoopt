@@ -2,8 +2,8 @@
     <string name="products">பொருட்கள்: </string>
     <string name="total">மொத்தம்: </string>
     <string name="password">கடவுச்சொல்</string>
-    <string name="don_t_have_an_account_register_here">கணக்கு இல்லையா? இங்கே பதிவு செய்யவும்</string>
-    <string name="sign_in_with_email">மின்னஞ்சல் மூலம் உள்நுழையவும்</string>
+    <string name="don_t_have_an_account_register_here">கணக்கு இல்ல���யா? இங்கே பதிவு செய்யவும்</string>
+    <string name="sign_in_with_email">மி���்னஞ்சல் மூலம் உள்நுழையவும்</string>
     <string name="sign_in_with_google">Google மூலம் உள்நுழையவும்</string>
     <string name="title_activity_register">பதிவு</string>
     <string name="forgot_password">கடவுச்சொல்லை மறந்துவிட்டீர்களா?</string>
@@ -19,7 +19,7 @@
     <string name="cancelled">ரத்து செய்யப்பட்டது</string>
     <string name="analyzing_image">படத்தை பகுப்பாய்வு செய்கிறது</string>
     <string name="fetching_location_and_shop">இடம் மற்றும் கடை பெயரை பெறுகிறது</string>
-    <string name="price_unit_required">விலை மற்றும் யூனிட் விலை தேவை</string>
+    <string name="price_unit_required">விலை மற்றும் ��ூனிட் விலை தேவை</string>
     <string name="failed_to_load_shops">கடைகளை ஏற்ற முடியவில்லை: %1$s</string>
     <string name="new_shop_added">புதிய கடை வெற்றிகரமாக சேர்க்கப்பட்டது!</string>
     <string name="failed_to_add_shop">கடை சேர்க்க முடியவில்லை.</string>
@@ -39,7 +39,7 @@
     <string name="reset_password">கடவுச்சொல்லை மீட்டமைக்கவும்</string>
     <string name="enter_email_to_reset">கடவுச்சொல் மீட்டமைப்பு இணைப்பு பெற உங்கள் மின்னஞ்சலை உள்ளிடவும்:</string>
     <string name="send">அனுப்பு</string>
-    <string name="clear">வெறுமையாக்கவும்</string>
+    <string name="clear">வ���றுமையாக்கவும்</string>
     <string name="product_added_to_cart">பொருள் வண்டியில் சேர்க்கப்பட்டது</string>
     <string name="failed_to_add_product_to_cart">பொருளை வண்டியில் சேர்க்க முடியவில்���ை</string>
     <string name="clear_shopping_cart">வண்டியை வெறுமையாக்கவ���ம்</string>
@@ -57,7 +57,7 @@
     <string name="analyse">பகுப்பாய்வு</string>
     <string name="insert_product_name">பெயரை உள்ளிடவும்</string>
     <string name="insert_product_price">விலையை உள்ளிடவும்</string>
-    <string name="insert_product_shop">கடையை உள்ளிடவும்</string>
+    <string name="insert_product_shop">கடையை உள��ளிடவும்</string>
     <string name="add_product">பொருளை சேர்க்கவும்</string>
     <string name="empty_cart">வண்டியை வெறுமையாக்கவும்</string>
     <string name="save_product">பொருளை சேமிக்கவும்</string>
@@ -100,4 +100,14 @@
     <string name="yes">ஆம்</string>
     <string name="no">இல்லை</string>
     <string name="logout_error">வெளியேறுவதில் பிழை</string>
+    <string name="cancel">ரத்து செய்</string>
+    <string name="settings_open_error">அமைப்புகளைத் திறக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.</string>
+    <string name="app_loading_error">பயன்பாட்டை ஏற்றும் போது பிழை ஏற்பட்டது</string>
+    <string name="shopping_list_open_error">ஷாப்பிங் பட்டியலைத் திறக்க முடியவில்லை</string>
+    <string name="add_product_options_error">தயாரிப்பு சேர்க்கும் விருப்பங்களைக் காட்ட முடியவில்லை</string>
+    <string name="track_shopping_open_error">ஷாப்பிங் கண்காணிப்பைத் திறக்க முடியவில்லை</string>
+    <string name="analyse_open_error">பகுப்பாய்வு திரையைத் திறக்க முடியவில்லை</string>
+    <string name="scanner_launch_error">ஸ்கேனரைத் தொடங்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.</string>
+    <string name="barcode_processing_error">பார்கோடை செயலாக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.</string>
+    <string name="product_screen_open_error">தயாரிப்பு சேர்க்கும் திரையைத் திறக்க முடியவில்லை</string>
 </resources>

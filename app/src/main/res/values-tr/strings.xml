@@ -100,4 +100,14 @@
     <string name="yes">Evet</string>
     <string name="no">Hayır</string>
     <string name="logout_error">Çıkış yapılırken hata oluştu</string>
+    <string name="cancel">İptal</string>
+    <string name="settings_open_error">Ayarlar açılamıyor. Lütfen tekrar deneyin.</string>
+    <string name="app_loading_error">Uygulama yüklenirken bir hata oluştu</string>
+    <string name="shopping_list_open_error">Alışveriş listesi açılamıyor</string>
+    <string name="add_product_options_error">Ürün ekleme seçenekleri görüntülenemiyor</string>
+    <string name="track_shopping_open_error">Alışveriş takibi açılamıyor</string>
+    <string name="analyse_open_error">Analiz ekranı açılamıyor</string>
+    <string name="scanner_launch_error">Tarayıcı başlatılamıyor. Lütfen tekrar deneyin.</string>
+    <string name="barcode_processing_error">Barkod işlenemiyor. Lütfen tekrar deneyin.</string>
+    <string name="product_screen_open_error">Ürün ekleme ekranı açılamıyor</string>
 </resources>
