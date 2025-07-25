@@ -6,7 +6,7 @@
     <string name="sign_in_with_email">ইমেইল দিয়ে সাইন ইন করুন</string>
     <string name="sign_in_with_google">গুগল দিয়ে সাইন ইন করুন</string>
     <string name="title_activity_register">নিবন্ধন</string>
-    <string name="forgot_password">পাসওয়ার্ড ভুলে গেছেন?</string>
+    <string name="forgot_password">পাসওয়ার্ড ভ���লে গেছেন?</string>
     <string name="unknown_error">অজানা ত্রুটি ঘটেছে।</string>
     <string name="hf_key_empty">Hugging Face API কী খালি।</string>
     <string name="unknown_shop">অজানা দোকান</string>
@@ -44,7 +44,7 @@
     <string name="failed_to_add_product_to_cart">পণ্য কার্টে যোগ করতে ব্যর্থ</string>
     <string name="clear_shopping_cart">কার্ট পরিষ্কার করুন</string>
     <string name="clear_shopping_cart_confirm">আপনি কি নিশ্চিত যে কার্ট পরিষ্কার করতে চান? এই কাজটি পূর্বাবস্থায় ফেরানো যাবে না।</string>
-    <string name="shopping_cart_emptied">কার্ট পরিষ্কার হয়েছ���</string>
+    <string name="shopping_cart_emptied">কার্ট পরিষ্কার হয়েছে</string>
     <string name="failed_to_empty_shopping_cart">কার্ট পরিষ্কার করতে ব্যর্থ</string>
     <string name="delete_product">পণ্য মুছুন</string>
     <string name="delete_product_confirm">আপনি কি নিশ্চিত যে এই পণ্যটি মুছতে চান?</string>
@@ -61,7 +61,7 @@
     <string name="insert_product_shop">দোকানের নাম লিখুন</string>
     <string name="add_product">পণ্য যোগ করুন</string>
     <string name="empty_cart">কার্ট খালি করুন</string>
-    <string name="save_product">পণ্য সংরক্ষণ করু���</string>
+    <string name="save_product">পণ্য সংরক্ষণ করুন</string>
     <string name="product_picture">পণ্যের ছবি</string>
     <string name="take_picture">ছবি তুলুন</string>
     <string name="back">ফিরে যান</string>
@@ -79,7 +79,7 @@
     <string name="theme_settings">থিম সেটিংস</string>
     <string name="theme_light">লাইট থিম</string>
     <string name="theme_dark">ডার্ক থিম</string>
-    <string name="theme_system">সিস্ট���ম ডিফল্ট</string>
+    <string name="theme_system">সিস্টেম ডিফল্ট</string>
     <string name="currency_settings">মুদ্রা সেটিংস</string>
     <string name="save_settings">সেটিংস সংরক্ষণ করুন</string>
     <string name="settings_saved">সেটিংস সফলভাবে সংরক্ষিত হয়েছে</string>
@@ -100,4 +100,14 @@
     <string name="yes">হ্যাঁ</string>
     <string name="no">না</string>
     <string name="logout_error">লগআউট করার সময় ত্রুটি</string>
+    <string name="cancel">বাতিল করুন</string>
+    <string name="settings_open_error">সেটিংস খুলতে অক্ষম। অনুগ্রহ করে আবার চেষ্টা করুন।</string>
+    <string name="app_loading_error">অ্যাপ্লিকেশন লোড করার সময় একটি ত্রুটি ঘটেছে</string>
+    <string name="shopping_list_open_error">কেনাকাটার তালিকা খুলতে অক্ষম</string>
+    <string name="add_product_options_error">পণ্য যোগ করার অপশন দেখাতে অক্ষম</string>
+    <string name="track_shopping_open_error">কেনাকাটা ট্র্যাকিং খুলতে অক্ষম</string>
+    <string name="analyse_open_error">বিশ্লেষণ স্ক্রীন খুলতে অক্ষম</string>
+    <string name="scanner_launch_error">স্ক্যানার চালু করতে অক্ষম। অনুগ্রহ করে আবার চেষ্টা করুন।</string>
+    <string name="barcode_processing_error">বারকোড প্রক্রিয়া করতে অক্ষম। অনুগ্রহ করে আবার চেষ্টা করুন।</string>
+    <string name="product_screen_open_error">পণ্য যোগ করার স্ক্রীন খুলতে অক্ষম</string>
 </resources>

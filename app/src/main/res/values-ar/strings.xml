@@ -100,4 +100,14 @@
     <string name="yes">نعم</string>
     <string name="no">لا</string>
     <string name="logout_error">خطأ أثناء تسجيل الخروج</string>
+    <string name="cancel">إلغاء</string>
+    <string name="settings_open_error">تعذر فتح الإعدادات. يرجى المحاولة مرة أخرى.</string>
+    <string name="app_loading_error">حدث خطأ أثناء تحميل التطبيق</string>
+    <string name="shopping_list_open_error">تعذر فتح قائمة التسوق</string>
+    <string name="add_product_options_error">تعذر عرض خيارات إضافة المنتج</string>
+    <string name="track_shopping_open_error">تعذر فتح تتبع التسوق</string>
+    <string name="analyse_open_error">تعذر فتح شاشة التحليل</string>
+    <string name="scanner_launch_error">تعذر تشغيل الماسح الضوئي. يرجى المحاولة مرة أخرى.</string>
+    <string name="barcode_processing_error">تعذر معالجة الباركود. يرجى المحاولة مرة أخرى.</string>
+    <string name="product_screen_open_error">تعذر فتح شاشة إضافة المنتج</string>
 </resources>

@@ -100,4 +100,14 @@
     <string name="yes">예</string>
     <string name="no">아니오</string>
     <string name="logout_error">로그아웃 중 오류 발생</string>
+    <string name="cancel">취소</string>
+    <string name="settings_open_error">설정을 열 수 없습니다. 다시 시도해 주세요.</string>
+    <string name="app_loading_error">응용 프로그램을 로드하는 동�� 오류가 발생했습니다</string>
+    <string name="shopping_list_open_error">쇼핑 목록을 열 수 없습니다</string>
+    <string name="add_product_options_error">제품 추가 옵션을 표시할 수 없습니다</string>
+    <string name="track_shopping_open_error">쇼핑 추적을 열 수 없습니다</string>
+    <string name="analyse_open_error">분석 화면을 열 수 없습니다</string>
+    <string name="scanner_launch_error">스캐너를 시작할 수 없습니다. 다시 시도해 주세요.</string>
+    <string name="barcode_processing_error">바코드를 처리할 수 없습니다. 다시 시도해 주세요.</string>
+    <string name="product_screen_open_error">제품 추가 화면을 열 수 없습니다</string>
 </resources>

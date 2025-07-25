@@ -100,4 +100,14 @@
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
     <string name="logout_error">Fehler bei der Abmeldung</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="settings_open_error">Einstellungen können nicht geöffnet werden. Bitte versuchen Sie es erneut.</string>
+    <string name="app_loading_error">Beim Laden der Anwendung ist ein Fehler aufgetreten</string>
+    <string name="shopping_list_open_error">Einkaufsliste kann nicht geöffnet werden</string>
+    <string name="add_product_options_error">Produkthinzufügungsoptionen können nicht angezeigt werden</string>
+    <string name="track_shopping_open_error">Einkaufsverfolgung kann nicht geöffnet werden</string>
+    <string name="analyse_open_error">Analysebildschirm kann nicht geöffnet werden</string>
+    <string name="scanner_launch_error">Scanner kann nicht gestartet werden. Bitte versuchen Sie es erneut.</string>
+    <string name="barcode_processing_error">Barcode kann nicht verarbeitet werden. Bitte versuchen Sie es erneut.</string>
+    <string name="product_screen_open_error">Produkthinzufügungsbildschirm kann nicht geöffnet werden</string>
 </resources>

@@ -31,7 +31,7 @@
     <string name="google_sign_in_successful">Googleでのログインが成功しました</string>
     <string name="authentication_failed">認証に失敗しました: %1$s</string>
     <string name="google_sign_in_failed">Googleでのログインに失敗しました: %1$s</string>
-    <string name="unexpected_error">予期しないエラーが発生���ました: %1$s</string>
+    <string name="unexpected_error">予期しないエラーが発生しました: %1$s</string>
     <string name="email_empty">メールアドレスは空にできません</string>
     <string name="password_reset_sent">パスワードリセットメールが送信されました！</string>
     <string name="error">エラー: %1$s</string>
@@ -100,4 +100,14 @@
     <string name="yes">はい</string>
     <string name="no">いいえ</string>
     <string name="logout_error">ログアウト中にエラーが発生しました</string>
+    <string name="cancel">キャンセル</string>
+    <string name="settings_open_error">設定を開けません。もう一度お試しください。</string>
+    <string name="app_loading_error">アプリケーションの読み込み中にエラーが発生しました</string>
+    <string name="shopping_list_open_error">ショッピングリストを開けません</string>
+    <string name="add_product_options_error">商品追加オプションを表示できません</string>
+    <string name="track_shopping_open_error">ショッピング追跡を開けません</string>
+    <string name="analyse_open_error">分析画面を開けません</string>
+    <string name="scanner_launch_error">スキャナーを起動できません。もう一度お試しください。</string>
+    <string name="barcode_processing_error">バーコードを処理できません。もう一度お試しください。</string>
+    <string name="product_screen_open_error">商品追加画面を開けません</string>
 </resources>

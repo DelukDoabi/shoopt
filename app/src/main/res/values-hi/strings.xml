@@ -100,4 +100,14 @@
     <string name="yes">हां</string>
     <string name="no">नहीं</string>
     <string name="logout_error">लॉगआउट के दौरान त्रुटि</string>
+    <string name="cancel">रद्द करें</string>
+    <string name="settings_open_error">सेटिंग्स खोलने में असमर्थ। कृपया पुनः प्रयास करें।</string>
+    <string name="app_loading_error">एप्लिकेशन लोड करते समय एक त्रुटि हुई</string>
+    <string name="shopping_list_open_error">खरीदारी सूची खोलने में असमर्थ</string>
+    <string name="add_product_options_error">उत्पाद जोड़ने के विकल्प प्रदर्शित करने में असमर्थ</string>
+    <string name="track_shopping_open_error">खरीदारी ट्रैकिंग खोलने में असमर्थ</string>
+    <string name="analyse_open_error">विश्लेषण स्क्रीन खोलने में असमर्थ</string>
+    <string name="scanner_launch_error">स्कैनर लॉन्च करने में असमर्थ। कृपया पुनः प्रयास करें।</string>
+    <string name="barcode_processing_error">बारकोड प्रोसेस करने में असमर्थ। कृपया पुनः प्रयास करें।</string>
+    <string name="product_screen_open_error">उत्पाद जोड़ने की स्क्रीन खोलने में असमर्थ</string>
 </resources>

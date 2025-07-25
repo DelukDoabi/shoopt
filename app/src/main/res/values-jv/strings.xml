@@ -100,4 +100,14 @@
     <string name="yes">Iya</string>
     <string name="no">Ora</string>
     <string name="logout_error">Kesalahan nalika metu</string>
+    <string name="cancel">Batal</string>
+    <string name="settings_open_error">Ora bisa mbukak setelan. Mangga dicoba maneh.</string>
+    <string name="app_loading_error">Ana kesalahan nalika ngisi aplikasi</string>
+    <string name="shopping_list_open_error">Ora bisa mbukak dhaftar blanja</string>
+    <string name="add_product_options_error">Ora bisa nampilaké pilihan nambah produk</string>
+    <string name="track_shopping_open_error">Ora bisa mbukak pelacakan blanja</string>
+    <string name="analyse_open_error">Ora bisa mbukak layar analisis</string>
+    <string name="scanner_launch_error">Ora bisa mbukak pemindai. Mangga dicoba maneh.</string>
+    <string name="barcode_processing_error">Ora bisa ngolah barcode. Mangga dicoba maneh.</string>
+    <string name="product_screen_open_error">Ora bisa mbukak layar nambah produk</string>
 </resources>

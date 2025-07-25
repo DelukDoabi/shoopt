@@ -100,4 +100,14 @@
     <string name="yes">Ναι</string>
     <string name="no">Όχι</string>
     <string name="logout_error">Σφάλμα κατά την αποσύνδεση</string>
+    <string name="cancel">Ακύρωση</string>
+    <string name="settings_open_error">Αδυναμία ανοίγματος ρυθμίσεων. Παρακαλώ δοκιμάστε ξανά.</string>
+    <string name="app_loading_error">Παρουσιάστηκε σφάλμα κατά τη φόρτωση της εφαρμογής</string>
+    <string name="shopping_list_open_error">Αδυναμία ανοίγματος λίστας αγορών</string>
+    <string name="add_product_options_error">Αδυναμία εμφάνισης επιλογών προσθήκης προϊόντος</string>
+    <string name="track_shopping_open_error">Αδυναμία ανοίγματος παρακολούθησης αγορών</string>
+    <string name="analyse_open_error">Αδυναμία ανοίγματος οθόνης ανάλυσης</string>
+    <string name="scanner_launch_error">Αδυναμία εκκίν��σης σαρωτή. Παρακαλώ δοκιμάστε ξανά.</string>
+    <string name="barcode_processing_error">Αδυναμία επεξεργασίας γραμμικού κώδικα. Παρακαλώ δοκιμάστε ξανά.</string>
+    <string name="product_screen_open_error">Αδυναμία ανοίγματος οθόνης προσθήκης προϊόντος</string>
 </resources>
