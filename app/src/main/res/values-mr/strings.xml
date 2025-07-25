@@ -114,4 +114,11 @@
     <string name="no_products_yet">कोणतेही उत्पादन उपलब्ध नाही</string>
     <string name="add_your_first_product_message">आपण अद्याप कोणतेही उत्पादन जोडलेले नाही. आपल्या खरेदीचा मागोवा घेण्यासाठी आपले पहिले उत्पादन जोडून सुरुवात करा.</string>
     <string name="add_first_product">उत्पादन जोडा</string>
+    <string name="update_downloaded">नवीन अपडेट डाउनलोड झाले!</string>
+    <string name="install">इंस्टॉल करा</string>
+    <string name="update_available">नवीन आवृत्ती उपलब्ध आहे</string>
+    <string name="update_required">अपडेट आवश्यक आहे</string>
+    <string name="update_now">आता अपडेट करा</string>
+    <string name="update_later">नंतर</string>
+    <string name="update_description">नवीन वैशिष्ट्ये आणि सुधारणा आपली वाट पाहत आहेत!</string>
 </resources>

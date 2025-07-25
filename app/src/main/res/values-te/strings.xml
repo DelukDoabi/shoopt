@@ -114,4 +114,11 @@
     <string name="no_products_yet">ఉత్పత్తులు అందుబాటులో లేవు</string>
     <string name="add_your_first_product_message">మీరు ఇంకా ఎలాంటి ఉత్పత్తులను జోడించలేదు. మీ షాపింగ్‌ను ట్రాక్ చేయడానికి మీ మొదటి ఉత్పత్తిని జోడించడంతో ప్రారంభించండి.</string>
     <string name="add_first_product">ఉత్పత్తిని జోడించండి</string>
+    <string name="update_downloaded">కొత్త అప్‌డేట్ డౌన్‌లోడ్ చేయబడింది!</string>
+    <string name="install">ఇన్‌స్టాల్ చేయండి</string>
+    <string name="update_available">కొత్త వెర్షన్ అందుబాటులో ఉంది</string>
+    <string name="update_required">అప్‌డేట్ అవసరం</string>
+    <string name="update_now">ఇప్పుడే అప్‌డేట్ చేయండి</string>
+    <string name="update_later">తర్వాత</string>
+    <string name="update_description">కొత్త ఫీచర్లు మరియు మెరుగుదలలు మిమ్మల్ని వేచి ఉన్నాయి!</string>
 </resources>

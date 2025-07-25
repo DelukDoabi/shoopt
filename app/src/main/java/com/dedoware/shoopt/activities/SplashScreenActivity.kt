@@ -2,12 +2,15 @@ package com.dedoware.shoopt.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
+import com.dedoware.shoopt.utils.UpdateManager
+import com.google.android.play.core.install.model.InstallStatus
 import com.google.firebase.auth.FirebaseAuth
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -32,6 +35,9 @@ class SplashScreenActivity : AppCompatActivity() {
 
             displayVersion()
 
+            // Vérification des mises à jour disponibles
+            checkForUpdates()
+
             redirectToMainScreen()
         } catch (e: Exception) {
             // Capture des erreurs globales dans onCreate
@@ -45,6 +51,33 @@ class SplashScreenActivity : AppCompatActivity() {
             // puisque c'est juste un écran de démarrage
             redirectToLoginOnError()
         }
+    }
+
+    // Nouvelle méthode pour vérifier les mises à jour
+    private fun checkForUpdates() {
+        try {
+            val rootView = findViewById<View>(android.R.id.content)
+            UpdateManager.checkForUpdate(this, rootView)
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la vérification des mises à jour: ${e.message ?: "Message non disponible"}")
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Vérifier si une mise à jour est en attente d'installation
+        try {
+            val rootView = findViewById<View>(android.R.id.content)
+            UpdateManager.checkForPendingUpdate(this, rootView)
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la vérification des mises à jour en attente: ${e.message ?: "Message non disponible"}")
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Nettoyer les ressources de mise à jour
+        UpdateManager.onDestroy()
     }
 
     private fun redirectToLoginOnError() {
@@ -132,6 +165,26 @@ class SplashScreenActivity : AppCompatActivity() {
             CrashlyticsManager.logException(e)
 
             // On ne fait rien de particulier, ce n'est pas une erreur critique
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == UpdateManager.UPDATE_REQUEST_CODE) {
+            when (resultCode) {
+                InstallStatus.FAILED -> {
+                    // La mise à jour a échoué
+                    CrashlyticsManager.log("La mise à jour in-app a échoué.")
+                    val bundle = Bundle()
+                    bundle.putString("reason", "update_flow_failed")
+                    AnalyticsManager.logEvent("update_failed", bundle)
+                }
+                InstallStatus.CANCELED -> {
+                    // L'utilisateur a annulé la mise à jour
+                    AnalyticsManager.logEvent("update_canceled", Bundle())
+                }
+            }
         }
     }
 }

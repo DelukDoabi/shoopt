@@ -114,4 +114,11 @@
     <string name="no_products_yet">Inga produkter tillgängliga</string>
     <string name="add_your_first_product_message">Du har inte lagt till några produkter än. Börja med att lägga till din första produkt för att spåra dina inköp.</string>
     <string name="add_first_product">Lägg till produkt</string>
+    <string name="update_downloaded">Ny uppdatering nedladdad!</string>
+    <string name="install">Installera</string>
+    <string name="update_available">Ny version tillgänglig</string>
+    <string name="update_required">Uppdatering krävs</string>
+    <string name="update_now">Uppdatera nu</string>
+    <string name="update_later">Senare</string>
+    <string name="update_description">Nya funktioner och förbättringar väntar på dig!</string>
 </resources>

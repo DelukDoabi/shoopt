@@ -7,12 +7,12 @@
     <string name="sign_in_with_google">Google से साइन इन करें</string>
     <string name="title_activity_register">पंजीकरण</string>
     <string name="forgot_password">पासवर्ड भूल गए?</string>
-    <string name="unknown_error">अज्ञात त्रुट��� हुई।</string>
+    <string name="unknown_error">अज्ञात त्रुटि हुई।</string>
     <string name="empty_products_image">खाली उत्पाद सूची छवि</string>
     <string name="no_products_yet">कोई उत्पाद उपलब्ध नहीं</string>
     <string name="add_your_first_product_message">आपने अभी तक कोई उत्पाद नहीं जोड़ा है। अपनी खरीदारी का हिसाब रखने के लिए अपना पहला उत्पाद जोड़ें।</string>
     <string name="add_first_product">एक उत्पाद जोड़ें</string>
-    <string name="hf_key_empty">Hugging Face API कुंजी खाल��� है।</string>
+    <string name="hf_key_empty">Hugging Face API कुंजी खाली है।</string>
     <string name="unknown_shop">अज्ञात दुकान</string>
     <string name="scan_barcode">बारकोड स्कैन करें</string>
     <string name="logout">लॉगआउट</string>
@@ -47,11 +47,11 @@
     <string name="product_added_to_cart">उत्पाद कार्ट में जोड़ा गया</string>
     <string name="failed_to_add_product_to_cart">उत्पाद कार्ट में जोड़ने में विफल</string>
     <string name="clear_shopping_cart">कार्ट साफ़ करें</string>
-    <string name="clear_shopping_cart_confirm">क्या आप वाकई कार्ट साफ़ करना चाहते हैं? यह क्रिया पूर्ववत नह���ं की जा सकती।</string>
+    <string name="clear_shopping_cart_confirm">क्या आप वाकई कार्ट साफ़ करना चाहते हैं? यह क्रिया पूर्ववत नहीं की जा सकती।</string>
     <string name="shopping_cart_emptied">कार्ट साफ़ किया गया</string>
     <string name="failed_to_empty_shopping_cart">कार्ट साफ़ करने में विफल</string>
     <string name="delete_product">उत्पाद हटाएँ</string>
-    <string name="delete_product_confirm">क��या आप वाकई इस उत्पाद को हटाना चाहते हैं?</string>
+    <string name="delete_product_confirm">क्या आप वाकई इस उत्पाद को हटाना चाहते हैं?</string>
     <string name="convert_to_product_track">उत्पाद ट्रैक में बदलें</string>
     <string name="delete">हटाएँ</string>
     <string name="product_deleted">उत्पाद %1$s हटाया गया</string>
@@ -73,9 +73,9 @@
     <string name="insert_product_unit_price">यूनिट मूल्य दर्ज करें</string>
     <string name="insert_product_barcode">बारकोड दर्ज करें</string>
     <string name="update_shopping_list">खरीदारी सूची अपडेट करें</string>
-    <string name="main_shopping_list">मुख्��� खरीदारी सूची</string>
-    <string name="secondary_shopping_list">द्वितीयक खर���दारी सूची</string>
-    <string name="title_activity_track_shopping">खरीदारी ट्र���किंग गतिविधि</string>
+    <string name="main_shopping_list">मुख्य खरीदारी सूची</string>
+    <string name="secondary_shopping_list">द्वितीयक खरीदारी सूची</string>
+    <string name="title_activity_track_shopping">खरीदारी ट्रैकिंग गतिविधि</string>
     <string name="products_added">%1$d उत्पाद जोड़े गए</string>
     <string name="enter_items_here">यहां आइटम दर्ज करें</string>
     <string name="swipe_to_delete">हटाएं</string>
@@ -114,4 +114,11 @@
     <string name="scanner_launch_error">स्कैनर लॉन्च करने में असमर्थ। कृपया पुनः प्रयास करें।</string>
     <string name="barcode_processing_error">बारकोड प्रोसेस करने में असमर्थ। कृपया पुनः प्रयास करें।</string>
     <string name="product_screen_open_error">उत्पाद जोड़ने की स्क्रीन खोलने में असमर्थ</string>
+    <string name="update_downloaded">नया अपडेट डाउनलोड हो गया!</string>
+    <string name="install">स्थापित करें</string>
+    <string name="update_available">नया संस्करण उपलब्ध है</string>
+    <string name="update_required">अपडेट आवश्यक है</string>
+    <string name="update_now">अभी अपडेट करें</string>
+    <string name="update_later">बाद में</string>
+    <string name="update_description">नई सुविधाएँ और सुधार आपका इंतज़ार कर रहे हैं!</string>
 </resources>

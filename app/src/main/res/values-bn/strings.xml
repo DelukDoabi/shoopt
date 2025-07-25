@@ -114,4 +114,11 @@
     <string name="no_products_yet">কোন পণ্য উপলব্ধ নেই</string>
     <string name="add_your_first_product_message">আপনি এখনও কোন পণ্য যোগ করেননি। আপনার কেনাকাটা ট্র্যাক করতে আপনার প্রথম পণ্য যোগ করে শুরু করুন।</string>
     <string name="add_first_product">একটি পণ্য যোগ করুন</string>
+    <string name="update_downloaded">নতুন আপডেট ডাউনলোড হয়েছে!</string>
+    <string name="install">ইনস্টল</string>
+    <string name="update_available">নতুন সংস্করণ উপলব্ধ</string>
+    <string name="update_required">আপডেট প্রয়োজন</string>
+    <string name="update_now">এখন আপডেট করুন</string>
+    <string name="update_later">পরে</string>
+    <string name="update_description">নতুন বৈশিষ্ট্য এবং উন্নতি আপনার জন্য অপেক্ষা করছে!</string>
 </resources>

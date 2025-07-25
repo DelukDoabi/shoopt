@@ -114,4 +114,11 @@
     <string name="no_products_yet">Niciun produs disponibil</string>
     <string name="add_your_first_product_message">Nu ai adăugat încă niciun produs. Începe prin a adăuga primul tău produs pentru a-ți urmări cumpărăturile.</string>
     <string name="add_first_product">Adaugă un produs</string>
+    <string name="update_downloaded">Actualizare nouă descărcată!</string>
+    <string name="install">Instalează</string>
+    <string name="update_available">Versiune nouă disponibilă</string>
+    <string name="update_required">Actualizare necesară</string>
+    <string name="update_now">Actualizează acum</string>
+    <string name="update_later">Mai târziu</string>
+    <string name="update_description">Funcții și îmbunătățiri noi te așteaptă!</string>
 </resources>

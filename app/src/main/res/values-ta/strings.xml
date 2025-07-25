@@ -114,4 +114,11 @@
     <string name="no_products_yet">பொருட்கள் எதுவும் கிடைக்கவில்லை</string>
     <string name="add_your_first_product_message">நீங்கள் இன்னும் எந்த பொருட்களையும் சேர்க்கவில்லை. உங்கள் ஷாப்பிங்கைக் கண்காணிக்க முதல் பொருளைச் சேர்த்துத் தொடங்குங்கள்.</string>
     <string name="add_first_product">ஒரு பொருளைச் சேர்க்கவும்</string>
+    <string name="update_downloaded">புதிய புதுப்பிப்பு பதிவிறக்கப்பட்டது!</string>
+    <string name="install">நிறுவு</string>
+    <string name="update_available">புதிய பதிப்பு கிடைக்கிறது</string>
+    <string name="update_required">புதுப்பிப்பு தேவை</string>
+    <string name="update_now">இப்போது புதுப்பிக்கவும்</string>
+    <string name="update_later">பிறகு</string>
+    <string name="update_description">புதிய அம்சங்களும் மேம்பாடுகளும் உங்களை காத்திருக்கின்றன!</string>
 </resources>

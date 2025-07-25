@@ -114,4 +114,11 @@
     <string name="no_products_yet">Henüz ürün yok</string>
     <string name="add_your_first_product_message">Henüz hiç ürün eklemediniz. Alışverişlerinizi takip etmek için ilk ürününüzü ekleyerek başlayın.</string>
     <string name="add_first_product">Ürün ekle</string>
+    <string name="update_downloaded">Yeni güncelleme indirildi!</string>
+    <string name="install">Yükle</string>
+    <string name="update_available">Yeni versiyon mevcut</string>
+    <string name="update_required">Güncelleme gerekli</string>
+    <string name="update_now">Şimdi güncelle</string>
+    <string name="update_later">Daha sonra</string>
+    <string name="update_description">Yeni özellikler ve iyileştirmeler sizi bekliyor!</string>
 </resources>

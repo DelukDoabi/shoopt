@@ -114,4 +114,11 @@
     <string name="no_products_yet">Δεν υπάρχουν διαθέσιμα προϊόντα</string>
     <string name="add_your_first_product_message">Δεν έχετε προσθέσει ακόμα προϊόντα. Ξεκινήστε προσθέτοντας το πρώτο σας προϊόν για να παρακολουθείτε τις αγορές σας.</string>
     <string name="add_first_product">Προσθήκη προϊόντος</string>
+    <string name="update_downloaded">Η νέα ενημέρωση κατέβηκε!</string>
+    <string name="install">Εγκατάσταση</string>
+    <string name="update_available">Διαθέσιμη νέα έκδοση</string>
+    <string name="update_required">Απαιτείται ενημέρωση</string>
+    <string name="update_now">Ενημέρωση τώρα</string>
+    <string name="update_later">Αργότερα</string>
+    <string name="update_description">Νέες λειτουργίες και βελτιώσεις σας περιμένουν!</string>
 </resources>

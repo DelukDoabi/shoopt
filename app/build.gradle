@@ -117,4 +117,8 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-auth:21.3.0'
     implementation 'com.google.android.libraries.places:places:3.3.0'
+
+    // Bibliothèque pour la gestion des mises à jour in-app
+    implementation 'com.google.android.play:app-update:2.1.0'
+    implementation 'com.google.android.play:app-update-ktx:2.1.0'
 }

@@ -114,4 +114,11 @@
     <string name="no_products_yet">Keine Produkte verfügbar</string>
     <string name="add_your_first_product_message">Sie haben noch keine Produkte hinzugefügt. Beginnen Sie damit, Ihr erstes Produkt hinzuzufügen, um Ihre Einkäufe zu verfolgen.</string>
     <string name="add_first_product">Produkt hinzufügen</string>
+    <string name="update_downloaded">Neues Update heruntergeladen!</string>
+    <string name="install">Installieren</string>
+    <string name="update_available">Neue Version verfügbar</string>
+    <string name="update_required">Update erforderlich</string>
+    <string name="update_now">Jetzt aktualisieren</string>
+    <string name="update_later">Später</string>
+    <string name="update_description">Neue Funktionen und Verbesserungen warten auf Sie!</string>
 </resources>

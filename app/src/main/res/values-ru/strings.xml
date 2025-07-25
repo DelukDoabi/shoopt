@@ -114,4 +114,11 @@
     <string name="no_products_yet">Нет доступных продуктов</string>
     <string name="add_your_first_product_message">Вы еще не добавили ни одного продукта. Начните с добавления первого продукта для отслеживания ваших покупок.</string>
     <string name="add_first_product">Добавить продукт</string>
+    <string name="update_downloaded">Новое обновление загружено!</string>
+    <string name="install">Установить</string>
+    <string name="update_available">Доступна новая версия</string>
+    <string name="update_required">Требуется обновление</string>
+    <string name="update_now">Обновить сейчас</string>
+    <string name="update_later">Позже</string>
+    <string name="update_description">Вас ждут новые функции и улучшения!</string>
 </resources>

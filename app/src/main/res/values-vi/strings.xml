@@ -114,4 +114,11 @@
     <string name="no_products_yet">Không có sản phẩm nào</string>
     <string name="add_your_first_product_message">Bạn chưa thêm bất kỳ sản phẩm nào. Hãy bắt đầu bằng cách thêm sản phẩm đầu tiên để theo dõi việc mua sắm của bạn.</string>
     <string name="add_first_product">Thêm sản phẩm</string>
+    <string name="update_downloaded">Đã tải xuống bản cập nhật mới!</string>
+    <string name="install">Cài đặt</string>
+    <string name="update_available">Có phiên bản mới</string>
+    <string name="update_required">Yêu cầu cập nhật</string>
+    <string name="update_now">Cập nhật ngay</string>
+    <string name="update_later">Để sau</string>
+    <string name="update_description">Các tính năng và cải tiến mới đang chờ bạn!</string>
 </resources>

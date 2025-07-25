@@ -114,4 +114,11 @@
     <string name="no_products_yet">이용 가능한 제품이 없습니다</string>
     <string name="add_your_first_product_message">아직 제품을 추가하지 않았습니다. 첫 번째 제품을 추가하여 쇼핑을 추적하세요.</string>
     <string name="add_first_product">제품 추가하기</string>
+    <string name="update_downloaded">새 업데이트가 다운로드되었습니다!</string>
+    <string name="install">설치</string>
+    <string name="update_available">새 버전이 사용 가능합니다</string>
+    <string name="update_required">업데이트 필요</string>
+    <string name="update_now">지금 업데이트</string>
+    <string name="update_later">나중에</string>
+    <string name="update_description">새로운 기능과 개선사항이 기다리고 있습니다!</string>
 </resources>

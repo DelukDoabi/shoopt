@@ -4,14 +4,18 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
+import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
 import androidx.appcompat.app.AppCompatActivity
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
+import com.dedoware.shoopt.utils.UpdateManager
 import com.dedoware.shoopt.utils.UserPreferences
+import com.google.android.play.core.install.model.InstallStatus
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
@@ -94,6 +98,14 @@ class MainActivity : AppCompatActivity() {
             // Configuration des cartes pour une meilleure expérience utilisateur
             setupFeatureCards()
 
+            // Vérification des mises à jour disponibles
+            try {
+                val rootView = findViewById<View>(android.R.id.content)
+                UpdateManager.checkForUpdate(this, rootView)
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de la vérification des mises à jour: ${e.message ?: "Message non disponible"}")
+            }
+
         } catch (e: Exception) {
             // Capture des erreurs générales dans onCreate
             CrashlyticsManager.log("Erreur générale dans MainActivity.onCreate: ${e.message ?: "Message non disponible"}")
@@ -105,6 +117,23 @@ class MainActivity : AppCompatActivity() {
             // Afficher un message à l'utilisateur
             Toast.makeText(this, getString(R.string.app_loading_error), Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Vérifier si une mise à jour est en attente d'installation
+        try {
+            val rootView = findViewById<View>(android.R.id.content)
+            UpdateManager.checkForPendingUpdate(this, rootView)
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la vérification des mises à jour en attente: ${e.message ?: "Message non disponible"}")
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Nettoyer les ressources de mise à jour
+        UpdateManager.onDestroy()
     }
 
     private fun setMainVariables() {
@@ -324,5 +353,25 @@ class MainActivity : AppCompatActivity() {
             }
             .create()
             .show()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == UpdateManager.UPDATE_REQUEST_CODE) {
+            when (resultCode) {
+                InstallStatus.FAILED -> {
+                    // La mise à jour a échoué
+                    CrashlyticsManager.log("La mise à jour in-app a échoué.")
+                    val bundle = Bundle()
+                    bundle.putString("reason", "update_flow_failed")
+                    AnalyticsManager.logEvent("update_failed", bundle)
+                }
+                InstallStatus.CANCELED -> {
+                    // L'utilisateur a annulé la mise à jour
+                    AnalyticsManager.logEvent("update_canceled", Bundle())
+                }
+            }
+        }
     }
 }
