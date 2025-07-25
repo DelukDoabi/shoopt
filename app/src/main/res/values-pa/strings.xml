@@ -122,4 +122,13 @@
     <string name="update_now">ਹੁਣੇ ਅਪਡੇਟ ਕਰੋ</string>
     <string name="update_later">ਬਾਅਦ ਵਿੱਚ</string>
     <string name="update_description">ਨਵੀਆਂ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ ਅਤੇ ਸੁਧਾਰ ਤੁਹਾਡਾ ਇੰਤਜ਼ਾਰ ਕਰ ਰਹੇ ਹਨ!</string>
+    <string name="close_scan">ਸਕੈਨਰ ਬੰਦ ਕਰੋ</string>
+    <string name="toggle_torch">ਟੋਰਚ ਟੌਗਲ ਕਰੋ</string>
+    <string name="camera_permission_required">ਬਾਰਕੋਡ ਸਕੈਨ ਕਰਨ ਲਈ ਕੈਮਰਾ ਦੀ ਇਜਾਜ਼ਤ ਦੀ ਲੋੜ ਹੈ</string>
+    <string name="scanning">ਸਕੈਨ ਕਰ ਰਿਹਾ ਹੈ&#8230;</string>
+    <string name="scan_successful">ਕੋਡ ਮਿਲਿਆ</string>
+    <string name="scan_barcode_instructions">ਬਾਰਕੋਡ ਨੂੰ ਫਰੇਮ ਦੇ ਅੰਦਰ ਰੱਖੋ</string>
+    <string name="close">ਬੰਦ ਕਰੋ</string>
+    <string name="toggle_flash">ਫਲੈਸ਼ ਟੌਗਲ ਕਰੋ</string>
+    <string name="barcode_detected">ਬਾਰਕੋਡ ਮਿਲਿਆ</string>
 </resources>

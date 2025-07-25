@@ -122,4 +122,13 @@
     <string name="update_now">Aggiorna ora</string>
     <string name="update_later">Più tardi</string>
     <string name="update_description">Nuove funzionalità e miglioramenti ti aspettano!</string>
+    <string name="close_scan">Chiudi scanner</string>
+    <string name="toggle_torch">Attiva/disattiva torcia</string>
+    <string name="camera_permission_required">È richiesta l\'autorizzazione della fotocamera per scansionare i codici a barre</string>
+    <string name="scanning">Scansione in corso&#8230;</string>
+    <string name="scan_successful">Codice rilevato</string>
+    <string name="scan_barcode_instructions">Posiziona il codice a barre all\'interno della cornice</string>
+    <string name="close">Chiudi</string>
+    <string name="toggle_flash">Attiva/disattiva flash</string>
+    <string name="barcode_detected">Codice a barre rilevato</string>
 </resources>

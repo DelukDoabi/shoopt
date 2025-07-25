@@ -122,4 +122,13 @@
     <string name="update_now">இப்போது புதுப்பிக்கவும்</string>
     <string name="update_later">பிறகு</string>
     <string name="update_description">புதிய அம்சங்களும் மேம்பாடுகளும் உங்களை காத்திருக்கின்றன!</string>
+    <string name="close_scan">ஸ்கேனரை மூடு</string>
+    <string name="toggle_torch">டார்ச் விளக்கை மாற்று</string>
+    <string name="camera_permission_required">பார்கோடுகளை ஸ்கேன் செய்ய கேமரா அனுமதி தேவை</string>
+    <string name="scanning">ஸ்கேன் செய்கிறது...</string>
+    <string name="scan_successful">கோடு கண்டறியப்பட்டது</string>
+    <string name="scan_barcode_instructions">பார்கோடை சட்டத்திற்குள் நிலைப்படுத்தவும்</string>
+    <string name="close">மூடு</string>
+    <string name="toggle_flash">ஃப்ளாஷ் விளக்கை மாற்று</string>
+    <string name="barcode_detected">பார்கோடு கண்டறியப்பட்டது</string>
 </resources>

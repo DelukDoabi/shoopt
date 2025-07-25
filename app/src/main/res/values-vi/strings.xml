@@ -122,4 +122,13 @@
     <string name="update_now">Cập nhật ngay</string>
     <string name="update_later">Để sau</string>
     <string name="update_description">Các tính năng và cải tiến mới đang chờ bạn!</string>
+    <string name="close_scan">Đóng máy quét</string>
+    <string name="toggle_torch">Bật/tắt đèn pin</string>
+    <string name="camera_permission_required">Cần quyền truy cập camera để quét mã vạch</string>
+    <string name="scanning">Đang quét...</string>
+    <string name="scan_successful">Đã phát hiện mã</string>
+    <string name="scan_barcode_instructions">Đặt mã vạch vào trong khung</string>
+    <string name="close">Đóng</string>
+    <string name="toggle_flash">Bật/tắt đèn flash</string>
+    <string name="barcode_detected">Đã phát hiện mã vạch</string>
 </resources>

@@ -122,4 +122,13 @@
     <string name="update_now">지금 업데이트</string>
     <string name="update_later">나중에</string>
     <string name="update_description">새로운 기능과 개선사항이 기다리고 있습니다!</string>
+    <string name="close_scan">스캐너 닫기</string>
+    <string name="toggle_torch">손전등 전환</string>
+    <string name="camera_permission_required">바코드 스캔을 위해 카메라 권한이 필요합니다</string>
+    <string name="scanning">스캔 중&#8230;</string>
+    <string name="scan_successful">코드 감지됨</string>
+    <string name="scan_barcode_instructions">바코드를 프레임 안에 위치시키세요</string>
+    <string name="close">닫기</string>
+    <string name="toggle_flash">플래시 전환</string>
+    <string name="barcode_detected">바코드 감지됨</string>
 </resources>

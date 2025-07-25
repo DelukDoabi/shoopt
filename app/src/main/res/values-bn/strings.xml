@@ -122,4 +122,13 @@
     <string name="update_later">পরে</string>
     <string name="update_description">নতুন বৈশিষ্ট্য এবং উন্নতি আপনার জন্য অপেক্ষা করছে!</string>
     <string name="scan_barcode_prompt">স্ক্যান করার জন্য বারকোডটি ফ্রেমের মধ্যে সারিবদ্ধ করুন</string>
+    <string name="close_scan">স্ক্যানার বন্ধ করুন</string>
+    <string name="toggle_torch">টর্চ পরিবর্তন করুন</string>
+    <string name="camera_permission_required">বারকোড স্ক্যান করতে ক্যামেরা অনুমতি প্রয়োজন</string>
+    <string name="scanning">স্ক্যান করা হচ্ছে&#8230;</string>
+    <string name="scan_successful">কোড সনাক্ত হয়েছে</string>
+    <string name="scan_barcode_instructions">বারকোডটি ফ্রেমের মধ্যে রাখুন</string>
+    <string name="close">বন্ধ করুন</string>
+    <string name="toggle_flash">ফ্ল্যাশ পরিবর্তন করুন</string>
+    <string name="barcode_detected">বারকোড সনাক্ত হয়েছে</string>
 </resources>

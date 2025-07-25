@@ -350,11 +350,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkProductExistenceAndNavigate(barcode: String) {
-        // Utilisation de coroutines pour vérifier l'existence du produit en arrière-plan
-        val productRepository: IProductRepository = if (useFirebase) {
-            FirebaseProductRepository()
-        } else {
+
+                            // Utilisation de notre nouvelle implémentation ML Kit au lieu de ZXing
+                            val intent = Intent(this, com.dedoware.shoopt.scanner.BarcodeScannerActivity::class.java)
+                            barcodeScannerLauncher.launch(intent)
             val database = (application as ShooptApplication).database
             LocalProductRepository(
                 database.productDao(),
@@ -435,10 +434,11 @@ class MainActivity : AppCompatActivity() {
                         // Option: Scan barcode or add manually
                         try {
                             AnalyticsManager.logUserAction("scan_barcode", "product")
-
-                            // Utilisation de notre nouvelle implémentation ML Kit au lieu de ZXing
-                            val intent = Intent(this, com.dedoware.shoopt.scanner.BarcodeScannerActivity::class.java)
-                            barcodeScannerLauncher.launch(intent)
+                            val options = ScanOptions()
+                            options.setPrompt(getString(R.string.scan_barcode))
+                            options.setOrientationLocked(false)
+                            options.setBeepEnabled(true)
+                            barcodeLauncher.launch(options)
                         } catch (e: Exception) {
                             CrashlyticsManager.log("Erreur lors du lancement du scanner de code-barres: ${e.message ?: "Message non disponible"}")
                             CrashlyticsManager.logException(e)

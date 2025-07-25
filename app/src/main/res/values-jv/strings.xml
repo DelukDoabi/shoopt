@@ -122,4 +122,13 @@
     <string name="update_now">Update saiki</string>
     <string name="update_later">Mengko dhisik</string>
     <string name="update_description">Fitur lan perbaikan anyar ngenteni sampeyan!</string>
+    <string name="close_scan">Tutup pemindai</string>
+    <string name="toggle_torch">Ganti lampu senter</string>
+    <string name="camera_permission_required">Ijin kamera dibutuhake kanggo scan barcode</string>
+    <string name="scanning">Nyecan&#8230;</string>
+    <string name="scan_successful">Kode kadeteksi</string>
+    <string name="scan_barcode_instructions">Tempataken barcode ing jerone frame</string>
+    <string name="close">Tutup</string>
+    <string name="toggle_flash">Ganti lampu kilat</string>
+    <string name="barcode_detected">Barcode kadeteksi</string>
 </resources>

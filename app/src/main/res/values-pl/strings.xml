@@ -122,4 +122,13 @@
     <string name="update_now">Aktualizuj teraz</string>
     <string name="update_later">Później</string>
     <string name="update_description">Nowe funkcje i ulepszenia czekają na Ciebie!</string>
+    <string name="close_scan">Zamknij skaner</string>
+    <string name="toggle_torch">Przełącz latarkę</string>
+    <string name="camera_permission_required">Wymagane jest uprawnienie do kamery, aby skanować kody kreskowe</string>
+    <string name="scanning">Skanowanie&#8230;</string>
+    <string name="scan_successful">Wykryto kod</string>
+    <string name="scan_barcode_instructions">Umieść kod kreskowy w ramce</string>
+    <string name="close">Zamknij</string>
+    <string name="toggle_flash">Przełącz lampę błyskową</string>
+    <string name="barcode_detected">Wykryto kod kreskowy</string>
 </resources>

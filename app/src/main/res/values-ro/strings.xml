@@ -122,4 +122,13 @@
     <string name="update_now">Actualizează acum</string>
     <string name="update_later">Mai târziu</string>
     <string name="update_description">Funcții și îmbunătățiri noi te așteaptă!</string>
+    <string name="close_scan">Închide scanner-ul</string>
+    <string name="toggle_torch">Comută lanterna</string>
+    <string name="camera_permission_required">Permisiunea camerei este necesară pentru scanarea codurilor de bare</string>
+    <string name="scanning">Scanare...</string>
+    <string name="scan_successful">Cod detectat</string>
+    <string name="scan_barcode_instructions">Poziționează codul de bare în cadru</string>
+    <string name="close">Închide</string>
+    <string name="toggle_flash">Comută blițul</string>
+    <string name="barcode_detected">Cod de bare detectat</string>
 </resources>

@@ -122,4 +122,13 @@
     <string name="update_now">Uppdatera nu</string>
     <string name="update_later">Senare</string>
     <string name="update_description">Nya funktioner och förbättringar väntar på dig!</string>
+    <string name="close_scan">Stäng skanner</string>
+    <string name="toggle_torch">Växla ficklampa</string>
+    <string name="camera_permission_required">Kameratillstånd krävs för att skanna streckkoder</string>
+    <string name="scanning">Skannar...</string>
+    <string name="scan_successful">Kod upptäckt</string>
+    <string name="scan_barcode_instructions">Placera streckkoden inom ramen</string>
+    <string name="close">Stäng</string>
+    <string name="toggle_flash">Växla blixt</string>
+    <string name="barcode_detected">Streckkod upptäckt</string>
 </resources>

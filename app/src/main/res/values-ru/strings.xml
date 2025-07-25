@@ -122,4 +122,13 @@
     <string name="update_now">Обновить сейчас</string>
     <string name="update_later">Позже</string>
     <string name="update_description">Вас ждут новые функции и улучшения!</string>
+    <string name="close_scan">Закрыть сканер</string>
+    <string name="toggle_torch">Переключить фонарик</string>
+    <string name="camera_permission_required">Для сканирования штрих-кодов требуется разрешение камеры</string>
+    <string name="scanning">Сканирование&#8230;</string>
+    <string name="scan_successful">Код обнаружен</string>
+    <string name="scan_barcode_instructions">Поместите штрих-код в рамку</string>
+    <string name="close">Закрыть</string>
+    <string name="toggle_flash">Переключить вспышку</string>
+    <string name="barcode_detected">Штрих-код обнаружен</string>
 </resources>

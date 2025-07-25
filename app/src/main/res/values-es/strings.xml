@@ -122,5 +122,14 @@
     <string name="update_now">Actualizar ahora</string>
     <string name="update_later">Más tarde</string>
     <string name="update_description">¡Nuevas funciones y mejoras te esperan!</string>
+    <string name="close_scan">Cerrar escáner</string>
+    <string name="toggle_torch">Alternar linterna</string>
+    <string name="camera_permission_required">Se requiere permiso de cámara para escanear códigos de barras</string>
+    <string name="scanning">Escaneando&#8230;</string>
+    <string name="scan_successful">Código detectado</string>
+    <string name="scan_barcode_instructions">Posicione el código de barras dentro del marco</string>
+    <string name="close">Cerrar</string>
+    <string name="toggle_flash">Alternar flash</string>
+    <string name="barcode_detected">Código de barras detectado</string>
 </resources>
 

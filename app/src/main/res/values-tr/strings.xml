@@ -122,4 +122,13 @@
     <string name="update_now">Şimdi güncelle</string>
     <string name="update_later">Daha sonra</string>
     <string name="update_description">Yeni özellikler ve iyileştirmeler sizi bekliyor!</string>
+    <string name="close_scan">Tarayıcıyı kapat</string>
+    <string name="toggle_torch">Flaşı aç/kapat</string>
+    <string name="camera_permission_required">Barkod taramak için kamera izni gerekiyor</string>
+    <string name="scanning">Taranıyor...</string>
+    <string name="scan_successful">Kod tespit edildi</string>
+    <string name="scan_barcode_instructions">Barkodu çerçeve içine yerleştirin</string>
+    <string name="close">Kapat</string>
+    <string name="toggle_flash">Flaşı aç/kapat</string>
+    <string name="barcode_detected">Barkod tespit edildi</string>
 </resources>

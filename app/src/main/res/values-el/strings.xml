@@ -122,4 +122,13 @@
     <string name="update_later">Αργότερα</string>
     <string name="update_description">Νέες λειτουργίες και βελτιώσεις σας περιμένουν!</string>
     <string name="scan_barcode_prompt">Ευθυγραμμίστε τον γραμμωτό κώδικα μέσα στο πλαίσιο για σάρωση</string>
+    <string name="close_scan">Κλείσιμο σαρωτή</string>
+    <string name="toggle_torch">Εναλλαγή φακού</string>
+    <string name="camera_permission_required">Απαιτείται άδεια κάμερας για τη σάρωση γραμμωτών κωδίκων</string>
+    <string name="scanning">Σάρωση&#8230;</string>
+    <string name="scan_successful">Ο κωδικός εντοπίστηκε</string>
+    <string name="scan_barcode_instructions">Τοποθετήστε τον γραμμωτό κώδικα μέσα στο πλαίσιο</string>
+    <string name="close">Κλείσιμο</string>
+    <string name="toggle_flash">Εναλλαγή φλας</string>
+    <string name="barcode_detected">Εντοπίστηκε γραμμωτός κώδικας</string>
 </resources>

@@ -122,4 +122,13 @@
     <string name="update_later">Später</string>
     <string name="update_description">Neue Funktionen und Verbesserungen warten auf Sie!</string>
     <string name="scan_barcode_prompt">Richten Sie den Barcode innerhalb des Rahmens aus, um ihn zu scannen</string>
+    <string name="close_scan">Scanner schließen</string>
+    <string name="toggle_torch">Taschenlampe umschalten</string>
+    <string name="camera_permission_required">Kameraberechtigung ist erforderlich, um Barcodes zu scannen</string>
+    <string name="scanning">Scannen&#8230;</string>
+    <string name="scan_successful">Code erkannt</string>
+    <string name="scan_barcode_instructions">Positionieren Sie den Barcode innerhalb des Rahmens</string>
+    <string name="close">Schließen</string>
+    <string name="toggle_flash">Blitz umschalten</string>
+    <string name="barcode_detected">Barcode erkannt</string>
 </resources>

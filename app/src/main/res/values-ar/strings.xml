@@ -122,4 +122,13 @@
     <string name="update_now">التحديث الآن</string>
     <string name="update_later">لاحقاً</string>
     <string name="update_description">تنتظرك ميزات وتحسينات جديدة!</string>
+    <string name="close_scan">إغلاق الماسح</string>
+    <string name="toggle_torch">تبديل الإضاءة</string>
+    <string name="camera_permission_required">إذن الكاميرا مطلوب لمسح الرموز الشريطية</string>
+    <string name="scanning">جاري المسح&#8230;</string>
+    <string name="scan_successful">تم اكتشاف الرمز</string>
+    <string name="scan_barcode_instructions">ضع الرمز الشريطي داخل الإطار</string>
+    <string name="close">إغلاق</string>
+    <string name="toggle_flash">تبديل الفلاش</string>
+    <string name="barcode_detected">تم اكتشاف الرمز الشريطي</string>
 </resources>
