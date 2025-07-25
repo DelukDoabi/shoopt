@@ -118,16 +118,31 @@ class BarcodeScannerActivity : AppCompatActivity() {
     }
 
     private fun setupScanLineAnimation() {
-        scanLineAnimator = ObjectAnimator.ofFloat(
-            scanLine,
-            "translationY",
-            0f,
-            scanFrame.height.toFloat()
-        ).apply {
-            duration = 2000
-            repeatMode = ValueAnimator.REVERSE
-            repeatCount = ValueAnimator.INFINITE
-            start()
+        // Attendre que les vues soient complètement mesurées
+        scanFrame.post {
+            // On calcule les limites exactes du déplacement
+            // Le cadre intérieur commence à 20dp du bord supérieur (défini par les margins)
+            // et se termine à 20dp du bord inférieur
+            val startY = 0f  // La ligne commence déjà à 20dp du haut grâce au margin
+            val endY = scanFrame.height - 40f - scanLine.height // Hauteur totale - marges haut et bas - hauteur de la ligne
+
+            // Réinitialiser toute animation précédente
+            if (::scanLineAnimator.isInitialized) {
+                scanLineAnimator.cancel()
+            }
+
+            // Créer l'animation avec les limites précises
+            scanLineAnimator = ObjectAnimator.ofFloat(
+                scanLine,
+                "translationY",
+                startY,
+                endY
+            ).apply {
+                duration = 2000
+                repeatMode = ValueAnimator.REVERSE
+                repeatCount = ValueAnimator.INFINITE
+                start()
+            }
         }
     }
 

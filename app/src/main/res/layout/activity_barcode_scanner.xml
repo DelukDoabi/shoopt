@@ -24,12 +24,15 @@
 
     <View
         android:id="@+id/scanLine"
-        android:layout_width="0dp"
+        android:layout_width="260dp"
         android:layout_height="2dp"
         android:background="@drawable/scan_line"
         app:layout_constraintEnd_toEndOf="@id/scanFrame"
         app:layout_constraintStart_toStartOf="@id/scanFrame"
-        app:layout_constraintTop_toTopOf="@id/scanFrame" />
+        app:layout_constraintTop_toTopOf="@id/scanFrame"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp" />
 
     <TextView
         android:id="@+id/scanInstructions"
