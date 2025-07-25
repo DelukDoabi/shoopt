@@ -41,6 +41,7 @@ class BarcodeScannerActivity : AppCompatActivity() {
     private lateinit var previewView: PreviewView
     private lateinit var scanLine: View
     private lateinit var scanFrame: View
+    private lateinit var scanAreaContainer: View
     private lateinit var closeButton: ImageButton
     private lateinit var flashButton: ImageButton
 
@@ -74,6 +75,7 @@ class BarcodeScannerActivity : AppCompatActivity() {
         previewView = findViewById(R.id.previewView)
         scanLine = findViewById(R.id.scanLine)
         scanFrame = findViewById(R.id.scanFrame)
+        scanAreaContainer = findViewById(R.id.scanAreaContainer)
         closeButton = findViewById(R.id.closeButton)
         flashButton = findViewById(R.id.flashButton)
 
@@ -118,25 +120,27 @@ class BarcodeScannerActivity : AppCompatActivity() {
     }
 
     private fun setupScanLineAnimation() {
-        // Attendre que les vues soient complètement mesurées
-        scanFrame.post {
-            // On calcule les limites exactes du déplacement
-            // Le cadre intérieur commence à 20dp du bord supérieur (défini par les margins)
-            // et se termine à 20dp du bord inférieur
-            val startY = 0f  // La ligne commence déjà à 20dp du haut grâce au margin
-            val endY = scanFrame.height - 40f - scanLine.height // Hauteur totale - marges haut et bas - hauteur de la ligne
-
+        // Attendre que le conteneur soit mesuré
+        scanAreaContainer.post {
             // Réinitialiser toute animation précédente
             if (::scanLineAnimator.isInitialized) {
                 scanLineAnimator.cancel()
             }
 
-            // Créer l'animation avec les limites précises
+            // La ligne commence tout en haut du conteneur
+            scanLine.translationY = 0f
+
+            // Calculer la distance exacte à parcourir (hauteur du conteneur moins hauteur de la ligne)
+            val containerHeight = scanAreaContainer.height.toFloat()
+            val lineHeight = scanLine.height.toFloat()
+            val distance = containerHeight - lineHeight
+
+            // Créer l'animation avec les limites précises du conteneur
             scanLineAnimator = ObjectAnimator.ofFloat(
                 scanLine,
                 "translationY",
-                startY,
-                endY
+                0f,  // Démarre du haut du conteneur
+                distance  // S'arrête exactement au bas du conteneur
             ).apply {
                 duration = 2000
                 repeatMode = ValueAnimator.REVERSE
