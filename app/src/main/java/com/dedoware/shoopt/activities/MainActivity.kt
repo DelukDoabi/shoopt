@@ -320,6 +320,36 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Register the launcher for our new ML Kit-based scanner
+    private val barcodeScannerLauncher = registerForActivityResult(
+        androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult()
+    ) { result: ActivityResult ->
+        if (result.resultCode == RESULT_OK) {
+            val barcodeValue = result.data?.getStringExtra(com.dedoware.shoopt.scanner.BarcodeScannerActivity.BARCODE_RESULT)
+            if (barcodeValue != null) {
+                try {
+                    // Vérifier si le produit existe déjà avant de lancer l'activité
+                    checkProductExistenceAndNavigate(barcodeValue)
+
+                    // Analytics pour le scan de code-barres
+                    val params = Bundle().apply {
+                        putString("barcode_length", barcodeValue.length.toString())
+                    }
+                    AnalyticsManager.logCustomEvent("barcode_scanned", params)
+                } catch (e: Exception) {
+                    CrashlyticsManager.log("Erreur lors du traitement du code-barres: ${e.message ?: "Message non disponible"}")
+                    CrashlyticsManager.setCustomKey("error_location", "barcode_processing")
+                    CrashlyticsManager.setCustomKey("barcode", barcodeValue)
+                    CrashlyticsManager.logException(e)
+
+                    Toast.makeText(this, getString(R.string.barcode_processing_error), Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else if (result.resultCode == RESULT_CANCELED) {
+            Toast.makeText(this, getString(R.string.cancelled), Toast.LENGTH_LONG).show()
+        }
+    }
+
     private fun checkProductExistenceAndNavigate(barcode: String) {
         // Utilisation de coroutines pour vérifier l'existence du produit en arrière-plan
         val productRepository: IProductRepository = if (useFirebase) {
@@ -406,20 +436,9 @@ class MainActivity : AppCompatActivity() {
                         try {
                             AnalyticsManager.logUserAction("scan_barcode", "product")
 
-                            // Configuration pour utiliser HorizontalCaptureActivity
-                            val options = ScanOptions()
-                            options.setPrompt(getString(R.string.scan_barcode_prompt))
-                            options.setDesiredBarcodeFormats(ScanOptions.ONE_D_CODE_TYPES)
-                            options.setBeepEnabled(true)
-                            options.setBarcodeImageEnabled(true)
-
-                            // Configuration spécifique pour le mode horizontal
-                            options.setCameraId(0) // Utiliser la caméra arrière
-                            options.setOrientationLocked(true) // Verrouiller l'orientation
-                            options.setCaptureActivity(HorizontalCaptureActivity::class.java) // Utiliser notre activité personnalisée pour la capture horizontale
-                            options.setTimeout(10000) // Timeout après 10 secondes
-
-                            barcodeLauncher.launch(options)
+                            // Utilisation de notre nouvelle implémentation ML Kit au lieu de ZXing
+                            val intent = Intent(this, com.dedoware.shoopt.scanner.BarcodeScannerActivity::class.java)
+                            barcodeScannerLauncher.launch(intent)
                         } catch (e: Exception) {
                             CrashlyticsManager.log("Erreur lors du lancement du scanner de code-barres: ${e.message ?: "Message non disponible"}")
                             CrashlyticsManager.logException(e)
