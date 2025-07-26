@@ -139,4 +139,8 @@
     <string name="product_check_error">خطأ في التحقق من المنتج</string>
     <string name="ai_assistant_tips">نصائح مساعد الذكاء الاصطناعي</string>
     <string name="product_add_tips">التقط صورة واضحة لمنتجك وسعره للسماح للذكاء الاصطناعي بالتعرف عليه. سيساعدك ماسح الباركود وخدمات الموقع على إضافة المنتجات بسرعة ودقة.</string>
+    <string name="shopping_cart_items">عناصر سلة التسوق</string>
+    <string name="empty_cart_message">سلتك فارغة</string>
+    <string name="empty_cart_subtitle">أضف منتجات لبدء تتبع مشترياتك</string>
+    <string name="clear_cart">إفراغ السلة</string>
 </resources>

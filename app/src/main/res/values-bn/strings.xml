@@ -139,4 +139,8 @@
     <string name="product_check_error">পণ্য যাচাই করার সময় ত্রুটি</string>
     <string name="ai_assistant_tips">এআই সহকারী টিপস</string>
     <string name="product_add_tips">আপনার পণ্যের এবং এর মূল্যের একটি পরিষ্কার ছবি তুলুন যাতে AI এটি শনাক্ত করতে পারে। বারকোড স্ক্যানার এবং অবস্থান পরিষেবা আপনাকে দ্রুত এবং সঠিকভাবে পণ্য যোগ করতে সাহায্য করবে।</string>
+    <string name="shopping_cart_items">শপিং কার্ট আইটেম</string>
+    <string name="empty_cart_message">আপনার কার্ট খালি</string>
+    <string name="empty_cart_subtitle">আপনার কেনাকাটা ট্র্যাক করতে পণ্য যোগ করুন</string>
+    <string name="clear_cart">কার্ট খালি করুন</string>
 </resources>
