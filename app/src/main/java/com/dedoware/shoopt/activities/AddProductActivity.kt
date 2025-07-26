@@ -1020,18 +1020,24 @@ class AddProductActivity : AppCompatActivity() {
 
     private fun displayProductPictureOnImageButton() {
         val options = Options()
-        options.inSampleSize = 10
+        // Reduce downsampling for better quality - use 2 instead of 10
+        options.inSampleSize = 2
+        // Enable better quality scaling
+        options.inPreferQualityOverSpeed = true
 
-        val (productPictureOrientation, productPictureBitmap) = getProductPictureBitmap(
-            options
-        )
+        val (productPictureOrientation, productPictureBitmap) = getProductPictureBitmap(options)
 
-        productPictureImageButton.setImageBitmap(
-            rotateProductPictureBitmap(
-                productPictureOrientation,
-                productPictureBitmap
-            )
-        )
+        // Change scale type to centerCrop when displaying a taken picture
+        productPictureImageButton.scaleType = ImageView.ScaleType.CENTER_CROP
+
+        val rotatedBitmap = rotateProductPictureBitmap(productPictureOrientation, productPictureBitmap)
+
+        // Use Glide for better image loading and quality
+        Glide.with(this)
+            .load(rotatedBitmap)
+            .override(560, 560) // Target size for the doubled container (280dp * 2 for density)
+            .centerCrop()
+            .into(productPictureImageButton)
     }
 
     private fun setMainVariables() {
@@ -1079,9 +1085,14 @@ class AddProductActivity : AppCompatActivity() {
         productUnitPriceEditText.setText(if (unitPrice != 0.0) unitPrice.toString() else "")
 
         if (!pictureUrl.isNullOrEmpty()) {
+            // Set scale type to centerCrop for consistent image display
+            productPictureImageButton.scaleType = ImageView.ScaleType.CENTER_CROP
+
+            // Use consistent sizing with displayProductPictureOnImageButton method
             Glide.with(this)
                 .load(pictureUrl)
-                .override(300, 300)
+                .override(560, 560) // Target size for the doubled container (280dp * 2 for density)
+                .centerCrop()
                 .into(productPictureImageButton)
         } else {
             Log.w("AddProductActivity", "Missing pictureUrl")

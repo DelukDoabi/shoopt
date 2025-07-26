@@ -138,5 +138,5 @@
     <string name="dialog_display_error">İletişim kutusu görüntülenirken hata</string>
     <string name="product_check_error">Ürün kontrol edilirken hata</string>
     <string name="ai_assistant_tips">Yapay Zeka Asistanı İpuçları</string>
-    <string name="product_add_tips">Yapay zekanın ürünü tanımlayabilmesi için ürününüzün net bir fotoğrafını çekin. Barkod tarayıcı ve konum servisleri ürünleri hızlı ve doğru şekilde eklemenize yardımcı olur.</string>
+    <string name="product_add_tips">Ürününüzün ve fiyatının net bir fotoğrafını çekin, böylece yapay zeka onu tanımlayabilir. Barkod tarayıcı ve konum servisleri ürünleri hızlı ve doğru şekilde eklemenize yardımcı olacaktır.</string>
 </resources>

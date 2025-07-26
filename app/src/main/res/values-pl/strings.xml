@@ -138,5 +138,5 @@
     <string name="dialog_display_error">Błąd wyświetlania okna dialogowego</string>
     <string name="product_check_error">Błąd podczas sprawdzania produktu</string>
     <string name="ai_assistant_tips">Wskazówki asystenta AI</string>
-    <string name="product_add_tips">Zrób wyraźne zdjęcie swojego produktu, aby AI mogła go zidentyfikować. Skaner kodów kreskowych i usługi lokalizacyjne pomogą Ci szybko i dokładnie dodawać produkty.</string>
+    <string name="product_add_tips">Zrób wyraźne zdjęcie swojego produktu oraz jego ceny, aby AI mogła go zidentyfikować. Skaner kodów kreskowych i usługi lokalizacyjne pomogą Ci szybko i dokładnie dodawać produkty.</string>
 </resources>
