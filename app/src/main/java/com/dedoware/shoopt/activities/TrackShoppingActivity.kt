@@ -596,7 +596,7 @@ class TrackShoppingActivity : ComponentActivity() {
                 }
             }
 
-            builder.setNegativeButton("Cancel", null)
+            builder.setNegativeButton(android.R.string.cancel, null)
             builder.create().show()
         } catch (e: Exception) {
             CrashlyticsManager.log("Erreur lors de l'affichage du dialogue de confirmation de vidange: ${e.message ?: "Message non disponible"}")
