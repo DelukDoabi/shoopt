@@ -290,7 +290,7 @@
                             android:id="@+id/product_count_badge"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text="@string/product_count_zero"
                             android:textColor="@color/white"
                             android:textSize="12sp"
                             android:textStyle="bold"
@@ -321,7 +321,7 @@
                         android:overScrollMode="never"
                         android:scrollbars="none" />
 
-                    <!-- Empty State -->
+                    <!-- Empty State - Fixed visibility and text contrast -->
                     <LinearLayout
                         android:id="@+id/empty_state_container"
                         android:layout_width="match_parent"
@@ -332,11 +332,12 @@
                         android:padding="40dp"
                         android:visibility="visible">
 
+                        <!-- Using a different, guaranteed existing icon -->
                         <ImageView
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
-                            android:src="@drawable/shoop_update_shopping_list"
-                            android:alpha="0.5"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:src="@drawable/shoopt_add_product"
+                            android:alpha="0.6"
                             app:tint="@color/main_palette_old_lavender_variant"
                             android:contentDescription="@string/empty_list" />
 
@@ -344,21 +345,23 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/no_products_converted"
-                            android:textSize="16sp"
-                            android:textColor="?attr/colorOnSurface"
+                            android:textSize="18sp"
+                            android:textColor="@color/main_palette_old_lavender_variant"
                             android:textStyle="bold"
                             android:layout_marginTop="16dp"
-                            android:gravity="center" />
+                            android:gravity="center"
+                            android:textAlignment="center" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/add_products_to_see_them_here"
                             android:textSize="14sp"
-                            android:textColor="?attr/colorOnSurface"
-                            android:alpha="0.7"
+                            android:textColor="@color/main_palette_old_lavender_variant"
+                            android:alpha="0.8"
                             android:layout_marginTop="8dp"
-                            android:gravity="center" />
+                            android:gravity="center"
+                            android:textAlignment="center" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -366,13 +369,14 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Floating Action Button for quick actions -->
+    <!-- Fixed Floating Action Button positioning -->
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/paste_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
         android:text="@string/paste_list"
         android:textAllCaps="false"
         app:icon="@drawable/ic_paste"
@@ -380,6 +384,7 @@
         android:backgroundTint="@color/main_palette_old_lavender_variant"
         android:textColor="@color/white"
         app:rippleColor="@color/white"
-        android:contentDescription="@string/paste_shopping_list" />
+        android:contentDescription="@string/paste_shopping_list"
+        android:elevation="8dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

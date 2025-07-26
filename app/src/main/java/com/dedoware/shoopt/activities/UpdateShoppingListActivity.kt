@@ -6,8 +6,11 @@ import android.os.Looper
 import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Toast
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -42,6 +45,8 @@ class UpdateShoppingListActivity : AppCompatActivity() {
     private lateinit var emptyMainListButton: MaterialButton
     private lateinit var productTrackRecyclerView: RecyclerView
     private lateinit var productTrackAdapter: ProductTrackAdapter
+    private lateinit var emptyStateContainer: LinearLayout
+    private lateinit var productCountBadge: TextView
     private val shoppingItemList = mutableListOf<CartItem>()
     private val handler = Handler(Looper.getMainLooper())
     private var runnable: Runnable = Runnable { }
@@ -93,9 +98,15 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                 mainShoppingListEditText = findViewById(R.id.main_shopping_list_edit_text)
                 convertToProductTrackButton = findViewById(R.id.convert_to_product_track_IB)
                 productTrackRecyclerView = findViewById(R.id.product_track_recycler_view)
+                emptyStateContainer = findViewById(R.id.empty_state_container)
+                productCountBadge = findViewById(R.id.product_count_badge)
+
                 productTrackAdapter = ProductTrackAdapter(shoppingItemList)
                 productTrackRecyclerView.layoutManager = LinearLayoutManager(this)
                 productTrackRecyclerView.adapter = productTrackAdapter
+
+                // Initial empty state update
+                updateEmptyState()
             } catch (e: Exception) {
                 CrashlyticsManager.log("Erreur lors de l'initialisation des composants d'interface: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "ui_components_init")
@@ -118,6 +129,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                                 "inconnu"
                             }
                             productTrackAdapter.removeAt(position)
+                            updateEmptyState() // Update empty state after removal
 
                             // Analytics pour le swipe d'un élément
                             val params = Bundle().apply {
@@ -133,7 +145,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                             CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
                             CrashlyticsManager.logException(e)
 
-                            Toast.makeText(this@UpdateShoppingListActivity, "Erreur lors de la suppression de l'élément", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@UpdateShoppingListActivity, getString(R.string.failed_to_delete_product), Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -172,6 +184,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                         })
                     }
                     productTrackAdapter.notifyDataSetChanged()
+                    updateEmptyState() // Update empty state after adding products
                     mainShoppingListEditText.setText("")
                     Toast.makeText(this, getString(R.string.products_added, products.size), Toast.LENGTH_SHORT).show()
 
@@ -185,7 +198,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                     CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
                     CrashlyticsManager.logException(e)
 
-                    Toast.makeText(this, "Erreur lors de la conversion de la liste", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.unexpected_error), Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -196,6 +209,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                         try {
                             shoppingItemList.clear()
                             productTrackAdapter.notifyDataSetChanged()
+                            updateEmptyState() // Update empty state after clearing
                             mainShoppingListEditText.setText("")
 
                             // Aussi sauvegarder la liste vide dans le repository
@@ -210,7 +224,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                                     CrashlyticsManager.logException(e)
 
                                     withContext(Dispatchers.Main) {
-                                        Toast.makeText(this@UpdateShoppingListActivity, "Erreur lors de la sauvegarde de la liste", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(this@UpdateShoppingListActivity, getString(R.string.failed_to_empty_shopping_cart), Toast.LENGTH_SHORT).show()
                                     }
                                 }
                             }
@@ -223,7 +237,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                             CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
                             CrashlyticsManager.logException(e)
 
-                            Toast.makeText(this, "Erreur lors de la suppression de la liste", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, getString(R.string.unexpected_error), Toast.LENGTH_SHORT).show()
                         }
                     }
                 } catch (e: Exception) {
@@ -233,7 +247,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                     CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
                     CrashlyticsManager.logException(e)
 
-                    Toast.makeText(this, "Erreur lors de l'affichage du dialogue", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.dialog_display_error), Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -263,6 +277,25 @@ class UpdateShoppingListActivity : AppCompatActivity() {
 
             Toast.makeText(this, getString(R.string.unexpected_error), Toast.LENGTH_LONG).show()
             finish()
+        }
+    }
+
+    /**
+     * Updates the visibility of empty state and product count badge
+     */
+    private fun updateEmptyState() {
+        try {
+            val isEmpty = shoppingItemList.isEmpty()
+
+            // Toggle visibility between empty state and RecyclerView
+            emptyStateContainer.visibility = if (isEmpty) View.VISIBLE else View.GONE
+            productTrackRecyclerView.visibility = if (isEmpty) View.GONE else View.VISIBLE
+
+            // Update product count badge
+            productCountBadge.text = shoppingItemList.size.toString()
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la mise à jour de l'état vide: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.logException(e)
         }
     }
 

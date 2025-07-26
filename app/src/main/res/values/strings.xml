@@ -183,4 +183,7 @@
     <!-- AI and Tips -->
     <string name="ai_assistant_tips">💡 AI Assistant Tips: Use natural language to describe your products for better recognition</string>
 
+    <!-- Additional missing string -->
+    <string name="product_count_zero">0</string>
+
 </resources>
