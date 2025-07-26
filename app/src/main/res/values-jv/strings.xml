@@ -139,4 +139,8 @@
     <string name="product_check_error">Kesalahan mriksa produk</string>
     <string name="ai_assistant_tips">Tips Asisten AI</string>
     <string name="product_add_tips">Jupuk foto sing cetha saka produk lan regane supaya AI bisa ngenali. Pemindai barcode lan layanan lokasi bakal mbantu sampeyan nambah produk kanthi cepet lan akurat.</string>
+    <string name="shopping_cart_items">Item ing keranjang</string>
+    <string name="empty_cart_message">Keranjang sampeyan kosong</string>
+    <string name="empty_cart_subtitle">Tambah produk kanggo miwiti nglacak blanja sampeyan</string>
+    <string name="clear_cart">Resikna keranjang</string>
 </resources>
