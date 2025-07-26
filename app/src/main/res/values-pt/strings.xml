@@ -137,4 +137,6 @@
     <string name="manual_entry_error">Erro ao abrir entrada manual</string>
     <string name="dialog_display_error">Erro ao exibir diálogo</string>
     <string name="product_check_error">Erro ao verificar produto</string>
+    <string name="ai_assistant_tips">Dicas do assistente de IA</string>
+    <string name="product_add_tips">Tire uma foto clara do seu produto para que a IA possa identificá-lo. O scanner de código de barras e os serviços de localização ajudarão você a adicionar produtos de forma rápida e precisa.</string>
 </resources>

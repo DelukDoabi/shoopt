@@ -137,4 +137,6 @@
     <string name="manual_entry_error">ম্যানুয়াল এন্ট্রি খোলার সময় ত্রুটি</string>
     <string name="dialog_display_error">ডায়ালগ প্রদর্শনের সময় ত্রুটি</string>
     <string name="product_check_error">পণ্য যাচাই করার সময় ত্রুটি</string>
+    <string name="ai_assistant_tips">এআই সহকারী টিপস</string>
+    <string name="product_add_tips">আপনার পণ্যের একটি পরিষ্কার ছবি তুলুন যাতে এআই এটি শনাক্ত করতে পারে। বারকোড স্ক্যানার এবং অবস্থান পরিষেবা আপনাকে দ্রুত এবং সঠিকভাবে পণ্য যোগ করতে সাহায্য করবে।</string>
 </resources>
