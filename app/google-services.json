@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "838481016105-2s09i5cdj2tgcufavk9d2i6gn615lofe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dedoware.shoopt",
+            "certificate_hash": "99c31bf26fe502cdc6d796d74ec1e3602f29962d"
+          }
+        },
+        {
           "client_id": "838481016105-5otqllj9erqi6hm5ho1k41c8k6g2ui0q.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
