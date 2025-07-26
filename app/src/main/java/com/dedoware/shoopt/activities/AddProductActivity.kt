@@ -1087,7 +1087,7 @@ class AddProductActivity : AppCompatActivity() {
         if (!pictureUrl.isNullOrEmpty()) {
             // Set scale type to centerCrop for consistent image display
             productPictureImageButton.scaleType = ImageView.ScaleType.CENTER_CROP
-
+            
             // Use consistent sizing with displayProductPictureOnImageButton method
             Glide.with(this)
                 .load(pictureUrl)

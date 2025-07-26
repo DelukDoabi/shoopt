@@ -1,58 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Dark theme specific colors for excellent UX -->
-
-    <!-- Background colors -->
-    <color name="dark_background_primary">#121212</color>
-    <color name="dark_background_secondary">#1E1E1E</color>
-    <color name="dark_surface">#1E1E1E</color>
-    <color name="dark_surface_variant">#2D2D2D</color>
-
-    <!-- Card and elevated surface colors -->
-    <color name="dark_card_background">#242424</color>
-    <color name="dark_elevated_surface">#2D2D2D</color>
-
-    <!-- Text colors optimized for dark theme -->
-    <color name="dark_text_primary">#FFFFFF</color>
-    <color name="dark_text_secondary">#B3B3B3</color>
-    <color name="dark_text_hint">#808080</color>
-    <color name="dark_text_disabled">#666666</color>
-
-    <!-- Border and divider colors -->
-    <color name="dark_border">#404040</color>
-    <color name="dark_divider">#333333</color>
-
-    <!-- Input field colors -->
-    <color name="dark_input_background">#2D2D2D</color>
-    <color name="dark_input_stroke">#404040</color>
-    <color name="dark_input_stroke_focused">#FFB05B</color>
-
-    <!-- Button colors -->
-    <color name="dark_button_background">#FFB05B</color>
-    <color name="dark_button_text">#000000</color>
-    <color name="dark_button_outlined_stroke">#FFB05B</color>
-
-    <!-- Status colors -->
-    <color name="dark_error">#CF6679</color>
-    <color name="dark_success">#4CAF50</color>
-    <color name="dark_warning">#FF9800</color>
-
-    <!-- Overlay colors -->
-    <color name="dark_overlay_light">#1A000000</color>
-    <color name="dark_overlay_medium">#4D000000</color>
-    <color name="dark_overlay_heavy">#80000000</color>
-
-    <!-- Gradient colors for dark theme -->
-    <color name="dark_gradient_start">#1A1A1A</color>
-    <color name="dark_gradient_middle">#2D2D2D</color>
-    <color name="dark_gradient_end">#121212</color>
-
-    <!-- Brand colors adapted for dark theme -->
-    <color name="dark_primary_variant">#CC8A47</color>
-    <color name="dark_secondary_variant">#8A7B85</color>
-
-    <!-- Special colors for dark theme -->
-    <color name="dark_ripple">#33FFB05B</color>
-    <color name="dark_selection">#40FFB05B</color>
+    <!-- Dark theme back button colors for excellent visibility -->
+    <color name="back_button_background">#4DFFFFFF</color> <!-- More opaque white background -->
+    <color name="back_button_stroke">#FFFFFF</color> <!-- Pure white stroke for contrast -->
+    <color name="back_button_icon">#FFFFFF</color> <!-- Pure white icon -->
+    <color name="back_button_ripple">#66FFFFFF</color> <!-- White ripple effect -->
 </resources>
 
