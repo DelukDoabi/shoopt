@@ -4,7 +4,8 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageButton
+import android.view.View
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -26,15 +27,17 @@ import com.dedoware.shoopt.persistence.ShooptRoomDatabase
 import com.dedoware.shoopt.scanner.BarcodeScannerActivity
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
+import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class TrackShoppingActivity : ComponentActivity() {
 
-    private lateinit var addProductImageButton: ImageButton
-    private lateinit var clearCartImageButton: ImageButton
-    private lateinit var backImageButton: ImageButton
+    private lateinit var addProductButton: MaterialButton
+    private lateinit var clearCartListButton: MaterialButton
+    private lateinit var backButton: MaterialButton
+    private lateinit var emptyStateContainer: LinearLayout
 
     // Repository instance
     private lateinit var productRepository: IProductRepository
@@ -106,19 +109,20 @@ class TrackShoppingActivity : ComponentActivity() {
     }
 
     private fun setupActionButtons() {
-        addProductImageButton = findViewById(R.id.add_product_IB)
-        clearCartImageButton = findViewById(R.id.empty_cart_IB)
-        backImageButton = findViewById(R.id.back_IB)
+        addProductButton = findViewById(R.id.add_product_IB)
+        clearCartListButton = findViewById(R.id.empty_cart_list_IB)
+        backButton = findViewById(R.id.back_IB)
+        emptyStateContainer = findViewById(R.id.empty_state_container)
 
-        addProductImageButton.setOnClickListener {
+        addProductButton.setOnClickListener {
             displayAddProductWayUserChoice()
         }
 
-        clearCartImageButton.setOnClickListener {
+        clearCartListButton.setOnClickListener {
             showClearCartConfirmationDialog()
         }
 
-        backImageButton.setOnClickListener {
+        backButton.setOnClickListener {
             finish()
         }
     }
@@ -363,20 +367,20 @@ class TrackShoppingActivity : ComponentActivity() {
                         showToast("Erreur lors du traitement du code-barres")
                     }
                 }
-            }
-        } else if (result.resultCode == Activity.RESULT_CANCELED) {
-            // Analytics pour l'annulation du scan
-            try {
-                AnalyticsManager.logUserAction(
-                    "barcode_scan_cancelled",
-                    "shopping_cart",
-                    null
-                )
-            } catch (e: Exception) {
-                CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
-            }
+            } else if (result.resultCode == Activity.RESULT_CANCELED) {
+                // Analytics pour l'annulation du scan
+                try {
+                    AnalyticsManager.logUserAction(
+                        "barcode_scan_cancelled",
+                        "shopping_cart",
+                        null
+                    )
+                } catch (e: Exception) {
+                    CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
+                }
 
-            showToast(getString(R.string.cancelled))
+                showToast(getString(R.string.cancelled))
+            }
         }
     }
 
@@ -389,9 +393,20 @@ class TrackShoppingActivity : ComponentActivity() {
             val totalPrice = cart?.products?.sumOf { it.product.price * it.quantity } ?: 0.0
 
             itemCountTextView.text = itemQuantity.toString()
-            totalPriceTextView.text = String.format("%.2f", totalPrice)
+            totalPriceTextView.text = String.format("%.2f€", totalPrice)
 
-            populateProductList(cart?.products ?: emptyList())
+            val products = cart?.products ?: emptyList()
+
+            // Show/hide empty state and clear button
+            if (products.isEmpty()) {
+                emptyStateContainer.visibility = View.VISIBLE
+                clearCartListButton.visibility = View.GONE
+            } else {
+                emptyStateContainer.visibility = View.GONE
+                clearCartListButton.visibility = View.VISIBLE
+            }
+
+            populateProductList(products)
         } catch (e: Exception) {
             CrashlyticsManager.log("Erreur lors de la mise à jour de l'interface du panier: ${e.message ?: "Message non disponible"}")
             CrashlyticsManager.setCustomKey("error_location", "update_cart_ui")
