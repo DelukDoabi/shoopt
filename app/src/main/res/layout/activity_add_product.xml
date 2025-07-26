@@ -96,7 +96,7 @@
                     android:id="@+id/product_picture_IB"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
+                    android:scaleType="center"
                     android:background="@null"
                     android:contentDescription="@string/take_picture"
                     android:src="@drawable/shoopt_add_picture"
