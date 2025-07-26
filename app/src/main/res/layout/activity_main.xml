@@ -55,10 +55,11 @@
             app:iconPadding="0dp"
             app:iconSize="24dp"
             app:cornerRadius="21dp"
-            app:strokeColor="#6E6268"
+            app:strokeColor="@color/back_button_stroke"
             app:strokeWidth="1dp"
-            app:iconTint="#6E6268"
-            android:backgroundTint="#33FFFFFF"
+            app:iconTint="@color/back_button_icon"
+            android:backgroundTint="@color/back_button_background"
+            app:rippleColor="@color/back_button_ripple"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:contentDescription="@string/settings" />
 
@@ -71,10 +72,11 @@
             app:iconPadding="0dp"
             app:iconSize="24dp"
             app:cornerRadius="21dp"
-            app:strokeColor="#6E6268"
+            app:strokeColor="@color/back_button_stroke"
             app:strokeWidth="1dp"
-            app:iconTint="#6E6268"
-            android:backgroundTint="#33FFFFFF"
+            app:iconTint="@color/back_button_icon"
+            android:backgroundTint="@color/back_button_background"
+            app:rippleColor="@color/back_button_ripple"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:contentDescription="@string/logout" />
     </LinearLayout>
