@@ -137,5 +137,6 @@
     <string name="manual_entry_error">கைமுறை உள்ளீட்டைத் திறப்பதில் பிழை</string>
     <string name="dialog_display_error">உரையாடலைக் காட்டுவதில் பிழை</string>
     <string name="product_check_error">பொருளை சரிபார்ப்பதில் பிழை</string>
+    <string name="ai_assistant_tips">AI உதவியாளர் குறிப்புகள்</string>
+    <string name="product_add_tips">AI அடையாளம் காண உங்கள் பொருளின் தெளிவான படத்தை எடுங்கள். பார்கோடு ஸ்கேனர் மற்றும் இருப்பிட சேவைகள் விரைவாகவும் துல்லியமாகவும் பொருட்களைச் சேர்க்க உதவும்.</string>
 </resources>
-

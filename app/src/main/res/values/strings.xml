@@ -143,4 +143,7 @@
     <string name="update_downloaded">Update Downloaded</string>
     <string name="update_required">Update Required</string>
     <string name="install">Install</string>
+    <string name="ai_assistant_tips">AI Assistant Tips</string>
+    <string name="product_add_tips">Take a clear photo of your product to let the AI identify it. The barcode scanner and location services will help you add products quickly and accurately.</string>
+
 </resources>

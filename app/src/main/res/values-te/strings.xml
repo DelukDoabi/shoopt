@@ -137,4 +137,6 @@
     <string name="manual_entry_error">మాన్యువల్ ఎంట్రీని తెరవడంలో లోపం</string>
     <string name="dialog_display_error">డైలాగ్ ప్రదర్శించడంలో లోపం</string>
     <string name="product_check_error">ఉత్పత్తిని తనిఖీ చేయడంలో లోపం</string>
+    <string name="ai_assistant_tips">ఏఐ అసిస్టెంట్ సూచనలు</string>
+    <string name="product_add_tips">మీ ఉత్పత్తికి స్పష్టమైన ఫోటో తీసుకోండి, తద్వారా ఏఐ దాన్ని గుర్తించగలదు. బార్కోడ్ స్కానర్ మరియు స్థాన సేవలు మీకు ఉత్పత్తులను త్వరగా మరియు ఖచ్చితంగా జోడించడంలో సహాయపడతాయి.</string>
 </resources>

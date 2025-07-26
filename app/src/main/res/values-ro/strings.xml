@@ -137,4 +137,6 @@
     <string name="manual_entry_error">Eroare la deschiderea introducerii manuale</string>
     <string name="dialog_display_error">Eroare la afișarea dialogului</string>
     <string name="product_check_error">Eroare la verificarea produsului</string>
+    <string name="ai_assistant_tips">Sfaturi de la asistentul AI</string>
+    <string name="product_add_tips">Faceți o fotografie clară a produsului dvs. pentru ca AI-ul să îl identifice. Scannerul de coduri de bare și serviciile de localizare vă vor ajuta să adăugați produse rapid și precis.</string>
 </resources>

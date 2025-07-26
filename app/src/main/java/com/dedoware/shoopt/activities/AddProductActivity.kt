@@ -57,6 +57,7 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.material.button.MaterialButton
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import kotlinx.coroutines.CoroutineScope
@@ -80,9 +81,9 @@ import kotlin.coroutines.resumeWithException
 
 class AddProductActivity : AppCompatActivity() {
     private lateinit var retrievedProductId: String
-    private lateinit var backImageButton: ImageButton
+    private lateinit var backImageButton: MaterialButton
     private lateinit var productPictureImageButton: ImageButton
-    private lateinit var saveProductImageButton: ImageButton
+    private lateinit var saveProductImageButton: MaterialButton
     private lateinit var productBarcodeEditText: EditText
     private lateinit var productNameEditText: EditText
     private lateinit var productPriceEditText: EditText
@@ -158,7 +159,7 @@ class AddProductActivity : AppCompatActivity() {
 
     private lateinit var loadingOverlay: View
 
-    private lateinit var scanBarcodeButton: ImageButton
+    private lateinit var scanBarcodeButton: MaterialButton
 
     private val loadingMessages = mutableListOf<String>()
     private val loadingMessagesMutex = Mutex()
@@ -1042,6 +1043,7 @@ class AddProductActivity : AppCompatActivity() {
         productPriceEditText = findViewById(R.id.product_price_ET)
         productUnitPriceEditText = findViewById(R.id.product_unit_price_ET)
         productShopAutoCompleteTextView = findViewById(R.id.shop_autocomplete)
+        scanBarcodeButton = findViewById(R.id.scan_barcode_IB)
     }
 
     private fun retrieveMainData(savedInstanceState: Bundle?) {

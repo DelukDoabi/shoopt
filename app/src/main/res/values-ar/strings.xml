@@ -137,4 +137,6 @@
     <string name="manual_entry_error">خطأ في فتح الإدخال اليدوي</string>
     <string name="dialog_display_error">خطأ في عرض مربع الحوار</string>
     <string name="product_check_error">خطأ في التحقق من المنتج</string>
+    <string name="ai_assistant_tips">نصائح مساعد الذكاء الاصطناعي</string>
+    <string name="product_add_tips">التقط صورة واضحة لمنتجك للسماح للذكاء الاصطناعي بالتعرف عليه. سيساعدك ماسح الباركود وخدمات الموقع على إضافة المنتجات بسرعة ودقة.</string>
 </resources>

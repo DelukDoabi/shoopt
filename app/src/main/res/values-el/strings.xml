@@ -137,4 +137,6 @@
     <string name="manual_entry_error">Σφάλμα κατά το άνοιγμα χειροκίνητης εισαγωγής</string>
     <string name="dialog_display_error">Σφάλμα εμφάνισης παραθύρου διαλόγου</string>
     <string name="product_check_error">Σφάλμα ελέγχου προϊόντος</string>
+    <string name="ai_assistant_tips">Συμβουλές βοηθού AI</string>
+    <string name="product_add_tips">Τραβήξτε μια καθαρή φωτογραφία του προϊόντος σας για να το αναγνωρίσει η AI. Ο σαρωτής γραμμικού κώδικα και οι υπηρεσίες τοποθεσίας θα σας βοηθήσουν να προσθέσετε προϊόντα γρήγορα και με ακρίβεια.</string>
 </resources>

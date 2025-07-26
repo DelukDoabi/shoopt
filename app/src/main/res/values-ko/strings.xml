@@ -137,4 +137,6 @@
     <string name="manual_entry_error">수동 입력을 열 수 없습니다</string>
     <string name="dialog_display_error">대화 상자를 표시할 수 없습니다</string>
     <string name="product_check_error">제품 확인 중 오류가 발생했습니다</string>
+    <string name="ai_assistant_tips">AI 도우미 팁</string>
+    <string name="product_add_tips">AI가 식별할 수 있도록 제품의 선명한 사진을 찍으세요. 바코드 스캐너와 위치 서비스를 사용하면 제품을 빠르고 정확하게 추가할 수 있습니다.</string>
 </resources>
