@@ -139,4 +139,8 @@
     <string name="product_check_error">उत्पाद तपासताना त्रुटी</string>
     <string name="ai_assistant_tips">एआय सहाय्यक टिप्स</string>
     <string name="product_add_tips">AI ला ओळखता यावी म्हणून आपल्या उत्पादनाची आणि त्याच्या किमतीची स्पष्ट छायाचित्र घ्या. बारकोड स्कॅनर आणि स्थान सेवा आपल्याला उत्पादने जलद आणि अचूकपणे जोडण्यास मदत करतील.</string>
+    <string name="shopping_cart_items">कार्टमधील उत्पादने</string>
+    <string name="empty_cart_message">तुमची कार्ट रिकामी आहे</string>
+    <string name="empty_cart_subtitle">तुमच्या खरेदीचे ट्रॅकिंग सुरू करण्यासाठी उत्पादने जोडा</string>
+    <string name="clear_cart">कार्ट रिकामी करा</string>
 </resources>

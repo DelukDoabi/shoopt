@@ -139,4 +139,8 @@
     <string name="product_check_error">பொருளை சரிபார்ப்பதில் பிழை</string>
     <string name="ai_assistant_tips">AI உதவியாளர் குறிப்புகள்</string>
     <string name="product_add_tips">AI அடையாளம் காண உங்கள் தயாரிப்பும் அதன் விலையும் தெளிவாக படம்பிடிக்கவும். பார்கோடு ஸ்கேனர் மற்றும் இடம் சேவைகள் உங்களை விரைவாகவும் துல்லியமாகவும் தயாரிப்புகளைச் சேர்க்க உதவும்.</string>
+    <string name="shopping_cart_items">வண்டியில் உள்ள பொருட்கள்</string>
+    <string name="empty_cart_message">உங்கள் வண்டி காலியாக உள்ளது</string>
+    <string name="empty_cart_subtitle">உங்கள் ஷாப்பிங்கை கண்காணிக்க பொருட்களைச் சேர்க்கவும்</string>
+    <string name="clear_cart">வண்டியை காலியாக்கவும்</string>
 </resources>

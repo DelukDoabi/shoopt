@@ -139,4 +139,8 @@
     <string name="product_check_error">ఉత్పత్తిని తనిఖీ చేయడంలో లోపం</string>
     <string name="ai_assistant_tips">ఏఐ అసిస్టెంట్ సూచనలు</string>
     <string name="product_add_tips">మీ ఉత్పత్తి మరియు దాని ధర యొక్క స్పష్టమైన ఫోటోను తీసుకోండి, తద్వారా AI దాన్ని గుర్తించగలదు. బార్కోడ్ స్కానర్ మరియు స్థాన సేవలు ఉత్పత్తులను త్వరగా మరియు ఖచ్చితంగా జోడించడంలో మీకు సహాయపడతాయి.</string>
+    <string name="shopping_cart_items">కార్ట్‌లోని ఉత్పత్తులు</string>
+    <string name="empty_cart_message">మీ కార్ట్ ఖాళీగా ఉంది</string>
+    <string name="empty_cart_subtitle">మీ షాపింగ్‌ను ట్రాక్ చేయడం ప్రారంభించడానికి ఉత్పత్తులను జోడించండి</string>
+    <string name="clear_cart">కార్ట్‌ను ఖాళీ చేయండి</string>
 </resources>

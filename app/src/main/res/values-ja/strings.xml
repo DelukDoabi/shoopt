@@ -139,4 +139,8 @@
     <string name="product_check_error">商品の確認中にエラーが発生しました</string>
     <string name="ai_assistant_tips">AIアシスタントのヒント</string>
     <string name="product_add_tips">商品の写真と価格をはっきりと撮影して、AIに識別させましょう。バーコードスキャナーと位置情報サービスを利用すると、商品を素早く正確に追加できます。</string>
+    <string name="shopping_cart_items">カート内の商品</string>
+    <string name="empty_cart_message">カートは空です</string>
+    <string name="empty_cart_subtitle">商品を追加してお買い物を始めましょう</string>
+    <string name="clear_cart">カートを空にする</string>
 </resources>

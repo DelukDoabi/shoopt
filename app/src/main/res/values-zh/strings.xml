@@ -139,4 +139,8 @@
     <string name="product_check_error">检查产品时出错</string>
     <string name="ai_assistant_tips">AI 助手提示</string>
     <string name="product_add_tips">拍摄清晰的产品照片和价格，让 AI 进行识别。条形码扫描器和位置服务将帮助您快速准确地添加产品。</string>
+    <string name="shopping_cart_items">购物车商品</string>
+    <string name="empty_cart_message">您的购物车为空</string>
+    <string name="empty_cart_subtitle">添加商品以开始跟踪您的购物</string>
+    <string name="clear_cart">清空购物车</string>
 </resources>

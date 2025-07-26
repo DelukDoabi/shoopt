@@ -139,4 +139,8 @@
     <string name="product_check_error">Errore nel controllo del prodotto</string>
     <string name="ai_assistant_tips">Consigli dell\'assistente IA</string>
     <string name="product_add_tips">Scatta una foto chiara del tuo prodotto e del suo prezzo per permettere all\'IA di identificarlo. Lo scanner di codici a barre e i servizi di localizzazione ti aiuteranno ad aggiungere prodotti in modo rapido e preciso.</string>
+    <string name="shopping_cart_items">Articoli nel carrello</string>
+    <string name="empty_cart_message">Il tuo carrello è vuoto</string>
+    <string name="empty_cart_subtitle">Aggiungi prodotti per iniziare a monitorare i tuoi acquisti</string>
+    <string name="clear_cart">Svuota carrello</string>
 </resources>

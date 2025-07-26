@@ -139,4 +139,8 @@
     <string name="product_check_error">Fel vid kontroll av produkt</string>
     <string name="ai_assistant_tips">AI-assistenttips</string>
     <string name="product_add_tips">Ta en tydlig bild av din produkt och dess pris så att AI kan identifiera den. Streckkodsläsaren och platstjänster hjälper dig att lägga till produkter snabbt och korrekt.</string>
+    <string name="shopping_cart_items">Varukorgsartiklar</string>
+    <string name="empty_cart_message">Din varukorg är tom</string>
+    <string name="empty_cart_subtitle">Lägg till produkter för att börja spåra dina inköp</string>
+    <string name="clear_cart">Töm varukorgen</string>
 </resources>

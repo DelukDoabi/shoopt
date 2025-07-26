@@ -139,4 +139,8 @@
     <string name="product_check_error">Ürün kontrol edilirken hata</string>
     <string name="ai_assistant_tips">Yapay Zeka Asistanı İpuçları</string>
     <string name="product_add_tips">Ürününüzün ve fiyatının net bir fotoğrafını çekin, böylece yapay zeka onu tanımlayabilir. Barkod tarayıcı ve konum servisleri ürünleri hızlı ve doğru şekilde eklemenize yardımcı olacaktır.</string>
+    <string name="shopping_cart_items">Sepet Ürünleri</string>
+    <string name="empty_cart_message">Sepetiniz boş</string>
+    <string name="empty_cart_subtitle">Alışverişinizi takip etmeye başlamak için ürün ekleyin</string>
+    <string name="clear_cart">Sepeti temizle</string>
 </resources>

@@ -139,4 +139,8 @@
     <string name="product_check_error">Błąd podczas sprawdzania produktu</string>
     <string name="ai_assistant_tips">Wskazówki asystenta AI</string>
     <string name="product_add_tips">Zrób wyraźne zdjęcie swojego produktu oraz jego ceny, aby AI mogła go zidentyfikować. Skaner kodów kreskowych i usługi lokalizacyjne pomogą Ci szybko i dokładnie dodawać produkty.</string>
+    <string name="shopping_cart_items">Pozycje w koszyku</string>
+    <string name="empty_cart_message">Twój koszyk jest pusty</string>
+    <string name="empty_cart_subtitle">Dodaj produkty, aby rozpocząć śledzenie zakupów</string>
+    <string name="clear_cart">Wyczyść koszyk</string>
 </resources>

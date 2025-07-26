@@ -139,4 +139,8 @@
     <string name="product_check_error">ਉਤਪਾਦ ਦੀ ਜਾਂਚ ਕਰਨ ਵਿੱਚ ਤਰੁੱਟੀ</string>
     <string name="ai_assistant_tips">ਏਆਈ ਸਹਾਇਕ ਸੁਝਾਵ</string>
     <string name="product_add_tips">AI ਨੂੰ ਪਛਾਣ ਲਈ ਆਪਣੇ ਉਤਪਾਦ ਅਤੇ ਇਸਦੀ ਕੀਮਤ ਦੀ ਸਾਫ਼ ਤਸਵੀਰ ਲਵੋ। ਬਾਰਕੋਡ ਸਕੈਨਰ ਅਤੇ ਸਥਾਨ ਸੇਵਾਵਾਂ ਤੁਹਾਨੂੰ ਉਤਪਾਦ ਤੇਜ਼ੀ ਅਤੇ ਸਹੀ ਤਰੀਕੇ ਨਾਲ ਜੋੜਨ ਵਿੱਚ ਮਦਦ ਕਰਨਗੀਆਂ।</string>
+    <string name="shopping_cart_items">ਕਾਰਟ ਆਈਟਮ</string>
+    <string name="empty_cart_message">ਤੁਹਾਡਾ ਕਾਰਟ ਖਾਲੀ ਹੈ</string>
+    <string name="empty_cart_subtitle">ਆਪਣੀ ਖਰੀਦਦਾਰੀ ਦੀ ਟਰੈਕਿੰਗ ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਉਤਪਾਦ ਸ਼ਾਮਲ ਕਰੋ</string>
+    <string name="clear_cart">ਕਾਰਟ ਸਾਫ਼ ਕਰੋ</string>
 </resources>

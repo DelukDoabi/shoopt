@@ -139,4 +139,8 @@
     <string name="product_check_error">Fehler beim Überprüfen des Produkts</string>
     <string name="ai_assistant_tips">KI-Assistent-Tipps</string>
     <string name="product_add_tips">Machen Sie ein klares Foto von Ihrem Produkt und dessen Preis, damit die KI es erkennen kann. Der Barcode-Scanner und die Standortdienste helfen Ihnen, Produkte schnell und genau hinzuzufügen.</string>
+    <string name="shopping_cart_items">Warenkorb-Artikel</string>
+    <string name="empty_cart_message">Ihr Warenkorb ist leer</string>
+    <string name="empty_cart_subtitle">Fügen Sie Produkte hinzu, um Ihren Einkauf zu verfolgen</string>
+    <string name="clear_cart">Warenkorb leeren</string>
 </resources>
