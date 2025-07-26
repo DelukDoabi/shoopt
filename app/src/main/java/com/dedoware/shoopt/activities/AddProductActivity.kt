@@ -1085,9 +1085,14 @@ class AddProductActivity : AppCompatActivity() {
         productUnitPriceEditText.setText(if (unitPrice != 0.0) unitPrice.toString() else "")
 
         if (!pictureUrl.isNullOrEmpty()) {
+            // Set scale type to centerCrop for consistent image display
+            productPictureImageButton.scaleType = ImageView.ScaleType.CENTER_CROP
+
+            // Use consistent sizing with displayProductPictureOnImageButton method
             Glide.with(this)
                 .load(pictureUrl)
-                .override(300, 300)
+                .override(560, 560) // Target size for the doubled container (280dp * 2 for density)
+                .centerCrop()
                 .into(productPictureImageButton)
         } else {
             Log.w("AddProductActivity", "Missing pictureUrl")
