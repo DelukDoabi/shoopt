@@ -138,5 +138,5 @@
     <string name="dialog_display_error">Lỗi hiển thị hộp thoại</string>
     <string name="product_check_error">Lỗi khi kiểm tra sản phẩm</string>
     <string name="ai_assistant_tips">Mẹo từ trợ lý AI</string>
-    <string name="product_add_tips">Chụp một bức ảnh rõ ràng về sản phẩm của bạn để AI nhận diện. Máy quét mã vạch và dịch vụ vị trí sẽ giúp bạn thêm sản phẩm nhanh chóng và chính xác.</string>
+    <string name="product_add_tips">Chụp một bức ảnh rõ ràng về sản phẩm và giá của bạn để AI nhận diện. Máy quét mã vạch và dịch vụ vị trí sẽ giúp bạn thêm sản phẩm nhanh chóng và chính xác.</string>
 </resources>

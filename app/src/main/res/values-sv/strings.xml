@@ -138,5 +138,5 @@
     <string name="dialog_display_error">Fel vid visning av dialogruta</string>
     <string name="product_check_error">Fel vid kontroll av produkt</string>
     <string name="ai_assistant_tips">AI-assistenttips</string>
-    <string name="product_add_tips">Ta en tydlig bild av din produkt så att AI kan identifiera den. Streckkodsläsaren och platstjänster hjälper dig att lägga till produkter snabbt och korrekt.</string>
+    <string name="product_add_tips">Ta en tydlig bild av din produkt och dess pris så att AI kan identifiera den. Streckkodsläsaren och platstjänster hjälper dig att lägga till produkter snabbt och korrekt.</string>
 </resources>

@@ -138,5 +138,5 @@
     <string name="dialog_display_error">Errore nella visualizzazione del dialogo</string>
     <string name="product_check_error">Errore nel controllo del prodotto</string>
     <string name="ai_assistant_tips">Consigli dell\'assistente IA</string>
-    <string name="product_add_tips">Scatta una foto chiara del tuo prodotto per permettere all\'IA di identificarlo. Lo scanner di codici a barre e i servizi di localizzazione ti aiuteranno ad aggiungere prodotti in modo rapido e preciso.</string>
+    <string name="product_add_tips">Scatta una foto chiara del tuo prodotto e del suo prezzo per permettere all'IA di identificarlo. Lo scanner di codici a barre e i servizi di localizzazione ti aiuteranno ad aggiungere prodotti in modo rapido e preciso.</string>
 </resources>

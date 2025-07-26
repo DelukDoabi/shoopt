@@ -138,5 +138,5 @@
     <string name="dialog_display_error">ダイアログの表示中にエラーが発生しました</string>
     <string name="product_check_error">商品の確認中にエラーが発生しました</string>
     <string name="ai_assistant_tips">AIアシスタントのヒント</string>
-    <string name="product_add_tips">製品の鮮明な写真を撮影して、AIに識別させてください。バーコードスキャナーと位置情報サービスを使用すると、製品を素早く正確に追加できます。</string>
+    <string name="product_add_tips">商品の写真と価格をはっきりと撮影して、AIに識別させましょう。バーコードスキャナーと位置情報サービスを利用すると、商品を素早く正確に追加できます。</string>
 </resources>

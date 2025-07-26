@@ -138,5 +138,5 @@
     <string name="dialog_display_error">Fehler beim Anzeigen des Dialogs</string>
     <string name="product_check_error">Fehler beim Überprüfen des Produkts</string>
     <string name="ai_assistant_tips">KI-Assistent-Tipps</string>
-    <string name="product_add_tips">Machen Sie ein klares Foto Ihres Produkts, damit die KI es identifizieren kann. Der Barcode-Scanner und die Ortungsdienste helfen Ihnen, Produkte schnell und präzise hinzuzufügen.</string>
+    <string name="product_add_tips">Machen Sie ein klares Foto von Ihrem Produkt und dessen Preis, damit die KI es erkennen kann. Der Barcode-Scanner und die Standortdienste helfen Ihnen, Produkte schnell und genau hinzuzufügen.</string>
 </resources>
