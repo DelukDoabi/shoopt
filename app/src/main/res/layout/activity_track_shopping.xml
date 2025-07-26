@@ -80,7 +80,9 @@
                 android:layout_marginTop="@dimen/margin_large"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="8dp"
-                app:cardBackgroundColor="@color/white"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorPrimaryVariant"
                 app:layout_constraintTop_toBottomOf="@id/top_bar"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
@@ -107,14 +109,15 @@
                             android:text="0"
                             android:textSize="28sp"
                             android:textStyle="bold"
-                            android:textColor="@color/main_palette_old_lavender_variant" />
+                            android:textColor="?attr/colorPrimary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/products"
                             android:textSize="14sp"
-                            android:textColor="#666666"
+                            android:textColor="?attr/colorOnSurface"
+                            android:alpha="0.7"
                             android:textStyle="normal" />
                     </LinearLayout>
 
@@ -122,7 +125,8 @@
                     <View
                         android:layout_width="1dp"
                         android:layout_height="50dp"
-                        android:background="#E0E0E0"
+                        android:background="?attr/colorPrimaryVariant"
+                        android:alpha="0.3"
                         android:layout_marginHorizontal="16dp" />
 
                     <!-- Total Price Section -->
@@ -140,14 +144,15 @@
                             android:text="0.00€"
                             android:textSize="28sp"
                             android:textStyle="bold"
-                            android:textColor="@color/main_palette_old_lavender_variant" />
+                            android:textColor="?attr/colorPrimary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/total"
                             android:textSize="14sp"
-                            android:textColor="#666666"
+                            android:textColor="?attr/colorOnSurface"
+                            android:alpha="0.7"
                             android:textStyle="normal" />
                     </LinearLayout>
                 </LinearLayout>
@@ -162,7 +167,9 @@
                 android:layout_marginBottom="@dimen/margin_medium"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="8dp"
-                app:cardBackgroundColor="@color/white"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorPrimaryVariant"
                 app:layout_constraintTop_toBottomOf="@id/cart_summary_card"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -190,7 +197,7 @@
                             android:text="@string/shopping_cart_items"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="#333333" />
+                            android:textColor="?attr/colorOnSurface" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/empty_cart_list_IB"
@@ -209,7 +216,7 @@
                             app:cornerRadius="20dp"
                             app:strokeColor="#FF5722"
                             app:strokeWidth="1dp"
-                            android:backgroundTint="@color/white"
+                            android:backgroundTint="?attr/colorSurface"
                             app:rippleColor="#33FF5722"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:contentDescription="@string/clear_shopping_cart"
@@ -221,7 +228,8 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#F0F0F0"
+                        android:background="?attr/colorPrimaryVariant"
+                        android:alpha="0.3"
                         android:layout_marginHorizontal="20dp" />
 
                     <!-- Products RecyclerView -->
@@ -250,7 +258,8 @@
                             android:layout_width="80dp"
                             android:layout_height="80dp"
                             android:src="@drawable/shoopt_add_product"
-                            android:alpha="0.3"
+                            android:alpha="0.5"
+                            app:tint="?attr/colorPrimary"
                             android:contentDescription="@string/empty_cart" />
 
                         <TextView
@@ -258,7 +267,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/empty_cart_message"
                             android:textSize="16sp"
-                            android:textColor="#666666"
+                            android:textColor="?attr/colorOnSurface"
                             android:textStyle="bold"
                             android:layout_marginTop="16dp"
                             android:gravity="center" />
@@ -268,7 +277,8 @@
                             android:layout_height="wrap_content"
                             android:text="@string/empty_cart_subtitle"
                             android:textSize="14sp"
-                            android:textColor="#999999"
+                            android:textColor="?attr/colorOnSurface"
+                            android:alpha="0.7"
                             android:layout_marginTop="8dp"
                             android:gravity="center" />
                     </LinearLayout>
@@ -289,6 +299,10 @@
                 app:iconGravity="textStart"
                 app:iconPadding="8dp"
                 app:iconSize="18dp"
+                android:backgroundTint="?attr/colorPrimary"
+                app:rippleColor="@color/white"
+                android:textColor="?attr/colorOnPrimary"
+                app:iconTint="?attr/colorOnPrimary"
                 android:layout_marginBottom="@dimen/margin_large"
                 app:layout_constraintWidth_percent="0.85"
                 app:layout_constraintBottom_toBottomOf="parent"
