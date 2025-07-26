@@ -1,99 +1,385 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    tools:context=".activities.UpdateShoppingListActivity">
 
-    <!-- Back Button -->
-    <ImageButton
-        android:id="@+id/back_IB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@null"
-        android:contentDescription="@string/back"
-        android:src="@drawable/shoopt_back" />
-
-    <!-- First Shopping List Header -->
-    <TextView
-        android:id="@+id/main_shopping_list_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/back_IB"
-        android:padding="16dp"
-        android:text="@string/main_shopping_list"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <!-- ImageButton pour convertir en Product Track -->
-    <ImageButton
-        android:id="@+id/convert_to_product_track_IB"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="16dp"
-        android:layout_below="@id/back_IB"
-        android:background="@drawable/ic_convert_to_product_track_bg"
-        android:contentDescription="@string/convert_to_product_track"
-        android:src="@drawable/ic_convert_product_track"
-        android:elevation="4dp" />
-
-    <!-- Bouton pour vider la liste principale -->
-    <ImageButton
-        android:id="@+id/empty_main_list_IB"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_toStartOf="@id/convert_to_product_track_IB"
-        android:layout_marginEnd="16dp"
-        android:layout_below="@id/back_IB"
-        android:background="@drawable/main_rounded_button"
-        android:contentDescription="@string/empty_cart"
-        android:src="@drawable/shoopt_empty_cart"
-        android:elevation="4dp" />
-
-    <!-- First Shopping List Text Edit Area -->
-    <EditText
-        android:id="@+id/main_shopping_list_edit_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/main_shopping_list_header"
-        android:gravity="top"
-        android:minLines="2"
-        android:maxLines="6"
-        android:padding="16dp"
-        android:scrollbars="vertical"
-        android:textSize="16sp"
-        android:hint="@string/enter_items_here" />
-
-    <!-- RecyclerView pour afficher les produits convertis - s'étend maintenant jusqu'au bas de l'écran -->
-    <FrameLayout
-        android:id="@+id/product_track_container"
+    <!-- Background gradient - consistent with other screens -->
+    <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/main_shopping_list_edit_text"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/scrollable_container_background"
-        android:elevation="2dp">
+        android:background="@drawable/login_gradient_background" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/product_track_recycler_view"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"
-            android:fadingEdgeLength="24dp"
-            android:requiresFadingEdge="vertical"
-            android:scrollbars="vertical" />
-    </FrameLayout>
+            android:layout_height="wrap_content"
+            android:padding="@dimen/screen_padding">
 
-</RelativeLayout>
+            <!-- Top Bar with back button - consistent with other screens -->
+            <LinearLayout
+                android:id="@+id/top_bar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/margin_large"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/back_IB"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    app:icon="@drawable/shoopt_back"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconSize="24dp"
+                    app:cornerRadius="21dp"
+                    app:strokeColor="@color/back_button_stroke"
+                    app:strokeWidth="1dp"
+                    app:iconTint="@color/back_button_icon"
+                    android:backgroundTint="@color/back_button_background"
+                    app:rippleColor="@color/back_button_ripple"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:contentDescription="@string/back" />
+
+                <TextView
+                    android:id="@+id/screen_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/update_shopping_list"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_xlarge"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_marginHorizontal="16dp"
+                    android:autoSizeTextType="uniform"
+                    android:autoSizeMinTextSize="18sp"
+                    android:autoSizeMaxTextSize="24sp" />
+
+                <!-- Empty cart button for easy access -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/empty_main_list_IB"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    app:icon="@drawable/shoopt_empty_cart"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconSize="20dp"
+                    app:cornerRadius="21dp"
+                    app:strokeColor="#FF5722"
+                    app:strokeWidth="1dp"
+                    app:iconTint="#FF5722"
+                    android:backgroundTint="@color/back_button_background"
+                    app:rippleColor="#33FF5722"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:contentDescription="@string/clear_shopping_cart" />
+            </LinearLayout>
+
+            <!-- Main Input Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/input_card"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_large"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/main_palette_old_lavender_variant"
+                app:layout_constraintWidth_percent="@dimen/card_width_percent"
+                app:layout_constraintTop_toBottomOf="@id/top_bar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/card_padding">
+
+                    <!-- Header with icon -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/shoop_update_shopping_list"
+                            app:tint="@color/main_palette_old_lavender_variant"
+                            android:contentDescription="@string/update_shopping_list" />
+
+                        <TextView
+                            android:id="@+id/main_shopping_list_header"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/main_shopping_list"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="?attr/colorOnSurface"
+                            android:layout_marginStart="12dp" />
+                    </LinearLayout>
+
+                    <!-- Enhanced text input with character counter -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/shopping_list_input_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:boxStrokeColor="@color/main_palette_old_lavender_variant"
+                        app:hintTextColor="@color/main_palette_old_lavender_variant"
+                        app:startIconDrawable="@drawable/ic_product"
+                        app:startIconTint="@color/main_palette_old_lavender_variant"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="2000"
+                        app:helperText="@string/shopping_list_input_help"
+                        app:helperTextTextColor="@color/main_palette_old_lavender_variant"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/main_shopping_list_edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/shopping_list_input_hint"
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:gravity="top"
+                            android:minLines="4"
+                            android:maxLines="8"
+                            android:scrollbars="vertical"
+                            android:textSize="16sp"
+                            android:lineSpacingExtra="4dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Action button with improved design -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/convert_to_product_track_IB"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:text="@string/convert_to_product_track"
+                        android:textAllCaps="false"
+                        android:textSize="@dimen/text_medium"
+                        android:textStyle="bold"
+                        app:cornerRadius="12dp"
+                        app:icon="@drawable/ic_convert_product_track"
+                        app:iconGravity="textStart"
+                        app:iconPadding="8dp"
+                        app:iconSize="18dp"
+                        android:backgroundTint="@color/main_palette_old_lavender_variant"
+                        android:textColor="@color/white"
+                        app:iconTint="@color/white"
+                        app:rippleColor="@color/white" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Tips Card for better UX -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/tips_card"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#1A000000"
+                app:strokeColor="@color/main_palette_old_lavender_variant"
+                app:strokeWidth="1dp"
+                android:alpha="0.9"
+                app:layout_constraintWidth_percent="@dimen/card_width_percent"
+                app:layout_constraintTop_toBottomOf="@id/input_card"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/shopping_list_tips_title"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:drawableStartCompat="@drawable/ic_tip"
+                        android:drawablePadding="8dp"
+                        app:drawableTint="@color/main_palette_old_lavender_variant"
+                        android:gravity="start|center_vertical"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/shopping_list_tips_content"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:alpha="0.9"
+                        android:lineSpacingExtra="2dp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Products List Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/products_list_card"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginBottom="@dimen/margin_large"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/main_palette_old_lavender_variant"
+                app:layout_constraintWidth_percent="@dimen/card_width_percent"
+                app:layout_constraintTop_toBottomOf="@id/tips_card"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHeight_min="300dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <!-- List Header -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        android:paddingBottom="12dp"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/shoopt_track_shopping"
+                            app:tint="@color/main_palette_old_lavender_variant"
+                            android:contentDescription="@string/product_list" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/converted_products_list"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="?attr/colorOnSurface"
+                            android:layout_marginStart="8dp" />
+
+                        <!-- Item count badge -->
+                        <TextView
+                            android:id="@+id/product_count_badge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:background="@drawable/pill_background"
+                            android:backgroundTint="@color/main_palette_old_lavender_variant"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="4dp"
+                            android:minWidth="24dp"
+                            android:gravity="center" />
+                    </LinearLayout>
+
+                    <!-- Divider -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/main_palette_old_lavender_variant"
+                        android:alpha="0.3"
+                        android:layout_marginHorizontal="20dp" />
+
+                    <!-- Products RecyclerView -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/product_track_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:padding="16dp"
+                        android:clipToPadding="false"
+                        android:overScrollMode="never"
+                        android:scrollbars="none" />
+
+                    <!-- Empty State -->
+                    <LinearLayout
+                        android:id="@+id/empty_state_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="40dp"
+                        android:visibility="visible">
+
+                        <ImageView
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:src="@drawable/shoop_update_shopping_list"
+                            android:alpha="0.5"
+                            app:tint="@color/main_palette_old_lavender_variant"
+                            android:contentDescription="@string/empty_list" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/no_products_converted"
+                            android:textSize="16sp"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textStyle="bold"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/add_products_to_see_them_here"
+                            android:textSize="14sp"
+                            android:textColor="?attr/colorOnSurface"
+                            android:alpha="0.7"
+                            android:layout_marginTop="8dp"
+                            android:gravity="center" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Floating Action Button for quick actions -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/paste_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:text="@string/paste_list"
+        android:textAllCaps="false"
+        app:icon="@drawable/ic_paste"
+        app:iconTint="@color/white"
+        android:backgroundTint="@color/main_palette_old_lavender_variant"
+        android:textColor="@color/white"
+        app:rippleColor="@color/white"
+        android:contentDescription="@string/paste_shopping_list" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

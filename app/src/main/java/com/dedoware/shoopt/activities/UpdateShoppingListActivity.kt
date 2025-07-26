@@ -7,7 +7,6 @@ import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -25,6 +24,8 @@ import com.dedoware.shoopt.persistence.LocalShoppingListRepository
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
@@ -34,11 +35,11 @@ import kotlinx.coroutines.withContext
 import java.util.ArrayList
 
 class UpdateShoppingListActivity : AppCompatActivity() {
-    private lateinit var mainShoppingListEditText: EditText
-    private lateinit var backImageButton: ImageButton
+    private lateinit var mainShoppingListEditText: TextInputEditText
+    private lateinit var backButton: MaterialButton
     private lateinit var shoppingListRepository: IShoppingListRepository
-    private lateinit var convertToProductTrackButton: ImageButton
-    private lateinit var emptyMainListButton: ImageButton
+    private lateinit var convertToProductTrackButton: MaterialButton
+    private lateinit var emptyMainListButton: MaterialButton
     private lateinit var productTrackRecyclerView: RecyclerView
     private lateinit var productTrackAdapter: ProductTrackAdapter
     private val shoppingItemList = mutableListOf<CartItem>()
@@ -83,7 +84,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                 CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
                 CrashlyticsManager.logException(e)
 
-                Toast.makeText(this, "Erreur lors de l'initialisation de l'application", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.app_loading_error), Toast.LENGTH_SHORT).show()
                 finish()
                 return
             }
@@ -102,7 +103,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                 CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
                 CrashlyticsManager.logException(e)
 
-                Toast.makeText(this, "Erreur lors de l'initialisation de l'interface", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.dialog_display_error), Toast.LENGTH_SHORT).show()
             }
 
             try {
@@ -245,11 +246,11 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                 CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
                 CrashlyticsManager.logException(e)
 
-                Toast.makeText(this, "Erreur lors du chargement de la liste", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.shopping_list_open_error), Toast.LENGTH_SHORT).show()
             }
 
-            backImageButton = findViewById(R.id.back_IB)
-            backImageButton.setOnClickListener {
+            backButton = findViewById(R.id.back_IB)
+            backButton.setOnClickListener {
                 finish()
             }
         } catch (e: Exception) {
@@ -260,7 +261,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
             CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
             CrashlyticsManager.logException(e)
 
-            Toast.makeText(this, "Une erreur est survenue lors du démarrage de l'application", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.unexpected_error), Toast.LENGTH_LONG).show()
             finish()
         }
     }
