@@ -1022,15 +1022,13 @@ class AddProductActivity : AppCompatActivity() {
         val options = Options()
         options.inSampleSize = 10
 
-        val (productPictureOrientation, productPictureBitmap) = getProductPictureBitmap(
-            options
-        )
+        val (productPictureOrientation, productPictureBitmap) = getProductPictureBitmap(options)
+
+        // Change scale type to centerCrop when displaying a taken picture
+        productPictureImageButton.scaleType = ImageView.ScaleType.CENTER_CROP
 
         productPictureImageButton.setImageBitmap(
-            rotateProductPictureBitmap(
-                productPictureOrientation,
-                productPictureBitmap
-            )
+            rotateProductPictureBitmap(productPictureOrientation, productPictureBitmap)
         )
     }
 
