@@ -1,5 +1,7 @@
 package com.dedoware.shoopt.activities
 
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -28,6 +30,7 @@ import com.dedoware.shoopt.persistence.ShooptRoomDatabase
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -47,6 +50,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
     private lateinit var productTrackAdapter: ProductTrackAdapter
     private lateinit var emptyStateContainer: LinearLayout
     private lateinit var productCountBadge: TextView
+    private lateinit var pasteFab: ExtendedFloatingActionButton
     private val shoppingItemList = mutableListOf<CartItem>()
     private val handler = Handler(Looper.getMainLooper())
     private var runnable: Runnable = Runnable { }
@@ -100,6 +104,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                 productTrackRecyclerView = findViewById(R.id.product_track_recycler_view)
                 emptyStateContainer = findViewById(R.id.empty_state_container)
                 productCountBadge = findViewById(R.id.product_count_badge)
+                pasteFab = findViewById(R.id.paste_fab)
 
                 productTrackAdapter = ProductTrackAdapter(shoppingItemList)
                 productTrackRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -107,6 +112,9 @@ class UpdateShoppingListActivity : AppCompatActivity() {
 
                 // Initial empty state update
                 updateEmptyState()
+
+                // Setup paste FAB functionality
+                setupPasteFunctionality()
             } catch (e: Exception) {
                 CrashlyticsManager.log("Erreur lors de l'initialisation des composants d'interface: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "ui_components_init")
@@ -324,6 +332,126 @@ class UpdateShoppingListActivity : AppCompatActivity() {
             .show()
     }
 
+    private fun setupPasteFunctionality() {
+        try {
+            pasteFab.setOnClickListener {
+                try {
+                    val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+
+                    if (clipboardManager.hasPrimaryClip()) {
+                        val clipData = clipboardManager.primaryClip
+                        if (clipData != null && clipData.itemCount > 0) {
+                            val clipText = clipData.getItemAt(0).text?.toString()
+
+                            if (!clipText.isNullOrBlank()) {
+                                // Get current text and append with proper formatting
+                                val currentText = mainShoppingListEditText.text.toString().trim()
+                                val newText = if (currentText.isEmpty()) {
+                                    clipText.trim()
+                                } else {
+                                    "$currentText\n${clipText.trim()}"
+                                }
+
+                                mainShoppingListEditText.setText(newText)
+                                mainShoppingListEditText.setSelection(newText.length) // Move cursor to end
+
+                                // Analytics for paste action
+                                val pasteParams = Bundle().apply {
+                                    putInt("pasted_length", clipText.length)
+                                    putInt("current_text_length", currentText.length)
+                                    putBoolean("had_existing_text", currentText.isNotEmpty())
+                                }
+                                AnalyticsManager.logEvent("shopping_list_pasted", pasteParams)
+
+                                // Show success feedback
+                                Toast.makeText(this, getString(R.string.paste_successful), Toast.LENGTH_SHORT).show()
+
+                                // Optionally vibrate for haptic feedback (if permission available)
+                                try {
+                                    @Suppress("DEPRECATION")
+                                    (getSystemService(Context.VIBRATOR_SERVICE) as? android.os.Vibrator)?.vibrate(50)
+                                } catch (e: Exception) {
+                                    // Ignore vibration errors
+                                }
+                            } else {
+                                Toast.makeText(this, getString(R.string.clipboard_empty), Toast.LENGTH_SHORT).show()
+                            }
+                        } else {
+                            Toast.makeText(this, getString(R.string.clipboard_empty), Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        Toast.makeText(this, getString(R.string.clipboard_empty), Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    CrashlyticsManager.log("Erreur lors du collage depuis le presse-papiers: ${e.message ?: "Message non disponible"}")
+                    CrashlyticsManager.setCustomKey("error_location", "paste_clipboard")
+                    CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                    CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                    CrashlyticsManager.logException(e)
+
+                    Toast.makeText(this, getString(R.string.paste_error), Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            // Update FAB visibility based on clipboard content
+            updatePasteFabVisibility()
+
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la configuration de la fonctionnalité de collage: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "setup_paste_functionality")
+            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+            CrashlyticsManager.logException(e)
+        }
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) {
+            // Check clipboard content when window gains focus (returning from other apps)
+            updatePasteFabVisibility()
+        }
+    }
+
+    /**
+     * Updates the visibility of the paste FAB based on clipboard content
+     */
+    private fun updatePasteFabVisibility() {
+        try {
+            val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val hasClipboardContent = clipboardManager.hasPrimaryClip() &&
+                clipboardManager.primaryClip?.itemCount ?: 0 > 0 &&
+                !clipboardManager.primaryClip?.getItemAt(0)?.text.isNullOrBlank()
+
+            // Show/hide FAB with smooth animation for better UX
+            if (hasClipboardContent) {
+                if (pasteFab.visibility != View.VISIBLE) {
+                    pasteFab.visibility = View.VISIBLE
+                    pasteFab.alpha = 0f
+                    pasteFab.animate()
+                        .alpha(1f)
+                        .setDuration(300)
+                        .start()
+                }
+            } else {
+                if (pasteFab.visibility == View.VISIBLE) {
+                    pasteFab.animate()
+                        .alpha(0f)
+                        .setDuration(200)
+                        .withEndAction {
+                            pasteFab.visibility = View.GONE
+                        }
+                        .start()
+                }
+            }
+        } catch (e: Exception) {
+            // If we can't check clipboard, keep FAB visible for safety
+            pasteFab.visibility = View.VISIBLE
+            CrashlyticsManager.log("Erreur lors de la vérification du presse-papiers: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.logException(e)
+        }
+    }
+
     private fun storeAndLoadShoppingList(shoppingListEditText: EditText, dbRefKey: String) {
         CoroutineScope(Dispatchers.Main).launch {
             val shoppingList = withContext(Dispatchers.IO) {
@@ -435,6 +563,9 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                 putInt("items_loaded", shoppingItemList.size)
             }
             AnalyticsManager.logEvent("shopping_list_resumed", resumeParams)
+
+            // Update paste FAB visibility when returning to screen
+            updatePasteFabVisibility()
         } catch (e: Exception) {
             CrashlyticsManager.log("Erreur lors de la reprise de l'activité: ${e.message ?: "Message non disponible"}")
             CrashlyticsManager.setCustomKey("error_location", "on_resume_activity")

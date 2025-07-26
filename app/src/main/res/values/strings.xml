@@ -186,4 +186,9 @@
     <!-- Additional missing string -->
     <string name="product_count_zero">0</string>
 
+    <!-- Paste Functionality -->
+    <string name="paste_successful">✅ List pasted successfully!</string>
+    <string name="clipboard_empty">📋 Clipboard is empty</string>
+    <string name="paste_error">❌ Error pasting from clipboard</string>
+
 </resources>
