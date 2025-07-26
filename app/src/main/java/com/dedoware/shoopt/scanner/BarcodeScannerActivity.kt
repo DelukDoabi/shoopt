@@ -67,6 +67,9 @@ class BarcodeScannerActivity : AppCompatActivity() {
         }
     }
 
+    // Add flag to prevent multiple detections
+    private var isProcessingBarcode = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_barcode_scanner)
@@ -215,12 +218,26 @@ class BarcodeScannerActivity : AppCompatActivity() {
     }
 
     private fun returnBarcodeResult(barcodeValue: String) {
+        // Prevent multiple calls
+        if (isProcessingBarcode) return
+        isProcessingBarcode = true
+
         runOnUiThread {
-            Toast.makeText(this, getString(R.string.barcode_detected), Toast.LENGTH_SHORT).show()
+            // Stop camera analysis immediately to prevent more detections
+            if (::barcodeScanner.isInitialized) {
+                barcodeScanner.close()
+            }
+
             val resultIntent = Intent().apply {
                 putExtra(BARCODE_RESULT, barcodeValue)
             }
             setResult(RESULT_OK, resultIntent)
+
+            // Cancel any existing toasts first
+            val toast = Toast.makeText(this, getString(R.string.barcode_detected), Toast.LENGTH_SHORT)
+            toast.show()
+
+            // Finish immediately without delay
             finish()
         }
     }
