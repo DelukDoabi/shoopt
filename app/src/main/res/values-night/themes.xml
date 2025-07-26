@@ -1,21 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base application theme. -->
+    <!-- Simple, clean dark theme using only essential Material Design colors -->
     <style name="Theme.Shoopt" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
-        <!-- Primary brand color. -->
+        <!-- Primary brand colors -->
         <item name="colorPrimary">@color/main_palette_rajah</item>
         <item name="colorPrimaryVariant">@color/main_palette_rajah_variant</item>
-        <item name="colorOnPrimary">@color/main_palette_rajah_on</item>
+        <item name="colorOnPrimary">@color/black</item>
 
-        <!-- Secondary brand color. -->
+        <!-- Secondary colors -->
         <item name="colorSecondary">@color/main_palette_old_lavender</item>
         <item name="colorSecondaryVariant">@color/main_palette_old_lavender_variant</item>
-        <item name="colorOnSecondary">@color/main_palette_old_lavender_on</item>
+        <item name="colorOnSecondary">@color/white</item>
 
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Surface colors - let Material Design handle dark variants -->
+        <item name="colorSurface">#242424</item>
+        <item name="colorOnSurface">@color/white</item>
 
-        <!-- Customize your theme here. -->
-        <item name="backgroundColor">@color/main_palette_old_lavender</item>
+        <!-- Background -->
+        <item name="android:colorBackground">#121212</item>
+        <item name="backgroundColor">#121212</item>
+
+        <!-- Status bar -->
+        <item name="android:statusBarColor">#121212</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <!-- System windows -->
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:fitsSystemWindows">true</item>
+
     </style>
 </resources>

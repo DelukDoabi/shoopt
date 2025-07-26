@@ -25,4 +25,5 @@
 
     <color name="overlay_background">#80000000</color>
     <color name="overlay_blur">#80FFFFFF</color>
+
 </resources>
