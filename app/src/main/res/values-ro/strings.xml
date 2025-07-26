@@ -139,4 +139,8 @@
     <string name="product_check_error">Eroare la verificarea produsului</string>
     <string name="ai_assistant_tips">Sfaturi de la asistentul AI</string>
     <string name="product_add_tips">Faceți o fotografie clară a produsului dvs. și a prețului acestuia pentru ca AI-ul să îl identifice. Scannerul de coduri de bare și serviciile de localizare vă vor ajuta să adăugați produse rapid și precis.</string>
+    <string name="shopping_cart_items">Articole în coș</string>
+    <string name="empty_cart_message">Coșul tău este gol</string>
+    <string name="empty_cart_subtitle">Adaugă produse pentru a începe să-ți urmărești cumpărăturile</string>
+    <string name="clear_cart">Golește coșul</string>
 </resources>

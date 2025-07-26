@@ -1,116 +1,328 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="?backgroundColor"
     android:fitsSystemWindows="true"
     tools:context=".activities.TrackShoppingActivity">
 
-    <!-- Top Bar with Back Button and Empty Cart Button -->
-    <RelativeLayout
+    <!-- Background gradient -->
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:background="@drawable/login_gradient_background" />
 
-        <ImageButton
-            android:id="@+id/back_IB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            android:background="@null"
-            android:contentDescription="@string/back"
-            android:src="@drawable/shoopt_back" />
-
-        <ImageButton
-            android:id="@+id/empty_cart_IB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/main_rounded_button"
-            android:contentDescription="@string/empty_cart"
-            android:padding="15dp"
-            android:src="@drawable/shoopt_empty_cart" />
-    </RelativeLayout>
-
-    <!-- Top Field: Cart Information -->
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/screen_padding">
+
+            <!-- Top Bar -->
+            <LinearLayout
+                android:id="@+id/top_bar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/margin_large"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/back_IB"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    app:icon="@drawable/shoopt_back"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconSize="24dp"
+                    app:cornerRadius="21dp"
+                    app:strokeColor="@color/back_button_stroke"
+                    app:strokeWidth="1dp"
+                    app:iconTint="@color/back_button_icon"
+                    android:backgroundTint="@color/back_button_background"
+                    app:rippleColor="@color/back_button_ripple"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:contentDescription="@string/back" />
+
+                <TextView
+                    android:id="@+id/screen_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/track_shopping"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_xlarge"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_marginHorizontal="16dp" />
+
+                <!-- Removed empty_cart_IB button for better UX -->
+                <View
+                    android:layout_width="42dp"
+                    android:layout_height="42dp" />
+            </LinearLayout>
+
+            <!-- Cart Summary Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cart_summary_card"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_large"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorPrimaryVariant"
+                app:layout_constraintTop_toBottomOf="@id/top_bar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="20dp"
+                    android:gravity="center_vertical">
+
+                    <!-- Products Count Section -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/cart_item_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            android:textColor="?attr/colorPrimary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/products"
+                            android:textSize="14sp"
+                            android:textColor="?attr/colorOnSurface"
+                            android:alpha="0.7"
+                            android:textStyle="normal" />
+                    </LinearLayout>
+
+                    <!-- Divider -->
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="50dp"
+                        android:background="?attr/colorPrimaryVariant"
+                        android:alpha="0.3"
+                        android:layout_marginHorizontal="16dp" />
+
+                    <!-- Total Price Section -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/total_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0.00€"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            android:textColor="?attr/colorPrimary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/total"
+                            android:textSize="14sp"
+                            android:textColor="?attr/colorOnSurface"
+                            android:alpha="0.7"
+                            android:textStyle="normal" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Products List Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/products_list_card"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginBottom="@dimen/margin_medium"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorPrimaryVariant"
+                app:layout_constraintTop_toBottomOf="@id/cart_summary_card"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/add_product_IB"
+                app:layout_constraintHeight_min="200dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <!-- List Header -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        android:paddingBottom="12dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/shopping_cart_items"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="?attr/colorOnSurface" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/empty_cart_list_IB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:text="@string/clear_cart"
+                            android:textAllCaps="false"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:textColor="#FF5722"
+                            app:icon="@drawable/shoopt_empty_cart"
+                            app:iconGravity="textStart"
+                            app:iconPadding="6dp"
+                            app:iconSize="16dp"
+                            app:iconTint="#FF5722"
+                            app:cornerRadius="20dp"
+                            app:strokeColor="#FF5722"
+                            app:strokeWidth="1dp"
+                            android:backgroundTint="?attr/colorSurface"
+                            app:rippleColor="#33FF5722"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:contentDescription="@string/clear_shopping_cart"
+                            android:paddingHorizontal="12dp"
+                            android:minWidth="0dp" />
+                    </LinearLayout>
+
+                    <!-- Divider -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?attr/colorPrimaryVariant"
+                        android:alpha="0.3"
+                        android:layout_marginHorizontal="20dp" />
+
+                    <!-- Products RecyclerView -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/product_list_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:padding="16dp"
+                        android:clipToPadding="false"
+                        android:overScrollMode="never"
+                        android:scrollbars="none" />
+
+                    <!-- Empty State -->
+                    <LinearLayout
+                        android:id="@+id/empty_state_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="40dp"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:src="@drawable/shoopt_add_product"
+                            android:alpha="0.5"
+                            app:tint="?attr/colorPrimary"
+                            android:contentDescription="@string/empty_cart" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/empty_cart_message"
+                            android:textSize="16sp"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textStyle="bold"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/empty_cart_subtitle"
+                            android:textSize="14sp"
+                            android:textColor="?attr/colorOnSurface"
+                            android:alpha="0.7"
+                            android:layout_marginTop="8dp"
+                            android:gravity="center" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Add Product Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/add_product_IB"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:text="@string/add_product"
+                android:textAllCaps="false"
+                android:textSize="@dimen/text_medium"
+                android:textStyle="bold"
+                app:cornerRadius="12dp"
+                app:icon="@drawable/shoopt_add_product"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                app:iconSize="18dp"
+                android:backgroundTint="?attr/colorPrimary"
+                app:rippleColor="@color/white"
+                android:textColor="?attr/colorOnPrimary"
+                app:iconTint="?attr/colorOnPrimary"
+                android:layout_marginBottom="@dimen/margin_large"
+                app:layout_constraintWidth_percent="0.85"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Floating Action Button for Quick Add (Alternative) -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_product_fab"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="start|center_vertical"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/shoopt_search_view_border">
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/shoopt_add_product"
+        android:contentDescription="@string/add_product"
+        app:tint="@color/white"
+        app:backgroundTint="@color/main_palette_old_lavender_variant"
+        android:visibility="gone" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/products"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="10dp" />
-
-        <TextView
-            android:id="@+id/cart_item_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            android:layout_marginEnd="10dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/total"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            android:layout_marginStart="80dp"
-            android:layout_marginEnd="10dp" />
-
-        <TextView
-            android:id="@+id/total_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0.00"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            android:layout_marginEnd="10dp" />
-    </LinearLayout>
-
-    <!-- Middle Field: Scrollable List of Products -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_weight="1"
-        android:id="@+id/product_list_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp" />
-
-    <!-- Bottom Field: Add Product Button -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginBottom="20dp">
-
-        <ImageButton
-            android:id="@+id/add_product_IB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@drawable/main_rounded_button"
-            android:contentDescription="@string/add_product"
-            android:padding="15dp"
-            android:src="@drawable/shoopt_add_product" />
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

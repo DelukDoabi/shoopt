@@ -139,4 +139,8 @@
     <string name="product_check_error">제품 확인 중 오류가 발생했습니다</string>
     <string name="ai_assistant_tips">AI 도우미 팁</string>
     <string name="product_add_tips">AI가 식별할 수 있도록 제품과 가격의 선명한 사진을 찍으세요. 바코드 스캐너와 위치 서비스가 제품을 빠르고 정확하게 추가하는 데 도움이 됩니다.</string>
+    <string name="shopping_cart_items">장바구니 항목</string>
+    <string name="empty_cart_message">장바구니가 비어 있습니다</string>
+    <string name="empty_cart_subtitle">쇼핑을 시작하려면 상품을 추가하세요</string>
+    <string name="clear_cart">장바구니 비우기</string>
 </resources>

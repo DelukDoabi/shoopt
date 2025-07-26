@@ -139,4 +139,8 @@
     <string name="product_check_error">Lỗi khi kiểm tra sản phẩm</string>
     <string name="ai_assistant_tips">Mẹo từ trợ lý AI</string>
     <string name="product_add_tips">Chụp một bức ảnh rõ ràng về sản phẩm và giá của bạn để AI nhận diện. Máy quét mã vạch và dịch vụ vị trí sẽ giúp bạn thêm sản phẩm nhanh chóng và chính xác.</string>
+    <string name="shopping_cart_items">Sản phẩm trong giỏ hàng</string>
+    <string name="empty_cart_message">Giỏ hàng của bạn đang trống</string>
+    <string name="empty_cart_subtitle">Thêm sản phẩm để bắt đầu theo dõi mua sắm của bạn</string>
+    <string name="clear_cart">Xóa giỏ hàng</string>
 </resources>

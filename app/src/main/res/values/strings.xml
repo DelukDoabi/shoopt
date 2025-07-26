@@ -146,4 +146,10 @@
     <string name="ai_assistant_tips">AI Assistant Tips</string>
     <string name="product_add_tips">Take a clear photo of your product and its price to let the AI identify it. The barcode scanner and location services will help you add products quickly and accurately.</string>
 
+    <!-- Track Shopping Screen Missing Strings -->
+    <string name="shopping_cart_items">Shopping Cart Items</string>
+    <string name="empty_cart_message">Your cart is empty</string>
+    <string name="empty_cart_subtitle">Add products to start tracking your shopping</string>
+    <string name="clear_cart">Clear Cart</string>
+
 </resources>

@@ -25,4 +25,11 @@
 
     <color name="overlay_background">#80000000</color>
     <color name="overlay_blur">#80FFFFFF</color>
+
+    <!-- Back button colors for light theme -->
+    <color name="back_button_background">#33FFFFFF</color> <!-- Semi-transparent white -->
+    <color name="back_button_stroke">#6E6268</color> <!-- Current gray stroke -->
+    <color name="back_button_icon">#6E6268</color> <!-- Current gray icon -->
+    <color name="back_button_ripple">#336E6268</color> <!-- Gray ripple -->
+
 </resources>

@@ -138,5 +138,9 @@
     <string name="dialog_display_error">Erreur d\'affichage de la boîte de dialogue</string>
     <string name="product_check_error">Erreur lors de la vérification du produit</string>
     <string name="ai_assistant_tips">Conseils de l\'assistant IA</string>
-    <string name="product_add_tips">Faites une photo claire de votre produit et de son prix pour que l'IA puisse l'identifier. Le scanner de code-barres et les services de localisation vous aideront à ajouter des produits rapidement et précisément.</string>
+    <string name="product_add_tips">Faites une photo claire de votre produit et de son prix pour que l\'IA puisse l\'identifier. Le scanner de code-barres et les services de localisation vous aideront à ajouter des produits rapidement et précisément.</string>
+    <string name="shopping_cart_items">Articles du panier</string>
+    <string name="empty_cart_message">Votre panier est vide</string>
+    <string name="empty_cart_subtitle">Ajoutez des produits pour commencer à suivre vos achats</string>
+    <string name="clear_cart">Vider le panier</string>
 </resources>

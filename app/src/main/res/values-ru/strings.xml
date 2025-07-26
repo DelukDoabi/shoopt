@@ -139,4 +139,8 @@
     <string name="product_check_error">Ошибка при проверке товара</string>
     <string name="ai_assistant_tips">Советы ИИ-ассистента</string>
     <string name="product_add_tips">Сделайте четкую фотографию вашего товара и его цены, чтобы ИИ смог его идентифицировать. Сканер штрих-кода и службы определения местоположения помогут вам быстро и точно добавлять товары.</string>
+    <string name="shopping_cart_items">Товары в корзине</string>
+    <string name="empty_cart_message">Ваша корзина пуста</string>
+    <string name="empty_cart_subtitle">Добавьте товары, чтобы начать отслеживать покупки</string>
+    <string name="clear_cart">Очистить корзину</string>
 </resources>

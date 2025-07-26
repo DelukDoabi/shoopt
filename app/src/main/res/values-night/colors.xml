@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark theme back button colors for excellent visibility -->
+    <color name="back_button_background">#4DFFFFFF</color> <!-- More opaque white background -->
+    <color name="back_button_stroke">#FFFFFF</color> <!-- Pure white stroke for contrast -->
+    <color name="back_button_icon">#FFFFFF</color> <!-- Pure white icon -->
+    <color name="back_button_ripple">#66FFFFFF</color> <!-- White ripple effect -->
+</resources>
+

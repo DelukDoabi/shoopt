@@ -139,4 +139,8 @@
     <string name="product_check_error">उत्पाद की जांच करने में त्रुटि</string>
     <string name="ai_assistant_tips">AI सहायक युक्तियाँ</string>
     <string name="product_add_tips">AI को पहचानने के लिए अपने उत्पाद और उसकी कीमत की स्पष्ट तस्वीर लें। बारकोड स्कैनर और स्थान सेवाएँ आपको उत्पाद जल्दी और सटीक रूप से जोड़ने में मदद करेंगी।</string>
+    <string name="shopping_cart_items">कार्ट में आइटम</string>
+    <string name="empty_cart_message">आपकी कार्ट खाली है</string>
+    <string name="empty_cart_subtitle">अपनी खरीदारी ट्रैक करने के लिए उत्पाद जोड़ें</string>
+    <string name="clear_cart">कार्ट साफ करें</string>
 </resources>

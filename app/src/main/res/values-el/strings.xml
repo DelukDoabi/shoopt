@@ -139,4 +139,8 @@
     <string name="product_check_error">Σφάλμα ελέγχου προϊόντος</string>
     <string name="ai_assistant_tips">Συμβουλές βοηθού AI</string>
     <string name="product_add_tips">Βγάλτε μια καθαρή φωτογραφία του προϊόντος και της τιμής του για να το αναγνωρίσει η AI. Ο σαρωτής barcode και οι υπηρεσίες τοποθεσίας θα σας βοηθήσουν να προσθέσετε προϊόντα γρήγορα και με ακρίβεια.</string>
+    <string name="shopping_cart_items">Είδη καλαθιού</string>
+    <string name="empty_cart_message">Το καλάθι σας είναι άδειο</string>
+    <string name="empty_cart_subtitle">Προσθέστε προϊόντα για να ξεκινήσετε την παρακολούθηση των αγορών σας</string>
+    <string name="clear_cart">Άδειασμα καλαθιού</string>
 </resources>
