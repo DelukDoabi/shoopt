@@ -146,7 +146,7 @@
     <string name="shopping_list_input_help">Entrez les produits séparés par des virgules, des lignes ou des tirets</string>
     <string name="shopping_list_input_hint">Lait, pain, 2 pommes, fromage…</string>
     <string name="shopping_list_tips_title">💡 Astuces rapides</string>
-    <string name="shopping_list_tips_content">• Utilisez des virgules, des lignes ou des tirets pour séparer les articles\n• Ajoutez des quantités comme "2 pommes" ou "3 bananes"\n• Collez des listes d'autres applications\n• Faites glisser les articles pour les supprimer</string>
+    <string name="shopping_list_tips_content">• Utilisez des virgules, des lignes ou des tirets pour séparer les articles\n• Ajoutez des quantités comme "2 pommes" ou "3 bananes"\n• Collez des listes d\'autres applications\n• Faites glisser les articles pour les supprimer</string>
     <string name="product_list">Liste de produits</string>
     <string name="converted_products_list">Produits convertis</string>
     <string name="empty_list">Liste vide</string>

@@ -157,7 +157,7 @@
     <!-- Fullscreen Products View -->
     <string name="close_fullscreen">ਪੂਰੀ ਸਕਰੀਨ ਬੰਦ ਕਰੋ</string>
     <string name="exit_fullscreen">ਪੂਰੀ ਸਕਰੀਨ ਤੋਂ ਬਾਹਰ ਆਓ</string>
-    <string name="expand_to_fullscreen">ਪੂਰੀ ਸਕਰੀਨ 'ਤੇ ਵਧਾਓ</string>
+    <string name="expand_to_fullscreen">ਪੂਰੀ ਸਕਰੀਨ \'ਤੇ ਵਧਾਓ</string>
     <string name="expand_products_list">ਸਮਾਨਾਂ ਦੀ ਲਿਸਟ ਵਧਾਓ</string>
     <string name="search_products">ਸਮਾਨ ਖੋਜੋ...</string>
     <string name="filter_products">ਸਮਾਨ ਫਿਲਟਰ ਕਰੋ</string>
