@@ -187,4 +187,12 @@
     <string name="start_adding_products_to_see_analysis">Comece a adicionar produtos para ver análises e insights detalhados</string>
     <string name="quick_add">Adição Rápida</string>
     <string name="quick_add_product">Adicionar Produto Rápido</string>
+    <string name="sort_products">Ordenar produtos</string>
+    <string name="sort_name_asc">Nome (A-Z)</string>
+    <string name="sort_name_desc">Nome (Z-A)</string>
+    <string name="sort_price_asc">Preço (menor para maior)</string>
+    <string name="sort_price_desc">Preço (maior para menor)</string>
+    <string name="sort_shop_asc">Loja (A-Z)</string>
+    <string name="sort_recent_first">Mais recentes primeiro</string>
+    <string name="sort_oldest_first">Mais antigos primeiro</string>
 </resources>

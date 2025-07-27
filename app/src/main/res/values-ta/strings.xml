@@ -186,4 +186,12 @@
     <string name="start_adding_products_to_see_analysis">Start adding products to see detailed analysis and insights</string>
     <string name="quick_add">Quick Add</string>
     <string name="quick_add_product">Quick Add Product</string>
+    <string name="sort_products">பொருட்களை வரிசைப்படுத்து</string>
+    <string name="sort_name_asc">பெயர் (A-Z)</string>
+    <string name="sort_name_desc">பெயர் (Z-A)</string>
+    <string name="sort_price_asc">விலை (குறைவாக முதல்)</string>
+    <string name="sort_price_desc">விலை (அதிகமாக முதல்)</string>
+    <string name="sort_shop_asc">கடை (A-Z)</string>
+    <string name="sort_recent_first">சமீபத்தியவை முதல்</string>
+    <string name="sort_oldest_first">பழையவை முதல்</string>
 </resources>

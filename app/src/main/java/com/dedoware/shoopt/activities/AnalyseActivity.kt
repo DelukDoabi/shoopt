@@ -274,17 +274,17 @@ class AnalyseActivity : AppCompatActivity() {
 
     private fun showSortFilterDialog() {
         val sortOptions = arrayOf(
-            "Name (A-Z)",
-            "Name (Z-A)",
-            "Price (Low to High)",
-            "Price (High to Low)",
-            "Shop (A-Z)",
-            "Recent First",
-            "Oldest First"
+            getString(R.string.sort_name_asc),
+            getString(R.string.sort_name_desc),
+            getString(R.string.sort_price_asc),
+            getString(R.string.sort_price_desc),
+            getString(R.string.sort_shop_asc),
+            getString(R.string.sort_recent_first),
+            getString(R.string.sort_oldest_first)
         )
 
         AlertDialog.Builder(this)
-            .setTitle("Sort Products")
+            .setTitle(getString(R.string.sort_products))
             .setItems(sortOptions) { _, which ->
                 sortProducts(which)
             }

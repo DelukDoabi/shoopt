@@ -186,4 +186,12 @@
     <string name="start_adding_products_to_see_analysis">Bắt đầu thêm sản phẩm để xem phân tích chi tiết và thông tin chi tiết</string>
     <string name="quick_add">Thêm Nhanh</string>
     <string name="quick_add_product">Thêm Sản Phẩm Nhanh</string>
+    <string name="sort_products">Sắp xếp sản phẩm</string>
+    <string name="sort_name_asc">Tên (A-Z)</string>
+    <string name="sort_name_desc">Tên (Z-A)</string>
+    <string name="sort_price_asc">Giá (thấp đến cao)</string>
+    <string name="sort_price_desc">Giá (cao đến thấp)</string>
+    <string name="sort_shop_asc">Cửa hàng (A-Z)</string>
+    <string name="sort_recent_first">Mới nhất trước</string>
+    <string name="sort_oldest_first">Cũ nhất trước</string>
 </resources>

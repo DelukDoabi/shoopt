@@ -186,4 +186,12 @@
     <string name="start_adding_products_to_see_analysis">Börja lägga till produkter för att se detaljerad analys och insikter</string>
     <string name="quick_add">Snabbt tillägg</string>
     <string name="quick_add_product">Snabbt tillägg av produkt</string>
+    <string name="sort_products">Sortera produkter</string>
+    <string name="sort_name_asc">Namn (A-Ö)</string>
+    <string name="sort_name_desc">Namn (Ö-A)</string>
+    <string name="sort_price_asc">Pris (låg till hög)</string>
+    <string name="sort_price_desc">Pris (hög till låg)</string>
+    <string name="sort_shop_asc">Butik (A-Ö)</string>
+    <string name="sort_recent_first">Senaste först</string>
+    <string name="sort_oldest_first">Äldst först</string>
 </resources>

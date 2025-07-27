@@ -188,4 +188,13 @@
     <string name="start_adding_products_to_see_analysis">詳細な分析と洞察を表示するには、製品を追加し始めてください</string>
     <string name="quick_add">クイック追加</string>
     <string name="quick_add_product">製品をクイック追加</string>
+    <!-- Sort Dialog strings -->
+    <string name="sort_products">商品の並び替え</string>
+    <string name="sort_name_asc">名前 (A-Z)</string>
+    <string name="sort_name_desc">名前 (Z-A)</string>
+    <string name="sort_price_asc">価格（安い順）</string>
+    <string name="sort_price_desc">価格（高い順）</string>
+    <string name="sort_shop_asc">店舗 (A-Z)</string>
+    <string name="sort_recent_first">新しい順</string>
+    <string name="sort_oldest_first">古い順</string>
 </resources>

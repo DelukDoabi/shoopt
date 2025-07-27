@@ -187,4 +187,12 @@
     <string name="start_adding_products_to_see_analysis">Начните добавлять товары, чтобы увидеть подробный анализ и инсайты</string>
     <string name="quick_add">Быстрое добавление</string>
     <string name="quick_add_product">Быстрое добавление товара</string>
+    <string name="sort_products">Сортировать товары</string>
+    <string name="sort_name_asc">Имя (А-Я)</string>
+    <string name="sort_name_desc">Имя (Я-А)</string>
+    <string name="sort_price_asc">Цена (по возрастанию)</string>
+    <string name="sort_price_desc">Цена (по убыванию)</string>
+    <string name="sort_shop_asc">Магазин (А-Я)</string>
+    <string name="sort_recent_first">Сначала новые</string>
+    <string name="sort_oldest_first">Сначала старые</string>
 </resources>

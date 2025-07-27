@@ -187,4 +187,12 @@
     <string name="start_adding_products_to_see_analysis">开始添加产品以查看详细分析和见解</string>
     <string name="quick_add">快速添加</string>
     <string name="quick_add_product">快速添加产品</string>
+    <string name="sort_products">排序产品</string>
+    <string name="sort_name_asc">名称（A-Z）</string>
+    <string name="sort_name_desc">名称（Z-A）</string>
+    <string name="sort_price_asc">价格（从低到高）</string>
+    <string name="sort_price_desc">价格（从高到低）</string>
+    <string name="sort_shop_asc">商店（A-Z）</string>
+    <string name="sort_recent_first">最新优先</string>
+    <string name="sort_oldest_first">最早优先</string>
 </resources>

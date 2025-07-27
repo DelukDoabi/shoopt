@@ -188,4 +188,12 @@
     <string name="start_adding_products_to_see_analysis">ابدأ بإضافة المنتجات لرؤية التحليل والتفاصيل</string>
     <string name="quick_add">إضافة سريعة</string>
     <string name="quick_add_product">إضافة منتج بسرعة</string>
+    <string name="sort_products">فرز المنتجات</string>
+    <string name="sort_name_asc">الاسم (أ-ي)</string>
+    <string name="sort_name_desc">الاسم (ي-أ)</string>
+    <string name="sort_price_asc">السعر (من الأقل للأعلى)</string>
+    <string name="sort_price_desc">السعر (من الأعلى للأقل)</string>
+    <string name="sort_shop_asc">المتجر (أ-ي)</string>
+    <string name="sort_recent_first">الأحدث أولاً</string>
+    <string name="sort_oldest_first">الأقدم أولاً</string>
 </resources>

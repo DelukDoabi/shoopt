@@ -186,4 +186,12 @@
     <string name="start_adding_products_to_see_analysis">Detaylı analiz ve içgörüler için ürün eklemeye başlayın</string>
     <string name="quick_add">Hızlı Ekle</string>
     <string name="quick_add_product">Hızlı Ürün Ekle</string>
+    <string name="sort_products">Ürünleri sırala</string>
+    <string name="sort_name_asc">İsim (A-Z)</string>
+    <string name="sort_name_desc">İsim (Z-A)</string>
+    <string name="sort_price_asc">Fiyat (düşükten yükseğe)</string>
+    <string name="sort_price_desc">Fiyat (yüksekten düşüğe)</string>
+    <string name="sort_shop_asc">Mağaza (A-Z)</string>
+    <string name="sort_recent_first">En yeniler önce</string>
+    <string name="sort_oldest_first">En eskiler önce</string>
 </resources>

@@ -188,4 +188,12 @@
     <string name="start_adding_products_to_see_analysis">বিশদ বিশ্লেষণ এবং অন্তর্দৃষ্টি দেখতে পণ্য যোগ করা শুরু করুন</string>
     <string name="quick_add">দ্রুত যোগ করুন</string>
     <string name="quick_add_product">দ্রুত পণ্য যোগ করুন</string>
+    <string name="sort_products">পণ্য সাজান</string>
+    <string name="sort_name_asc">নাম (A-Z)</string>
+    <string name="sort_name_desc">নাম (Z-A)</string>
+    <string name="sort_price_asc">মূল্য (কম থেকে বেশি)</string>
+    <string name="sort_price_desc">মূল্য (বেশি থেকে কম)</string>
+    <string name="sort_shop_asc">দোকান (A-Z)</string>
+    <string name="sort_recent_first">সাম্প্রতিক প্রথম</string>
+    <string name="sort_oldest_first">পুরাতন প্রথম</string>
 </resources>

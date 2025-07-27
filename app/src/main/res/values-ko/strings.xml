@@ -188,4 +188,12 @@
     <string name="start_adding_products_to_see_analysis">자세한 분석 및 통찰력을 보려면 제품 추가를 시작하세요</string>
     <string name="quick_add">빠른 추가</string>
     <string name="quick_add_product">빠른 제품 추가</string>
+    <string name="sort_products">상품 정렬</string>
+    <string name="sort_name_asc">이름 (A-Z)</string>
+    <string name="sort_name_desc">이름 (Z-A)</string>
+    <string name="sort_price_asc">가격 (낮은 순)</string>
+    <string name="sort_price_desc">가격 (높은 순)</string>
+    <string name="sort_shop_asc">상점 (A-Z)</string>
+    <string name="sort_recent_first">최신순</string>
+    <string name="sort_oldest_first">오래된순</string>
 </resources>

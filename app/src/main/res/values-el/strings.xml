@@ -188,4 +188,12 @@
     <string name="start_adding_products_to_see_analysis">Ξεκινήστε να προσθέτετε προϊόντα για να δείτε λεπτομερείς αναλύσεις και πληροφορίες</string>
     <string name="quick_add">Γρήγορη προσθήκη</string>
     <string name="quick_add_product">Γρήγορη προσθήκη προϊόντος</string>
+    <string name="sort_products">Ταξινόμηση προϊόντων</string>
+    <string name="sort_name_asc">Όνομα (Α-Ω)</string>
+    <string name="sort_name_desc">Όνομα (Ω-Α)</string>
+    <string name="sort_price_asc">Τιμή (αύξουσα)</string>
+    <string name="sort_price_desc">Τιμή (φθίνουσα)</string>
+    <string name="sort_shop_asc">Κατάστημα (Α-Ω)</string>
+    <string name="sort_recent_first">Πρόσφατα πρώτα</string>
+    <string name="sort_oldest_first">Παλαιότερα πρώτα</string>
 </resources>

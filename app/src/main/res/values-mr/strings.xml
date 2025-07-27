@@ -188,4 +188,12 @@
     <string name="start_adding_products_to_see_analysis">Start adding products to see detailed analysis and insights</string>
     <string name="quick_add">Quick Add</string>
     <string name="quick_add_product">Quick Add Product</string>
+    <string name="sort_products">उत्पाद क्रमवारी करा</string>
+    <string name="sort_name_asc">नाव (A-Z)</string>
+    <string name="sort_name_desc">नाव (Z-A)</string>
+    <string name="sort_price_asc">किंमत (कमी ते जास्त)</string>
+    <string name="sort_price_desc">किंमत (जास्त ते कमी)</string>
+    <string name="sort_shop_asc">दुकान (A-Z)</string>
+    <string name="sort_recent_first">नवीन प्रथम</string>
+    <string name="sort_oldest_first">जुने प्रथम</string>
 </resources>

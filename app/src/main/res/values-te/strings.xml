@@ -186,4 +186,12 @@
     <string name="start_adding_products_to_see_analysis">Start adding products to see detailed analysis and insights</string>
     <string name="quick_add">Quick Add</string>
     <string name="quick_add_product">Quick Add Product</string>
+    <string name="sort_products">ఉత్పత్తులను క్రమబద్ధీకరించండి</string>
+    <string name="sort_name_asc">పేరు (A-Z)</string>
+    <string name="sort_name_desc">పేరు (Z-A)</string>
+    <string name="sort_price_asc">ధర (తక్కువ నుండి ఎక్కువ)</string>
+    <string name="sort_price_desc">ధర (ఎక్కువ నుండి తక్కువ)</string>
+    <string name="sort_shop_asc">షాప్ (A-Z)</string>
+    <string name="sort_recent_first">ఇటీవలివి ముందు</string>
+    <string name="sort_oldest_first">పాతవి ముందు</string>
 </resources>

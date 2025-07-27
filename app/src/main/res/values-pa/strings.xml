@@ -162,7 +162,7 @@
     <string name="search_products">ਸਮਾਨ ਖੋਜੋ...</string>
     <string name="filter_products">ਸਮਾਨ ਫਿਲਟਰ ਕਰੋ</string>
     <string name="no_products_converted_fullscreen">ਅਜੇ ਤੱਕ ਕੋਈ ਸਮਾਨ ਤਬਦੀਲ ਨਹੀਂ ਹੋਏ</string>
-    <string name="add_products_to_see_them_here_fullscreen">ਇੱਥੇ ਵੇਖਣ ਲਈ ਆਪਣੀ ਲਿਸਟ ਵਿੱਚ ਸਮਾਨ ਸ਼ਾਮਲ ਕਰੋ।\nਆਪਣੀ ਖਰੀਦਾਰੀ ਲਿਸਟ ਨੂੰ ਟਰੈਕ ਕਰਨ ਯੋਗ ਸਮਾਨਾਂ ਵਿੱਚ ਤਬਦੀਲ ਕਰਨ ਲਈ ਕਨਵਰਟ ਬਟਨ ਵਰਤੋ।</string>
+    <string name="add_products_to_see_them_here_fullscreen">ਇੱਥੇ ਵੇਖਣ ਲਈ ਆਪਣੀ ਲਿਸਟ ਵਿੱਚ ਸਮਾਨ ਸ਼ਾਮਲ ਕਰੋ।\nਆਪਣੀ ਖਰੀਦਦਾਰੀ ਲਿਸਟ ਨੂੰ ਟਰੈਕ ਕਰਨ ਯੋਗ ਸਮਾਨਾਂ ਵਿੱਚ ਤਬਦੀਲ ਕਰਨ ਲਈ ਕਨਵਰਟ ਬਟਨ ਵਰਤੋ।</string>
     <string name="go_back_to_add_products">ਸਮਾਨ ਸ਼ਾਮਲ ਕਰਨ ਵਾਸਤੇ ਵਾਪਸ ਜਾਓ</string>
     <string name="select_all">ਸਭ ਚੁਣੋ</string>
     <string name="clear_all">ਸਭ ਸਾਫ਼ ਕਰੋ</string>
@@ -188,4 +188,13 @@
     <string name="start_adding_products_to_see_analysis">ਵਿਸ਼ਲੇਸ਼ਣ ਅਤੇ ਅੰਦਰੂਨੀ ਜਾਣਕਾਰੀ ਦੇਖਣ ਲਈ ਉਤਪਾਦ ਸ਼ਾਮਲ ਕਰਨਾ ਸ਼ੁਰੂ ਕਰੋ</string>
     <string name="quick_add">ਤੁਰੰਤ ਸ਼ਾਮਲ ਕਰੋ</string>
     <string name="quick_add_product">ਤੁਰੰਤ ਉਤਪਾਦ ਸ਼ਾਮਲ ਕਰੋ</string>
+    <!-- Sort Dialog strings -->
+    <string name="sort_products">ਉਤਪਾਦਾਂ ਨੂੰ ਲੜੀਬੱਧ ਕਰੋ</string>
+    <string name="sort_name_asc">ਨਾਂ (A-Z)</string>
+    <string name="sort_name_desc">ਨਾਂ (Z-A)</string>
+    <string name="sort_price_asc">ਕੀਮਤ (ਘੱਟ ਤੋਂ ਵੱਧ)</string>
+    <string name="sort_price_desc">ਕੀਮਤ (ਵੱਧ ਤੋਂ ਘੱਟ)</string>
+    <string name="sort_shop_asc">ਦੁਕਾਨ (A-Z)</string>
+    <string name="sort_recent_first">ਤਾਜ਼ਾ ਪਹਿਲਾਂ</string>
+    <string name="sort_oldest_first">ਸਭ ਤੋਂ ਪੁਰਾਣਾ ਪਹਿਲਾਂ</string>
 </resources>

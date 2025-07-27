@@ -187,4 +187,13 @@
     <string name="start_adding_products_to_see_analysis">Începe să adaugi produse pentru a vedea analiza detaliată și informațiile utile</string>
     <string name="quick_add">Adăugare rapidă</string>
     <string name="quick_add_product">Adăugare rapidă produs</string>
+    <!-- Sort Dialog strings -->
+    <string name="sort_products">Sortează produse</string>
+    <string name="sort_name_asc">Nume (A-Z)</string>
+    <string name="sort_name_desc">Nume (Z-A)</string>
+    <string name="sort_price_asc">Preț (crescător)</string>
+    <string name="sort_price_desc">Preț (descrescător)</string>
+    <string name="sort_shop_asc">Magazin (A-Z)</string>
+    <string name="sort_recent_first">Cele mai recente</string>
+    <string name="sort_oldest_first">Cele mai vechi</string>
 </resources>

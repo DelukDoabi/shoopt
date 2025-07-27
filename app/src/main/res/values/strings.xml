@@ -221,4 +221,14 @@
     <string name="quick_add">Quick Add</string>
     <string name="quick_add_product">Quick Add Product</string>
 
+    <!-- Sort Dialog strings -->
+    <string name="sort_products">Sort Products</string>
+    <string name="sort_name_asc">Name (A-Z)</string>
+    <string name="sort_name_desc">Name (Z-A)</string>
+    <string name="sort_price_asc">Price (Low to High)</string>
+    <string name="sort_price_desc">Price (High to Low)</string>
+    <string name="sort_shop_asc">Shop (A-Z)</string>
+    <string name="sort_recent_first">Recent First</string>
+    <string name="sort_oldest_first">Oldest First</string>
+
 </resources>

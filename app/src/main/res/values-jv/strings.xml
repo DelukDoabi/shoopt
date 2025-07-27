@@ -188,4 +188,12 @@
     <string name="start_adding_products_to_see_analysis">Mulai nambah produk kanggo ndeleng analisis lan wawasan rinci</string>
     <string name="quick_add">Tambah Cepet</string>
     <string name="quick_add_product">Tambah Produk Cepet</string>
+    <string name="sort_products">Urutake produk</string>
+    <string name="sort_name_asc">Jeneng (A-Z)</string>
+    <string name="sort_name_desc">Jeneng (Z-A)</string>
+    <string name="sort_price_asc">Regane (murah dhisik)</string>
+    <string name="sort_price_desc">Regane (larang dhisik)</string>
+    <string name="sort_shop_asc">Toko (A-Z)</string>
+    <string name="sort_recent_first">Anyar dhisik</string>
+    <string name="sort_oldest_first">Lama dhisik</string>
 </resources>
