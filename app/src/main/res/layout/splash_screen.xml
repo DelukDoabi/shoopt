@@ -45,7 +45,8 @@
         <com.shoopt.app.utils.ShineEffectView
             android:id="@+id/shine_effect"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:clipToOutline="true" />
     </FrameLayout>
 
     <TextView

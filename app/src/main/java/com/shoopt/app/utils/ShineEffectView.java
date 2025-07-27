@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.view.View;
@@ -21,6 +22,7 @@ public class ShineEffectView extends View {
     private int mShineColor = 0x55FFFFFF; // Semi-transparent white
     private ShineAnimation mAnimation;
     private float mTranslateX = -1f;
+    private Path mClipPath;
 
     public ShineEffectView(Context context) {
         super(context);
@@ -42,11 +44,29 @@ public class ShineEffectView extends View {
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
 
+        mClipPath = new Path();
+
         mAnimation = new ShineAnimation();
         mAnimation.setDuration(2000);
         mAnimation.setRepeatCount(Animation.INFINITE);
         mAnimation.setRepeatMode(Animation.RESTART);
         mAnimation.setInterpolator(new LinearInterpolator());
+
+        setOutlineProvider(new android.view.ViewOutlineProvider() {
+            @Override
+            public void getOutline(View view, android.graphics.Outline outline) {
+                outline.setOval(0, 0, view.getWidth(), view.getHeight());
+            }
+        });
+        setClipToOutline(true);
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        // Create a circular clip path
+        mClipPath.reset();
+        mClipPath.addCircle(w / 2f, h / 2f, Math.min(w, h) / 2f, Path.Direction.CW);
     }
 
     public void startAnimation() {
@@ -56,7 +76,8 @@ public class ShineEffectView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+        // Apply the circular clip path
+        canvas.clipPath(mClipPath);
 
         if (mTranslateX < 0) {
             // Not set yet
@@ -73,7 +94,7 @@ public class ShineEffectView extends View {
         mPaint.setShader(shader);
 
         // Draw the shine effect
-        canvas.drawRect(0, 0, getWidth(), getHeight(), mPaint);
+        canvas.drawCircle(getWidth() / 2f, getHeight() / 2f, Math.min(getWidth(), getHeight()) / 2f, mPaint);
     }
 
     private class ShineAnimation extends Animation {
