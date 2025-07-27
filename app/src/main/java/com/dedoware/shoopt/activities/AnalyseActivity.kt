@@ -5,16 +5,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.ShooptApplication
 import com.dedoware.shoopt.model.Product
@@ -30,15 +30,23 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.DecimalFormat
 
 class AnalyseActivity : AppCompatActivity() {
     private lateinit var productListRecyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
     private lateinit var searchView: SearchView
-    private lateinit var backImageButton: ImageButton
+    private lateinit var backButton: MaterialButton
     private lateinit var userPreferences: UserPreferences
     private lateinit var emptyStateLayout: LinearLayout
-    private lateinit var addButton: Button
+    private lateinit var addButton: MaterialButton
+
+    // New UI elements for modern layout
+    private lateinit var productCountBadge: TextView
+    private lateinit var totalProductsCount: TextView
+    private lateinit var averagePrice: TextView
+    private lateinit var uniqueShopsCount: TextView
+    private lateinit var sortFilterButton: MaterialButton
 
     private var products: List<Product> = emptyList()
     private lateinit var productRepository: IProductRepository
@@ -49,7 +57,6 @@ class AnalyseActivity : AppCompatActivity() {
 
     private val useFirebase = false // This could be a config or user preference
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         try {
             super.onCreate(savedInstanceState)
@@ -58,7 +65,6 @@ class AnalyseActivity : AppCompatActivity() {
             // Enregistrement de l'écran dans Analytics
             try {
                 AnalyticsManager.logScreenView("Analyze", "AnalyseActivity")
-
             } catch (e: Exception) {
                 CrashlyticsManager.log("Erreur lors de l'enregistrement de l'écran dans Analytics: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "analytics_screen_log")
@@ -100,23 +106,10 @@ class AnalyseActivity : AppCompatActivity() {
             }
 
             try {
-                progressBar = findViewById(R.id.loading_indicator)
-                searchView = findViewById(R.id.search_view)
-                productListRecyclerView = findViewById(R.id.product_list_recycler_view)
-                backImageButton = findViewById(R.id.back_IB)
-                emptyStateLayout = findViewById(R.id.empty_state_layout)
-                addButton = findViewById(R.id.add_product_button)
-
-                backImageButton.setOnClickListener { finish() }
-
-                progressBar.visibility = View.VISIBLE
-                productListRecyclerView.layoutManager = GridLayoutManager(this, 2)
-                productListRecyclerView.adapter = ProductListAdapter(emptyList(), userPreferences)
-
-                addButton.setOnClickListener {
-                    // Ouvrir l'activité d'ajout de produit
-                    openAddProductActivity(Product())
-                }
+                initializeViews()
+                setupClickListeners()
+                loadProducts()
+                addSearch()
             } catch (e: Exception) {
                 CrashlyticsManager.log("Erreur lors de l'initialisation de l'interface: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "ui_init")
@@ -125,29 +118,6 @@ class AnalyseActivity : AppCompatActivity() {
                 CrashlyticsManager.logException(e)
 
                 Toast.makeText(this, "Erreur lors de l'initialisation de l'interface", Toast.LENGTH_SHORT).show()
-            }
-
-            try {
-                loadProducts()
-            } catch (e: Exception) {
-                CrashlyticsManager.log("Erreur lors du chargement des produits: ${e.message ?: "Message non disponible"}")
-                CrashlyticsManager.setCustomKey("error_location", "load_products")
-                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
-                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
-                CrashlyticsManager.logException(e)
-
-                progressBar.visibility = View.GONE
-                Toast.makeText(this, "Impossible de charger les produits", Toast.LENGTH_SHORT).show()
-            }
-
-            try {
-                addSearch()
-            } catch (e: Exception) {
-                CrashlyticsManager.log("Erreur lors de l'initialisation de la recherche: ${e.message ?: "Message non disponible"}")
-                CrashlyticsManager.setCustomKey("error_location", "search_init")
-                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
-                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
-                CrashlyticsManager.logException(e)
             }
         } catch (e: Exception) {
             // Capture des erreurs globales dans onCreate
@@ -161,20 +131,61 @@ class AnalyseActivity : AppCompatActivity() {
         }
     }
 
+    private fun initializeViews() {
+        progressBar = findViewById(R.id.loading_indicator)
+        searchView = findViewById(R.id.search_view)
+        productListRecyclerView = findViewById(R.id.product_list_recycler_view)
+        backButton = findViewById(R.id.back_IB)
+        emptyStateLayout = findViewById(R.id.empty_state_layout)
+        addButton = findViewById(R.id.add_product_button)
+
+        // New modern UI elements
+        productCountBadge = findViewById(R.id.product_count_badge)
+        totalProductsCount = findViewById(R.id.total_products_count)
+        averagePrice = findViewById(R.id.average_price)
+        uniqueShopsCount = findViewById(R.id.unique_shops_count)
+        sortFilterButton = findViewById(R.id.sort_filter_button)
+
+        productListRecyclerView.layoutManager = GridLayoutManager(this, 2)
+        productListRecyclerView.adapter = ProductListAdapter(emptyList(), userPreferences)
+    }
+
+    private fun setupClickListeners() {
+        backButton.setOnClickListener { finish() }
+
+        addButton.setOnClickListener {
+            // Ouvrir l'activité d'ajout de produit
+            openAddProductActivity(Product())
+        }
+
+        sortFilterButton.setOnClickListener {
+            showSortFilterDialog()
+        }
+    }
+
     private fun loadProducts() {
         CoroutineScope(Dispatchers.Main).launch {
             try {
+                progressBar.visibility = View.VISIBLE
+                productListRecyclerView.visibility = View.GONE
+                emptyStateLayout.visibility = View.GONE
+
                 products = withContext(Dispatchers.IO) {
                     productRepository.getAll()
                 }
+
                 if (products.isNotEmpty()) {
                     setupAdapter(products.sortedByDescending { it.timestamp })
+                    updateStatsDisplay(products)
                     progressBar.visibility = View.GONE
+                    productListRecyclerView.visibility = View.VISIBLE
                     emptyStateLayout.visibility = View.GONE
                 } else {
                     Log.d("SHOOPT_TAG", "No products found!")
                     progressBar.visibility = View.GONE
+                    productListRecyclerView.visibility = View.GONE
                     emptyStateLayout.visibility = View.VISIBLE
+                    updateStatsDisplay(emptyList())
                 }
             } catch (e: Exception) {
                 CrashlyticsManager.log("Erreur lors du chargement des produits: ${e.message ?: "Message non disponible"}")
@@ -191,6 +202,80 @@ class AnalyseActivity : AppCompatActivity() {
         }
     }
 
+    private fun updateStatsDisplay(productList: List<Product>) {
+        try {
+            val count = productList.size
+            productCountBadge.text = count.toString()
+            totalProductsCount.text = count.toString()
+
+            if (productList.isNotEmpty()) {
+                // Calculate average price
+                val validPrices = productList.mapNotNull { it.price }.filter { it > 0.0 }
+                val avgPrice = if (validPrices.isNotEmpty()) validPrices.average() else 0.0
+                val formatter = DecimalFormat("#.##")
+                averagePrice.text = "${formatter.format(avgPrice)}€"
+
+                // Calculate unique shops count
+                val uniqueShops = productList.mapNotNull { it.shop }
+                    .filter { it.isNotBlank() && it != "Unknown Shop" }
+                    .distinct()
+                    .size
+                uniqueShopsCount.text = uniqueShops.toString()
+            } else {
+                averagePrice.text = "0.00€"
+                uniqueShopsCount.text = "0"
+            }
+
+            // Log analytics for stats
+            val analyticsBundle = Bundle().apply {
+                putInt("total_products", count)
+                putDouble("average_price", if (productList.isNotEmpty())
+                    productList.mapNotNull { it.price }.filter { it > 0.0 }.average() else 0.0)
+                putInt("unique_shops", productList.mapNotNull { it.shop }
+                    .filter { it.isNotBlank() && it != "Unknown Shop" }
+                    .distinct().size)
+            }
+            AnalyticsManager.logCustomEvent("analyze_stats_viewed", analyticsBundle)
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la mise à jour des statistiques: ${e.message}")
+            CrashlyticsManager.logException(e)
+        }
+    }
+
+    private fun showSortFilterDialog() {
+        val sortOptions = arrayOf(
+            "Name (A-Z)",
+            "Name (Z-A)",
+            "Price (Low to High)",
+            "Price (High to Low)",
+            "Shop (A-Z)",
+            "Recent First",
+            "Oldest First"
+        )
+
+        AlertDialog.Builder(this)
+            .setTitle("Sort Products")
+            .setItems(sortOptions) { _, which ->
+                sortProducts(which)
+            }
+            .create()
+            .show()
+    }
+
+    private fun sortProducts(sortType: Int) {
+        val sortedProducts = when (sortType) {
+            0 -> products.sortedBy { it.name.lowercase() }
+            1 -> products.sortedByDescending { it.name.lowercase() }
+            2 -> products.sortedBy { it.price ?: Double.MAX_VALUE }
+            3 -> products.sortedByDescending { it.price ?: 0.0 }
+            4 -> products.sortedBy { it.shop?.lowercase() ?: "zzz" }
+            5 -> products.sortedByDescending { it.timestamp }
+            6 -> products.sortedBy { it.timestamp }
+            else -> products
+        }
+        setupAdapter(sortedProducts)
+    }
+
     private fun addSearch() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -198,6 +283,7 @@ class AnalyseActivity : AppCompatActivity() {
                 if (!query.isNullOrEmpty()) {
                     val params = Bundle().apply {
                         putBoolean("search_performed", true)
+                        putInt("search_length", query.length)
                     }
                     AnalyticsManager.logCustomEvent("product_search", params)
                 }
@@ -205,8 +291,15 @@ class AnalyseActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                val filteredProducts = products.filter {
-                    it.name.contains(newText!!, ignoreCase = true)
+                val filteredProducts = if (newText.isNullOrEmpty()) {
+                    products
+                } else {
+                    products.filter { product ->
+                        product.name.contains(newText, ignoreCase = true) ||
+                        product.shop?.contains(newText, ignoreCase = true) == true ||
+                        product.price?.toString()?.contains(newText) == true ||
+                        product.unitPrice?.toString()?.contains(newText) == true
+                    }
                 }
                 setupAdapter(filteredProducts)
                 return true
