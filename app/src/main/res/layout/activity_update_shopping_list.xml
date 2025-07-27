@@ -21,8 +21,9 @@
         android:scrollbars="none">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/update_shopping_list_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:padding="@dimen/screen_padding">
 
             <!-- Top Bar with back button - consistent with other screens -->
@@ -240,7 +241,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/margin_medium"
-                android:layout_marginBottom="@dimen/margin_large"
+                android:layout_marginBottom="80dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="8dp"
                 app:cardBackgroundColor="?attr/colorSurface"
@@ -251,7 +252,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHeight_min="300dp">
+                app:layout_constraintHeight_min="200dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
