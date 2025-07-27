@@ -143,4 +143,34 @@
     <string name="empty_cart_message">Votre panier est vide</string>
     <string name="empty_cart_subtitle">Ajoutez des produits pour commencer à suivre vos achats</string>
     <string name="clear_cart">Vider le panier</string>
+    <string name="shopping_list_input_help">Entrez les produits séparés par des virgules, des lignes ou des tirets</string>
+    <string name="shopping_list_input_hint">Lait, pain, 2 pommes, fromage…</string>
+    <string name="shopping_list_tips_title">💡 Astuces rapides</string>
+    <string name="shopping_list_tips_content">• Utilisez des virgules, des lignes ou des tirets pour séparer les articles\n• Ajoutez des quantités comme "2 pommes" ou "3 bananes"\n• Collez des listes d'autres applications\n• Faites glisser les articles pour les supprimer</string>
+    <string name="product_list">Liste de produits</string>
+    <string name="converted_products_list">Produits convertis</string>
+    <string name="empty_list">Liste vide</string>
+    <string name="no_products_converted">Aucun produit converti pour le moment</string>
+    <string name="add_products_to_see_them_here">Ajoutez des produits à votre liste pour les voir ici</string>
+    <string name="paste_list">Coller la liste</string>
+    <string name="paste_shopping_list">Coller la liste de courses</string>
+    <!-- Fullscreen Products View -->
+    <string name="close_fullscreen">Fermer le plein écran</string>
+    <string name="exit_fullscreen">Quitter le plein écran</string>
+    <string name="expand_to_fullscreen">Passer en plein écran</string>
+    <string name="expand_products_list">Développer la liste de produits</string>
+    <string name="search_products">Rechercher des produits...</string>
+    <string name="filter_products">Filtrer les produits</string>
+    <string name="no_products_converted_fullscreen">Aucun produit converti pour le moment</string>
+    <string name="add_products_to_see_them_here_fullscreen">Ajoutez des produits à votre liste pour les voir ici.\nUtilisez le bouton convertir pour transformer votre liste de courses en produits suivis.</string>
+    <string name="go_back_to_add_products">Retour pour ajouter des produits</string>
+    <string name="select_all">Tout sélectionner</string>
+    <string name="clear_all">Tout effacer</string>
+    <string name="product_count_zero">0</string>
+    <!-- Paste Functionality -->
+    <string name="paste_successful">✅ Liste collée avec succès !</string>
+    <string name="clipboard_empty">📋 Presse-papiers vide</string>
+    <string name="paste_error">❌ Erreur lors du collage depuis le presse-papiers</string>
+    <string name="error_adding_products">❌ Erreur lors de l\'ajout des produits à la liste</string>
+    <string name="nothing_to_paste">📋 Rien à coller</string>
 </resources>

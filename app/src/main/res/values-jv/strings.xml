@@ -143,4 +143,34 @@
     <string name="empty_cart_message">Keranjang sampeyan kosong</string>
     <string name="empty_cart_subtitle">Tambah produk kanggo miwiti nglacak blanja sampeyan</string>
     <string name="clear_cart">Resikna keranjang</string>
+    <string name="shopping_list_input_help">Lebokake produk dipisah nganggo koma, baris, utawa strip</string>
+    <string name="shopping_list_input_hint">Susu, Roti, 2 Apel, Keju…</string>
+    <string name="shopping_list_tips_title">💡 Tips Cepet</string>
+    <string name="shopping_list_tips_content">• Gunakake koma, baris, utawa strip kanggo misahake item\n• Tambah jumlah kaya "2 Apel" utawa "3 Pisang"\n• Tempelake daftar saka aplikasi liyane\n• Geser item kanggo mbusak</string>
+    <string name="product_list">Daftar Produk</string>
+    <string name="converted_products_list">Produk Konversi</string>
+    <string name="empty_list">Daftar Kosong</string>
+    <string name="no_products_converted">Durung ana produk sing dikonversi</string>
+    <string name="add_products_to_see_them_here">Tambah produk menyang daftar supaya katon ing kene</string>
+    <string name="paste_list">Tempel Daftar</string>
+    <string name="paste_shopping_list">Tempel Daftar Belanja</string>
+    <!-- Fullscreen Products View -->
+    <string name="close_fullscreen">Tutup Layar Penuh</string>
+    <string name="exit_fullscreen">Metu saka Layar Penuh</string>
+    <string name="expand_to_fullscreen">Ngembangake dadi Layar Penuh</string>
+    <string name="expand_products_list">Ngembangake Daftar Produk</string>
+    <string name="search_products">Goleki produk...</string>
+    <string name="filter_products">Filter Produk</string>
+    <string name="no_products_converted_fullscreen">Durung ana produk sing dikonversi</string>
+    <string name="add_products_to_see_them_here_fullscreen">Tambah produk menyang daftar supaya katon ing kene.\nGunakake tombol konversi kanggo ngowahi daftar belanja dadi produk sing bisa dilacak.</string>
+    <string name="go_back_to_add_products">Bali kanggo nambah produk</string>
+    <string name="select_all">Pilih Kabeh</string>
+    <string name="clear_all">Busak Kabeh</string>
+    <string name="product_count_zero">0</string>
+    <!-- Paste Functionality -->
+    <string name="paste_successful">✅ Daftar kasil ditempel!</string>
+    <string name="clipboard_empty">📋 Clipboard kosong</string>
+    <string name="paste_error">❌ Kesalahan nalika nempel saka clipboard</string>
+    <string name="error_adding_products">❌ Kesalahan nalika nambah produk menyang daftar</string>
+    <string name="nothing_to_paste">📋 Ora ana sing bisa ditempel</string>
 </resources>

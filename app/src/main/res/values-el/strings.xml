@@ -143,4 +143,34 @@
     <string name="empty_cart_message">Το καλάθι σας είναι άδειο</string>
     <string name="empty_cart_subtitle">Προσθέστε προϊόντα για να ξεκινήσετε την παρακολούθηση των αγορών σας</string>
     <string name="clear_cart">Άδειασμα καλαθιού</string>
+    <string name="shopping_list_input_help">Εισάγετε προϊόντα χωρισμένα με κόμματα, γραμμές ή παύλες</string>
+    <string name="shopping_list_input_hint">Γάλα, ψωμί, 2 μήλα, τυρί…</string>
+    <string name="shopping_list_tips_title">💡 Γρήγορες συμβουλές</string>
+    <string name="shopping_list_tips_content">• Χρησιμοποιήστε κόμματα, γραμμές ή παύλες για να διαχωρίσετε τα είδη\n• Προσθέστε ποσότητες όπως "2 μήλα" ή "3 μπανάνες"\n• Επικολλήστε λίστες από άλλες εφαρμογές\n• Σύρετε τα είδη για να τα διαγράψετε</string>
+    <string name="product_list">Λίστα προϊόντων</string>
+    <string name="converted_products_list">Μετατρεπόμενα προϊόντα</string>
+    <string name="empty_list">Κενή λίστα</string>
+    <string name="no_products_converted">Δεν έχουν μετατραπεί προϊόντα ακόμα</string>
+    <string name="add_products_to_see_them_here">Προσθέστε προϊόντα στη λίστα σας για να τα δείτε εδώ</string>
+    <string name="paste_list">Επικόλληση λίστας</string>
+    <string name="paste_shopping_list">Επικόλληση λίστας αγορών</string>
+    <!-- Fullscreen Products View -->
+    <string name="close_fullscreen">Κλείσιμο πλήρους οθόνης</string>
+    <string name="exit_fullscreen">Έξοδος από πλήρη οθόνη</string>
+    <string name="expand_to_fullscreen">Επέκταση σε πλήρη οθόνη</string>
+    <string name="expand_products_list">Επέκταση λίστας προϊόντων</string>
+    <string name="search_products">Αναζήτηση προϊόντων...</string>
+    <string name="filter_products">Φιλτράρισμα προϊόντων</string>
+    <string name="no_products_converted_fullscreen">Δεν έχουν μετατραπεί προϊόντα ακόμα</string>
+    <string name="add_products_to_see_them_here_fullscreen">Προσθέστε προϊόντα στη λίστα σας για να τα δείτε εδώ.\nΧρησιμοποιήστε το κουμπί μετατροπής για να μετατρέψετε τη λίστα αγορών σας σε προϊόντα προς παρακολούθηση.</string>
+    <string name="go_back_to_add_products">Επιστροφή για προσθήκη προϊόντων</string>
+    <string name="select_all">Επιλογή όλων</string>
+    <string name="clear_all">Διαγραφή όλων</string>
+    <string name="product_count_zero">0</string>
+    <!-- Paste Functionality -->
+    <string name="paste_successful">✅ Η λίστα επικολλήθηκε με επιτυχία!</string>
+    <string name="clipboard_empty">📋 Το πρόχειρο είναι άδειο</string>
+    <string name="paste_error">❌ Σφάλμα κατά την επικόλληση από το πρόχειρο</string>
+    <string name="error_adding_products">❌ Σφάλμα κατά την προσθήκη προϊόντων στη λίστα</string>
+    <string name="nothing_to_paste">📋 Τίποτα για επικόλληση</string>
 </resources>

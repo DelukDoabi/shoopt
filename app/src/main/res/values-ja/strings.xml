@@ -143,4 +143,34 @@
     <string name="empty_cart_message">カートは空です</string>
     <string name="empty_cart_subtitle">商品を追加してお買い物を始めましょう</string>
     <string name="clear_cart">カートを空にする</string>
+    <string name="shopping_list_input_help">商品をカンマ、行、またはダッシュで区切って入力してください</string>
+    <string name="shopping_list_input_hint">牛乳、パン、2個のりんご、チーズ…</string>
+    <string name="shopping_list_tips_title">💡 クイックヒント</string>
+    <string name="shopping_list_tips_content">• カンマ、行、またはダッシュで項目を区切る\n• 「2個のりんご」や「3本のバナナ」のように数量を追加\n• 他のアプリからリストを貼り付け\n• 削除するには項目をスワイプ</string>
+    <string name="product_list">商品リスト</string>
+    <string name="converted_products_list">変換済み商品</string>
+    <string name="empty_list">空のリスト</string>
+    <string name="no_products_converted">まだ変換された商品はありません</string>
+    <string name="add_products_to_see_them_here">ここに表示するにはリストに商品を追加してください</string>
+    <string name="paste_list">リストを貼り付け</string>
+    <string name="paste_shopping_list">買い物リストを貼り付け</string>
+    <!-- Fullscreen Products View -->
+    <string name="close_fullscreen">全画面を閉じる</string>
+    <string name="exit_fullscreen">全画面を終了</string>
+    <string name="expand_to_fullscreen">全画面に拡大</string>
+    <string name="expand_products_list">商品リストを拡大</string>
+    <string name="search_products">商品を検索...</string>
+    <string name="filter_products">商品を絞り込む</string>
+    <string name="no_products_converted_fullscreen">まだ変換された商品はありません</string>
+    <string name="add_products_to_see_them_here_fullscreen">ここに表示するにはリストに商品を追加してください。\n「変換」ボタンで買い物リストを追跡可能な商品に変換できます。</string>
+    <string name="go_back_to_add_products">商品追加に戻る</string>
+    <string name="select_all">すべて選択</string>
+    <string name="clear_all">すべてクリア</string>
+    <string name="product_count_zero">0</string>
+    <!-- Paste Functionality -->
+    <string name="paste_successful">✅ リストを正常に貼り付けました！</string>
+    <string name="clipboard_empty">📋 クリップボードは空です</string>
+    <string name="paste_error">❌ クリップボードから貼り付け中にエラー</string>
+    <string name="error_adding_products">❌ リストに商品を追加中にエラー</string>
+    <string name="nothing_to_paste">📋 貼り付けるものがありません</string>
 </resources>

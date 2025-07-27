@@ -143,4 +143,34 @@
     <string name="empty_cart_message">سلتك فارغة</string>
     <string name="empty_cart_subtitle">أضف منتجات لبدء تتبع مشترياتك</string>
     <string name="clear_cart">إفراغ السلة</string>
+    <string name="shopping_list_input_help">أدخل المنتجات مفصولة بفواصل أو أسطر أو شرطات</string>
+    <string name="shopping_list_input_hint">حليب، خبز، 2 تفاح، جبن…</string>
+    <string name="shopping_list_tips_title">💡 نصائح سريعة</string>
+    <string name="shopping_list_tips_content">• استخدم الفواصل أو الأسطر أو الشرطات للفصل بين العناصر\n• أضف كميات مثل "2 تفاح" أو "3 موز"\n• الصق قوائم من تطبيقات أخرى\n• اسحب العناصر لإزالتها</string>
+    <string name="product_list">قائمة المنتجات</string>
+    <string name="converted_products_list">المنتجات المحولة</string>
+    <string name="empty_list">قائمة فارغة</string>
+    <string name="no_products_converted">لا توجد منتجات محولة بعد</string>
+    <string name="add_products_to_see_them_here">أضف منتجات إلى قائمتك لتراها هنا</string>
+    <string name="paste_list">لصق القائمة</string>
+    <string name="paste_shopping_list">لصق قائمة التسوق</string>
+    <!-- Fullscreen Products View -->
+    <string name="close_fullscreen">إغلاق ملء الشاشة</string>
+    <string name="exit_fullscreen">الخروج من ملء الشاشة</string>
+    <string name="expand_to_fullscreen">توسيع إلى ملء الشاشة</string>
+    <string name="expand_products_list">توسيع قائمة المنتجات</string>
+    <string name="search_products">ابحث عن المنتجات...</string>
+    <string name="filter_products">تصفية المنتجات</string>
+    <string name="no_products_converted_fullscreen">لا توجد منتجات محولة بعد</string>
+    <string name="add_products_to_see_them_here_fullscreen">أضف منتجات إلى قائمتك لتراها هنا.\nاستخدم زر التحويل لتحويل قائمة التسوق إلى منتجات قابلة للتتبع.</string>
+    <string name="go_back_to_add_products">العودة لإضافة المنتجات</string>
+    <string name="select_all">تحديد الكل</string>
+    <string name="clear_all">مسح الكل</string>
+    <string name="product_count_zero">0</string>
+    <!-- Paste Functionality -->
+    <string name="paste_successful">✅ تم لصق القائمة بنجاح!</string>
+    <string name="clipboard_empty">📋 الحافظة فارغة</string>
+    <string name="paste_error">❌ حدث خطأ أثناء اللصق من الحافظة</string>
+    <string name="error_adding_products">❌ حدث خطأ أثناء إضافة المنتجات إلى القائمة</string>
+    <string name="nothing_to_paste">📋 لا يوجد شيء للصق</string>
 </resources>

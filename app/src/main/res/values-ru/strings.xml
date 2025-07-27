@@ -143,4 +143,33 @@
     <string name="empty_cart_message">Ваша корзина пуста</string>
     <string name="empty_cart_subtitle">Добавьте товары, чтобы начать отслеживать покупки</string>
     <string name="clear_cart">Очистить корзину</string>
+    <string name="shopping_list_input_help">Введите продукты, разделяя их запятыми, строками или тире</string>
+    <string name="shopping_list_input_hint">Молоко, хлеб, 2 яблока, сыр…</string>
+    <string name="shopping_list_tips_title">💡 Быстрые советы</string>
+    <string name="shopping_list_tips_content">• Используйте запятые, строки или тире для разделения товаров\n• Добавляйте количество, например "2 яблока" или "3 банана"\n• Вставляйте списки из других приложений\n• Смахните товар, чтобы удалить его</string>
+    <string name="product_list">Список товаров</string>
+    <string name="converted_products_list">Преобразованные товары</string>
+    <string name="empty_list">Пустой список</string>
+    <string name="no_products_converted">Пока нет преобразованных товаров</string>
+    <string name="add_products_to_see_them_here">Добавьте товары в список, чтобы увидеть их здесь</string>
+    <string name="paste_list">Вставить список</string>
+    <string name="paste_shopping_list">Вставить список покупок</string>
+    <string name="paste_successful">✅ Список успешно вставлен!</string>
+    <string name="clipboard_empty">📋 Буфер обмена пуст</string>
+    <string name="paste_error">❌ Ошибка вставки из буфера обмена</string>
+    <string name="error_adding_products">❌ Ошибка добавления товаров в список</string>
+    <string name="nothing_to_paste">📋 Нечего вставлять</string>
+    <!-- Fullscreen Products View -->
+    <string name="close_fullscreen">Закрыть на весь экран</string>
+    <string name="exit_fullscreen">Выйти из полноэкранного режима</string>
+    <string name="expand_to_fullscreen">Развернуть на весь экран</string>
+    <string name="expand_products_list">Развернуть список товаров</string>
+    <string name="search_products">Поиск товаров...</string>
+    <string name="filter_products">Фильтровать товары</string>
+    <string name="no_products_converted_fullscreen">Пока нет преобразованных товаров</string>
+    <string name="add_products_to_see_them_here_fullscreen">Добавьте товары в список, чтобы увидеть их здесь.\nИспользуйте кнопку преобразования, чтобы превратить ваш список покупок в отслеживаемые товары.</string>
+    <string name="go_back_to_add_products">Вернуться к добавлению товаров</string>
+    <string name="select_all">Выбрать все</string>
+    <string name="clear_all">Очистить все</string>
+    <string name="product_count_zero">0</string>
 </resources>
