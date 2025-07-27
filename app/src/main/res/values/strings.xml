@@ -69,6 +69,21 @@
     <string name="shopping_cart_emptied">Shopping cart has been emptied</string>
     <string name="products_added">%1$d products added to your list</string>
 
+    <!-- Fullscreen Products View -->
+    <string name="converted_products_fullscreen">Products List - Fullscreen</string>
+    <string name="close_fullscreen">Close Fullscreen</string>
+    <string name="exit_fullscreen">Exit Fullscreen</string>
+    <string name="expand_to_fullscreen">Expand to Fullscreen</string>
+    <string name="expand_products_list">Expand Products List</string>
+    <string name="search_products">Search products...</string>
+    <string name="filter_products">Filter Products</string>
+    <string name="no_products_converted_fullscreen">No products converted yet</string>
+    <string name="add_products_to_see_them_here_fullscreen">Add products to your list to see them here.\nUse the convert button to turn your shopping list into trackable products.</string>
+    <string name="go_back_to_add_products">Go back to add products</string>
+    <string name="select_all">Select All</string>
+    <string name="clear_all">Clear All</string>
+    <string name="product_count_zero">0</string>
+
     <!-- Common UI strings -->
     <string name="email">Email</string>
     <string name="full_name">Full Name</string>
@@ -182,9 +197,6 @@
 
     <!-- AI and Tips -->
     <string name="ai_assistant_tips">💡 AI Assistant Tips: Use natural language to describe your products for better recognition</string>
-
-    <!-- Additional missing string -->
-    <string name="product_count_zero">0</string>
 
     <!-- Paste Functionality -->
     <string name="paste_successful">✅ List pasted successfully!</string>

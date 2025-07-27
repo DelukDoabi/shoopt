@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".activities.ProductsFullscreenActivity">
+
+    <!-- Background gradient - consistent with other screens -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/login_gradient_background" />
+
+    <!-- Main Content -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Enhanced Header Bar -->
+        <LinearLayout
+            android:id="@+id/fullscreen_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/card_background_rounded"
+            android:backgroundTint="?attr/colorSurface"
+            android:elevation="4dp">
+
+            <!-- Close/Back Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/close_fullscreen_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                app:icon="@drawable/ic_close"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconSize="20dp"
+                app:cornerRadius="20dp"
+                android:backgroundTint="@android:color/transparent"
+                app:iconTint="@color/main_palette_old_lavender_variant"
+                app:rippleColor="@color/main_palette_old_lavender_variant"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:contentDescription="@string/close_fullscreen" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/shoopt_track_shopping"
+                app:tint="@color/main_palette_old_lavender_variant"
+                android:layout_marginStart="12dp"
+                android:contentDescription="@string/product_list" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/converted_products_fullscreen"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="?attr/colorOnSurface"
+                android:layout_marginStart="12dp" />
+
+            <!-- Item count badge -->
+            <TextView
+                android:id="@+id/fullscreen_product_count_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/product_count_zero"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:background="@drawable/pill_background"
+                android:backgroundTint="@color/main_palette_old_lavender_variant"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:minWidth="32dp"
+                android:gravity="center"
+                android:layout_marginEnd="8dp" />
+
+            <!-- Minimize Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/minimize_fullscreen_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                app:icon="@drawable/ic_fullscreen_exit"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconSize="18dp"
+                app:cornerRadius="20dp"
+                android:backgroundTint="@android:color/transparent"
+                app:iconTint="@color/main_palette_old_lavender_variant"
+                app:rippleColor="@color/main_palette_old_lavender_variant"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:contentDescription="@string/exit_fullscreen" />
+        </LinearLayout>
+
+        <!-- Products List Card - Fullscreen -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/fullscreen_products_card"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="12dp"
+            app:cardBackgroundColor="?attr/colorSurface"
+            app:strokeWidth="2dp"
+            app:strokeColor="@color/main_palette_old_lavender_variant">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <!-- Search and Filter Bar -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
+
+                    <!-- Search Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/search_input_layout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="12dp"
+                        app:boxStrokeColor="@color/main_palette_old_lavender_variant"
+                        app:hintTextColor="@color/main_palette_old_lavender_variant"
+                        app:startIconDrawable="@drawable/ic_search"
+                        app:startIconTint="@color/main_palette_old_lavender_variant"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/main_palette_old_lavender_variant"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/search_products_edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/search_products"
+                            android:inputType="text"
+                            android:textSize="14sp"
+                            android:singleLine="true" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Filter Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/filter_products_button"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:insetLeft="0dp"
+                        android:insetRight="0dp"
+                        app:icon="@drawable/ic_filter"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconSize="18dp"
+                        app:cornerRadius="20dp"
+                        android:backgroundTint="@android:color/transparent"
+                        app:iconTint="@color/main_palette_old_lavender_variant"
+                        app:rippleColor="@color/main_palette_old_lavender_variant"
+                        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                        android:contentDescription="@string/filter_products" />
+                </LinearLayout>
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/main_palette_old_lavender_variant"
+                    android:alpha="0.3"
+                    android:layout_marginHorizontal="16dp" />
+
+                <!-- Products RecyclerView - Enhanced for fullscreen -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/fullscreen_product_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:padding="16dp"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never"
+                    android:scrollbars="vertical"
+                    android:fadeScrollbars="false"
+                    android:scrollbarStyle="outsideOverlay"
+                    android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
+                    android:scrollbarTrackVertical="@drawable/scrollbar_track" />
+
+                <!-- Enhanced Empty State for Fullscreen -->
+                <LinearLayout
+                    android:id="@+id/fullscreen_empty_state_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="48dp"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
+                        android:src="@drawable/shoopt_add_product"
+                        android:alpha="0.5"
+                        app:tint="@color/main_palette_old_lavender_variant"
+                        android:contentDescription="@string/empty_list" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/no_products_converted_fullscreen"
+                        android:textSize="24sp"
+                        android:textColor="@color/main_palette_old_lavender_variant"
+                        android:textStyle="bold"
+                        android:layout_marginTop="24dp"
+                        android:gravity="center"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/add_products_to_see_them_here_fullscreen"
+                        android:textSize="16sp"
+                        android:textColor="@color/main_palette_old_lavender_variant"
+                        android:alpha="0.8"
+                        android:layout_marginTop="12dp"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:lineSpacingExtra="4dp" />
+
+                    <!-- Quick Action Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/quick_add_products_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="@string/go_back_to_add_products"
+                        android:textAllCaps="false"
+                        android:textSize="14sp"
+                        app:cornerRadius="20dp"
+                        app:icon="@drawable/ic_add"
+                        app:iconGravity="textStart"
+                        app:iconPadding="8dp"
+                        app:iconSize="16dp"
+                        android:backgroundTint="@color/main_palette_old_lavender_variant"
+                        android:textColor="@color/white"
+                        app:iconTint="@color/white"
+                        app:rippleColor="@color/white"
+                        android:alpha="0.9" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Bottom Action Bar -->
+        <LinearLayout
+            android:id="@+id/fullscreen_bottom_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/card_background_rounded"
+            android:backgroundTint="?attr/colorSurface"
+            android:elevation="4dp"
+            android:visibility="gone">
+
+            <!-- Select All Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/select_all_button"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="@string/select_all"
+                android:textAllCaps="false"
+                app:cornerRadius="24dp"
+                app:icon="@drawable/ic_select_all"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                app:iconSize="16dp"
+                android:backgroundTint="@android:color/transparent"
+                android:textColor="@color/main_palette_old_lavender_variant"
+                app:iconTint="@color/main_palette_old_lavender_variant"
+                app:strokeColor="@color/main_palette_old_lavender_variant"
+                app:strokeWidth="1dp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+            <!-- Clear All Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/clear_all_button"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="@string/clear_all"
+                android:textAllCaps="false"
+                app:cornerRadius="24dp"
+                app:icon="@drawable/ic_clear"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                app:iconSize="16dp"
+                android:backgroundTint="@color/main_palette_old_lavender_variant"
+                android:textColor="@color/white"
+                app:iconTint="@color/white"
+                app:rippleColor="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -2,6 +2,7 @@ package com.dedoware.shoopt.activities
 
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,6 +14,8 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
 import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -51,9 +54,18 @@ class UpdateShoppingListActivity : AppCompatActivity() {
     private lateinit var emptyStateContainer: LinearLayout
     private lateinit var productCountBadge: TextView
     private lateinit var pasteFab: ExtendedFloatingActionButton
+    private lateinit var fullscreenZoomButton: MaterialButton
     private val shoppingItemList = mutableListOf<CartItem>()
     private val handler = Handler(Looper.getMainLooper())
     private var runnable: Runnable = Runnable { }
+
+    // Modern ActivityResultLauncher for fullscreen activity
+    private lateinit var fullscreenLauncher: ActivityResultLauncher<Intent>
+
+    // Request code for fullscreen activity
+    companion object {
+        private const val REQUEST_CODE_FULLSCREEN = 1001
+    }
 
     // Variables pour le suivi analytique
     private var sessionStartTime: Long = 0
@@ -70,6 +82,9 @@ class UpdateShoppingListActivity : AppCompatActivity() {
         try {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.activity_update_shopping_list)
+
+            // Initialize the modern ActivityResultLauncher
+            setupFullscreenActivityLauncher()
 
             // Enregistrer la vue d'écran dans Analytics
             AnalyticsManager.logScreenView("UpdateShoppingList", this::class.java.simpleName)
@@ -105,6 +120,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                 emptyStateContainer = findViewById(R.id.empty_state_container)
                 productCountBadge = findViewById(R.id.product_count_badge)
                 pasteFab = findViewById(R.id.paste_fab)
+                fullscreenZoomButton = findViewById(R.id.fullscreen_zoom_button)
 
                 productTrackAdapter = ProductTrackAdapter(shoppingItemList)
                 productTrackRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -115,6 +131,9 @@ class UpdateShoppingListActivity : AppCompatActivity() {
 
                 // Setup paste FAB functionality
                 setupPasteFunctionality()
+
+                // Setup fullscreen zoom functionality
+                setupFullscreenZoomFunctionality()
             } catch (e: Exception) {
                 CrashlyticsManager.log("Erreur lors de l'initialisation des composants d'interface: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "ui_components_init")
@@ -383,6 +402,85 @@ class UpdateShoppingListActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupFullscreenZoomFunctionality() {
+        fullscreenZoomButton.setOnClickListener {
+            try {
+                // Use JSON serialization instead of Parcelable to avoid corruption issues
+                val gson = Gson()
+                val productsJson = gson.toJson(shoppingItemList)
+
+                val intent = Intent(this, ProductsFullscreenActivity::class.java).apply {
+                    putExtra(ProductsFullscreenActivity.EXTRA_PRODUCTS, productsJson)
+                }
+                fullscreenLauncher.launch(intent)
+
+                // Add smooth transition animation
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+
+                // Analytics for fullscreen zoom action
+                val zoomParams = Bundle().apply {
+                    putInt("items_count", shoppingItemList.size)
+                }
+                AnalyticsManager.logEvent("products_fullscreen_opened", zoomParams)
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de l'ouverture du mode plein écran: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "fullscreen_zoom")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+
+                Toast.makeText(this, "Error opening fullscreen view", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun setupFullscreenActivityLauncher() {
+        fullscreenLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                result.data?.let { data ->
+                    try {
+                        // Get the updated products JSON from the result
+                        val updatedProductsJson = data.getStringExtra(ProductsFullscreenActivity.RESULT_PRODUCTS_UPDATED)
+
+                        if (!updatedProductsJson.isNullOrEmpty()) {
+                            // Deserialize the updated product list
+                            val gson = Gson()
+                            val type = object : TypeToken<List<CartItem>>() {}.type
+                            val updatedProducts: List<CartItem> = gson.fromJson(updatedProductsJson, type)
+
+                            // Clear current list and add updated products
+                            shoppingItemList.clear()
+                            shoppingItemList.addAll(updatedProducts)
+
+                            // Notify adapter of changes
+                            productTrackAdapter.notifyDataSetChanged()
+
+                            // Update UI state
+                            updateEmptyState()
+
+                            // Save updated list to preferences
+                            saveShoppingItemListToPreferences("MainShoppingListPrefs", shoppingItemList)
+
+                            // Log analytics for successful sync
+                            val syncParams = Bundle().apply {
+                                putInt("updated_items_count", shoppingItemList.size)
+                            }
+                            AnalyticsManager.logEvent("products_fullscreen_sync_success", syncParams)
+                        }
+                    } catch (e: Exception) {
+                        CrashlyticsManager.log("Erreur lors de la synchronisation des produits depuis le mode plein écran: ${e.message ?: "Message non disponible"}")
+                        CrashlyticsManager.setCustomKey("error_location", "fullscreen_result_sync")
+                        CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                        CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                        CrashlyticsManager.logException(e)
+
+                        Toast.makeText(this, "Error syncing product changes", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
@@ -607,6 +705,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
             Toast.makeText(this, getString(R.string.shopping_list_open_error), Toast.LENGTH_SHORT).show()
         }
     }
+
 
     override fun onDestroy() {
         try {
