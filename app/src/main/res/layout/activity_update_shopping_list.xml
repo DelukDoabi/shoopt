@@ -122,7 +122,6 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/shoop_update_shopping_list"
-                            app:tint="@color/main_palette_old_lavender_variant"
                             android:contentDescription="@string/update_shopping_list" />
 
                         <TextView
