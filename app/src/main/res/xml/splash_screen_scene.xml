@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetEnd="@+id/end"
+        motion:constraintSetStart="@+id/start"
+        motion:duration="1000"
+        motion:autoTransition="animateToEnd">
+
+        <KeyFrameSet>
+            <KeyAttribute
+                motion:framePosition="0"
+                motion:motionTarget="@id/logo_background_circle"
+                android:alpha="0"
+                android:scaleX="0.6"
+                android:scaleY="0.6" />
+
+            <KeyAttribute
+                motion:framePosition="30"
+                motion:motionTarget="@id/logo_background_circle"
+                android:alpha="1"
+                android:scaleX="1"
+                android:scaleY="1" />
+
+            <KeyAttribute
+                motion:framePosition="10"
+                motion:motionTarget="@id/animated_logo_container"
+                android:alpha="0" />
+
+            <KeyAttribute
+                motion:framePosition="40"
+                motion:motionTarget="@id/animated_logo_container"
+                android:alpha="1" />
+
+            <KeyAttribute
+                motion:framePosition="30"
+                motion:motionTarget="@id/app_name_text"
+                android:alpha="0"
+                android:translationY="50dp" />
+
+            <KeyAttribute
+                motion:framePosition="60"
+                motion:motionTarget="@id/app_name_text"
+                android:alpha="1"
+                android:translationY="0dp" />
+
+            <KeyAttribute
+                motion:framePosition="50"
+                motion:motionTarget="@id/app_tagline"
+                android:alpha="0" />
+
+            <KeyAttribute
+                motion:framePosition="80"
+                motion:motionTarget="@id/app_tagline"
+                android:alpha="1" />
+
+            <KeyAttribute
+                motion:framePosition="70"
+                motion:motionTarget="@id/shoopt_version_TV"
+                android:alpha="0" />
+
+            <KeyAttribute
+                motion:framePosition="100"
+                motion:motionTarget="@id/shoopt_version_TV"
+                android:alpha="1" />
+        </KeyFrameSet>
+
+        <OnClick
+            motion:targetId="@id/app_tagline"
+            motion:clickAction="transitionToEnd" />
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+        <Constraint android:id="@id/logo_background_circle" />
+        <Constraint android:id="@id/animated_logo_container" />
+        <Constraint android:id="@id/app_name_text" />
+        <Constraint android:id="@id/app_tagline" />
+        <Constraint android:id="@id/shoopt_version_TV" />
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+        <Constraint android:id="@id/logo_background_circle" />
+        <Constraint android:id="@id/animated_logo_container" />
+        <Constraint android:id="@id/app_name_text" />
+        <Constraint android:id="@id/app_tagline" />
+        <Constraint android:id="@id/shoopt_version_TV" />
+    </ConstraintSet>
+</MotionScene>

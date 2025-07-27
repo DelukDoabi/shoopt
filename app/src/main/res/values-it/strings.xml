@@ -196,4 +196,5 @@
     <string name="sort_shop_asc">Negozio (A-Z)</string>
     <string name="sort_recent_first">Più recenti prima</string>
     <string name="sort_oldest_first">Meno recenti prima</string>
+    <string name="your_shopping_optimizer">Il tuo ottimizzatore di acquisti</string>
 </resources>

@@ -197,4 +197,5 @@
     <string name="sort_shop_asc">店舗 (A-Z)</string>
     <string name="sort_recent_first">新しい順</string>
     <string name="sort_oldest_first">古い順</string>
+    <string name="your_shopping_optimizer">あなたのショッピングオプティマイザー</string>
 </resources>
