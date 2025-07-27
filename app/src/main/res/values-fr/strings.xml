@@ -59,7 +59,7 @@
     <string name="insert_product_name">Saisir le nom</string>
     <string name="insert_product_price">Saisir le prix</string>
     <string name="insert_product_shop">Saisir le magasin</string>
-    <string name="add_product">Ajouter le produit</string>
+    <string name="add_product">Ajouter un produit</string>
     <string name="empty_cart">Vider le panier</string>
     <string name="save_product">Enregistrer le produit</string>
     <string name="product_picture">Photo du produit</string>

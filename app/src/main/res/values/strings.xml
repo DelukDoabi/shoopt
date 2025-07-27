@@ -165,7 +165,7 @@
     <!-- Product Management -->
     <string name="delete_product">Delete Product</string>
     <string name="delete_product_confirm">Are you sure you want to delete this product?</string>
-    <string name="product_deleted">Product deleted successfully</string>
+    <string name="product_deleted">Product \"%1$s\" deleted successfully</string>
     <string name="failed_to_delete_product">Failed to delete product</string>
     <string name="product_added_to_cart">Product added to cart</string>
     <string name="failed_to_add_product_to_cart">Failed to add product to cart</string>
