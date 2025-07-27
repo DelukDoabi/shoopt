@@ -8,40 +8,45 @@
     android:background="@drawable/splash_gradient_background"
     app:layoutDescription="@xml/splash_screen_scene">
 
+    <!-- Logo container with background -->
     <View
         android:id="@+id/logo_background_circle"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/splash_logo_background"
         android:elevation="4dp"
-        app:layout_constraintWidth_percent="0.42"
+        app:layout_constraintWidth_percent="0.45"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintBottom_toTopOf="@+id/app_name_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintVertical_bias="0.45" />
 
+    <!-- Animated logo with enhanced shine effect -->
     <FrameLayout
         android:id="@+id/animated_logo_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:elevation="6dp"
-        app:layout_constraintWidth_percent="0.4"
+        app:layout_constraintWidth_percent="0.42"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintBottom_toBottomOf="@id/logo_background_circle"
         app:layout_constraintEnd_toEndOf="@id/logo_background_circle"
         app:layout_constraintStart_toStartOf="@id/logo_background_circle"
         app:layout_constraintTop_toTopOf="@id/logo_background_circle">
 
+        <!-- Logo animation -->
         <ImageView
             android:id="@+id/app_logo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/loading_logo_animation"
             android:padding="16dp"
-            android:contentDescription="Shoopt logo"/>
+            android:contentDescription="@string/app_name"/>
 
+        <!-- Modernized shine effect -->
         <com.shoopt.app.utils.ShineEffectView
             android:id="@+id/shine_effect"
             android:layout_width="match_parent"
@@ -49,15 +54,16 @@
             android:clipToOutline="true" />
     </FrameLayout>
 
+    <!-- App Name with modern typography -->
     <TextView
         android:id="@+id/app_name_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Shoopt"
+        android:text="@string/app_name"
         android:textColor="@color/main_palette_old_lavender"
-        android:textSize="48sp"
+        android:textSize="42sp"
         android:textStyle="bold"
-        android:letterSpacing="0.05"
+        android:letterSpacing="0.03"
         android:layout_marginTop="24dp"
         android:fontFamily="sans-serif-medium"
         android:shadowColor="#40000000"
@@ -69,19 +75,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo_background_circle" />
 
+    <!-- Tagline with modern design -->
     <TextView
         android:id="@+id/app_tagline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/your_shopping_optimizer"
         android:textColor="@color/main_palette_old_lavender_variant"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:fontFamily="sans-serif-light"
         android:layout_marginTop="8dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:background="@drawable/tagline_background"
         android:elevation="2dp"
         app:layout_constraintBottom_toTopOf="@+id/shoopt_version_TV"
@@ -89,6 +96,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/app_name_text" />
 
+    <!-- Version info -->
     <TextView
         android:id="@+id/shoopt_version_TV"
         android:layout_width="wrap_content"
