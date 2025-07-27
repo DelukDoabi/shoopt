@@ -194,6 +194,6 @@
     <string name="sort_price_asc">Prix (croissant)</string>
     <string name="sort_price_desc">Prix (décroissant)</string>
     <string name="sort_shop_asc">Magasin (A-Z)</string>
-    <string name="sort_recent_first">Plus récents d'abord</string>
-    <string name="sort_oldest_first">Plus anciens d'abord</string>
+    <string name="sort_recent_first">Plus récents d\'abord</string>
+    <string name="sort_oldest_first">Plus anciens d\'abord</string>
 </resources>
