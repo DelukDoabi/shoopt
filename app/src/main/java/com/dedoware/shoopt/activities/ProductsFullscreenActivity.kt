@@ -51,11 +51,16 @@ class ProductsFullscreenActivity : AppCompatActivity() {
     }
 
     private fun setupSystemBars() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        // Remove the window insets listener to allow status bar to be visible
+        // ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+        //     val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+        //     v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+        //     insets
+        // }
+
+        // Ensure status bar is visible and content doesn't overlap
+        window.statusBarColor = resources.getColor(android.R.color.transparent, theme)
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
     }
 
     private fun setupRecyclerView() {

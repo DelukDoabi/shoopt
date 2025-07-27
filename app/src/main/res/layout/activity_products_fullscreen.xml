@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
+    android:fitsSystemWindows="false"
     tools:context=".activities.ProductsFullscreenActivity">
 
     <!-- Background gradient - consistent with other screens -->
@@ -20,7 +20,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="20dp"
-        android:layout_marginHorizontal="8dp">
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="8dp">
 
         <!-- Enhanced Header Bar -->
         <LinearLayout
@@ -30,7 +31,7 @@
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:padding="20dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginHorizontal="4dp"
             android:background="@drawable/card_background_rounded"
             android:backgroundTint="?attr/colorSurface"
