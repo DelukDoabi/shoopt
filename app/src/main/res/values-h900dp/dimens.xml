@@ -39,11 +39,6 @@
     <dimen name="input_min_height">56dp</dimen>
     <dimen name="input_max_height">220dp</dimen>
 
-    <!-- New dimensions for extra tall screen optimizations -->
-    <dimen name="product_image_size_percent">0.7</dimen>
-    <dimen name="product_image_max_size">240dp</dimen>
-    <dimen name="text_input_min_height">52dp</dimen>
-    <dimen name="tips_card_padding">12dp</dimen>
 
     <!-- Logo sizing -->
     <dimen name="logo_width_percent">0.3</dimen>
