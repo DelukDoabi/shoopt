@@ -1,27 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_palette_rajah"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:background="@drawable/splash_gradient_background">
+
+    <ImageView
+        android:id="@+id/app_logo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/ic_launcher_foreground"
+        android:elevation="6dp"
+        android:padding="12dp"
+        android:background="@drawable/splash_logo_background"
+        app:layout_constraintWidth_percent="0.4"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintBottom_toTopOf="@+id/app_name_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:contentDescription="Shoopt logo"/>
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/app_name_text"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="40dp"
-        android:paddingEnd="30dp"
         android:text="Shoopt"
         android:textColor="@color/main_palette_old_lavender"
-        android:textSize="100dp"
-        android:textStyle="bold" />
+        android:textSize="48sp"
+        android:textStyle="bold"
+        android:letterSpacing="0.05"
+        android:layout_marginTop="24dp"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintBottom_toTopOf="@+id/app_tagline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_logo" />
 
     <TextView
+        android:id="@+id/app_tagline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Your Shopping Optimizer"
         android:textColor="@color/main_palette_nickel"
-        android:textSize="25dp" />
+        android:textSize="18sp"
+        android:fontFamily="sans-serif-light"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/shoopt_version_TV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_name_text" />
 
     <TextView
         android:id="@+id/shoopt_version_TV"
@@ -29,12 +60,14 @@
         android:layout_height="wrap_content"
         android:text="Version: 0.0.0"
         android:textColor="@color/main_palette_nickel"
-        android:textSize="10dp" />
+        android:textSize="12sp"
+        android:fontFamily="sans-serif-light"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="36dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_tagline"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <ImageView
-        android:layout_width="168dp"
-        android:layout_height="128dp"
-        android:elevation="10dp"
-        android:src="@drawable/ic_launcher_foreground" />
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
