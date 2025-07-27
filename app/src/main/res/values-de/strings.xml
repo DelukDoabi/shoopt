@@ -173,4 +173,19 @@
     <string name="paste_error">❌ Fehler beim Einfügen aus der Zwischenablage</string>
     <string name="error_adding_products">❌ Fehler beim Hinzufügen von Produkten zur Liste</string>
     <string name="nothing_to_paste">📋 Nichts zum Einfügen</string>
+    <string name="analyse_products">Produkte analysieren</string>
+    <string name="search_your_products">Suche deine Produkte</string>
+    <string name="search_by_name_shop_or_price">Suche nach Name, Geschäft oder Preis...</string>
+    <string name="total_products">Gesamtprodukte</string>
+    <string name="avg_price">Durchschnittspreis</string>
+    <string name="shops">Geschäfte</string>
+    <string name="your_products">Deine Produkte</string>
+    <string name="sort">Sortieren</string>
+    <string name="sort_and_filter_products">Produkte sortieren und filtern</string>
+    <string name="product_analysis">Produktanalyse</string>
+    <string name="no_products_found">Keine Produkte gefunden</string>
+    <string name="no_products_to_analyze">Keine Produkte zum Analysieren</string>
+    <string name="start_adding_products_to_see_analysis">Fügen Sie Produkte hinzu, um Analysen und Einblicke zu sehen</string>
+    <string name="quick_add">Schnell hinzufügen</string>
+    <string name="quick_add_product">Produkt schnell hinzufügen</string>
 </resources>

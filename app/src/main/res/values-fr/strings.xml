@@ -59,7 +59,7 @@
     <string name="insert_product_name">Saisir le nom</string>
     <string name="insert_product_price">Saisir le prix</string>
     <string name="insert_product_shop">Saisir le magasin</string>
-    <string name="add_product">Ajouter le produit</string>
+    <string name="add_product">Ajouter un produit</string>
     <string name="empty_cart">Vider le panier</string>
     <string name="save_product">Enregistrer le produit</string>
     <string name="product_picture">Photo du produit</string>
@@ -173,4 +173,19 @@
     <string name="paste_error">❌ Erreur lors du collage depuis le presse-papiers</string>
     <string name="error_adding_products">❌ Erreur lors de l\'ajout des produits à la liste</string>
     <string name="nothing_to_paste">📋 Rien à coller</string>
+    <string name="analyse_products">Analyser les produits</string>
+    <string name="search_your_products">Recherchez vos produits</string>
+    <string name="search_by_name_shop_or_price">Recherchez par nom, magasin ou prix...</string>
+    <string name="total_products">Produits totaux</string>
+    <string name="avg_price">Prix moyen</string>
+    <string name="shops">Magasins</string>
+    <string name="your_products">Vos produits</string>
+    <string name="sort">Trier</string>
+    <string name="sort_and_filter_products">Trier et filtrer les produits</string>
+    <string name="product_analysis">Analyse des produits</string>
+    <string name="no_products_found">Aucun produit trouvé</string>
+    <string name="no_products_to_analyze">Aucun produit à analyser</string>
+    <string name="start_adding_products_to_see_analysis">Commencez à ajouter des produits pour voir des analyses détaillées</string>
+    <string name="quick_add">Ajout rapide</string>
+    <string name="quick_add_product">Ajouter un produit rapidement</string>
 </resources>

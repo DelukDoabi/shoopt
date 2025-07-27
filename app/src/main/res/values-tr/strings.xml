@@ -171,4 +171,19 @@
     <string name="paste_error">❌ Error pasting from clipboard</string>
     <string name="error_adding_products">❌ Error adding products to list</string>
     <string name="nothing_to_paste">📋 Nothing to paste</string>
+    <string name="analyse_products">Ürünleri Analiz Et</string>
+    <string name="search_your_products">Ürünlerinizi Arayın</string>
+    <string name="search_by_name_shop_or_price">İsim, mağaza veya fiyat ile arayın…</string>
+    <string name="total_products">Toplam Ürün</string>
+    <string name="avg_price">Ortalama Fiyat</string>
+    <string name="shops">Mağazalar</string>
+    <string name="your_products">Ürünleriniz</string>
+    <string name="sort">Sırala</string>
+    <string name="sort_and_filter_products">Ürünleri Sırala ve Filtrele</string>
+    <string name="product_analysis">Ürün Analizi</string>
+    <string name="no_products_found">Ürün Bulunamadı</string>
+    <string name="no_products_to_analyze">Analiz edilecek ürün yok</string>
+    <string name="start_adding_products_to_see_analysis">Detaylı analiz ve içgörüler için ürün eklemeye başlayın</string>
+    <string name="quick_add">Hızlı Ekle</string>
+    <string name="quick_add_product">Hızlı Ürün Ekle</string>
 </resources>

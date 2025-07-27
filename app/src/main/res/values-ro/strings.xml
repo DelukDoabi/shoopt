@@ -172,4 +172,19 @@
     <string name="paste_error">❌ Eroare la lipirea din clipboard</string>
     <string name="error_adding_products">❌ Eroare la adăugarea produselor în listă</string>
     <string name="nothing_to_paste">📋 Nimic de lipit</string>
+    <string name="analyse_products">Analiza produselor</string>
+    <string name="search_your_products">Caută produsele tale</string>
+    <string name="search_by_name_shop_or_price">Caută după nume, magazin sau preț…</string>
+    <string name="total_products">Produse totale</string>
+    <string name="avg_price">Preț mediu</string>
+    <string name="shops">Magazine</string>
+    <string name="your_products">Produsele tale</string>
+    <string name="sort">Sortează</string>
+    <string name="sort_and_filter_products">Sortează și filtrează produsele</string>
+    <string name="product_analysis">Analiza produsului</string>
+    <string name="no_products_found">Niciun produs găsit</string>
+    <string name="no_products_to_analyze">Niciun produs de analizat</string>
+    <string name="start_adding_products_to_see_analysis">Începe să adaugi produse pentru a vedea analiza detaliată și informațiile utile</string>
+    <string name="quick_add">Adăugare rapidă</string>
+    <string name="quick_add_product">Adăugare rapidă produs</string>
 </resources>

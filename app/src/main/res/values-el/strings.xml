@@ -173,4 +173,19 @@
     <string name="paste_error">❌ Σφάλμα κατά την επικόλληση από το πρόχειρο</string>
     <string name="error_adding_products">❌ Σφάλμα κατά την προσθήκη προϊόντων στη λίστα</string>
     <string name="nothing_to_paste">📋 Τίποτα για επικόλληση</string>
+    <string name="analyse_products">Ανάλυση προϊόντων</string>
+    <string name="search_your_products">Αναζητήστε τα προϊόντα σας</string>
+    <string name="search_by_name_shop_or_price">Αναζητήστε με όνομα, κατάστημα ή τιμή...</string>
+    <string name="total_products">Συνολικά προϊόντα</string>
+    <string name="avg_price">Μέση τιμή</string>
+    <string name="shops">Καταστήματα</string>
+    <string name="your_products">Τα προϊόντα σας</string>
+    <string name="sort">Ταξινόμηση</string>
+    <string name="sort_and_filter_products">Ταξινόμηση και φιλτράρισμα προϊόντων</string>
+    <string name="product_analysis">Ανάλυση προϊόντων</string>
+    <string name="no_products_found">Δεν βρέθηκαν προϊόντα</string>
+    <string name="no_products_to_analyze">Δεν υπάρχουν προϊόντα για ανάλυση</string>
+    <string name="start_adding_products_to_see_analysis">Ξεκινήστε να προσθέτετε προϊόντα για να δείτε λεπτομερείς αναλύσεις και πληροφορίες</string>
+    <string name="quick_add">Γρήγορη προσθήκη</string>
+    <string name="quick_add_product">Γρήγορη προσθήκη προϊόντος</string>
 </resources>

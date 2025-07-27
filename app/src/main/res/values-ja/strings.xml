@@ -173,4 +173,19 @@
     <string name="paste_error">❌ クリップボードから貼り付け中にエラー</string>
     <string name="error_adding_products">❌ リストに商品を追加中にエラー</string>
     <string name="nothing_to_paste">📋 貼り付けるものがありません</string>
+    <string name="analyse_products">製品を分析する</string>
+    <string name="search_your_products">製品を検索する</string>
+    <string name="search_by_name_shop_or_price">名前、店舗、または価格で検索...</string>
+    <string name="total_products">合計製品</string>
+    <string name="avg_price">平均価格</string>
+    <string name="shops">店舗</string>
+    <string name="your_products">あなたの製品</string>
+    <string name="sort">並べ替え</string>
+    <string name="sort_and_filter_products">製品を並べ替えおよびフィルタリングする</string>
+    <string name="product_analysis">製品分析</string>
+    <string name="no_products_found">製品が見つかりません</string>
+    <string name="no_products_to_analyze">分析する製品がありません</string>
+    <string name="start_adding_products_to_see_analysis">詳細な分析と洞察を表示するには、製品を追加し始めてください</string>
+    <string name="quick_add">クイック追加</string>
+    <string name="quick_add_product">製品をクイック追加</string>
 </resources>

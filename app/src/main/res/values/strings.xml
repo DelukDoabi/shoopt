@@ -165,7 +165,7 @@
     <!-- Product Management -->
     <string name="delete_product">Delete Product</string>
     <string name="delete_product_confirm">Are you sure you want to delete this product?</string>
-    <string name="product_deleted">Product deleted successfully</string>
+    <string name="product_deleted">Product \"%1$s\" deleted successfully</string>
     <string name="failed_to_delete_product">Failed to delete product</string>
     <string name="product_added_to_cart">Product added to cart</string>
     <string name="failed_to_add_product_to_cart">Failed to add product to cart</string>
@@ -203,5 +203,22 @@
     <string name="paste_error">❌ Error pasting from clipboard</string>
     <string name="error_adding_products">❌ Error adding products to list</string>
     <string name="nothing_to_paste">📋 Nothing to paste</string>
+
+    <!-- Analyze Activity Screen -->
+    <string name="analyse_products">Analyze Products</string>
+    <string name="search_your_products">Search Your Products</string>
+    <string name="search_by_name_shop_or_price">Search by name, shop, or price…</string>
+    <string name="total_products">Total Products</string>
+    <string name="avg_price">Avg. Price</string>
+    <string name="shops">Shops</string>
+    <string name="your_products">Your Products</string>
+    <string name="sort">Sort</string>
+    <string name="sort_and_filter_products">Sort and Filter Products</string>
+    <string name="product_analysis">Product Analysis</string>
+    <string name="no_products_found">No Products Found</string>
+    <string name="no_products_to_analyze">No products to analyze</string>
+    <string name="start_adding_products_to_see_analysis">Start adding products to see detailed analysis and insights</string>
+    <string name="quick_add">Quick Add</string>
+    <string name="quick_add_product">Quick Add Product</string>
 
 </resources>
