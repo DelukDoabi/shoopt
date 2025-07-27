@@ -194,4 +194,5 @@
     <string name="sort_shop_asc">Butik (A-Ö)</string>
     <string name="sort_recent_first">Senaste först</string>
     <string name="sort_oldest_first">Äldst först</string>
+    <string name="your_shopping_optimizer">Din shoppingoptimerare</string>
 </resources>

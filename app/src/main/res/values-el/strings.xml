@@ -196,4 +196,5 @@
     <string name="sort_shop_asc">Κατάστημα (Α-Ω)</string>
     <string name="sort_recent_first">Πρόσφατα πρώτα</string>
     <string name="sort_oldest_first">Παλαιότερα πρώτα</string>
+    <string name="your_shopping_optimizer">Ο βελτιστοποιητής αγορών σας</string>
 </resources>

@@ -196,4 +196,5 @@
     <string name="sort_shop_asc">상점 (A-Z)</string>
     <string name="sort_recent_first">최신순</string>
     <string name="sort_oldest_first">오래된순</string>
+    <string name="your_shopping_optimizer">귀하의 쇼핑 최적화 도구</string>
 </resources>

@@ -196,4 +196,5 @@
     <string name="sort_shop_asc">Magasin (A-Z)</string>
     <string name="sort_recent_first">Plus récents d\'abord</string>
     <string name="sort_oldest_first">Plus anciens d\'abord</string>
+    <string name="your_shopping_optimizer">Ton optimiseur d\'achats</string>
 </resources>
