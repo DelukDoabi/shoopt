@@ -139,6 +139,9 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                             productTrackAdapter.removeAt(position)
                             updateEmptyState() // Update empty state after removal
 
+                            // Save immediately after removal to preserve state
+                            saveShoppingItemListToPreferences("MainShoppingListPrefs", shoppingItemList)
+
                             // Analytics pour le swipe d'un élément
                             val params = Bundle().apply {
                                 putString("direction", if (direction == ItemTouchHelper.LEFT) "gauche" else "droite")
@@ -172,44 +175,46 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                         .split(Regex("[,.\\-;:|/]+"))
                         .map { it.trim() }
                         .filter { it.isNotEmpty() }
-                    if (shoppingItemList.isEmpty()) {
-                        shoppingItemList.addAll(products.map {
-                            val regex = Regex("(\\d+)")
-                            val quantityMatch = regex.find(it)
-                            val quantity = quantityMatch?.value?.toIntOrNull() ?: 1
-                            val name = if (quantityMatch != null) it.replace(quantityMatch.value, "").trim() else it
-                            Product(name = name, id = "", barcode = 0, timestamp = 0, price = 0.0, unitPrice = 0.0, shop = "", pictureUrl = "")
-                                .let { product -> CartItem(product, quantity) }
-                        })
-                    } else {
-                        shoppingItemList.addAll(products.map {
-                            val regex = Regex("(\\d+)")
-                            val quantityMatch = regex.find(it)
-                            val quantity = quantityMatch?.value?.toIntOrNull() ?: 1
-                            val name = if (quantityMatch != null) it.replace(quantityMatch.value, "").trim() else it
-                            Product(name = name, id = "", barcode = 0, timestamp = 0, price = 0.0, unitPrice = 0.0, shop = "", pictureUrl = "")
-                                .let { product -> CartItem(product, quantity) }
-                        })
-                    }
-                    productTrackAdapter.notifyDataSetChanged()
-                    updateEmptyState() // Update empty state after adding products
-                    mainShoppingListEditText.setText("")
-                    Toast.makeText(this, getString(R.string.products_added, products.size), Toast.LENGTH_SHORT).show()
 
-                    // Suivi de la conversion de la liste
-                    conversionCount++
-                    AnalyticsManager.logEvent("shopping_list_converted", null)
+                    if (products.isNotEmpty()) {
+                        val newProducts = products.map {
+                            val regex = Regex("(\\d+)")
+                            val quantityMatch = regex.find(it)
+                            val quantity = quantityMatch?.value?.toIntOrNull() ?: 1
+                            val name = if (quantityMatch != null) it.replace(quantityMatch.value, "").trim() else it
+                            Product(name = name, id = "", barcode = 0, timestamp = 0, price = 0.0, unitPrice = 0.0, shop = "", pictureUrl = "")
+                                .let { product -> CartItem(product, quantity) }
+                        }
+
+                        shoppingItemList.addAll(newProducts)
+                        productTrackAdapter.notifyDataSetChanged()
+                        updateEmptyState() // Update empty state after adding products
+
+                        // Save immediately after conversion to preserve state
+                        saveShoppingItemListToPreferences("MainShoppingListPrefs", shoppingItemList)
+
+                        mainShoppingListEditText.setText("")
+                        Toast.makeText(this, getString(R.string.products_added, products.size), Toast.LENGTH_SHORT).show()
+
+                        // Suivi de la conversion de la liste
+                        conversionCount++
+                        AnalyticsManager.logEvent("shopping_list_converted", null)
+                    }
                 } catch (e: Exception) {
-                    CrashlyticsManager.log("Erreur lors de la conversion de la liste de courses: ${e.message ?: "Message non disponible"}")
-                    CrashlyticsManager.setCustomKey("error_location", "convert_list")
+                    CrashlyticsManager.log("Erreur lors de la conversion de la liste: ${e.message ?: "Message non disponible"}")
+                    CrashlyticsManager.setCustomKey("error_location", "convert_shopping_list")
                     CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
                     CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
                     CrashlyticsManager.logException(e)
 
-                    Toast.makeText(this, getString(R.string.unexpected_error), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.error_adding_products), Toast.LENGTH_SHORT).show()
                 }
             }
 
+            // Récupérer et afficher la liste de courses principale au démarrage
+            loadShoppingItemListFromPreferences("MainShoppingListPrefs", shoppingItemList)
+
+            // Initialize missing button listeners that were removed
             emptyMainListButton = findViewById(R.id.empty_main_list_IB)
             emptyMainListButton.setOnClickListener {
                 try {
@@ -237,7 +242,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                                 }
                             }
 
-                            Toast.makeText(this, R.string.shopping_cart_emptied, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, getString(R.string.shopping_cart_emptied), Toast.LENGTH_SHORT).show()
                         } catch (e: Exception) {
                             CrashlyticsManager.log("Erreur lors de la vidange de la liste: ${e.message ?: "Message non disponible"}")
                             CrashlyticsManager.setCustomKey("error_location", "empty_list_action")
@@ -276,34 +281,13 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                 finish()
             }
         } catch (e: Exception) {
-            // Capture des erreurs globales dans onCreate
-            CrashlyticsManager.log("Erreur globale dans UpdateShoppingListActivity.onCreate: ${e.message ?: "Message non disponible"}")
-            CrashlyticsManager.setCustomKey("error_location", "shopping_list_activity_init")
+            CrashlyticsManager.log("Erreur générale dans onCreate: ${e.message ?: "Message non disponible"}")
             CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
             CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
             CrashlyticsManager.logException(e)
 
-            Toast.makeText(this, getString(R.string.unexpected_error), Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.app_loading_error), Toast.LENGTH_SHORT).show()
             finish()
-        }
-    }
-
-    /**
-     * Updates the visibility of empty state and product count badge
-     */
-    private fun updateEmptyState() {
-        try {
-            val isEmpty = shoppingItemList.isEmpty()
-
-            // Toggle visibility between empty state and RecyclerView
-            emptyStateContainer.visibility = if (isEmpty) View.VISIBLE else View.GONE
-            productTrackRecyclerView.visibility = if (isEmpty) View.GONE else View.VISIBLE
-
-            // Update product count badge
-            productCountBadge.text = shoppingItemList.size.toString()
-        } catch (e: Exception) {
-            CrashlyticsManager.log("Erreur lors de la mise à jour de l'état vide: ${e.message ?: "Message non disponible"}")
-            CrashlyticsManager.logException(e)
         }
     }
 
@@ -315,9 +299,9 @@ class UpdateShoppingListActivity : AppCompatActivity() {
         AnalyticsManager.logEvent("empty_list_dialog_shown", showDialogParams)
 
         AlertDialog.Builder(this)
-            .setTitle(R.string.clear_shopping_cart)
-            .setMessage(R.string.clear_shopping_cart_confirm)
-            .setPositiveButton(R.string.clear) { _, _ ->
+            .setTitle(getString(R.string.clear_shopping_cart))
+            .setMessage(getString(R.string.clear_shopping_cart_confirm))
+            .setPositiveButton(getString(R.string.clear)) { _, _ ->
                 // Analyser la confirmation du vidage
                 val confirmParams = Bundle().apply {
                     putInt("items_removed", shoppingItemList.size)
@@ -333,75 +317,69 @@ class UpdateShoppingListActivity : AppCompatActivity() {
     }
 
     private fun setupPasteFunctionality() {
-        try {
-            pasteFab.setOnClickListener {
-                try {
-                    val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        pasteFab.setOnClickListener {
+            try {
+                val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clipData = clipboard.primaryClip
 
-                    if (clipboardManager.hasPrimaryClip()) {
-                        val clipData = clipboardManager.primaryClip
-                        if (clipData != null && clipData.itemCount > 0) {
-                            val clipText = clipData.getItemAt(0).text?.toString()
+                if (clipData != null && clipData.itemCount > 0) {
+                    val item = clipData.getItemAt(0)
+                    val pastedText = item?.text?.toString()
 
-                            if (!clipText.isNullOrBlank()) {
-                                // Get current text and append with proper formatting
-                                val currentText = mainShoppingListEditText.text.toString().trim()
-                                val newText = if (currentText.isEmpty()) {
-                                    clipText.trim()
-                                } else {
-                                    "$currentText\n${clipText.trim()}"
-                                }
-
-                                mainShoppingListEditText.setText(newText)
-                                mainShoppingListEditText.setSelection(newText.length) // Move cursor to end
-
-                                // Analytics for paste action
-                                val pasteParams = Bundle().apply {
-                                    putInt("pasted_length", clipText.length)
-                                    putInt("current_text_length", currentText.length)
-                                    putBoolean("had_existing_text", currentText.isNotEmpty())
-                                }
-                                AnalyticsManager.logEvent("shopping_list_pasted", pasteParams)
-
-                                // Show success feedback
-                                Toast.makeText(this, getString(R.string.paste_successful), Toast.LENGTH_SHORT).show()
-
-                                // Optionally vibrate for haptic feedback (if permission available)
-                                try {
-                                    @Suppress("DEPRECATION")
-                                    (getSystemService(Context.VIBRATOR_SERVICE) as? android.os.Vibrator)?.vibrate(50)
-                                } catch (e: Exception) {
-                                    // Ignore vibration errors
-                                }
-                            } else {
-                                Toast.makeText(this, getString(R.string.clipboard_empty), Toast.LENGTH_SHORT).show()
-                            }
+                    if (!pastedText.isNullOrBlank()) {
+                        // Add to text input instead of directly to converted products
+                        val currentText = mainShoppingListEditText.text.toString().trim()
+                        val newText = if (currentText.isEmpty()) {
+                            pastedText.trim()
                         } else {
-                            Toast.makeText(this, getString(R.string.clipboard_empty), Toast.LENGTH_SHORT).show()
+                            "$currentText\n${pastedText.trim()}"
+                        }
+
+                        mainShoppingListEditText.setText(newText)
+                        mainShoppingListEditText.setSelection(newText.length) // Move cursor to end
+
+                        // Analytics for paste action
+                        val pasteParams = Bundle().apply {
+                            putInt("pasted_length", pastedText.length)
+                            putInt("current_text_length", currentText.length)
+                            putBoolean("had_existing_text", currentText.isNotEmpty())
+                        }
+                        AnalyticsManager.logEvent("shopping_list_pasted", pasteParams)
+
+                        Toast.makeText(this, getString(R.string.paste_successful), Toast.LENGTH_SHORT).show()
+
+                        // Clear clipboard after successful paste to prevent reuse
+                        try {
+                            clipboard.setPrimaryClip(android.content.ClipData.newPlainText("", ""))
+                        } catch (e: Exception) {
+                            // Ignore clipboard clearing errors
+                        }
+
+                        // Update FAB visibility after successful paste
+                        updatePasteFabVisibility()
+
+                        // Optionally vibrate for haptic feedback (if permission available)
+                        try {
+                            @Suppress("DEPRECATION")
+                            (getSystemService(Context.VIBRATOR_SERVICE) as? android.os.Vibrator)?.vibrate(50)
+                        } catch (e: Exception) {
+                            // Ignore vibration errors
                         }
                     } else {
                         Toast.makeText(this, getString(R.string.clipboard_empty), Toast.LENGTH_SHORT).show()
                     }
-                } catch (e: Exception) {
-                    CrashlyticsManager.log("Erreur lors du collage depuis le presse-papiers: ${e.message ?: "Message non disponible"}")
-                    CrashlyticsManager.setCustomKey("error_location", "paste_clipboard")
-                    CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
-                    CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
-                    CrashlyticsManager.logException(e)
-
-                    Toast.makeText(this, getString(R.string.paste_error), Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, getString(R.string.clipboard_empty), Toast.LENGTH_SHORT).show()
                 }
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors du collage: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "paste_functionality")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+
+                Toast.makeText(this, getString(R.string.paste_error), Toast.LENGTH_SHORT).show()
             }
-
-            // Update FAB visibility based on clipboard content
-            updatePasteFabVisibility()
-
-        } catch (e: Exception) {
-            CrashlyticsManager.log("Erreur lors de la configuration de la fonctionnalité de collage: ${e.message ?: "Message non disponible"}")
-            CrashlyticsManager.setCustomKey("error_location", "setup_paste_functionality")
-            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
-            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
-            CrashlyticsManager.logException(e)
         }
     }
 
@@ -445,9 +423,65 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                 }
             }
         } catch (e: Exception) {
-            // If we can't check clipboard, keep FAB visible for safety
-            pasteFab.visibility = View.VISIBLE
+            // If we can't check clipboard, hide FAB by default
+            pasteFab.visibility = View.GONE
             CrashlyticsManager.log("Erreur lors de la vérification du presse-papiers: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.logException(e)
+        }
+    }
+
+    private fun updateEmptyState() {
+        try {
+            val isEmpty = shoppingItemList.isEmpty()
+
+            // Toggle visibility between empty state and RecyclerView
+            emptyStateContainer.visibility = if (isEmpty) View.VISIBLE else View.GONE
+            productTrackRecyclerView.visibility = if (isEmpty) View.GONE else View.VISIBLE
+
+            // Update product count badge
+            productCountBadge.text = shoppingItemList.size.toString()
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la mise à jour de l'état vide: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.logException(e)
+        }
+    }
+
+    private fun saveShoppingItemListToPreferences(prefsName: String, itemList: List<CartItem>) {
+        try {
+            val sharedPreferences = getSharedPreferences(prefsName, Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            val gson = Gson()
+            val json = gson.toJson(itemList)
+            editor.putString("shopping_list", json)
+            editor.apply()
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la sauvegarde de la liste de courses: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "save_shopping_list")
+            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+            CrashlyticsManager.logException(e)
+        }
+    }
+
+    private fun loadShoppingItemListFromPreferences(prefsName: String, itemList: MutableList<CartItem>) {
+        try {
+            val sharedPreferences = getSharedPreferences(prefsName, Context.MODE_PRIVATE)
+            val gson = Gson()
+            val json = sharedPreferences.getString("shopping_list", null)
+
+            if (!json.isNullOrEmpty()) {
+                val type = object : TypeToken<List<CartItem>>() {}.type
+                val loadedList: List<CartItem> = gson.fromJson(json, type)
+                itemList.clear()
+                itemList.addAll(loadedList)
+                productTrackAdapter.notifyDataSetChanged()
+                updateEmptyState()
+            }
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors du chargement de la liste de courses: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "load_shopping_list")
+            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
             CrashlyticsManager.logException(e)
         }
     }
@@ -470,7 +504,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    runnable.let { handler.removeCallbacks(it) }
+                    handler.removeCallbacks(runnable)
                     runnable = Runnable {
                         val shoppingListContent = s.toString()
                         CoroutineScope(Dispatchers.IO).launch {
@@ -484,42 +518,6 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                     // Do nothing
                 }
             })
-        }
-    }
-
-    private fun saveShoppingItemListToPreferences(prefKey: String, items: List<CartItem>) {
-        try {
-            val sharedPreferences = getSharedPreferences(prefKey, MODE_PRIVATE)
-            val editor = sharedPreferences.edit()
-            val jsonList = Gson().toJson(items)
-            editor.putString("shoppingItemList", jsonList)
-            editor.apply()
-        } catch (e: Exception) {
-            CrashlyticsManager.log("Erreur lors de la sauvegarde de la liste dans les préférences: ${e.message ?: "Message non disponible"}")
-            CrashlyticsManager.setCustomKey("error_location", "save_shopping_list_preferences")
-            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
-            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
-            CrashlyticsManager.logException(e)
-        }
-    }
-
-    private fun loadShoppingItemListFromPreferences(prefKey: String): List<CartItem> {
-        try {
-            val sharedPreferences = getSharedPreferences(prefKey, MODE_PRIVATE)
-            val jsonList = sharedPreferences.getString("shoppingItemList", null)
-            return if (jsonList != null) {
-                val type = object : TypeToken<List<CartItem>>() {}.type
-                Gson().fromJson(jsonList, type)
-            } else {
-                emptyList()
-            }
-        } catch (e: Exception) {
-            CrashlyticsManager.log("Erreur lors du chargement de la liste depuis les préférences: ${e.message ?: "Message non disponible"}")
-            CrashlyticsManager.setCustomKey("error_location", "load_shopping_list_preferences")
-            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
-            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
-            CrashlyticsManager.logException(e)
-            return emptyList()
         }
     }
 
@@ -554,18 +552,17 @@ class UpdateShoppingListActivity : AppCompatActivity() {
             textEditCount = 0
             conversionCount = 0
 
-            shoppingItemList.clear()
-            shoppingItemList.addAll(loadShoppingItemListFromPreferences("MainShoppingListPrefs"))
-            productTrackAdapter.notifyDataSetChanged()
+            // Recharger la liste de courses principale à chaque reprise de l'activité
+            loadShoppingItemListFromPreferences("MainShoppingListPrefs", shoppingItemList)
+
+            // Update paste FAB visibility when returning to screen
+            updatePasteFabVisibility()
 
             // Enregistrer la reprise de l'activité
             val resumeParams = Bundle().apply {
                 putInt("items_loaded", shoppingItemList.size)
             }
             AnalyticsManager.logEvent("shopping_list_resumed", resumeParams)
-
-            // Update paste FAB visibility when returning to screen
-            updatePasteFabVisibility()
         } catch (e: Exception) {
             CrashlyticsManager.log("Erreur lors de la reprise de l'activité: ${e.message ?: "Message non disponible"}")
             CrashlyticsManager.setCustomKey("error_location", "on_resume_activity")
@@ -573,7 +570,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
             CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
             CrashlyticsManager.logException(e)
 
-            Toast.makeText(this, "Erreur lors du chargement de la liste de courses", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.shopping_list_open_error), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -598,6 +595,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                 shoppingItemList.clear()
                 shoppingItemList.addAll(restoredList)
                 productTrackAdapter.notifyDataSetChanged()
+                updateEmptyState()
             }
         } catch (e: Exception) {
             CrashlyticsManager.log("Erreur lors de la restauration de l'état de l'instance: ${e.message ?: "Message non disponible"}")
@@ -606,7 +604,18 @@ class UpdateShoppingListActivity : AppCompatActivity() {
             CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
             CrashlyticsManager.logException(e)
 
-            Toast.makeText(this, "Erreur lors de la restauration de l'état de l'application", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.shopping_list_open_error), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onDestroy() {
+        try {
+            super.onDestroy()
+            // Sauvegarder la liste de courses principale lors de la destruction de l'activité
+            saveShoppingItemListToPreferences("MainShoppingListPrefs", shoppingItemList)
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la destruction de l'activité: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.logException(e)
         }
     }
 }
