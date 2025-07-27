@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Base logo layer -->
+    <item android:drawable="@drawable/loading_logo_animation" />
+    <!-- Shine effect layer that will be animated -->
+    <item android:id="@+id/shine_mask">
+        <shape>
+            <solid android:color="#00FFFFFF" />
+        </shape>
+    </item>
+</layer-list>
+

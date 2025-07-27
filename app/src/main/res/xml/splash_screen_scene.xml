@@ -25,12 +25,12 @@
 
             <KeyAttribute
                 motion:framePosition="10"
-                motion:motionTarget="@id/app_logo"
+                motion:motionTarget="@id/animated_logo_container"
                 android:alpha="0" />
 
             <KeyAttribute
                 motion:framePosition="40"
-                motion:motionTarget="@id/app_logo"
+                motion:motionTarget="@id/animated_logo_container"
                 android:alpha="1" />
 
             <KeyAttribute
@@ -65,11 +65,15 @@
                 motion:motionTarget="@id/shoopt_version_TV"
                 android:alpha="1" />
         </KeyFrameSet>
+
+        <OnClick
+            motion:targetId="@id/app_tagline"
+            motion:clickAction="transitionToEnd" />
     </Transition>
 
     <ConstraintSet android:id="@+id/start">
         <Constraint android:id="@id/logo_background_circle" />
-        <Constraint android:id="@id/app_logo" />
+        <Constraint android:id="@id/animated_logo_container" />
         <Constraint android:id="@id/app_name_text" />
         <Constraint android:id="@id/app_tagline" />
         <Constraint android:id="@id/shoopt_version_TV" />
@@ -77,7 +81,7 @@
 
     <ConstraintSet android:id="@+id/end">
         <Constraint android:id="@id/logo_background_circle" />
-        <Constraint android:id="@id/app_logo" />
+        <Constraint android:id="@id/animated_logo_container" />
         <Constraint android:id="@id/app_name_text" />
         <Constraint android:id="@id/app_tagline" />
         <Constraint android:id="@id/shoopt_version_TV" />

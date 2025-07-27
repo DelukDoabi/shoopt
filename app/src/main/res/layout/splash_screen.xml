@@ -22,20 +22,31 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
 
-    <ImageView
-        android:id="@+id/app_logo"
+    <FrameLayout
+        android:id="@+id/animated_logo_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="@drawable/ic_launcher_foreground"
         android:elevation="6dp"
-        android:padding="16dp"
         app:layout_constraintWidth_percent="0.4"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintBottom_toBottomOf="@id/logo_background_circle"
         app:layout_constraintEnd_toEndOf="@id/logo_background_circle"
         app:layout_constraintStart_toStartOf="@id/logo_background_circle"
-        app:layout_constraintTop_toTopOf="@id/logo_background_circle"
-        android:contentDescription="Shoopt logo"/>
+        app:layout_constraintTop_toTopOf="@id/logo_background_circle">
+
+        <ImageView
+            android:id="@+id/app_logo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/loading_logo_animation"
+            android:padding="16dp"
+            android:contentDescription="Shoopt logo"/>
+
+        <com.shoopt.app.utils.ShineEffectView
+            android:id="@+id/shine_effect"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/app_name_text"
