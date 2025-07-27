@@ -73,7 +73,7 @@
         android:id="@+id/app_tagline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Your Shopping Optimizer"
+        android:text="@string/your_shopping_optimizer"
         android:textColor="@color/main_palette_old_lavender_variant"
         android:textSize="18sp"
         android:fontFamily="sans-serif-light"
