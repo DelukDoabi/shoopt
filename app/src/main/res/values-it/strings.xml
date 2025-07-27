@@ -143,4 +143,34 @@
     <string name="empty_cart_message">Il tuo carrello è vuoto</string>
     <string name="empty_cart_subtitle">Aggiungi prodotti per iniziare a monitorare i tuoi acquisti</string>
     <string name="clear_cart">Svuota carrello</string>
+    <string name="shopping_list_input_help">Inserisci i prodotti separati da virgole, righe o trattini</string>
+    <string name="shopping_list_input_hint">Latte, pane, 2 mele, formaggio…</string>
+    <string name="shopping_list_tips_title">💡 Suggerimenti rapidi</string>
+    <string name="shopping_list_tips_content">• Usa virgole, righe o trattini per separare gli articoli\n• Aggiungi quantità come "2 mele" o "3 banane"\n• Incolla liste da altre app\n• Fai scorrere gli articoli per rimuoverli</string>
+    <string name="product_list">Lista prodotti</string>
+    <string name="converted_products_list">Prodotti convertiti</string>
+    <string name="empty_list">Lista vuota</string>
+    <string name="no_products_converted">Nessun prodotto convertito</string>
+    <string name="add_products_to_see_them_here">Aggiungi prodotti alla tua lista per vederli qui</string>
+    <string name="paste_list">Incolla lista</string>
+    <string name="paste_shopping_list">Incolla lista della spesa</string>
+    <!-- Fullscreen Products View -->
+    <string name="close_fullscreen">Chiudi schermo intero</string>
+    <string name="exit_fullscreen">Esci da schermo intero</string>
+    <string name="expand_to_fullscreen">Espandi a schermo intero</string>
+    <string name="expand_products_list">Espandi lista prodotti</string>
+    <string name="search_products">Cerca prodotti…</string>
+    <string name="filter_products">Filtra prodotti</string>
+    <string name="no_products_converted_fullscreen">Nessun prodotto convertito</string>
+    <string name="add_products_to_see_them_here_fullscreen">Aggiungi prodotti alla tua lista per vederli qui.\nUsa il pulsante converti per trasformare la tua lista della spesa in prodotti tracciabili.</string>
+    <string name="go_back_to_add_products">Torna ad aggiungere prodotti</string>
+    <string name="select_all">Seleziona tutto</string>
+    <string name="clear_all">Svuota tutto</string>
+    <string name="product_count_zero">0</string>
+    <!-- Paste Functionality -->
+    <string name="paste_successful">✅ Lista incollata con successo!</string>
+    <string name="clipboard_empty">📋 Appunti vuoti</string>
+    <string name="paste_error">❌ Errore durante l\'incolla dagli appunti</string>
+    <string name="error_adding_products">❌ Errore durante l\'aggiunta dei prodotti alla lista</string>
+    <string name="nothing_to_paste">📋 Niente da incollare</string>
 </resources>

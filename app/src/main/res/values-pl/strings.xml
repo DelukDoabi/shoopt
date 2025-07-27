@@ -143,4 +143,33 @@
     <string name="empty_cart_message">Twój koszyk jest pusty</string>
     <string name="empty_cart_subtitle">Dodaj produkty, aby rozpocząć śledzenie zakupów</string>
     <string name="clear_cart">Wyczyść koszyk</string>
+    <string name="shopping_list_input_help">Wprowadź produkty oddzielone przecinkami, liniami lub myślnikami</string>
+    <string name="shopping_list_input_hint">Mleko, chleb, 2 jabłka, ser…</string>
+    <string name="shopping_list_tips_title">💡 Szybkie wskazówki</string>
+    <string name="shopping_list_tips_content">• Użyj przecinków, linii lub myślników do oddzielenia pozycji\n• Dodaj ilości, np. "2 jabłka" lub "3 banany"\n• Wklej listy z innych aplikacji\n• Przesuń pozycje, aby je usunąć</string>
+    <string name="product_list">Lista produktów</string>
+    <string name="converted_products_list">Przekonwertowane produkty</string>
+    <string name="empty_list">Pusta lista</string>
+    <string name="no_products_converted">Nie przekonwertowano jeszcze żadnych produktów</string>
+    <string name="add_products_to_see_them_here">Dodaj produkty do listy, aby zobaczyć je tutaj</string>
+    <string name="paste_list">Wklej listę</string>
+    <string name="paste_shopping_list">Wklej listę zakupów</string>
+    <!-- Fullscreen Products View -->
+    <string name="close_fullscreen">Zamknij pełny ekran</string>
+    <string name="exit_fullscreen">Wyjdź z pełnego ekranu</string>
+    <string name="expand_to_fullscreen">Rozwiń na pełny ekran</string>
+    <string name="expand_products_list">Rozwiń listę produktów</string>
+    <string name="search_products">Szukaj produktów...</string>
+    <string name="filter_products">Filtruj produkty</string>
+    <string name="no_products_converted_fullscreen">Nie przekonwertowano jeszcze żadnych produktów</string>
+    <string name="add_products_to_see_them_here_fullscreen">Dodaj produkty do listy, aby zobaczyć je tutaj.\nUżyj przycisku konwertuj, aby zamienić swoją listę zakupów na produkty do śledzenia.</string>
+    <string name="go_back_to_add_products">Wróć, aby dodać produkty</string>
+    <string name="select_all">Zaznacz wszystko</string>
+    <string name="clear_all">Wyczyść wszystko</string>
+    <string name="product_count_zero">0</string>
+    <string name="paste_successful">✅ Lista została pomyślnie wklejona!</string>
+    <string name="clipboard_empty">📋 Schowek jest pusty</string>
+    <string name="paste_error">❌ Błąd podczas wklejania ze schowka</string>
+    <string name="error_adding_products">❌ Błąd podczas dodawania produktów do listy</string>
+    <string name="nothing_to_paste">📋 Brak treści do wklejenia</string>
 </resources>

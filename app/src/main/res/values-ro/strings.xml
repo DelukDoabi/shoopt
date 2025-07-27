@@ -143,4 +143,33 @@
     <string name="empty_cart_message">Coșul tău este gol</string>
     <string name="empty_cart_subtitle">Adaugă produse pentru a începe să-ți urmărești cumpărăturile</string>
     <string name="clear_cart">Golește coșul</string>
+    <string name="shopping_list_input_help">Introduceți produse separate prin virgule, linii sau cratime</string>
+    <string name="shopping_list_input_hint">Lapte, pâine, 2 mere, brânză…</string>
+    <string name="shopping_list_tips_title">💡 Sfaturi rapide</string>
+    <string name="shopping_list_tips_content">• Folosiți virgule, linii sau cratime pentru a separa elementele\n• Adăugați cantități precum "2 mere" sau "3 banane"\n• Lipiți liste din alte aplicații\n• Glisați elementele pentru a le elimina</string>
+    <string name="product_list">Listă de produse</string>
+    <string name="converted_products_list">Produse convertite</string>
+    <string name="empty_list">Listă goală</string>
+    <string name="no_products_converted">Niciun produs convertit încă</string>
+    <string name="add_products_to_see_them_here">Adăugați produse la listă pentru a le vedea aici</string>
+    <string name="paste_list">Lipește lista</string>
+    <string name="paste_shopping_list">Lipește lista de cumpărături</string>
+    <!-- Fullscreen Products View -->
+    <string name="close_fullscreen">Închide ecran complet</string>
+    <string name="exit_fullscreen">Ieși din ecran complet</string>
+    <string name="expand_to_fullscreen">Extinde la ecran complet</string>
+    <string name="expand_products_list">Extinde lista de produse</string>
+    <string name="search_products">Caută produse...</string>
+    <string name="filter_products">Filtrează produse</string>
+    <string name="no_products_converted_fullscreen">Niciun produs convertit încă</string>
+    <string name="add_products_to_see_them_here_fullscreen">Adăugați produse la listă pentru a le vedea aici.\nFolosiți butonul de conversie pentru a transforma lista de cumpărături în produse urmărite.</string>
+    <string name="go_back_to_add_products">Înapoi pentru a adăuga produse</string>
+    <string name="select_all">Selectează tot</string>
+    <string name="clear_all">Șterge tot</string>
+    <string name="product_count_zero">0</string>
+    <string name="paste_successful">✅ Listă lipită cu succes!</string>
+    <string name="clipboard_empty">📋 Clipboardul este gol</string>
+    <string name="paste_error">❌ Eroare la lipirea din clipboard</string>
+    <string name="error_adding_products">❌ Eroare la adăugarea produselor în listă</string>
+    <string name="nothing_to_paste">📋 Nimic de lipit</string>
 </resources>

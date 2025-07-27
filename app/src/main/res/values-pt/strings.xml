@@ -143,4 +143,33 @@
     <string name="empty_cart_message">Seu carrinho está vazio</string>
     <string name="empty_cart_subtitle">Adicione produtos para começar a acompanhar suas compras</string>
     <string name="clear_cart">Limpar carrinho</string>
+    <string name="shopping_list_input_help">Insira produtos separados por vírgulas, linhas ou traços</string>
+    <string name="shopping_list_input_hint">Leite, pão, 2 maçãs, queijo…</string>
+    <string name="shopping_list_tips_title">💡 Dicas rápidas</string>
+    <string name="shopping_list_tips_content">• Use vírgulas, linhas ou traços para separar itens\n• Adicione quantidades como "2 maçãs" ou "3 bananas"\n• Cole listas de outros aplicativos\n• Deslize itens para removê-los</string>
+    <string name="product_list">Lista de produtos</string>
+    <string name="converted_products_list">Produtos convertidos</string>
+    <string name="empty_list">Lista vazia</string>
+    <string name="no_products_converted">Nenhum produto convertido ainda</string>
+    <string name="add_products_to_see_them_here">Adicione produtos à sua lista para vê-los aqui</string>
+    <string name="paste_list">Colar lista</string>
+    <string name="paste_shopping_list">Colar lista de compras</string>
+    <!-- Fullscreen Products View -->
+    <string name="close_fullscreen">Fechar tela cheia</string>
+    <string name="exit_fullscreen">Sair da tela cheia</string>
+    <string name="expand_to_fullscreen">Expandir para tela cheia</string>
+    <string name="expand_products_list">Expandir lista de produtos</string>
+    <string name="search_products">Buscar produtos...</string>
+    <string name="filter_products">Filtrar produtos</string>
+    <string name="no_products_converted_fullscreen">Nenhum produto convertido ainda</string>
+    <string name="add_products_to_see_them_here_fullscreen">Adicione produtos à sua lista para vê-los aqui.\nUse o botão converter para transformar sua lista de compras em produtos rastreáveis.</string>
+    <string name="go_back_to_add_products">Voltar para adicionar produtos</string>
+    <string name="select_all">Selecionar tudo</string>
+    <string name="clear_all">Limpar tudo</string>
+    <string name="product_count_zero">0</string>
+    <string name="paste_successful">✅ Lista colada com sucesso!</string>
+    <string name="clipboard_empty">📋 A área de transferência está vazia</string>
+    <string name="paste_error">❌ Erro ao colar da área de transferência</string>
+    <string name="error_adding_products">❌ Erro ao adicionar produtos à lista</string>
+    <string name="nothing_to_paste">📋 Nada para colar</string>
 </resources>

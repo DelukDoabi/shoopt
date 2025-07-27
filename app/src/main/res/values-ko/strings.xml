@@ -143,4 +143,34 @@
     <string name="empty_cart_message">장바구니가 비어 있습니다</string>
     <string name="empty_cart_subtitle">쇼핑을 시작하려면 상품을 추가하세요</string>
     <string name="clear_cart">장바구니 비우기</string>
+    <string name="shopping_list_input_help">제품을 쉼표, 줄, 또는 대시로 구분하여 입력하세요</string>
+    <string name="shopping_list_input_hint">우유, 빵, 사과 2개, 치즈…</string>
+    <string name="shopping_list_tips_title">💡 빠른 팁</string>
+    <string name="shopping_list_tips_content">• 항목을 구분하려면 쉼표, 줄, 또는 대시를 사용하세요\n• "사과 2개" 또는 "바나나 3개"와 같이 수량을 추가하세요\n• 다른 앱에서 목록을 붙여넣으세요\n• 항목을 삭제하려면 스와이프하세요</string>
+    <string name="product_list">제품 목록</string>
+    <string name="converted_products_list">변환된 제품</string>
+    <string name="empty_list">빈 목록</string>
+    <string name="no_products_converted">아직 변환된 제품이 없습니다</string>
+    <string name="add_products_to_see_them_here">여기에서 보려면 목록에 제품을 추가하세요</string>
+    <string name="paste_list">목록 붙여넣기</string>
+    <string name="paste_shopping_list">쇼핑 목록 붙여넣기</string>
+    <!-- Fullscreen Products View -->
+    <string name="close_fullscreen">전체화면 닫기</string>
+    <string name="exit_fullscreen">전체화면 종료</string>
+    <string name="expand_to_fullscreen">전체화면으로 확장</string>
+    <string name="expand_products_list">제품 목록 확장</string>
+    <string name="search_products">제품 검색...</string>
+    <string name="filter_products">제품 필터</string>
+    <string name="no_products_converted_fullscreen">아직 변환된 제품이 없습니다</string>
+    <string name="add_products_to_see_them_here_fullscreen">여기에서 보려면 목록에 제품을 추가하세요.\n변환 버튼을 사용해 쇼핑 목록을 추적 가능한 제품으로 변환하세요.</string>
+    <string name="go_back_to_add_products">제품 추가로 돌아가기</string>
+    <string name="select_all">전체 선택</string>
+    <string name="clear_all">전체 삭제</string>
+    <string name="product_count_zero">0</string>
+    <!-- Paste Functionality -->
+    <string name="paste_successful">✅ 목록이 성공적으로 붙여넣어졌습니다!</string>
+    <string name="clipboard_empty">📋 클립보드가 비어 있습니다</string>
+    <string name="paste_error">❌ 클립보드에서 붙여넣는 중 오류 발생</string>
+    <string name="error_adding_products">❌ 목록에 제품을 추가하는 중 오류 발생</string>
+    <string name="nothing_to_paste">📋 붙여넣을 내용이 없습니다</string>
 </resources>
