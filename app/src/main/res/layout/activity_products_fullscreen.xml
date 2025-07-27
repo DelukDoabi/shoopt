@@ -19,7 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="20dp"
+        android:layout_marginHorizontal="8dp">
 
         <!-- Enhanced Header Bar -->
         <LinearLayout
@@ -28,8 +29,9 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:padding="16dp"
+            android:padding="20dp"
             android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="4dp"
             android:background="@drawable/card_background_rounded"
             android:backgroundTint="?attr/colorSurface"
             android:elevation="4dp">
@@ -39,6 +41,7 @@
                 android:id="@+id/close_fullscreen_button"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:insetLeft="0dp"
@@ -59,7 +62,7 @@
                 android:layout_height="24dp"
                 android:src="@drawable/shoopt_track_shopping"
                 app:tint="@color/main_palette_old_lavender_variant"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="8dp"
                 android:contentDescription="@string/product_list" />
 
             <TextView
@@ -70,7 +73,8 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="?attr/colorOnSurface"
-                android:layout_marginStart="12dp" />
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="8dp" />
 
             <!-- Item count badge -->
             <TextView
@@ -87,13 +91,14 @@
                 android:paddingVertical="6dp"
                 android:minWidth="32dp"
                 android:gravity="center"
-                android:layout_marginEnd="8dp" />
+                android:layout_marginEnd="12dp" />
 
             <!-- Minimize Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/minimize_fullscreen_button"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_marginStart="4dp"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:insetLeft="0dp"
