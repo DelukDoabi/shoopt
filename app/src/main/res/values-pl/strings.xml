@@ -172,4 +172,19 @@
     <string name="paste_error">❌ Błąd podczas wklejania ze schowka</string>
     <string name="error_adding_products">❌ Błąd podczas dodawania produktów do listy</string>
     <string name="nothing_to_paste">📋 Brak treści do wklejenia</string>
+    <string name="analyse_products">Analizuj produkty</string>
+    <string name="search_your_products">Szukaj swoich produktów</string>
+    <string name="search_by_name_shop_or_price">Szukaj według nazwy, sklepu lub ceny…</string>
+    <string name="total_products">Łączna liczba produktów</string>
+    <string name="avg_price">Śr. cena</string>
+    <string name="shops">Sklepy</string>
+    <string name="your_products">Twoje produkty</string>
+    <string name="sort">Sortuj</string>
+    <string name="sort_and_filter_products">Sortuj i filtruj produkty</string>
+    <string name="product_analysis">Analiza produktu</string>
+    <string name="no_products_found">Nie znaleziono produktów</string>
+    <string name="no_products_to_analyze">Brak produktów do analizy</string>
+    <string name="start_adding_products_to_see_analysis">Zacznij dodawać produkty, aby zobaczyć szczegółową analizę i spostrzeżenia</string>
+    <string name="quick_add">Szybkie dodawanie</string>
+    <string name="quick_add_product">Szybkie dodawanie produktu</string>
 </resources>

@@ -173,4 +173,19 @@
     <string name="paste_error">❌ क्लिपबोर्डमधून पेस्ट करताना त्रुटी</string>
     <string name="error_adding_products">❌ यादीत उत्पादने जोडताना त्रुटी</string>
     <string name="nothing_to_paste">📋 पेस्ट करण्यासाठी काहीही नाही</string>
+    <string name="analyse_products">Analyze Products</string>
+    <string name="search_your_products">Search Your Products</string>
+    <string name="search_by_name_shop_or_price">Search by name, shop, or price…</string>
+    <string name="total_products">Total Products</string>
+    <string name="avg_price">Avg. Price</string>
+    <string name="shops">Shops</string>
+    <string name="your_products">Your Products</string>
+    <string name="sort">Sort</string>
+    <string name="sort_and_filter_products">Sort and Filter Products</string>
+    <string name="product_analysis">Product Analysis</string>
+    <string name="no_products_found">No Products Found</string>
+    <string name="no_products_to_analyze">No products to analyze</string>
+    <string name="start_adding_products_to_see_analysis">Start adding products to see detailed analysis and insights</string>
+    <string name="quick_add">Quick Add</string>
+    <string name="quick_add_product">Quick Add Product</string>
 </resources>

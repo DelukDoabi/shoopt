@@ -173,4 +173,19 @@
     <string name="paste_error">❌ 클립보드에서 붙여넣는 중 오류 발생</string>
     <string name="error_adding_products">❌ 목록에 제품을 추가하는 중 오류 발생</string>
     <string name="nothing_to_paste">📋 붙여넣을 내용이 없습니다</string>
+    <string name="analyse_products">제품 분석</string>
+    <string name="search_your_products">제품 검색</string>
+    <string name="search_by_name_shop_or_price">이름, 상점 또는 가격으로 검색...</string>
+    <string name="total_products">총 제품</string>
+    <string name="avg_price">평균 가격</string>
+    <string name="shops">상점</string>
+    <string name="your_products">귀하의 제품</string>
+    <string name="sort">정렬</string>
+    <string name="sort_and_filter_products">제품 정렬 및 필터링</string>
+    <string name="product_analysis">제품 분석</string>
+    <string name="no_products_found">제품을 찾을 수 없습니다</string>
+    <string name="no_products_to_analyze">분석할 제품이 없습니다</string>
+    <string name="start_adding_products_to_see_analysis">자세한 분석 및 통찰력을 보려면 제품 추가를 시작하세요</string>
+    <string name="quick_add">빠른 추가</string>
+    <string name="quick_add_product">빠른 제품 추가</string>
 </resources>

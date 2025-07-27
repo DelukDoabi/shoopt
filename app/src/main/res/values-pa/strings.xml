@@ -173,4 +173,19 @@
     <string name="paste_error">❌ ਕਲਿੱਪਬੋਰਡ ਤੋਂ ਪੇਸਟ ਕਰਨ ਦੌਰਾਨ ਗਲਤੀ</string>
     <string name="error_adding_products">❌ ਲਿਸਟ ਵਿੱਚ ਸਮਾਨ ਸ਼ਾਮਲ ਕਰਨ ਦੌਰਾਨ ਗਲਤੀ</string>
     <string name="nothing_to_paste">📋 ਪੇਸਟ ਕਰਨ ਲਈ ਕੁਝ ਨਹੀਂ</string>
+    <string name="analyse_products">ਉਤਪਾਦਾਂ ਦਾ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰੋ</string>
+    <string name="search_your_products">ਆਪਣੇ ਉਤਪਾਦ ਖੋਜੋ</string>
+    <string name="search_by_name_shop_or_price">ਨਾਮ, ਦੁਕਾਨ, ਜਾਂ ਕੀਮਤ ਦੁਆਰਾ ਖੋਜੋ…</string>
+    <string name="total_products">ਕੁੱਲ ਉਤਪਾਦ</string>
+    <string name="avg_price">ਔਸਤ ਕੀਮਤ</string>
+    <string name="shops">ਦੁਕਾਨਾਂ</string>
+    <string name="your_products">ਤੁਹਾਡੇ ਉਤਪਾਦ</string>
+    <string name="sort">ਵਰਗਬੱਧ ਕਰੋ</string>
+    <string name="sort_and_filter_products">ਉਤਪਾਦਾਂ ਨੂੰ ਵਰਗਬੱਧ ਅਤੇ ਫਿਲਟਰ ਕਰੋ</string>
+    <string name="product_analysis">ਉਤਪਾਦ ਵਿਸ਼ਲੇਸ਼ਣ</string>
+    <string name="no_products_found">ਕੋਈ ਉਤਪਾਦ ਨਹੀਂ ਮਿਲਿਆ</string>
+    <string name="no_products_to_analyze">ਵਿਸ਼ਲੇਸ਼ਣ ਕਰਨ ਲਈ ਕੋਈ ਉਤਪਾਦ ਨਹੀਂ</string>
+    <string name="start_adding_products_to_see_analysis">ਵਿਸ਼ਲੇਸ਼ਣ ਅਤੇ ਅੰਦਰੂਨੀ ਜਾਣਕਾਰੀ ਦੇਖਣ ਲਈ ਉਤਪਾਦ ਸ਼ਾਮਲ ਕਰਨਾ ਸ਼ੁਰੂ ਕਰੋ</string>
+    <string name="quick_add">ਤੁਰੰਤ ਸ਼ਾਮਲ ਕਰੋ</string>
+    <string name="quick_add_product">ਤੁਰੰਤ ਉਤਪਾਦ ਸ਼ਾਮਲ ਕਰੋ</string>
 </resources>

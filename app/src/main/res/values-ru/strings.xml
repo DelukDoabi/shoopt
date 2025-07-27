@@ -172,4 +172,19 @@
     <string name="select_all">Выбрать все</string>
     <string name="clear_all">Очистить все</string>
     <string name="product_count_zero">0</string>
+    <string name="analyse_products">Анализировать товары</string>
+    <string name="search_your_products">Поиск ваших товаров</string>
+    <string name="search_by_name_shop_or_price">Поиск по имени, магазину или цене…</string>
+    <string name="total_products">Всего товаров</string>
+    <string name="avg_price">Ср. цена</string>
+    <string name="shops">Магазины</string>
+    <string name="your_products">Ваши товары</string>
+    <string name="sort">Сортировать</string>
+    <string name="sort_and_filter_products">Сортировка и фильтрация товаров</string>
+    <string name="product_analysis">Анализ товара</string>
+    <string name="no_products_found">Товары не найдены</string>
+    <string name="no_products_to_analyze">Нет товаров для анализа</string>
+    <string name="start_adding_products_to_see_analysis">Начните добавлять товары, чтобы увидеть подробный анализ и инсайты</string>
+    <string name="quick_add">Быстрое добавление</string>
+    <string name="quick_add_product">Быстрое добавление товара</string>
 </resources>

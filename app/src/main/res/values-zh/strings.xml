@@ -172,4 +172,19 @@
     <string name="paste_error">❌ 从剪贴板粘贴时出错</string>
     <string name="error_adding_products">❌ 添加产品到列表时出错</string>
     <string name="nothing_to_paste">📋 没有可粘贴的内容</string>
+    <string name="analyse_products">分析产品</string>
+    <string name="search_your_products">搜索您的产品</string>
+    <string name="search_by_name_shop_or_price">按名称、商店或价格搜索…</string>
+    <string name="total_products">总产品</string>
+    <string name="avg_price">平均价格</string>
+    <string name="shops">商店</string>
+    <string name="your_products">您的产品</string>
+    <string name="sort">排序</string>
+    <string name="sort_and_filter_products">排序和筛选产品</string>
+    <string name="product_analysis">产品分析</string>
+    <string name="no_products_found">未找到产品</string>
+    <string name="no_products_to_analyze">没有可分析的产品</string>
+    <string name="start_adding_products_to_see_analysis">开始添加产品以查看详细分析和见解</string>
+    <string name="quick_add">快速添加</string>
+    <string name="quick_add_product">快速添加产品</string>
 </resources>

@@ -173,4 +173,19 @@
     <string name="paste_error">❌ Kesalahan nalika nempel saka clipboard</string>
     <string name="error_adding_products">❌ Kesalahan nalika nambah produk menyang daftar</string>
     <string name="nothing_to_paste">📋 Ora ana sing bisa ditempel</string>
+    <string name="analyse_products">Analisis Produk</string>
+    <string name="search_your_products">Goleki Produk Sampeyan</string>
+    <string name="search_by_name_shop_or_price">Goleki miturut jeneng, toko, utawa rega...</string>
+    <string name="total_products">Total Produk</string>
+    <string name="avg_price">Rega Rata-rata</string>
+    <string name="shops">Toko</string>
+    <string name="your_products">Produk Sampeyan</string>
+    <string name="sort">Urutake</string>
+    <string name="sort_and_filter_products">Urutake lan Saring Produk</string>
+    <string name="product_analysis">Analisis Produk</string>
+    <string name="no_products_found">Ora Ana Produk</string>
+    <string name="no_products_to_analyze">Ora ana produk kanggo dianalisis</string>
+    <string name="start_adding_products_to_see_analysis">Mulai nambah produk kanggo ndeleng analisis lan wawasan rinci</string>
+    <string name="quick_add">Tambah Cepet</string>
+    <string name="quick_add_product">Tambah Produk Cepet</string>
 </resources>

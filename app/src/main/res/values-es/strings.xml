@@ -173,4 +173,19 @@
     <string name="paste_error">❌ Error al pegar desde el portapapeles</string>
     <string name="error_adding_products">❌ Error al agregar productos a la lista</string>
     <string name="nothing_to_paste">📋 Nada para pegar</string>
+    <string name="analyse_products">Analizar productos</string>
+    <string name="search_your_products">Busca tus productos</string>
+    <string name="search_by_name_shop_or_price">Busca por nombre, tienda o precio...</string>
+    <string name="total_products">Productos totales</string>
+    <string name="avg_price">Precio promedio</string>
+    <string name="shops">Tiendas</string>
+    <string name="your_products">Tus productos</string>
+    <string name="sort">Ordenar</string>
+    <string name="sort_and_filter_products">Ordenar y filtrar productos</string>
+    <string name="product_analysis">Análisis de productos</string>
+    <string name="no_products_found">No se encontraron productos</string>
+    <string name="no_products_to_analyze">No hay productos para analizar</string>
+    <string name="start_adding_products_to_see_analysis">Comienza a agregar productos para ver análisis detallados</string>
+    <string name="quick_add">Añadir rápido</string>
+    <string name="quick_add_product">Añadir producto rápidamente</string>
 </resources>

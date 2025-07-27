@@ -171,4 +171,19 @@
     <string name="paste_error">❌ Error pasting from clipboard</string>
     <string name="error_adding_products">❌ Error adding products to list</string>
     <string name="nothing_to_paste">📋 Nothing to paste</string>
+    <string name="analyse_products">Phân Tích Sản Phẩm</string>
+    <string name="search_your_products">Tìm Kiếm Sản Phẩm Của Bạn</string>
+    <string name="search_by_name_shop_or_price">Tìm kiếm theo tên, cửa hàng hoặc giá…</string>
+    <string name="total_products">Tổng Sản Phẩm</string>
+    <string name="avg_price">Giá Trung Bình</string>
+    <string name="shops">Cửa Hàng</string>
+    <string name="your_products">Sản Phẩm Của Bạn</string>
+    <string name="sort">Sắp Xếp</string>
+    <string name="sort_and_filter_products">Sắp Xếp và Lọc Sản Phẩm</string>
+    <string name="product_analysis">Phân Tích Sản Phẩm</string>
+    <string name="no_products_found">Không Tìm Thấy Sản Phẩm</string>
+    <string name="no_products_to_analyze">Không có sản phẩm để phân tích</string>
+    <string name="start_adding_products_to_see_analysis">Bắt đầu thêm sản phẩm để xem phân tích chi tiết và thông tin chi tiết</string>
+    <string name="quick_add">Thêm Nhanh</string>
+    <string name="quick_add_product">Thêm Sản Phẩm Nhanh</string>
 </resources>

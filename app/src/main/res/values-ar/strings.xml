@@ -173,4 +173,19 @@
     <string name="paste_error">❌ حدث خطأ أثناء اللصق من الحافظة</string>
     <string name="error_adding_products">❌ حدث خطأ أثناء إضافة المنتجات إلى القائمة</string>
     <string name="nothing_to_paste">📋 لا يوجد شيء للصق</string>
+    <string name="analyse_products">تحليل المنتجات</string>
+    <string name="search_your_products">ابحث عن منتجاتك</string>
+    <string name="search_by_name_shop_or_price">ابحث بالاسم أو المتجر أو السعر...</string>
+    <string name="total_products">إجمالي المنتجات</string>
+    <string name="avg_price">متوسط السعر</string>
+    <string name="shops">المتاجر</string>
+    <string name="your_products">منتجاتك</string>
+    <string name="sort">فرز</string>
+    <string name="sort_and_filter_products">فرز وتصفية المنتجات</string>
+    <string name="product_analysis">تحليل المنتج</string>
+    <string name="no_products_found">لم يتم العثور على منتجات</string>
+    <string name="no_products_to_analyze">لا توجد منتجات لتحليلها</string>
+    <string name="start_adding_products_to_see_analysis">ابدأ بإضافة المنتجات لرؤية التحليل والتفاصيل</string>
+    <string name="quick_add">إضافة سريعة</string>
+    <string name="quick_add_product">إضافة منتج بسرعة</string>
 </resources>

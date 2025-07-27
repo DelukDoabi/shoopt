@@ -173,4 +173,19 @@
     <string name="paste_error">❌ Errore durante l\'incolla dagli appunti</string>
     <string name="error_adding_products">❌ Errore durante l\'aggiunta dei prodotti alla lista</string>
     <string name="nothing_to_paste">📋 Niente da incollare</string>
+    <string name="analyse_products">Analizza prodotti</string>
+    <string name="search_your_products">Cerca i tuoi prodotti</string>
+    <string name="search_by_name_shop_or_price">Cerca per nome, negozio o prezzo...</string>
+    <string name="total_products">Prodotti totali</string>
+    <string name="avg_price">Prezzo medio</string>
+    <string name="shops">Negozi</string>
+    <string name="your_products">I tuoi prodotti</string>
+    <string name="sort">Ordina</string>
+    <string name="sort_and_filter_products">Ordina e filtra prodotti</string>
+    <string name="product_analysis">Analisi del prodotto</string>
+    <string name="no_products_found">Nessun prodotto trovato</string>
+    <string name="no_products_to_analyze">Nessun prodotto da analizzare</string>
+    <string name="start_adding_products_to_see_analysis">Inizia ad aggiungere prodotti per vedere analisi dettagliate</string>
+    <string name="quick_add">Aggiunta rapida</string>
+    <string name="quick_add_product">Aggiungi prodotto rapidamente</string>
 </resources>

@@ -172,4 +172,19 @@
     <string name="paste_error">❌ Erro ao colar da área de transferência</string>
     <string name="error_adding_products">❌ Erro ao adicionar produtos à lista</string>
     <string name="nothing_to_paste">📋 Nada para colar</string>
+    <string name="analyse_products">Analisar Produtos</string>
+    <string name="search_your_products">Buscar Seus Produtos</string>
+    <string name="search_by_name_shop_or_price">Buscar por nome, loja ou preço…</string>
+    <string name="total_products">Total de Produtos</string>
+    <string name="avg_price">Preço Médio</string>
+    <string name="shops">Lojas</string>
+    <string name="your_products">Seus Produtos</string>
+    <string name="sort">Ordenar</string>
+    <string name="sort_and_filter_products">Ordenar e Filtrar Produtos</string>
+    <string name="product_analysis">Análise de Produto</string>
+    <string name="no_products_found">Nenhum Produto Encontrado</string>
+    <string name="no_products_to_analyze">Nenhum produto para analisar</string>
+    <string name="start_adding_products_to_see_analysis">Comece a adicionar produtos para ver análises e insights detalhados</string>
+    <string name="quick_add">Adição Rápida</string>
+    <string name="quick_add_product">Adicionar Produto Rápido</string>
 </resources>
