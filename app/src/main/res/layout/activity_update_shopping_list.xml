@@ -145,7 +145,7 @@
                         app:boxStrokeColor="@color/main_palette_old_lavender_variant"
                         app:hintTextColor="@color/main_palette_old_lavender_variant"
                         app:startIconDrawable="@drawable/ic_product"
-                        app:startIconTint="@color/main_palette_old_lavender_variant"
+                        app:startIconTint="@null"
                         app:counterEnabled="true"
                         app:counterMaxLength="2000"
                         app:helperText="@string/shopping_list_input_help"
