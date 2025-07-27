@@ -70,7 +70,6 @@
     <string name="products_added">%1$d products added to your list</string>
 
     <!-- Fullscreen Products View -->
-    <string name="converted_products_fullscreen">Products List - Fullscreen</string>
     <string name="close_fullscreen">Close Fullscreen</string>
     <string name="exit_fullscreen">Exit Fullscreen</string>
     <string name="expand_to_fullscreen">Expand to Fullscreen</string>
