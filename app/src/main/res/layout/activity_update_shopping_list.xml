@@ -18,15 +18,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:clipToPadding="false">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/update_shopping_list_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/screen_padding">
+            android:padding="@dimen/screen_padding"
+            android:paddingBottom="@dimen/fab_bottom_margin">
 
-            <!-- Top Bar with back button - consistent with other screens -->
+            <!-- Top Bar with back button - Responsive sizing -->
             <LinearLayout
                 android:id="@+id/top_bar"
                 android:layout_width="0dp"
@@ -40,12 +42,12 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/back_IB"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
+                    android:layout_width="@dimen/back_button_size"
+                    android:layout_height="@dimen/back_button_size"
                     app:icon="@drawable/shoopt_back"
                     app:iconGravity="textStart"
                     app:iconPadding="0dp"
-                    app:iconSize="24dp"
+                    app:iconSize="@dimen/icon_size_medium"
                     app:cornerRadius="21dp"
                     app:strokeColor="@color/back_button_stroke"
                     app:strokeWidth="1dp"
@@ -65,20 +67,21 @@
                     android:textSize="@dimen/text_xlarge"
                     android:textStyle="bold"
                     android:gravity="center"
-                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginHorizontal="@dimen/margin_medium"
                     android:autoSizeTextType="uniform"
-                    android:autoSizeMinTextSize="18sp"
-                    android:autoSizeMaxTextSize="24sp" />
+                    android:autoSizeMinTextSize="@dimen/title_text_min"
+                    android:autoSizeMaxTextSize="@dimen/title_text_max"
+                    android:maxLines="2" />
 
-                <!-- Empty cart button for easy access -->
+                <!-- Empty cart button for easy access - Responsive sizing -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/empty_main_list_IB"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
+                    android:layout_width="@dimen/action_button_size"
+                    android:layout_height="@dimen/action_button_size"
                     app:icon="@drawable/shoopt_empty_cart"
                     app:iconGravity="textStart"
                     app:iconPadding="0dp"
-                    app:iconSize="20dp"
+                    app:iconSize="@dimen/icon_size_small"
                     app:cornerRadius="21dp"
                     app:strokeColor="#FF5722"
                     app:strokeWidth="1dp"
@@ -89,7 +92,7 @@
                     android:contentDescription="@string/clear_shopping_cart" />
             </LinearLayout>
 
-            <!-- Main Input Card -->
+            <!-- Main Input Card - Responsive width -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/input_card"
                 android:layout_width="0dp"
@@ -111,17 +114,17 @@
                     android:orientation="vertical"
                     android:padding="@dimen/card_padding">
 
-                    <!-- Header with icon -->
+                    <!-- Header with icon - Responsive sizing -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:layout_marginBottom="16dp">
+                        android:layout_marginBottom="@dimen/margin_medium">
 
                         <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
+                            android:layout_width="@dimen/icon_size_medium"
+                            android:layout_height="@dimen/icon_size_medium"
                             android:src="@drawable/shoop_update_shopping_list"
                             android:contentDescription="@string/update_shopping_list" />
 
@@ -131,18 +134,22 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/main_shopping_list"
-                            android:textSize="18sp"
+                            android:textSize="@dimen/text_large"
                             android:textStyle="bold"
                             android:textColor="?attr/colorOnSurface"
-                            android:layout_marginStart="12dp" />
+                            android:layout_marginStart="@dimen/margin_small"
+                            android:autoSizeTextType="uniform"
+                            android:autoSizeMinTextSize="14sp"
+                            android:autoSizeMaxTextSize="20sp"
+                            android:maxLines="2" />
                     </LinearLayout>
 
-                    <!-- Enhanced text input with character counter -->
+                    <!-- Enhanced text input with responsive dimensions -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/shopping_list_input_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="@dimen/margin_medium"
                         app:boxStrokeColor="@color/main_palette_old_lavender_variant"
                         app:hintTextColor="@color/main_palette_old_lavender_variant"
                         app:startIconDrawable="@drawable/ic_product"
@@ -160,27 +167,33 @@
                             android:hint="@string/shopping_list_input_hint"
                             android:inputType="textMultiLine|textCapSentences"
                             android:gravity="top"
-                            android:minLines="4"
+                            android:minHeight="@dimen/input_min_height"
+                            android:maxHeight="@dimen/input_max_height"
+                            android:minLines="3"
                             android:maxLines="8"
                             android:scrollbars="vertical"
-                            android:textSize="16sp"
-                            android:lineSpacingExtra="4dp" />
+                            android:textSize="@dimen/text_medium"
+                            android:lineSpacingExtra="4dp"
+                            android:padding="@dimen/margin_small" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Action button with improved design -->
+                    <!-- Action button with responsive sizing and auto-sizing text -->
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/convert_to_product_track_IB"
                         android:layout_width="match_parent"
-                        android:layout_height="56dp"
+                        android:layout_height="@dimen/button_height"
                         android:text="@string/convert_to_product_track"
                         android:textAllCaps="false"
                         android:textSize="@dimen/text_medium"
                         android:textStyle="bold"
+                        android:autoSizeTextType="uniform"
+                        android:autoSizeMinTextSize="@dimen/button_text_min"
+                        android:autoSizeMaxTextSize="@dimen/button_text_max"
                         app:cornerRadius="12dp"
                         app:icon="@drawable/ic_convert_product_track"
                         app:iconGravity="textStart"
                         app:iconPadding="8dp"
-                        app:iconSize="18dp"
+                        app:iconSize="@dimen/icon_size_small"
                         android:backgroundTint="@color/main_palette_old_lavender_variant"
                         android:textColor="@color/white"
                         app:iconTint="@color/white"
@@ -188,7 +201,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Tips Card for better UX -->
+            <!-- Tips Card with responsive sizing -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/tips_card"
                 android:layout_width="0dp"
@@ -210,39 +223,45 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/margin_medium">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/shopping_list_tips_title"
                         android:textColor="@color/white"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/text_small"
                         android:textStyle="bold"
                         app:drawableStartCompat="@drawable/ic_tip"
                         android:drawablePadding="8dp"
                         app:drawableTint="@color/main_palette_old_lavender_variant"
                         android:gravity="start|center_vertical"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="@dimen/margin_small"
+                        android:autoSizeTextType="uniform"
+                        android:autoSizeMinTextSize="12sp"
+                        android:autoSizeMaxTextSize="16sp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/shopping_list_tips_content"
                         android:textColor="@color/white"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/text_small"
                         android:alpha="0.9"
-                        android:lineSpacingExtra="2dp" />
+                        android:lineSpacingExtra="2dp"
+                        android:autoSizeTextType="uniform"
+                        android:autoSizeMinTextSize="10sp"
+                        android:autoSizeMaxTextSize="14sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Products List Card -->
+            <!-- Products List Card with responsive sizing -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/products_list_card"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/margin_medium"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/margin_medium"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="8dp"
                 app:cardBackgroundColor="?attr/colorSurface"
@@ -260,18 +279,18 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <!-- List Header -->
+                    <!-- List Header with responsive spacing -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:padding="20dp"
-                        android:paddingBottom="12dp"
+                        android:padding="@dimen/card_padding"
+                        android:paddingBottom="@dimen/margin_small"
                         android:gravity="center_vertical">
 
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="@dimen/icon_size_small"
+                            android:layout_height="@dimen/icon_size_small"
                             android:src="@drawable/shoopt_track_shopping"
                             app:tint="@color/main_palette_old_lavender_variant"
                             android:contentDescription="@string/product_list" />
@@ -281,10 +300,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/converted_products_list"
-                            android:textSize="18sp"
+                            android:textSize="@dimen/text_large"
                             android:textStyle="bold"
                             android:textColor="?attr/colorOnSurface"
-                            android:layout_marginStart="8dp" />
+                            android:layout_marginStart="@dimen/margin_small"
+                            android:autoSizeTextType="uniform"
+                            android:autoSizeMinTextSize="14sp"
+                            android:autoSizeMaxTextSize="20sp"
+                            android:maxLines="2" />
 
                         <!-- Item count badge -->
                         <TextView
@@ -293,7 +316,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/product_count_zero"
                             android:textColor="@color/white"
-                            android:textSize="12sp"
+                            android:textSize="@dimen/text_small"
                             android:textStyle="bold"
                             android:background="@drawable/pill_background"
                             android:backgroundTint="@color/main_palette_old_lavender_variant"
@@ -301,13 +324,16 @@
                             android:paddingVertical="4dp"
                             android:minWidth="24dp"
                             android:gravity="center"
-                            android:layout_marginEnd="8dp" />
+                            android:layout_marginEnd="@dimen/margin_small"
+                            android:autoSizeTextType="uniform"
+                            android:autoSizeMinTextSize="10sp"
+                            android:autoSizeMaxTextSize="14sp" />
 
-                        <!-- Fullscreen Zoom Button -->
+                        <!-- Fullscreen Zoom Button with responsive sizing -->
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/fullscreen_zoom_button"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
+                            android:layout_width="@dimen/action_button_size"
+                            android:layout_height="@dimen/action_button_size"
                             android:insetTop="0dp"
                             android:insetBottom="0dp"
                             android:insetLeft="0dp"
@@ -315,7 +341,7 @@
                             app:icon="@drawable/ic_fullscreen"
                             app:iconGravity="textStart"
                             app:iconPadding="0dp"
-                            app:iconSize="16dp"
+                            app:iconSize="@dimen/icon_size_small"
                             app:cornerRadius="16dp"
                             android:backgroundTint="@android:color/transparent"
                             app:iconTint="@color/main_palette_old_lavender_variant"
@@ -332,20 +358,20 @@
                         android:layout_height="1dp"
                         android:background="@color/main_palette_old_lavender_variant"
                         android:alpha="0.3"
-                        android:layout_marginHorizontal="20dp" />
+                        android:layout_marginHorizontal="@dimen/card_padding" />
 
-                    <!-- Products RecyclerView -->
+                    <!-- Products RecyclerView with better padding -->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/product_track_recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:padding="16dp"
+                        android:padding="@dimen/margin_medium"
                         android:clipToPadding="false"
                         android:overScrollMode="never"
                         android:scrollbars="none" />
 
-                    <!-- Empty State - Fixed visibility and text contrast -->
+                    <!-- Empty State with responsive spacing -->
                     <LinearLayout
                         android:id="@+id/empty_state_container"
                         android:layout_width="match_parent"
@@ -353,10 +379,9 @@
                         android:layout_weight="1"
                         android:orientation="vertical"
                         android:gravity="center"
-                        android:padding="40dp"
+                        android:padding="@dimen/margin_xlarge"
                         android:visibility="visible">
 
-                        <!-- Using a different, guaranteed existing icon -->
                         <ImageView
                             android:layout_width="64dp"
                             android:layout_height="64dp"
@@ -369,23 +394,31 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/no_products_converted"
-                            android:textSize="18sp"
+                            android:textSize="@dimen/text_large"
                             android:textColor="@color/main_palette_old_lavender_variant"
                             android:textStyle="bold"
-                            android:layout_marginTop="16dp"
+                            android:layout_marginTop="@dimen/margin_medium"
                             android:gravity="center"
-                            android:textAlignment="center" />
+                            android:textAlignment="center"
+                            android:autoSizeTextType="uniform"
+                            android:autoSizeMinTextSize="14sp"
+                            android:autoSizeMaxTextSize="20sp"
+                            android:maxLines="2" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/add_products_to_see_them_here"
-                            android:textSize="14sp"
+                            android:textSize="@dimen/text_medium"
                             android:textColor="@color/main_palette_old_lavender_variant"
                             android:alpha="0.8"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginTop="@dimen/margin_small"
                             android:gravity="center"
-                            android:textAlignment="center" />
+                            android:textAlignment="center"
+                            android:autoSizeTextType="uniform"
+                            android:autoSizeMinTextSize="12sp"
+                            android:autoSizeMaxTextSize="16sp"
+                            android:maxLines="3" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -393,16 +426,20 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Fixed Floating Action Button positioning -->
+    <!-- Fixed Floating Action Button with responsive positioning -->
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/paste_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginBottom="@dimen/fab_bottom_margin"
         android:text="@string/paste_list"
         android:textAllCaps="false"
+        android:textSize="@dimen/text_small"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="@dimen/button_text_min"
+        android:autoSizeMaxTextSize="@dimen/button_text_max"
         app:icon="@drawable/ic_paste"
         app:iconTint="@color/white"
         android:backgroundTint="@color/main_palette_old_lavender_variant"

@@ -1,25 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Margins -->
+    <!-- Tablet optimizations (600dp+ width) -->
+
+    <!-- Margins - Larger for tablets -->
     <dimen name="margin_small">12dp</dimen>
-    <dimen name="margin_medium">24dp</dimen>
+    <dimen name="margin_medium">20dp</dimen>
     <dimen name="margin_large">32dp</dimen>
     <dimen name="margin_xlarge">48dp</dimen>
 
-    <!-- Paddings -->
+    <!-- Paddings - More spacious for tablets -->
     <dimen name="screen_padding">32dp</dimen>
     <dimen name="card_padding">32dp</dimen>
 
-    <!-- Text sizes -->
+    <!-- Text sizes - Larger for better readability on tablets -->
     <dimen name="text_small">16sp</dimen>
     <dimen name="text_medium">18sp</dimen>
     <dimen name="text_large">24sp</dimen>
-    <dimen name="text_xlarge">32sp</dimen>
+    <dimen name="text_xlarge">28sp</dimen>
 
-    <!-- Component sizing - Reduce width to create more space around components on larger screens -->
-    <dimen name="card_width_percent">0.8</dimen>
+    <!-- Auto-sizing text ranges - Larger for tablets -->
+    <dimen name="title_text_min">20sp</dimen>
+    <dimen name="title_text_max">28sp</dimen>
+    <dimen name="button_text_min">14sp</dimen>
+    <dimen name="button_text_max">18sp</dimen>
+
+    <!-- Component sizing - Centered layout for tablets -->
+    <dimen name="card_width_percent">0.75</dimen>
     <dimen name="button_width_percent">0.8</dimen>
 
+    <!-- Button dimensions - Larger touch targets for tablets -->
+    <dimen name="button_height">64dp</dimen>
+    <dimen name="back_button_size">56dp</dimen>
+    <dimen name="action_button_size">56dp</dimen>
+    <dimen name="icon_size_small">24dp</dimen>
+    <dimen name="icon_size_medium">32dp</dimen>
+
+    <!-- Input field dimensions - Taller for tablets -->
+    <dimen name="input_min_height">160dp</dimen>
+    <dimen name="input_max_height">240dp</dimen>
+
     <!-- Logo sizing -->
-    <dimen name="logo_width_percent">0.2</dimen>
+    <dimen name="logo_width_percent">0.25</dimen>
+
+    <!-- FAB positioning -->
+    <dimen name="fab_margin">24dp</dimen>
+    <dimen name="fab_bottom_margin">48dp</dimen>
 </resources>
