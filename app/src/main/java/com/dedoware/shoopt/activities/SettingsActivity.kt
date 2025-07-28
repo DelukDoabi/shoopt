@@ -8,6 +8,8 @@ import com.dedoware.shoopt.R
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.UserPreferences
+import org.json.JSONArray
+import java.io.InputStream
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -21,10 +23,6 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var currencySpinner: Spinner
     private lateinit var saveButton: ImageButton
     private lateinit var backButton: ImageButton
-
-    // Liste des devises disponibles
-    private val currencies = arrayOf("EUR (€)", "USD ($)", "GBP (£)", "JPY (¥)", "CAD (C$)", "CHF (Fr)", "AUD (A$)")
-    private val currencyCodes = arrayOf("EUR", "USD", "GBP", "JPY", "CAD", "CHF", "AUD")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         try {
@@ -134,28 +132,42 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun initializeUiElements() {
-        themeRadioGroup = findViewById(R.id.theme_radio_group)
-        themeLightRadio = findViewById(R.id.theme_light)
-        themeDarkRadio = findViewById(R.id.theme_dark)
-        themeSystemRadio = findViewById(R.id.theme_system)
-        currencySpinner = findViewById(R.id.currency_spinner)
-        saveButton = findViewById(R.id.save_settings_button)
-        backButton = findViewById(R.id.back_IB)
+        try {
+            themeRadioGroup = findViewById(R.id.theme_radio_group) ?: throw IllegalStateException("Missing theme_radio_group")
+            themeLightRadio = findViewById(R.id.theme_light) ?: throw IllegalStateException("Missing theme_light")
+            themeDarkRadio = findViewById(R.id.theme_dark) ?: throw IllegalStateException("Missing theme_dark")
+            themeSystemRadio = findViewById(R.id.theme_system) ?: throw IllegalStateException("Missing theme_system")
+            currencySpinner = findViewById(R.id.currency_spinner) ?: throw IllegalStateException("Missing currency_spinner")
+            saveButton = findViewById(R.id.save_settings_button) ?: throw IllegalStateException("Missing save_settings_button")
+            backButton = findViewById(R.id.back_IB) ?: throw IllegalStateException("Missing back_IB")
 
-        // Configuration du spinner de devises
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, currencies)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        currencySpinner.adapter = adapter
+            // Configuration du spinner de devises
+            val currencyList = loadCurrenciesFromJson()
+            val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, currencyList.map { it.name })
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            currencySpinner.adapter = adapter
 
-        // Analytics: suivre les options de devise disponibles
-        AnalyticsManager.logUserAction(
-            action = "available_options",
-            category = "settings",
-            additionalParams = mapOf(
-                "currency_count" to currencies.size,
-                "theme_options" to 3 // light, dark, system
+            // Analytics: suivre les options de devise disponibles
+            AnalyticsManager.logUserAction(
+                action = "available_options",
+                category = "settings",
+                additionalParams = mapOf(
+                    "currency_count" to currencyList.size,
+                    "theme_options" to 3 // light, dark, system
+                )
             )
-        )
+        } catch (e: Exception) {
+            // Log and handle initialization errors
+            AnalyticsManager.logUserAction(
+                action = "ui_initialization_error",
+                category = "settings",
+                additionalParams = mapOf("error" to (e.message ?: "Unknown error"))
+            )
+            CrashlyticsManager.log("UI initialization error: ${e.message ?: "Unknown error"}")
+            CrashlyticsManager.logException(e)
+            Toast.makeText(this, "Erreur lors de l'initialisation de l'interface", Toast.LENGTH_SHORT).show()
+            throw e
+        }
     }
 
     private fun loadCurrentPreferences() {
@@ -173,7 +185,9 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         // Sélection de la devise actuelle
-        val currencyIndex = currencyCodes.indexOf(userPreferences.currency)
+        val currencyIndex = currencySpinner.adapter.run {
+            (0 until count).firstOrNull { getItem(it).toString() == userPreferences.currency } ?: -1
+        }
         if (currencyIndex != -1) {
             currencySpinner.setSelection(currencyIndex)
         }
@@ -184,7 +198,7 @@ class SettingsActivity : AppCompatActivity() {
             category = "settings",
             additionalParams = mapOf(
                 "theme_mode" to themeMode,
-                "currency" to (userPreferences.currency ?: "default")
+                "currency" to userPreferences.currency
             )
         )
     }
@@ -261,8 +275,8 @@ class SettingsActivity : AppCompatActivity() {
         // Suivi des changements de devise
         currencySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (position >= 0 && position < currencyCodes.size) {
-                    val selectedCurrency = currencyCodes[position]
+                if (position >= 0) {
+                    val selectedCurrency = currencySpinner.getItemAtPosition(position).toString()
 
                     // Analytics: suivre le changement de devise
                     AnalyticsManager.logUserAction(
@@ -300,8 +314,8 @@ class SettingsActivity : AppCompatActivity() {
             // Sauvegarde de la devise
             val currencyIndex = currencySpinner.selectedItemPosition
             var selectedCurrency = "default"
-            if (currencyIndex != -1 && currencyIndex < currencyCodes.size) {
-                selectedCurrency = currencyCodes[currencyIndex]
+            if (currencyIndex != -1) {
+                selectedCurrency = currencySpinner.getItemAtPosition(currencyIndex).toString()
                 userPreferences.currency = selectedCurrency
             }
 
@@ -349,6 +363,28 @@ class SettingsActivity : AppCompatActivity() {
             throw e // On relance l'exception pour être capturée dans le listener
         }
     }
+
+    private fun loadCurrenciesFromJson(): List<Currency> {
+        val currencies = mutableListOf<Currency>()
+        try {
+            val inputStream: InputStream = resources.openRawResource(R.raw.currencies)
+            val jsonString = inputStream.bufferedReader().use { it.readText() }
+            val jsonArray = JSONArray(jsonString)
+
+            for (i in 0 until jsonArray.length()) {
+                val jsonObject = jsonArray.getJSONObject(i)
+                val name = jsonObject.getString("name")
+                val code = jsonObject.getString("code")
+                currencies.add(Currency(name, code))
+            }
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Error loading currencies: ${e.message}")
+            CrashlyticsManager.logException(e)
+        }
+        return currencies
+    }
+
+    data class Currency(val name: String, val code: String)
 
     override fun onResume() {
         super.onResume()
