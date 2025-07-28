@@ -187,7 +187,58 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         // Sélection de la devise actuelle
-        val selectedCurrencyCode = if (userPreferences.currency.isNullOrEmpty()) "USD" else userPreferences.currency
+        val selectedCurrencyCode = if (userPreferences.currency.isNullOrEmpty()) {
+            // Détection intelligente de la devise par défaut selon le pays
+            val country = java.util.Locale.getDefault().country
+            val defaultCurrencyByCountry = mapOf(
+                "FR" to "EUR",
+                "BE" to "EUR",
+                "DE" to "EUR",
+                "IT" to "EUR",
+                "ES" to "EUR",
+                "PT" to "EUR",
+                "NL" to "EUR",
+                "LU" to "EUR",
+                "IE" to "EUR",
+                "FI" to "EUR",
+                "AT" to "EUR",
+                "GR" to "EUR",
+                "US" to "USD",
+                "GB" to "GBP",
+                "CA" to "CAD",
+                "CH" to "CHF",
+                "JP" to "JPY",
+                "CN" to "CNY",
+                "IN" to "INR",
+                "BR" to "BRL",
+                "RU" to "RUB",
+                "AU" to "AUD",
+                "MX" to "MXN",
+                "SE" to "SEK",
+                "NO" to "NOK",
+                "DK" to "DKK",
+                "PL" to "PLN",
+                // Pays arabes principaux
+                "TN" to "TND", // Tunisie
+                "MA" to "MAD", // Maroc
+                "DZ" to "DZD", // Algérie
+                "EG" to "EGP", // Égypte
+                "SA" to "SAR", // Arabie Saoudite
+                "AE" to "AED", // Émirats Arabes Unis
+                "QA" to "QAR", // Qatar
+                "KW" to "KWD", // Koweït
+                "OM" to "OMR", // Oman
+                "BH" to "BHD", // Bahreïn
+                "JO" to "JOD", // Jordanie
+                "LB" to "LBP", // Liban
+                "IQ" to "IQD", // Irak
+                "SD" to "SDG", // Soudan
+                "YE" to "YER", // Yémen
+                "LY" to "LYD", // Libye
+                "SY" to "SYP", // Syrie
+            )
+            defaultCurrencyByCountry[country] ?: "USD"
+        } else userPreferences.currency
         val currencyIndex = currencyList.indexOfFirst { it.code == selectedCurrencyCode }.let { if (it == -1) 0 else it }
         currencySpinner.setSelection(currencyIndex)
 
