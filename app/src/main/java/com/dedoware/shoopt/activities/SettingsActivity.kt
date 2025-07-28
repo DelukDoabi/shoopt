@@ -24,6 +24,8 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var saveButton: ImageButton
     private lateinit var backButton: ImageButton
 
+    private lateinit var currencyList: List<Currency>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         try {
             super.onCreate(savedInstanceState)
@@ -142,7 +144,7 @@ class SettingsActivity : AppCompatActivity() {
             backButton = findViewById(R.id.back_IB) ?: throw IllegalStateException("Missing back_IB")
 
             // Configuration du spinner de devises
-            val currencyList = loadCurrenciesFromJson()
+            currencyList = loadCurrenciesFromJson()
             val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, currencyList.map { it.name })
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             currencySpinner.adapter = adapter
@@ -185,12 +187,9 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         // Sélection de la devise actuelle
-        val currencyIndex = currencySpinner.adapter.run {
-            (0 until count).firstOrNull { getItem(it).toString() == userPreferences.currency } ?: -1
-        }
-        if (currencyIndex != -1) {
-            currencySpinner.setSelection(currencyIndex)
-        }
+        val selectedCurrencyCode = if (userPreferences.currency.isNullOrEmpty()) "USD" else userPreferences.currency
+        val currencyIndex = currencyList.indexOfFirst { it.code == selectedCurrencyCode }.let { if (it == -1) 0 else it }
+        currencySpinner.setSelection(currencyIndex)
 
         // Analytics: suivre les préférences actuelles chargées
         AnalyticsManager.logUserAction(
@@ -276,7 +275,7 @@ class SettingsActivity : AppCompatActivity() {
         currencySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (position >= 0) {
-                    val selectedCurrency = currencySpinner.getItemAtPosition(position).toString()
+                    val selectedCurrencyCode = currencyList[position].code
 
                     // Analytics: suivre le changement de devise
                     AnalyticsManager.logUserAction(
@@ -284,7 +283,7 @@ class SettingsActivity : AppCompatActivity() {
                         category = "settings",
                         additionalParams = mapOf(
                             "preference_type" to "currency",
-                            "selected_value" to selectedCurrency
+                            "selected_value" to selectedCurrencyCode
                         )
                     )
                 }
@@ -315,7 +314,7 @@ class SettingsActivity : AppCompatActivity() {
             val currencyIndex = currencySpinner.selectedItemPosition
             var selectedCurrency = "default"
             if (currencyIndex != -1) {
-                selectedCurrency = currencySpinner.getItemAtPosition(currencyIndex).toString()
+                selectedCurrency = currencyList[currencyIndex].code
                 userPreferences.currency = selectedCurrency
             }
 
