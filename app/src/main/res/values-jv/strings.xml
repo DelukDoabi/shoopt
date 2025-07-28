@@ -1,12 +1,12 @@
 <resources>
-    <string name="products">Produk: </string>
+    <string name="products">Produkmu: </string>
     <string name="total">Total: </string>
-    <string name="password">Sandi</string>
-    <string name="don_t_have_an_account_register_here">Ora duwe akun? Daftar ing kene</string>
-    <string name="sign_in_with_email">Mlebu nganggo email</string>
-    <string name="sign_in_with_google">Mlebu nganggo Google</string>
+    <string name="password">Sandimu</string>
+    <string name="don_t_have_an_account_register_here">Ora duwe akun? Daftar saiki ing kene</string>
+    <string name="sign_in_with_email">Mlebu nganggo emailmu</string>
+    <string name="sign_in_with_google">Mlebu nganggo Googlemu</string>
     <string name="title_activity_register">Registrasi</string>
-    <string name="forgot_password">Lali sandi?</string>
+    <string name="forgot_password">Lali sandimu?</string>
     <string name="unknown_error">Kesalahan ora dingerteni wis kedadeyan.</string>
     <string name="hf_key_empty">Kunci Hugging Face kosong.</string>
     <string name="unknown_shop">Toko ora dingerteni</string>
@@ -17,7 +17,7 @@
     <string name="choose_option">Pilih pilihan</string>
     <string name="scan_barcode_or_add_manually">Scan barcode utawa tambah produk manual</string>
     <string name="add_product_manually">Tambah produk manual</string>
-    <string name="cancelled">Dibatalkan</string>
+    <string name="cancelled">Kowe wis mbatalake</string>
     <string name="analyzing_image">Nganalisa gambar</string>
     <string name="fetching_location_and_shop">Njupuk lokasi lan jeneng toko</string>
     <string name="price_unit_required">Regane lan rega unit dibutuhake</string>
@@ -36,7 +36,7 @@
     <string name="email_empty">Email ora kena kosong</string>
     <string name="password_reset_sent">Email reset sandi wis dikirim!</string>
     <string name="error">Kesalahan: %1$s</string>
-    <string name="enter_your_email">Lebokake email sampeyan</string>
+    <string name="enter_your_email">Lebokake emailmu</string>
     <string name="reset_password">Reset sandi</string>
     <string name="enter_email_to_reset">Lebokake email kanggo nampa link reset sandi:</string>
     <string name="send">Kirim</string>

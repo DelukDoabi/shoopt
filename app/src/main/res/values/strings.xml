@@ -112,9 +112,9 @@
     <string name="scan_barcode_instructions">Position the barcode in the center of the frame</string>
     <string name="close">Close</string>
     <string name="toggle_flash">Toggle Flash</string>
-    <string name="close_scan">Close Scan</string>
-    <string name="scanning">Scanning…</string>
-    <string name="toggle_torch">Toggle Torch</string>
+    <string name="close_scan">Close Scanner</string>
+    <string name="scanning">Scanning your product…</string>
+    <string name="toggle_torch">Toggle Flashlight</string>
 
     <!-- Settings Activity -->
     <string name="theme_settings">Theme Settings</string>
@@ -123,14 +123,14 @@
     <string name="theme_system">System Default</string>
     <string name="currency_settings">Currency Settings</string>
     <string name="save_settings">Save Settings</string>
-    <string name="settings_saved">Settings saved successfully</string>
+    <string name="settings_saved">Your settings have been saved!</string>
 
     <!-- Product Track Layout -->
     <string name="swipe_to_delete">Swipe to delete</string>
 
     <!-- Update Dialog -->
     <string name="update_available">Update Available</string>
-    <string name="update_description">A new version of Shoopt is available with improved features and bug fixes</string>
+    <string name="update_description">A new version of Shoopt is here with cool features and improvements!</string>
     <string name="update_later">Later</string>
     <string name="update_now">Update Now</string>
     <string name="update_required">Update Required</string>
@@ -139,16 +139,16 @@
 
     <!-- Dialog and UI Elements -->
     <string name="add_product_options_title">Add Product</string>
-    <string name="add_product_options_message">How would you like to add this product?</string>
-    <string name="add_product_options_error">Error displaying product options</string>
-    <string name="manual_entry">Manual Entry</string>
+    <string name="add_product_options_message">How would you like to add your product?</string>
+    <string name="add_product_options_error">Couldn\'t show product options</string>
+    <string name="manual_entry">Enter Manually</string>
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="delete">Delete</string>
     <string name="send">Send</string>
     <string name="error">Error</string>
-    <string name="welcome">Welcome</string>
+    <string name="welcome">Welcome!</string>
 
     <!-- Authentication and User Management -->
     <string name="authentication_failed">Authentication failed</string>

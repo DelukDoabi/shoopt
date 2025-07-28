@@ -1,14 +1,14 @@
 <resources>
-    <string name="products">Sản phẩm: </string>
+    <string name="products">Sản phẩm của bạn: </string>
     <string name="total">Tổng cộng: </string>
-    <string name="password">Mật khẩu</string>
-    <string name="don_t_have_an_account_register_here">Chưa có tài khoản? Đăng ký tại đây</string>
+    <string name="password">Mật khẩu của bạn</string>
+    <string name="don_t_have_an_account_register_here">Chưa có tài khoản? Đăng ký ngay tại đây</string>
     <string name="sign_in_with_email">Đăng nhập bằng email</string>
     <string name="sign_in_with_google">Đăng nhập bằng Google</string>
     <string name="title_activity_register">Đăng ký</string>
-    <string name="forgot_password">Quên mật khẩu?</string>
+    <string name="forgot_password">Quên mật khẩu của bạn?</string>
     <string name="unknown_error">Đã xảy ra lỗi không xác định.</string>
-    <string name="hf_key_empty">Khóa API Hugging Face trống.</string>
+    <string name="hf_key_empty">Khóa API Hugging Face đang trống.</string>
     <string name="unknown_shop">Cửa hàng không xác định</string>
     <string name="scan_barcode">Quét mã vạch</string>
     <string name="scan_barcode_prompt">Căn chỉnh mã vạch trong khung để quét</string>
@@ -17,9 +17,9 @@
     <string name="choose_option">Chọn một tùy chọn</string>
     <string name="scan_barcode_or_add_manually">Quét mã vạch hoặc thêm sản phẩm thủ công</string>
     <string name="add_product_manually">Thêm sản phẩm thủ công</string>
-    <string name="cancelled">Đã hủy</string>
+    <string name="cancelled">Bạn đã hủy</string>
     <string name="analyzing_image">Đang phân tích hình ảnh</string>
-    <string name="fetching_location_and_shop">Đang lấy vị trí và tên cửa hàng</string>
+    <string name="fetching_location_and_shop">Đang lấy vị trí và tên cửa hàng của bạn</string>
     <string name="price_unit_required">Cần nhập giá và giá đơn vị</string>
     <string name="failed_to_load_shops">Không tải được cửa hàng: %1$s</string>
     <string name="new_shop_added">Đã thêm cửa hàng mới thành công!</string>
