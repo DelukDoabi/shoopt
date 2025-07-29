@@ -10,6 +10,7 @@ import com.dedoware.shoopt.R
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.UpdateManager
+import com.dedoware.shoopt.utils.UserPreferences
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.firebase.auth.FirebaseAuth
 import java.util.concurrent.Executors
@@ -102,7 +103,15 @@ class SplashScreenActivity : AppCompatActivity() {
     private fun redirectToMainScreen() {
         try {
             val currentUser = FirebaseAuth.getInstance().currentUser
-            val targetActivity = if (currentUser != null) MainActivity::class.java else LoginActivity::class.java
+
+            // Vérifier si l'onboarding a été complété
+            val isOnboardingCompleted = UserPreferences.isOnboardingCompleted(this)
+
+            val targetActivity = when {
+                !isOnboardingCompleted -> OnboardingActivity::class.java
+                currentUser != null -> MainActivity::class.java
+                else -> LoginActivity::class.java
+            }
 
             // Analytics pour le statut de connexion au démarrage
             try {
@@ -111,6 +120,7 @@ class SplashScreenActivity : AppCompatActivity() {
                     "session",
                     mapOf(
                         "user_status" to if (currentUser != null) "logged_in" else "not_logged_in",
+                        "onboarding_completed" to isOnboardingCompleted.toString(),
                         "target_screen" to targetActivity.simpleName
                     )
                 )

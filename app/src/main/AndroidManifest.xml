@@ -46,6 +46,11 @@
             android:name=".activities.LoginActivity"
             android:exported="true" />
         <activity
+            android:name=".activities.OnboardingActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Shoopt" />
+        <activity
             android:name=".activities.TrackShoppingActivity"
             android:exported="false"
             android:label="@string/title_activity_track_shopping"

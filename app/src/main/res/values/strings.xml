@@ -230,5 +230,21 @@
     <string name="sort_shop_asc">Shop (A-Z)</string>
     <string name="sort_recent_first">Recent First</string>
     <string name="sort_oldest_first">Oldest First</string>
-    <string name="app_baseline">Track your products. Compare smart. Spend less.</string>
+
+    <!-- Onboarding Carousel -->
+    <string name="app_baseline">Save, compare, save money.</string>
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_get_started">Get Started</string>
+
+    <!-- Onboarding Steps -->
+    <string name="onboarding_step1_title">📲 Scan or add your everyday products</string>
+    <string name="onboarding_step1_description">Quickly add products to your personal database by scanning barcodes or entering details manually</string>
+
+    <string name="onboarding_step2_title">🧠 Remember prices to better evaluate equivalent products and promos</string>
+    <string name="onboarding_step2_description">Build your price memory to spot real deals and compare similar products across different stores</string>
+
+    <string name="onboarding_step3_title">🛒 Shop more confidently and save money</string>
+    <string name="onboarding_step3_description">Make informed decisions with your personalized product database and never miss a good deal again</string>
+
 </resources>

@@ -9,6 +9,7 @@ class UserPreferences(context: Context) {
         private const val PREFS_NAME = "user_preferences"
         private const val KEY_THEME = "theme_mode"
         private const val KEY_CURRENCY = "currency"
+        private const val KEY_ONBOARDING_COMPLETED = "onboarding_completed"
 
         const val THEME_LIGHT = 1
         const val THEME_DARK = 2
@@ -28,6 +29,17 @@ class UserPreferences(context: Context) {
             "CHF" to "Fr",
             "AUD" to "A$"
         )
+
+        // Nouvelle méthode statique pour l'onboarding
+        fun setOnboardingCompleted(context: Context, completed: Boolean) {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            prefs.edit().putBoolean(KEY_ONBOARDING_COMPLETED, completed).apply()
+        }
+
+        fun isOnboardingCompleted(context: Context): Boolean {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            return prefs.getBoolean(KEY_ONBOARDING_COMPLETED, false)
+        }
     }
 
     private val preferences: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
