@@ -196,5 +196,25 @@
     <string name="sort_shop_asc">Negozio (A-Z)</string>
     <string name="sort_recent_first">Più recenti prima</string>
     <string name="sort_oldest_first">Meno recenti prima</string>
-    <string name="your_shopping_optimizer">Il tuo ottimizzatore di acquisti</string>
+    <string name="app_baseline">Salva, confronta, risparmia.</string>
+    <!-- Onboarding Carousel -->
+    <string name="onboarding_skip">Salta</string>
+    <string name="onboarding_next">Successivo</string>
+    <string name="onboarding_get_started">Inizia</string>
+
+    <!-- Onboarding Steps -->
+    <string name="onboarding_step1_title">📲 Scansiona o aggiungi i tuoi prodotti quotidiani</string>
+    <string name="onboarding_step1_description">Aggiungi rapidamente prodotti al tuo database personale scansionando codici a barre o inserendo i dettagli manualmente</string>
+
+    <string name="onboarding_step2_title">🧠 Ricorda i prezzi per valutare meglio prodotti equivalenti e promozioni</string>
+    <string name="onboarding_step2_description">Crea la tua memoria dei prezzi per individuare vere offerte e confrontare prodotti simili in diversi negozi</string>
+
+    <string name="onboarding_step3_title">🛍️ Fai acquisti con più fiducia e risparmia denaro</string>
+    <string name="onboarding_step3_description">Prendi decisioni informate con il tuo database personalizzato di prodotti e non perderti mai un buon affare</string>
+
+    <!-- Settings - Onboarding -->
+    <string name="replay_onboarding">Rigioca l’introduzione</string>
+    <string name="replay_onboarding_description">Rivedi l’introduzione dell’app</string>
+    <string name="onboarding_replayed">L’onboarding inizierà al prossimo avvio dell’app</string>
+
 </resources>

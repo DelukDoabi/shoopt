@@ -1,13 +1,16 @@
 package com.dedoware.shoopt.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.UserPreferences
+import com.google.android.material.button.MaterialButton
 import org.json.JSONArray
 import java.io.InputStream
 
@@ -23,6 +26,7 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var currencySpinner: Spinner
     private lateinit var saveButton: ImageButton
     private lateinit var backButton: ImageButton
+    private lateinit var replayOnboardingCard: CardView
 
     private lateinit var currencyList: List<Currency>
 
@@ -142,6 +146,7 @@ class SettingsActivity : AppCompatActivity() {
             currencySpinner = findViewById(R.id.currency_spinner) ?: throw IllegalStateException("Missing currency_spinner")
             saveButton = findViewById(R.id.save_settings_button) ?: throw IllegalStateException("Missing save_settings_button")
             backButton = findViewById(R.id.back_IB) ?: throw IllegalStateException("Missing back_IB")
+            replayOnboardingCard = findViewById(R.id.replay_onboarding_card) ?: throw IllegalStateException("Missing replay_onboarding_card")
 
             // Configuration du spinner de devises
             currencyList = loadCurrenciesFromJson()
@@ -301,6 +306,44 @@ class SettingsActivity : AppCompatActivity() {
             )
 
             finish()
+        }
+
+        // Bouton de replay de l'onboarding
+        replayOnboardingCard.setOnClickListener {
+            try {
+                // Analytics: suivre le clic sur le bouton de replay onboarding
+                AnalyticsManager.logUserAction(
+                    action = "click",
+                    category = "settings",
+                    additionalParams = mapOf("button" to "replay_onboarding")
+                )
+
+                // Réinitialiser le flag d'onboarding complété
+                UserPreferences.setOnboardingCompleted(this, false)
+
+                // Démarrer l'activité d'onboarding
+                val intent = Intent(this, OnboardingActivity::class.java)
+                startActivity(intent)
+
+                // Fermer l'activité des paramètres
+                finish()
+
+            } catch (e: Exception) {
+                // Analytics: suivre l'erreur de replay onboarding
+                AnalyticsManager.logUserAction(
+                    action = "replay_onboarding_error",
+                    category = "settings",
+                    additionalParams = mapOf("error_type" to e.javaClass.simpleName)
+                )
+
+                CrashlyticsManager.log("Erreur lors du replay de l'onboarding: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "settings_replay_onboarding")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+
+                Toast.makeText(this, "Erreur lors du redémarrage de l'onboarding", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // Suivi des changements de thème

@@ -194,5 +194,25 @@
     <string name="sort_shop_asc">Mağaza (A-Z)</string>
     <string name="sort_recent_first">En yeniler önce</string>
     <string name="sort_oldest_first">En eskiler önce</string>
-    <string name="your_shopping_optimizer">Alışveriş Optimizasyonunuz</string>
+    <string name="app_baseline">Kaydet, karşılaştır, tasarruf et.</string>
+    <!-- Onboarding Carousel -->
+    <string name="onboarding_skip">Atla</string>
+    <string name="onboarding_next">Sonraki</string>
+    <string name="onboarding_get_started">Başlayın</string>
+
+    <!-- Onboarding Steps -->
+    <string name="onboarding_step1_title">📲 Günlük ürünlerinizi tarayın veya ekleyin</string>
+    <string name="onboarding_step1_description">Barkod tarayarak veya bilgileri manuel girerek ürünleri kişisel veritabanınıza hızla ekleyin</string>
+
+    <string name="onboarding_step2_title">🧠 Eşdeğer ürünleri ve promosyonları daha iyi değerlendirmek için fiyatları hatırla</string>
+    <string name="onboarding_step2_description">Gerçek fırsatları tespit etmek ve farklı mağazalardaki benzer ürünleri karşılaştırmak için fiyat hafızanızı oluşturun</string>
+
+    <string name="onboarding_step3_title">🛍️ Daha emin alışveriş yapın ve para tasarrufu yapın</string>
+    <string name="onboarding_step3_description">Kişisel ürün veritabanınızla bilinçli kararlar alın ve iyi bir fırsatı asla kaçırmayın</string>
+
+    <!-- Settings - Onboarding -->
+    <string name="replay_onboarding">Tanıtımı yeniden oynat</string>
+    <string name="replay_onboarding_description">Uygulama tanıtımını tekrar inceleyin</string>
+    <string name="onboarding_replayed">Onboarding bir sonraki uygulama başlatıldığında başlayacak</string>
+
 </resources>

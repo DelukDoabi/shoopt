@@ -194,5 +194,25 @@
     <string name="sort_shop_asc">Cửa hàng (A-Z)</string>
     <string name="sort_recent_first">Mới nhất trước</string>
     <string name="sort_oldest_first">Cũ nhất trước</string>
-    <string name="your_shopping_optimizer">Trình tối ưu hóa mua sắm của bạn</string>
+    <string name="app_baseline">Lưu, so sánh, tiết kiệm.</string>
+    <!-- Onboarding Carousel -->
+    <string name="onboarding_skip">Bỏ qua</string>
+    <string name="onboarding_next">Tiếp theo</string>
+    <string name="onboarding_get_started">Bắt đầu</string>
+
+    <!-- Onboarding Steps -->
+    <string name="onboarding_step1_title">📲 Quét hoặc thêm sản phẩm hàng ngày của bạn</string>
+    <string name="onboarding_step1_description">Thêm sản phẩm vào cơ sở dữ liệu cá nhân của bạn nhanh chóng bằng cách quét mã vạch hoặc nhập thông tin thủ công</string>
+
+    <string name="onboarding_step2_title">🧠 Ghi nhớ giá để đánh giá tốt hơn sản phẩm và khuyến mãi tương đương</string>
+    <string name="onboarding_step2_description">Xây dựng bộ nhớ giá của bạn để phát hiện các ưu đãi thực sự và so sánh sản phẩm tương tự giữa các cửa hàng khác nhau</string>
+
+    <string name="onboarding_step3_title">🛍️ Mua sắm tự tin hơn và tiết kiệm tiền</string>
+    <string name="onboarding_step3_description">Hãy đưa ra quyết định thông minh với cơ sở dữ liệu sản phẩm cá nhân của bạn và đừng bao giờ bỏ lỡ một ưu đãi hay</string>
+
+    <!-- Settings - Onboarding -->
+    <string name="replay_onboarding">Phát lại giới thiệu</string>
+    <string name="replay_onboarding_description">Xem lại phần giới thiệu ứng dụng lần nữa</string>
+    <string name="onboarding_replayed">Chương trình hướng dẫn sẽ bắt đầu khi ứng dụng được khởi chạy lần sau</string>
+
 </resources>

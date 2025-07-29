@@ -196,5 +196,25 @@
     <string name="sort_shop_asc">Tienda (A-Z)</string>
     <string name="sort_recent_first">Más recientes primero</string>
     <string name="sort_oldest_first">Más antiguos primero</string>
-    <string name="your_shopping_optimizer">Tu optimizador de compras</string>
+    <!-- Onboarding Carousel -->
+    <string name="app_baseline">Guarda tus productos. Compara de forma más inteligente. Gasta menos.</string>
+    <string name="onboarding_skip">Omitir</string>
+    <string name="onboarding_next">Siguiente</string>
+    <string name="onboarding_get_started">Comenzar</string>
+
+    <!-- Onboarding Steps -->
+    <string name="onboarding_step1_title">📲 Escanea o añade tus productos diarios</string>
+    <string name="onboarding_step1_description">Agrega productos rápidamente a tu base de datos personal escaneando códigos de barras o ingresando información manualmente</string>
+
+    <string name="onboarding_step2_title">🧠 Recuerda los precios para evaluar mejor productos equivalentes y promociones</string>
+    <string name="onboarding_step2_description">Construye tu memoria de precios para detectar verdaderas ofertas y comparar productos similares en diferentes tiendas</string>
+
+    <string name="onboarding_step3_title">🛍️ Compra con más confianza y ahorra dinero</string>
+    <string name="onboarding_step3_description">Toma decisiones informadas con tu base de datos personalizada de productos y nunca te pierdas una buena oferta</string>
+
+    <!-- Settings - Onboarding -->
+    <string name="replay_onboarding">Reproducir introducción</string>
+    <string name="replay_onboarding_description">Revisa la introducción de la aplicación nuevamente</string>
+    <string name="onboarding_replayed">El onboarding se iniciará en el próximo lanzamiento de la aplicación</string>
+
 </resources>
