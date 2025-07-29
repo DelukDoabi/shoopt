@@ -195,5 +195,5 @@
     <string name="sort_shop_asc">商店（A-Z）</string>
     <string name="sort_recent_first">最新优先</string>
     <string name="sort_oldest_first">最早优先</string>
-    <string name="your_shopping_optimizer">您的购物优化器</string>
+    <string name="app_baseline">保存，比较，省钱。</string>
 </resources>

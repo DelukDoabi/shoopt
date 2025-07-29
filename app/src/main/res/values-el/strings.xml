@@ -191,10 +191,10 @@
     <string name="sort_products">Ταξινόμηση προϊόντων</string>
     <string name="sort_name_asc">Όνομα (Α-Ω)</string>
     <string name="sort_name_desc">Όνομα (Ω-Α)</string>
-    <string name="sort_price_asc">Τιμή (αύξουσα)</string>
-    <string name="sort_price_desc">Τιμή (φθίνουσα)</string>
+    <string name="sort_price_asc">Τιμή (Χαμηλή προς Υψηλή)</string>
+    <string name="sort_price_desc">Τιμή (Υψηλή προς Χαμηλή)</string>
     <string name="sort_shop_asc">Κατάστημα (Α-Ω)</string>
-    <string name="sort_recent_first">Πρόσφατα πρώτα</string>
-    <string name="sort_oldest_first">Παλαιότερα πρώτα</string>
-    <string name="your_shopping_optimizer">Ο βελτιστοποιητής αγορών σας</string>
+    <string name="sort_recent_first">Πιο πρόσφατα πρώτα</string>
+    <string name="sort_oldest_first">Πιο παλιά πρώτα</string>
+    <string name="app_baseline">Παρακολουθήστε τα προϊόντα σας. Συγκρίνετε έξυπνα. Ξοδέψτε λιγότερα.</string>
 </resources>

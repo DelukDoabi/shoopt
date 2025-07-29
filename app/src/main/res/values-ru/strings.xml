@@ -195,5 +195,5 @@
     <string name="sort_shop_asc">Магазин (А-Я)</string>
     <string name="sort_recent_first">Сначала новые</string>
     <string name="sort_oldest_first">Сначала старые</string>
-    <string name="your_shopping_optimizer">Ваш оптимизатор покупок</string>
+    <string name="app_baseline">Следите за своими продуктами. Сравнивайте умно. Тратьте меньше.</string>
 </resources>
