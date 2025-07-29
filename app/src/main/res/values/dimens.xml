@@ -43,4 +43,9 @@
     <!-- FAB positioning -->
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="fab_bottom_margin">32dp</dimen>
+
+    <!-- Onboarding indicators -->
+    <dimen name="indicator_width">12dp</dimen>
+    <dimen name="indicator_height">12dp</dimen>
+    <dimen name="indicator_margin">8dp</dimen>
 </resources>
