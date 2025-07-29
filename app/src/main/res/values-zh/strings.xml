@@ -196,4 +196,24 @@
     <string name="sort_recent_first">最新优先</string>
     <string name="sort_oldest_first">最早优先</string>
     <string name="app_baseline">保存，比较，省钱。</string>
+    <!-- Onboarding Carousel -->
+    <string name="onboarding_skip">跳过</string>
+    <string name="onboarding_next">下一步</string>
+    <string name="onboarding_get_started">开始使用</string>
+
+    <!-- Onboarding Steps -->
+    <string name="onboarding_step1_title">📲 扫描或添加您的日常产品</string>
+    <string name="onboarding_step1_description">通过扫描条形码或手动输入详细信息，快速将产品添加到您的个人数据库中</string>
+
+    <string name="onboarding_step2_title">🧠 记住价格以更好地评估等价产品和促销活动</string>
+    <string name="onboarding_step2_description">构建您的价格记忆，以便发现真正的优惠并在不同商店比较类似产品</string>
+
+    <string name="onboarding_step3_title">🛍️ 更加自信地购物并省钱</string>
+    <string name="onboarding_step3_description">使用您的个性化产品数据库做出明智决策，再也不会错过好优惠</string>
+
+    <!-- Settings - Onboarding -->
+    <string name="replay_onboarding">重播入门介绍</string>
+    <string name="replay_onboarding_description">再次查看应用介绍</string>
+    <string name="onboarding_replayed">下一次启动应用时将开始入门指导</string>
+
 </resources>

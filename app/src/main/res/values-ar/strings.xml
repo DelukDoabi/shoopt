@@ -197,4 +197,24 @@
     <string name="sort_recent_first">الأحدث أولاً</string>
     <string name="sort_oldest_first">الأقدم أولاً</string>
     <string name="app_baseline">تتبع منتجاتك. قارن بذكاء. أنفق أقل.</string>
+    <!-- Onboarding Carousel -->
+    <string name="onboarding_skip">تخطى</string>
+    <string name="onboarding_next">التالي</string>
+    <string name="onboarding_get_started">ابدأ</string>
+
+    <!-- Onboarding Steps -->
+    <string name="onboarding_step1_title">📲 امسح أو أضف منتجاتك اليومية</string>
+    <string name="onboarding_step1_description">أضف المنتجات بسرعة إلى قاعدة بياناتك الشخصية عن طريق مسح الرموز الشريطية أو إدخال التفاصيل يدويًا</string>
+
+    <string name="onboarding_step2_title">🧠 تذكر الأسعار لتقييم أفضل للمنتجات والعروض المماثلة</string>
+    <string name="onboarding_step2_description">ابنِ ذاكرة الأسعار الخاصة بك لاكتشاف العروض الحقيقية ومقارنة منتجات مشابهة عبر متاجر مختلفة</string>
+
+    <string name="onboarding_step3_title">🛍️ تسوق بثقة أكبر وادخر المال</string>
+    <string name="onboarding_step3_description">اتخذ قرارات مستنيرة باستخدام قاعدة بيانات منتجاتك الشخصية ولا تفوت صفقة جيدة أبدًا</string>
+
+    <!-- Settings - Onboarding -->
+    <string name="replay_onboarding">أعد تشغيل الشرح التمهيدي</string>
+    <string name="replay_onboarding_description">راجع مقدمة التطبيق مرة أخرى</string>
+    <string name="onboarding_replayed">سيتم بدء الشرح التمهيدي عند فتح التطبيق التالي</string>
+
 </resources>

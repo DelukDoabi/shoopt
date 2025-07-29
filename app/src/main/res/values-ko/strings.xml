@@ -197,4 +197,24 @@
     <string name="sort_recent_first">최신순</string>
     <string name="sort_oldest_first">오래된순</string>
     <string name="app_baseline">제품을 추적하세요. 스마트하게 비교하세요. 더 적게 쓰세요.</string>
+    <!-- Onboarding Carousel -->
+    <string name="onboarding_skip">건너뛰기</string>
+    <string name="onboarding_next">다음</string>
+    <string name="onboarding_get_started">시작하기</string>
+
+    <!-- Onboarding Steps -->
+    <string name="onboarding_step1_title">📲 매일 사용하는 제품을 스캔하거나 추가하세요</string>
+    <string name="onboarding_step1_description">바코드를 스캔하거나 수동으로 세부 정보를 입력하여 제품을 빠르게 개인 데이터베이스에 추가하세요</string>
+
+    <string name="onboarding_step2_title">🧠 동일 제품 및 프로모션을 더 잘 평가하기 위해 가격을 기억하세요</string>
+    <string name="onboarding_step2_description">진짜 할인 상품을 발견하고 다른 매장 간에 유사한 제품을 비교하기 위해 가격 기억을 구축하세요</string>
+
+    <string name="onboarding_step3_title">🛍️ 더 자신 있게 쇼핑하고 돈을 절약하세요</string>
+    <string name="onboarding_step3_description">개인화된 제품 데이터베이스를 통해 정보에 기반한 결정을 내리고 좋은 거래를 절대 놓치지 마세요</string>
+
+    <!-- Settings - Onboarding -->
+    <string name="replay_onboarding">온보딩 재실행</string>
+    <string name="replay_onboarding_description">앱 소개를 다시 검토하세요</string>
+    <string name="onboarding_replayed">다음 앱 실행 시 온보딩이 시작됩니다</string>
+
 </resources>

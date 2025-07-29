@@ -198,4 +198,24 @@
     <string name="sort_recent_first">新しい順</string>
     <string name="sort_oldest_first">古い順</string>
     <string name="app_baseline">商品を管理。賢く比較。節約しよう。</string>
+    <!-- Onboarding Carousel -->
+    <string name="onboarding_skip">スキップ</string>
+    <string name="onboarding_next">次へ</string>
+    <string name="onboarding_get_started">はじめる</string>
+
+    <!-- Onboarding Steps -->
+    <string name="onboarding_step1_title">📲 毎日の製品をスキャンまたは追加</string>
+    <string name="onboarding_step1_description">バーコードをスキャンするか、手動で詳細を入力して、日常の製品を個人データベースにすばやく追加します</string>
+
+    <string name="onboarding_step2_title">🧠 同等の製品やプロモーションをよりよく評価するために価格を覚えておこう</string>
+    <string name="onboarding_step2_description">本当のお得情報を見つけ、異なる店舗で類似商品を比較するために価格記憶を構築しましょう</string>
+
+    <string name="onboarding_step3_title">🛍️ より自信を持って買い物をし、お金を節約しましょう</string>
+    <string name="onboarding_step3_description">自分専用の製品データベースを活用して情報に基づいた判断を下し、もう良い取引を逃さないでください</string>
+
+    <!-- Settings - Onboarding -->
+    <string name="replay_onboarding">オンボーディングを再生</string>
+    <string name="replay_onboarding_description">アプリの紹介を再確認してください</string>
+    <string name="onboarding_replayed">次回アプリ起動時にオンボーディングが開始されます</string>
+
 </resources>

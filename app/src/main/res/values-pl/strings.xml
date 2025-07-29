@@ -197,4 +197,24 @@
     <string name="sort_recent_first">Najnowsze</string>
     <string name="sort_oldest_first">Najstarsze</string>
     <string name="app_baseline">Śledź swoje produkty. Porównuj inteligentnie. Wydawaj mniej.</string>
+    <!-- Onboarding Carousel -->
+    <string name="onboarding_skip">Pomiń</string>
+    <string name="onboarding_next">Dalej</string>
+    <string name="onboarding_get_started">Rozpocznij</string>
+
+    <!-- Onboarding Steps -->
+    <string name="onboarding_step1_title">📲 Skanuj lub dodaj swoje codzienne produkty</string>
+    <string name="onboarding_step1_description">Szybko dodawaj produkty do swojej osobistej bazy poprzez skanowanie kodów kreskowych lub ręczne wprowadzanie danych</string>
+
+    <string name="onboarding_step2_title">🧠 Zapamiętuj ceny, aby lepiej oceniać równoważne produkty i promocje</string>
+    <string name="onboarding_step2_description">Zbuduj swoją pamięć cen, aby wykrywać prawdziwe okazje i porównywać podobne produkty w różnych sklepach</string>
+
+    <string name="onboarding_step3_title">🛍️ Kupuj pewniej i oszczędzaj pieniądze</string>
+    <string name="onboarding_step3_description">Podejmuj świadome decyzje dzięki swojej spersonalizowanej bazie produktów i nigdy nie przegap dobrej oferty</string>
+
+    <!-- Settings - Onboarding -->
+    <string name="replay_onboarding">Odtwórz ponownie prezentację</string>
+    <string name="replay_onboarding_description">Przejrzyj ponownie wprowadzenie do aplikacji</string>
+    <string name="onboarding_replayed">Onboarding rozpocznie się przy następnym uruchomieniu aplikacji</string>
+
 </resources>

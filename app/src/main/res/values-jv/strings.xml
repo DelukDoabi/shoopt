@@ -197,4 +197,24 @@
     <string name="sort_recent_first">Anyar dhisik</string>
     <string name="sort_oldest_first">Lama dhisik</string>
     <string name="app_baseline">Lacak produk sampeyan. Bandhingake kanthi cerdas. Entuk luwih murah.</string>
+    <!-- Onboarding Carousel -->
+    <string name="onboarding_skip">Cekel</string>
+    <string name="onboarding_next">Sabanjuré</string>
+    <string name="onboarding_get_started">Miwiti</string>
+
+    <!-- Onboarding Steps -->
+    <string name="onboarding_step1_title">📲 Scan utawa tambah produk saben dina sampeyan</string>
+    <string name="onboarding_step1_description">Cepet nambah produk menyang database pribadi sampeyan kanthi nyeken barcode utawa ngetik rincian kanthi manual</string>
+
+    <string name="onboarding_step2_title">🧠 Rega rega kanggo mènèhi nilai produk sing padha lan promosi luwih apik</string>
+    <string name="onboarding_step2_description">Bangun memori harga sampeyan kanggo ndeteksi tawaran asli lan mbandhingake produk sing padha ing toko sing beda</string>
+
+    <string name="onboarding_step3_title">🛍️ Belanja luwih yakin lan irit dhuwit</string>
+    <string name="onboarding_step3_description">Gunakake database produk pribadi kanggo nggawe keputusan sing cerdas lan aja nganti kélangan tawaran apik</string>
+
+    <!-- Settings - Onboarding -->
+    <string name="replay_onboarding">Puter maneh pangantar</string>
+    <string name="replay_onboarding_description">Delengen maneh intro app</string>
+    <string name="onboarding_replayed">Onboarding bakal diwiwiti nalika mbukak app sabanjure</string>
+
 </resources>

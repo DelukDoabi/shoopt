@@ -195,4 +195,24 @@
     <string name="sort_recent_first">Senaste först</string>
     <string name="sort_oldest_first">Äldst först</string>
     <string name="app_baseline">Spara, jämför, spara pengar.</string>
+    <!-- Onboarding Carousel -->
+    <string name="onboarding_skip">Hoppa över</string>
+    <string name="onboarding_next">Nästa</string>
+    <string name="onboarding_get_started">Kom igång</string>
+
+    <!-- Onboarding Steps -->
+    <string name="onboarding_step1_title">📲 Skanna eller lägg till dina vardagsprodukter</string>
+    <string name="onboarding_step1_description">Lägg snabbt till produkter i din personliga databas genom att skanna streckkoder eller mata in uppgifter manuellt</string>
+
+    <string name="onboarding_step2_title">🧠 Kom ihåg priser för att bättre utvärdera motsvarande produkter och kampanjer</string>
+    <string name="onboarding_step2_description">Bygg upp ditt prisminne för att upptäcka riktiga fynd och jämföra liknande produkter i olika butiker</string>
+
+    <string name="onboarding_step3_title">🛍️ Handla med större självförtroende och spara pengar</string>
+    <string name="onboarding_step3_description">Ta välinformerade beslut med din personliga produktdatabas och missa aldrig ett bra erbjudande igen</string>
+
+    <!-- Settings - Onboarding -->
+    <string name="replay_onboarding">Spela om introduktionen</string>
+    <string name="replay_onboarding_description">Granska app‑introduktionen igen</string>
+    <string name="onboarding_replayed">Onboarding startar vid nästa app‑start</string>
+
 </resources>

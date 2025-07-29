@@ -197,4 +197,24 @@
     <string name="sort_recent_first">Cele mai recente</string>
     <string name="sort_oldest_first">Cele mai vechi</string>
     <string name="app_baseline">Salvează, compară, economisește.</string>
+    <!-- Onboarding Carousel -->
+    <string name="onboarding_skip">Sari peste</string>
+    <string name="onboarding_next">Următor</string>
+    <string name="onboarding_get_started">Începe</string>
+
+    <!-- Onboarding Steps -->
+    <string name="onboarding_step1_title">📲 Scanează sau adaugă produsele tale de zi cu zi</string>
+    <string name="onboarding_step1_description">Adaugă rapid produse în baza ta de date personală scanând coduri de bare sau introducând detalii manual</string>
+
+    <string name="onboarding_step2_title">🧠 Amintește‑ți prețurile pentru a evalua mai bine produse echivalente și promoții</string>
+    <string name="onboarding_step2_description">Construie‑ți memoria prețurilor pentru a identifica oferte reale și a compara produse similare între diferite magazine</string>
+
+    <string name="onboarding_step3_title">🛍️ Cumpără cu mai multă încredere și economisește bani</string>
+    <string name="onboarding_step3_description">Ia decizii informate folosindu‑ți baza de date personalizată de produse și nu rata niciodată o ofertă bună</string>
+
+    <!-- Settings - Onboarding -->
+    <string name="replay_onboarding">Repornește introducerea</string>
+    <string name="replay_onboarding_description">Revedeți din nou introducerea aplicației</string>
+    <string name="onboarding_replayed">Onboarding va începe la următoarea lansare a aplicației</string>
+
 </resources>
