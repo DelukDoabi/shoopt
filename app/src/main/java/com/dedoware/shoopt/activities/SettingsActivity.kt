@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
@@ -25,7 +26,7 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var currencySpinner: Spinner
     private lateinit var saveButton: ImageButton
     private lateinit var backButton: ImageButton
-    private lateinit var replayOnboardingButton: MaterialButton
+    private lateinit var replayOnboardingCard: CardView
 
     private lateinit var currencyList: List<Currency>
 
@@ -145,7 +146,7 @@ class SettingsActivity : AppCompatActivity() {
             currencySpinner = findViewById(R.id.currency_spinner) ?: throw IllegalStateException("Missing currency_spinner")
             saveButton = findViewById(R.id.save_settings_button) ?: throw IllegalStateException("Missing save_settings_button")
             backButton = findViewById(R.id.back_IB) ?: throw IllegalStateException("Missing back_IB")
-            replayOnboardingButton = findViewById(R.id.replay_onboarding_button) ?: throw IllegalStateException("Missing replay_onboarding_button")
+            replayOnboardingCard = findViewById(R.id.replay_onboarding_card) ?: throw IllegalStateException("Missing replay_onboarding_card")
 
             // Configuration du spinner de devises
             currencyList = loadCurrenciesFromJson()
@@ -308,7 +309,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         // Bouton de replay de l'onboarding
-        replayOnboardingButton.setOnClickListener {
+        replayOnboardingCard.setOnClickListener {
             try {
                 // Analytics: suivre le clic sur le bouton de replay onboarding
                 AnalyticsManager.logUserAction(
@@ -323,9 +324,6 @@ class SettingsActivity : AppCompatActivity() {
                 // Démarrer l'activité d'onboarding
                 val intent = Intent(this, OnboardingActivity::class.java)
                 startActivity(intent)
-
-                // Message de confirmation
-                Toast.makeText(this, R.string.onboarding_replayed, Toast.LENGTH_SHORT).show()
 
                 // Fermer l'activité des paramètres
                 finish()
