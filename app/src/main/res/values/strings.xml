@@ -247,4 +247,9 @@
     <string name="onboarding_step3_title">🛒 Shop more confidently and save money</string>
     <string name="onboarding_step3_description">Make informed decisions with your personalized product database and never miss a good deal again</string>
 
+    <!-- Settings - Onboarding -->
+    <string name="replay_onboarding">Replay Onboarding</string>
+    <string name="replay_onboarding_description">Review the app introduction again</string>
+    <string name="onboarding_replayed">Onboarding will start on next app launch</string>
+
 </resources>

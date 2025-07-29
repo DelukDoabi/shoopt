@@ -97,11 +97,53 @@
             android:layout_marginEnd="20dp"
             android:minHeight="48dp" />
 
+        <!-- Section Onboarding -->
+        <TextView
+            android:id="@+id/onboarding_title_TV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/currency_spinner"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="20dp"
+            android:text="@string/replay_onboarding"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/onboarding_description_TV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/onboarding_title_TV"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="20dp"
+            android:text="@string/replay_onboarding_description"
+            android:textSize="14sp"
+            android:alpha="0.7" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/replay_onboarding_button"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/onboarding_description_TV"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:text="@string/replay_onboarding"
+            android:textColor="@color/main_palette_old_lavender"
+            android:drawableStart="@drawable/ic_replay"
+            android:drawablePadding="12dp"
+            android:gravity="start|center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp" />
+
         <ImageButton
             android:id="@+id/save_settings_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/currency_spinner"
+            android:layout_below="@id/replay_onboarding_button"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="32dp"
             android:background="@drawable/main_rounded_button"

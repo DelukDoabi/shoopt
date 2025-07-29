@@ -3,7 +3,9 @@ package com.dedoware.shoopt.activities
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.adapters.OnboardingAdapter
@@ -18,7 +20,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 class OnboardingActivity : AppCompatActivity() {
 
     private lateinit var viewPager: ViewPager2
-    private lateinit var tabLayout: TabLayout
+    private lateinit var pageIndicators: LinearLayout
     private lateinit var skipButton: MaterialButton
     private lateinit var nextButton: MaterialButton
     private lateinit var getStartedButton: MaterialButton
@@ -64,7 +66,7 @@ class OnboardingActivity : AppCompatActivity() {
 
     private fun initViews() {
         viewPager = findViewById(R.id.onboarding_viewpager)
-        tabLayout = findViewById(R.id.onboarding_tablayout)
+        pageIndicators = findViewById(R.id.page_indicators)
         skipButton = findViewById(R.id.btn_skip)
         nextButton = findViewById(R.id.btn_next)
         getStartedButton = findViewById(R.id.btn_get_started)
@@ -74,14 +76,15 @@ class OnboardingActivity : AppCompatActivity() {
         onboardingAdapter = OnboardingAdapter(onboardingItems)
         viewPager.adapter = onboardingAdapter
 
-        // Connecter le TabLayout avec le ViewPager2
-        TabLayoutMediator(tabLayout, viewPager) { _, _ -> }.attach()
+        // Créer les indicateurs de page customisés
+        setupPageIndicators()
 
         // Listener pour changer les boutons selon la page
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 updateButtonsVisibility(position)
+                updatePageIndicators(position)
 
                 // Analytics pour le changement de page
                 AnalyticsManager.logUserAction(
@@ -91,6 +94,39 @@ class OnboardingActivity : AppCompatActivity() {
                 )
             }
         })
+    }
+
+    private fun setupPageIndicators() {
+        pageIndicators.removeAllViews()
+
+        for (i in onboardingItems.indices) {
+            val indicator = View(this)
+            val params = LinearLayout.LayoutParams(
+                resources.getDimensionPixelSize(R.dimen.indicator_width),
+                resources.getDimensionPixelSize(R.dimen.indicator_height)
+            )
+
+            if (i > 0) {
+                params.marginStart = resources.getDimensionPixelSize(R.dimen.indicator_margin)
+            }
+
+            indicator.layoutParams = params
+            indicator.background = ContextCompat.getDrawable(this, R.drawable.page_indicator_inactive)
+            pageIndicators.addView(indicator)
+        }
+
+        // Marquer le premier indicateur comme actif
+        updatePageIndicators(0)
+    }
+
+    private fun updatePageIndicators(position: Int) {
+        for (i in 0 until pageIndicators.childCount) {
+            val indicator = pageIndicators.getChildAt(i)
+            indicator.background = ContextCompat.getDrawable(
+                this,
+                if (i == position) R.drawable.page_indicator_active else R.drawable.page_indicator_inactive
+            )
+        }
     }
 
     private fun setupClickListeners() {
