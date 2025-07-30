@@ -54,7 +54,7 @@
     <string name="product_deleted">Produit %1$s supprimé</string>
     <string name="failed_to_delete_product">Échec de la suppression du produit</string>
     <string name="failed_to_load_shopping_cart">Échec du chargement du panier</string>
-    <string name="add_or_update_product">Ajouter ou mettre à jour le produit</string>
+    <string name="add_or_update_product">Ajouter ou mettre à jour un produit</string>
     <string name="track_shopping">Suivi des achats</string>
     <string name="insert_product_name">Saisir le nom</string>
     <string name="insert_product_price">Saisir le prix</string>
