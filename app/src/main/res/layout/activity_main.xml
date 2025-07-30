@@ -152,6 +152,7 @@
                 app:cardElevation="8dp">
 
                 <LinearLayout
+                    android:id="@+id/add_or_update_product_container"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"

@@ -204,6 +204,39 @@
     <string name="error_adding_products">❌ Error adding products to list</string>
     <string name="nothing_to_paste">📋 Nothing to paste</string>
 
+    <!-- App Baseline and Splash -->
+    <string name="app_baseline">Votre assistant shopping intelligent</string>
+
+    <!-- Onboarding Activity -->
+    <string name="onboarding_skip">Passer</string>
+    <string name="onboarding_next">Suivant</string>
+    <string name="onboarding_get_started">Commencer</string>
+    <string name="onboarding_replayed">Onboarding relancé</string>
+
+    <!-- Onboarding Steps -->
+    <string name="onboarding_step1_title">📸 Scannez et Analysez</string>
+    <string name="onboarding_step1_description">Prenez une photo de vos produits et laissez Shoopt analyser automatiquement les prix et informations</string>
+
+    <string name="onboarding_step2_title">📋 Organisez Facilement</string>
+    <string name="onboarding_step2_description">Créez vos listes de courses intelligentes et suivez vos achats en temps réel</string>
+
+    <string name="onboarding_step3_title">📊 Analysez et Économisez</string>
+    <string name="onboarding_step3_description">Découvrez vos habitudes d\'achat et trouvez les meilleures opportunités d\'économies</string>
+
+    <!-- Settings - Replay Options -->
+    <string name="replay_onboarding">Rejouer la présentation</string>
+    <string name="replay_onboarding_description">Revoir le guide de présentation de l\'application</string>
+
+    <!-- Sorting Options -->
+    <string name="sort_products">Trier les produits</string>
+    <string name="sort_name_asc">Nom (A-Z)</string>
+    <string name="sort_name_desc">Nom (Z-A)</string>
+    <string name="sort_price_asc">Prix (croissant)</string>
+    <string name="sort_price_desc">Prix (décroissant)</string>
+    <string name="sort_recent_first">Plus récents</string>
+    <string name="sort_oldest_first">Plus anciens</string>
+    <string name="sort_shop_asc">Magasin (A-Z)</string>
+
     <!-- Analyze Activity Screen -->
     <string name="analyse_products">Analyze Products</string>
     <string name="search_your_products">Search Your Products</string>
@@ -221,35 +254,40 @@
     <string name="quick_add">Quick Add</string>
     <string name="quick_add_product">Quick Add Product</string>
 
-    <!-- Sort Dialog strings -->
-    <string name="sort_products">Sort Products</string>
-    <string name="sort_name_asc">Name (A-Z)</string>
-    <string name="sort_name_desc">Name (Z-A)</string>
-    <string name="sort_price_asc">Price (Low to High)</string>
-    <string name="sort_price_desc">Price (High to Low)</string>
-    <string name="sort_shop_asc">Shop (A-Z)</string>
-    <string name="sort_recent_first">Recent First</string>
-    <string name="sort_oldest_first">Oldest First</string>
+    <!-- Settings Activity - Reset Messages -->
+    <string name="product_guide_reset_success">Guide de produit réinitialisé ! Retournez à l\'écran principal pour le voir.</string>
+    <string name="product_guide_reset_error">Erreur lors de la réinitialisation du guide</string>
 
-    <!-- Onboarding Carousel -->
-    <string name="app_baseline">Save, compare, save money.</string>
-    <string name="onboarding_skip">Skip</string>
-    <string name="onboarding_next">Next</string>
-    <string name="onboarding_get_started">Get Started</string>
+    <!-- Settings Activity - Replay Guide -->
+    <string name="replay_product_guide">Rejouer le guide produit</string>
+    <string name="replay_product_guide_description">Recommencer le guide d\'ajout du premier produit</string>
+    <string name="new_badge">Nouveau</string>
 
-    <!-- Onboarding Steps -->
-    <string name="onboarding_step1_title">📲 Scan or add your everyday products</string>
-    <string name="onboarding_step1_description">Quickly add products to your personal database by scanning barcodes or entering details manually</string>
+    <!-- Contextual Guide System -->
+    <string name="got_it">OK, compris</string>
+    <string name="got_it_verified">OK, vérifié !</string>
+    <string name="awesome_got_it">Génial, j\'ai compris !</string>
 
-    <string name="onboarding_step2_title">🧠 Remember prices to better evaluate equivalent products and promos</string>
-    <string name="onboarding_step2_description">Build your price memory to spot real deals and compare similar products across different stores</string>
+    <!-- Original Guide Bubble Messages -->
+    <string name="help_bubble_add_first_product">👋 Bienvenue ! Ajoutons votre premier produit ensemble</string>
+    <string name="help_bubble_subtitle">Appuyez ici pour commencer l\'ajout de votre premier produit</string>
+    <string name="help_bubble_arrow">Flèche d\'aide</string>
+    <string name="help_bubble_choice_explanation">Choisissez votre méthode préférée</string>
+    <string name="help_bubble_choice_subtitle">Scanner un code-barres ou saisie manuelle</string>
+    <string name="help_bubble_congratulations">🎉 Félicitations !</string>
+    <string name="first_product_achievement">Premier produit ajouté ! Continuez comme ça 👍</string>
 
-    <string name="onboarding_step3_title">🛍️ Shop more confidently and save money</string>
-    <string name="onboarding_step3_description">Make informed decisions with your personalized product database and never miss a good deal again</string>
+    <!-- Guide Bubble Messages -->
+    <string name="help_bubble_photo_guide">📸 Commencez par prendre une photo !</string>
+    <string name="help_bubble_photo_subtitle">Pour ajouter un produit, il est recommandé de commencer par ajouter sa photo. Assurez-vous que le produit et ses prix sont bien visibles. Shoopt analysera l\'image pour pré-remplir automatiquement les informations du produit.</string>
 
-    <!-- Settings - Onboarding -->
-    <string name="replay_onboarding">Replay Onboarding</string>
-    <string name="replay_onboarding_description">Review the app introduction again</string>
-    <string name="onboarding_replayed">Onboarding will start on next app launch</string>
+    <string name="help_bubble_verify_info">🔍 Vérifiez les informations</string>
+    <string name="help_bubble_verify_subtitle">Shoopt a analysé votre photo ! Vérifiez si les informations sont exactes et n\'hésitez pas à les modifier ou corriger manuellement si nécessaire.</string>
+
+    <string name="help_bubble_save_guide">💾 Sauvegardez votre produit</string>
+    <string name="help_bubble_save_subtitle">Parfait ! Maintenant appuyez sur le bouton de sauvegarde pour enregistrer votre produit.</string>
+
+    <string name="help_bubble_final_congratulations">🎉 Félicitations ! Votre premier produit est ajouté !</string>
+    <string name="help_bubble_final_subtitle">Vous pouvez maintenant visualiser votre produit en appuyant sur le bouton d\'analyse. Continuez à ajouter des produits pour construire votre historique d\'achats !</string>
 
 </resources>

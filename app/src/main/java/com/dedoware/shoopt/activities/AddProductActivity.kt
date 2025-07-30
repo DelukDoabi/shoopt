@@ -49,6 +49,7 @@ import com.dedoware.shoopt.persistence.LocalProductRepository
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
 import com.dedoware.shoopt.scanner.BarcodeScannerActivity
 import com.dedoware.shoopt.utils.AnalyticsManager
+import com.dedoware.shoopt.utils.ContextualGuideManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.ShooptUtils
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -515,6 +516,76 @@ class AddProductActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        // Afficher le guide contextuel si l'utilisateur vient du guide principal
+        showAddProductGuideIfNeeded()
+    }
+
+    /**
+     * Affiche le guide contextuel d'AddProduct si l'utilisateur vient du guide principal
+     */
+    private fun showAddProductGuideIfNeeded() {
+        try {
+            val fromGuide = intent.getBooleanExtra("from_guide", false)
+
+            if (fromGuide && !ContextualGuideManager.isGuideShown(this, "add_product_screen")) {
+                // Attendre que la vue soit complètement chargée
+                findViewById<View>(android.R.id.content).postDelayed({
+                    val rootView = findViewById<View>(android.R.id.content) as ViewGroup
+                    val guideManager = ContextualGuideManager(this)
+
+                    // 3ème étape : Pointer vers l'ImageButton de prise de photo
+                    val photoButton = findViewById<View>(R.id.product_picture_IB)
+
+                    guideManager.showPhotoGuide(rootView, photoButton)
+
+                    // Marquer ce guide comme vu
+                    ContextualGuideManager.setGuideShown(this, "add_product_screen", true)
+
+                }, 500) // Petit délai pour laisser la vue se charger
+            }
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de l'affichage du guide AddProduct: ${e.message}")
+            CrashlyticsManager.logException(e)
+        }
+    }
+
+    /**
+     * Affiche la 4ème bulle après autocomplétion des champs
+     */
+    private fun showVerificationGuide() {
+        try {
+            val rootView = findViewById<View>(android.R.id.content) as ViewGroup
+            val guideManager = ContextualGuideManager(this)
+
+            guideManager.showVerifyInfoGuide(rootView) {
+                // Callback when user confirms - show save guide
+                showSaveGuide()
+            }
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de l'affichage du guide de vérification: ${e.message}")
+            CrashlyticsManager.logException(e)
+        }
+    }
+
+    /**
+     * Affiche la 5ème bulle pour guider vers la sauvegarde
+     */
+    private fun showSaveGuide() {
+        try {
+            val rootView = findViewById<View>(android.R.id.content) as ViewGroup
+            val saveButton = findViewById<View>(R.id.save_product_IB)
+            val guideManager = ContextualGuideManager(this)
+
+            guideManager.showSaveGuide(rootView, saveButton)
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de l'affichage du guide de sauvegarde: ${e.message}")
+            CrashlyticsManager.logException(e)
+        }
+    }
+
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         super.onSaveInstanceState(outState, outPersistentState)
 
@@ -718,6 +789,9 @@ class AddProductActivity : AppCompatActivity() {
         if (name.isNotEmpty() && price.isNotEmpty() && unitPrice.isNotEmpty() && shop.isNotEmpty()) {
             CoroutineScope(Dispatchers.Main).launch {
                 try {
+                    // Vérifier si c'est le premier produit avant la sauvegarde
+                    val isFirstProduct = !ContextualGuideManager.isFirstProductAdded(this@AddProductActivity)
+
                     val productId = withContext(Dispatchers.IO) {
                         if (intent.hasExtra("productId")) {
                             val product = Product(retrievedProductId, barcode, timestamp, name, price.toDouble(), unitPrice.toDouble(), shop, productPictureUrl)
@@ -745,6 +819,7 @@ class AddProductActivity : AppCompatActivity() {
                             val params = Bundle().apply {
                                 putString("has_barcode", (barcode != 0L).toString())
                                 putBoolean("has_image", productPictureUrl.isNotEmpty())
+                                putBoolean("is_first_product", isFirstProduct)
                                 // Ne pas collecter les noms ou prix exacts
                             }
                             AnalyticsManager.logCustomEvent("product_created", params)
@@ -754,9 +829,21 @@ class AddProductActivity : AppCompatActivity() {
 
                     Toast.makeText(this@AddProductActivity, "Product saved with ID: $productId", Toast.LENGTH_SHORT).show()
 
+                    // Afficher les félicitations si c'est le premier produit
+                    if (isFirstProduct && !intent.hasExtra("productId")) {
+                        showFirstProductCongratulations()
+                    }
+
                     updateResultIntentForTrackShopping(Product(productId, barcode, timestamp, name, price.toDouble(), unitPrice.toDouble(), shop, productPictureUrl))
 
-                    finish()
+                    // Délai pour permettre à l'utilisateur de voir les félicitations
+                    if (isFirstProduct && !intent.hasExtra("productId")) {
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            finish()
+                        }, 3000) // 3 secondes pour voir les félicitations
+                    } else {
+                        finish()
+                    }
                 } catch (e: Exception) {
                     Log.d("SHOOPT_TAG", "Error saving product.", e)
                     Toast.makeText(this@AddProductActivity, "Error saving product: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
@@ -780,6 +867,33 @@ class AddProductActivity : AppCompatActivity() {
             AnalyticsManager.logCustomEvent("product_save_validation_failed", params)
         }
     }
+
+    /**
+     * Affiche les félicitations avec la mascotte pour le premier produit ajouté
+     */
+    private fun showFirstProductCongratulations() {
+        try {
+            val rootView = findViewById<View>(android.R.id.content) as ViewGroup
+            val guideManager = ContextualGuideManager(this)
+
+            // Fermer la bulle d'aide actuelle (celle qui demandait d'ajouter un produit)
+            guideManager.dismissCurrentBubble()
+
+            // Marquer le guide comme terminé maintenant que l'action a été accomplie
+            guideManager.markGuideAsShown("first_product")
+
+            // Afficher les félicitations avec la mascotte
+            guideManager.showFirstProductCongratulations(rootView)
+
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de l'affichage des félicitations: ${e.message}")
+            CrashlyticsManager.logException(e)
+
+            // Fallback simple en cas d'erreur
+            Toast.makeText(this, getString(R.string.first_product_achievement), Toast.LENGTH_LONG).show()
+        }
+    }
+
 
     private fun saveShop(productShop: String) {
         if (!shopList.contains(productShop))
@@ -944,6 +1058,15 @@ class AddProductActivity : AppCompatActivity() {
             productNameEditText.setText(parsedDetails.getString("name"))
             productPriceEditText.setText(parsedDetails.getString("unit_price"))
             productUnitPriceEditText.setText(parsedDetails.getString("kilo_price"))
+
+            // 4ème étape : Afficher le guide de vérification après autocomplétion
+            val fromGuide = intent.getBooleanExtra("from_guide", false)
+            if (fromGuide) {
+                // Attendre un peu pour que l'utilisateur voie les champs se remplir
+                findViewById<View>(android.R.id.content).postDelayed({
+                    showVerificationGuide()
+                }, 1500) // 1.5 secondes pour l'effet "wow"
+            }
         }
     }
 
@@ -1087,7 +1210,7 @@ class AddProductActivity : AppCompatActivity() {
         if (!pictureUrl.isNullOrEmpty()) {
             // Set scale type to centerCrop for consistent image display
             productPictureImageButton.scaleType = ImageView.ScaleType.CENTER_CROP
-            
+
             // Use consistent sizing with displayProductPictureOnImageButton method
             Glide.with(this)
                 .load(pictureUrl)

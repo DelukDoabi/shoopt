@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -18,6 +19,7 @@ import com.dedoware.shoopt.persistence.IProductRepository
 import com.dedoware.shoopt.persistence.LocalProductRepository
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
+import com.dedoware.shoopt.utils.ContextualGuideManager
 import com.dedoware.shoopt.utils.UpdateManager
 import com.dedoware.shoopt.utils.UserPreferences
 import com.google.firebase.auth.FirebaseAuth
@@ -39,6 +41,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var trackShoppingTextView: TextView
     private lateinit var analyseTextView: TextView
     private lateinit var userPreferences: UserPreferences
+    private lateinit var guideManager: ContextualGuideManager
 
     private val useFirebase = false // Définition cohérente avec les autres activités
 
@@ -105,16 +108,19 @@ class MainActivity : AppCompatActivity() {
             // Configuration des cartes pour une meilleure expérience utilisateur
             setupFeatureCards()
 
+            // Initialiser le gestionnaire de guide contextuel
+            guideManager = ContextualGuideManager(this)
+
             // Vérification des mises à jour disponibles
             try {
                 val rootView = findViewById<View>(android.R.id.content)
                 UpdateManager.checkForUpdate(this, rootView)
             } catch (e: Exception) {
-                CrashlyticsManager.log("Erreur lors de la vérification des mises à jour: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.log("Erreur lors de la vérification des mises à jour: ${e.message}")
             }
 
         } catch (e: Exception) {
-            // Capture des erreurs générales dans onCreate
+            // Capture des erreurs gén��rales dans onCreate
             CrashlyticsManager.log("Erreur générale dans MainActivity.onCreate: ${e.message ?: "Message non disponible"}")
             CrashlyticsManager.setCustomKey("error_location", "main_activity_init")
             CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
@@ -128,12 +134,52 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+
+        // Ne pas afficher le guide si l'utilisateur revient de l'AddProductActivity
+        // car cela signifie qu'il a déjà interagi avec le guide
+        if (::guideManager.isInitialized) {
+            // Vérifier si l'utilisateur a déjà visité l'écran AddProduct depuis le guide
+            val hasVisitedAddProduct = ContextualGuideManager.isGuideShown(this, "add_product_screen")
+
+            // Si l'utilisateur a visité AddProduct mais n'a pas encore ajouté de produit,
+            // cela signifie qu'il est revenu en arrière - ne pas réafficher la bulle
+            if (hasVisitedAddProduct && !ContextualGuideManager.isFirstProductAdded(this)) {
+                // Marquer le guide principal comme vu pour éviter qu'il se réaffiche
+                ContextualGuideManager.setGuideShown(this, "first_product", true)
+            }
+        }
+
         // Vérifier si une mise à jour est en attente d'installation
         try {
             val rootView = findViewById<View>(android.R.id.content)
             UpdateManager.checkForPendingUpdate(this, rootView)
         } catch (e: Exception) {
-            CrashlyticsManager.log("Erreur lors de la vérification des mises à jour en attente: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.log("Erreur lors de la vérification des mises à jour en attente: ${e.message}")
+        }
+
+        // Activer le guide contextuel pour les nouveaux utilisateurs
+        activateContextualGuideIfNeeded()
+    }
+
+    /**
+     * Active le guide contextuel si l'utilisateur en a besoin
+     */
+    private fun activateContextualGuideIfNeeded() {
+        try {
+            if (::guideManager.isInitialized && guideManager.shouldShowFirstProductGuide()) {
+                // Attendre que la vue soit complètement chargée avant d'afficher le guide
+                findViewById<View>(android.R.id.content).post {
+                    // Pointer vers le conteneur spécifique pour un positionnement précis
+                    val addProductContainer = findViewById<View>(R.id.add_or_update_product_container)
+                    val rootView = findViewById<View>(android.R.id.content) as ViewGroup
+
+                    // Lancer le guide pour le premier produit avec le bon conteneur
+                    guideManager.startFirstProductGuide(rootView, addProductContainer)
+                }
+            }
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de l'activation du guide contextuel: ${e.message}")
+            CrashlyticsManager.logException(e)
         }
     }
 
@@ -331,8 +377,12 @@ class MainActivity : AppCompatActivity() {
                             category = "product_management"
                         )
 
+                        // Marquer que l'utilisateur a choisi le scanner (pour le guide)
+                        guideManager.markGuideAsShown("choice_dialog")
+
                         // Utilisation de notre nouvelle implémentation ML Kit au lieu de ZXing
                         val intent = Intent(this, com.dedoware.shoopt.scanner.BarcodeScannerActivity::class.java)
+                        intent.putExtra("from_guide", true) // Indiquer que cela vient du guide
                         barcodeScannerLauncher.launch(intent)
                     } catch (e: Exception) {
                         CrashlyticsManager.log("Erreur lors du lancement du scanner: ${e.message ?: "Message non disponible"}")
@@ -350,7 +400,11 @@ class MainActivity : AppCompatActivity() {
                             category = "product_management"
                         )
 
+                        // Marquer que l'utilisateur a choisi l'ajout manuel (pour le guide)
+                        guideManager.markGuideAsShown("choice_dialog")
+
                         val intent = Intent(this, AddProductActivity::class.java)
+                        intent.putExtra("from_guide", true) // Indiquer que cela vient du guide
                         startActivity(intent)
                     } catch (e: Exception) {
                         CrashlyticsManager.log("Erreur lors du lancement de l'activité d'ajout manuel: ${e.message ?: "Message non disponible"}")
@@ -359,14 +413,40 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(this, getString(R.string.manual_entry_error), Toast.LENGTH_SHORT).show()
                     }
                 }
+                .setOnCancelListener {
+                    // Si l'utilisateur annule, ne pas marquer le guide comme terminé
+                    // pour qu'il puisse le voir à nouveau
+                }
                 .create()
                 .show()
+
+            // Afficher une bulle d'aide contextuelle pour expliquer les options
+            showChoiceDialogGuide()
+
         } catch (e: Exception) {
             CrashlyticsManager.log("Erreur lors de l'affichage des options d'ajout: ${e.message ?: "Message non disponible"}")
             CrashlyticsManager.setCustomKey("error_location", "show_add_product_options")
             CrashlyticsManager.logException(e)
 
             Toast.makeText(this, getString(R.string.dialog_display_error), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * Affiche une bulle d'aide pour expliquer les choix dans la boîte de dialogue
+     */
+    private fun showChoiceDialogGuide() {
+        try {
+            // Attendre un peu que la boîte de dialogue soit affichée
+            findViewById<View>(android.R.id.content).postDelayed({
+                val rootView = findViewById<View>(android.R.id.content) as ViewGroup
+
+                // Utiliser la nouvelle méthode optimisée pour les dialogues
+                guideManager.showChoiceDialogGuide(rootView)
+            }, 500) // Délai pour laisser la boîte de dialogue s'afficher
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de l'affichage du guide de choix: ${e.message}")
+            CrashlyticsManager.logException(e)
         }
     }
 

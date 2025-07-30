@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
+
+    <!-- Bulle d'aide avec flèche -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/help_bubble_card"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="@color/main_palette_old_lavender"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Header avec mascotte et bouton de fermeture -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <!-- Mascotte animée -->
+                <ImageView
+                    android:id="@+id/mascot_image"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/loading_logo_animation"
+                    android:layout_marginEnd="12dp"
+                    android:contentDescription="@string/app_name" />
+
+                <!-- Contenu textuel -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/help_bubble_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/help_bubble_add_first_product"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/white"
+                        android:fontFamily="sans-serif-medium"
+                        android:lineSpacingExtra="2dp" />
+
+                    <TextView
+                        android:id="@+id/help_bubble_subtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/help_bubble_subtitle"
+                        android:textSize="13sp"
+                        android:textColor="#E6FFFFFF"
+                        android:fontFamily="sans-serif-light"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+                <!-- Bouton de fermeture -->
+                <ImageButton
+                    android:id="@+id/help_bubble_close"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_close_white"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="@string/close"
+                    android:alpha="0.8" />
+
+            </LinearLayout>
+
+            <!-- Bouton de confirmation -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/help_bubble_confirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="12dp"
+                android:text="@string/got_it"
+                android:textColor="@color/main_palette_old_lavender"
+                android:backgroundTint="@android:color/white"
+                app:cornerRadius="20dp"
+                app:iconPadding="8dp"
+                app:iconSize="16dp"
+                app:icon="@drawable/ic_check"
+                app:iconTint="@color/main_palette_old_lavender"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:visibility="gone"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- Flèche pointant vers le bas -->
+    <ImageView
+        android:id="@+id/help_bubble_arrow"
+        android:layout_width="24dp"
+        android:layout_height="12dp"
+        android:src="@drawable/help_bubble_arrow"
+        android:layout_marginTop="-1dp"
+        app:layout_constraintTop_toBottomOf="@id/help_bubble_card"
+        app:layout_constraintStart_toStartOf="@id/help_bubble_card"
+        app:layout_constraintEnd_toEndOf="@id/help_bubble_card"
+        android:contentDescription="@string/help_bubble_arrow" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

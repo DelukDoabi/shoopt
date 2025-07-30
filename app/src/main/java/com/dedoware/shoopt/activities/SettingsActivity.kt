@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.utils.AnalyticsManager
+import com.dedoware.shoopt.utils.ContextualGuideManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.UserPreferences
 import com.google.android.material.button.MaterialButton
@@ -27,6 +28,7 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var saveButton: ImageButton
     private lateinit var backButton: ImageButton
     private lateinit var replayOnboardingCard: CardView
+    private lateinit var replayFirstProductGuideCard: CardView // Nouvelle carte pour le guide de produit
 
     private lateinit var currencyList: List<Currency>
 
@@ -147,6 +149,7 @@ class SettingsActivity : AppCompatActivity() {
             saveButton = findViewById(R.id.save_settings_button) ?: throw IllegalStateException("Missing save_settings_button")
             backButton = findViewById(R.id.back_IB) ?: throw IllegalStateException("Missing back_IB")
             replayOnboardingCard = findViewById(R.id.replay_onboarding_card) ?: throw IllegalStateException("Missing replay_onboarding_card")
+            replayFirstProductGuideCard = findViewById(R.id.replay_first_product_guide_card) ?: throw IllegalStateException("Missing replay_first_product_guide_card") // Initialisation de la nouvelle carte
 
             // Configuration du spinner de devises
             currencyList = loadCurrenciesFromJson()
@@ -346,6 +349,46 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
+        // Bouton de replay du guide de produit
+        replayFirstProductGuideCard.setOnClickListener {
+            try {
+                // Analytics: suivre le clic sur le bouton de replay du guide de produit
+                AnalyticsManager.logUserAction(
+                    action = "click",
+                    category = "settings",
+                    additionalParams = mapOf("button" to "replay_first_product_guide")
+                )
+
+                // Réinitialiser les flags du guide de produit
+                resetFirstProductGuide()
+
+                // Message de confirmation
+                Toast.makeText(this, getString(R.string.product_guide_reset_success), Toast.LENGTH_LONG).show()
+
+                // Retourner à MainActivity pour voir le guide
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+                finish()
+
+            } catch (e: Exception) {
+                // Analytics: suivre l'erreur de replay du guide de produit
+                AnalyticsManager.logUserAction(
+                    action = "replay_first_product_guide_error",
+                    category = "settings",
+                    additionalParams = mapOf("error_type" to e.javaClass.simpleName)
+                )
+
+                CrashlyticsManager.log("Erreur lors du replay du guide de produit: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "settings_replay_first_product_guide")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+
+                Toast.makeText(this, getString(R.string.product_guide_reset_error), Toast.LENGTH_SHORT).show()
+            }
+        }
+
         // Suivi des changements de thème
         themeRadioGroup.setOnCheckedChangeListener { _, checkedId ->
             val selectedTheme = when (checkedId) {
@@ -475,6 +518,52 @@ class SettingsActivity : AppCompatActivity() {
             CrashlyticsManager.logException(e)
         }
         return currencies
+    }
+
+    /**
+     * Réinitialise tous les flags du guide d'ajout de premier produit
+     */
+    private fun resetFirstProductGuide() {
+        try {
+            // Réinitialiser le flag du premier produit ajouté
+            ContextualGuideManager.setFirstProductAdded(this, false)
+
+            // Réinitialiser le flag du guide principal affiché
+            ContextualGuideManager.setGuideShown(this, "first_product", false)
+
+            // Réinitialiser AUSSI le flag de l'écran AddProduct
+            ContextualGuideManager.setGuideShown(this, "add_product_screen", false)
+
+            // Réinitialiser le flag du dialogue de choix si il existe
+            ContextualGuideManager.setGuideShown(this, "choice_dialog", false)
+
+            // Analytics pour le reset du guide
+            AnalyticsManager.logUserAction(
+                action = "guide_reset",
+                category = "settings",
+                additionalParams = mapOf(
+                    "guide_type" to "first_product",
+                    "reset_successful" to "true"
+                )
+            )
+
+        } catch (e: Exception) {
+            // En cas d'erreur, log et relancer l'exception
+            CrashlyticsManager.log("Erreur lors de la réinitialisation du guide de produit: ${e.message}")
+            CrashlyticsManager.logException(e)
+
+            // Analytics pour l'erreur de reset
+            AnalyticsManager.logUserAction(
+                action = "guide_reset_error",
+                category = "settings",
+                additionalParams = mapOf(
+                    "guide_type" to "first_product",
+                    "error_type" to e.javaClass.simpleName
+                )
+            )
+
+            throw e
+        }
     }
 
     data class Currency(val name: String, val code: String)
