@@ -113,6 +113,7 @@ class ContextualGuideManager(private val context: Context) {
             val mascotImage = bubbleView.findViewById<ImageView>(R.id.mascot_image)
             val closeButton = bubbleView.findViewById<ImageButton>(R.id.help_bubble_close)
             val arrow = bubbleView.findViewById<ImageView>(R.id.help_bubble_arrow)
+            val arrowUp = bubbleView.findViewById<ImageView>(R.id.help_bubble_arrow_up)
             val confirmButton = bubbleView.findViewById<MaterialButton>(R.id.help_bubble_confirm)
 
             helpText.setText(messageResId)
@@ -140,7 +141,7 @@ class ContextualGuideManager(private val context: Context) {
             }
 
             // Position de la bulle
-            positionBubble(bubbleView, parentView, targetView, position, arrow)
+            positionBubble(bubbleView, parentView, targetView, position, arrow, arrowUp)
 
             // Animation d'entrée de la mascotte
             animateMascot(mascotImage)
@@ -198,7 +199,8 @@ class ContextualGuideManager(private val context: Context) {
         parentView: ViewGroup,
         targetView: View?,
         position: BubblePosition,
-        arrow: ImageView
+        arrow: ImageView,
+        arrowUp: ImageView // Nouveau paramètre pour la flèche vers le haut
     ) {
         val layoutParams = ConstraintLayout.LayoutParams(
             ConstraintLayout.LayoutParams.MATCH_PARENT,
@@ -211,6 +213,7 @@ class ContextualGuideManager(private val context: Context) {
                 layoutParams.setMargins(0, 100, 0, 0)
                 arrow.visibility = View.VISIBLE
                 arrow.rotation = 0f // Flèche vers le bas
+                arrowUp.visibility = View.GONE // Masquer la flèche vers le haut
             }
             BubblePosition.BELOW -> {
                 // Position sous la cible avec marge de sécurité pour éviter la barre système
@@ -221,28 +224,95 @@ class ContextualGuideManager(private val context: Context) {
                     val marginTop = targetBottom + 20 // 20dp de marge sous la cible
                     layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
                     layoutParams.setMargins(0, marginTop, 0, 150) // Marge bottom pour éviter la barre système
+
+                    // Utiliser la flèche vers le haut pour pointer vers le bouton photo
+                    arrow.visibility = View.GONE // Masquer la flèche normale
+                    arrowUp.visibility = View.VISIBLE // Afficher la flèche vers le haut
+
+                    // Position la flèche vers le haut pour pointer vers le centre du bouton cible
+                    bubbleView.post {
+                        positionArrowTowardsTarget(bubbleView, targetView, arrowUp, true) // true = pointer vers le haut
+                    }
                 } else {
                     layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
                     layoutParams.setMargins(0, 300, 0, 150)
+                    arrow.visibility = View.VISIBLE
+                    arrowUp.visibility = View.GONE
                 }
-                arrow.visibility = View.VISIBLE
-                arrow.rotation = 180f // Flèche vers le haut
             }
             BubblePosition.CENTER -> {
                 layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
                 layoutParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
                 layoutParams.setMargins(0, 100, 0, 100)
                 arrow.visibility = View.GONE
+                arrowUp.visibility = View.GONE // Masquer la flèche vers le haut
             }
             BubblePosition.CHOICE_DIALOG -> {
                 // Position spéciale pour être au-dessus des dialogues
                 layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
                 layoutParams.setMargins(0, 200, 0, 0)
                 arrow.visibility = View.GONE
+                arrowUp.visibility = View.GONE // Masquer la flèche vers le haut
             }
         }
 
         bubbleView.layoutParams = layoutParams
+    }
+
+    /**
+     * Positionne la flèche pour qu'elle pointe précisément vers le centre du bouton cible
+     */
+    private fun positionArrowTowardsTarget(bubbleView: View, targetView: View, arrow: ImageView, pointUp: Boolean = false) {
+        try {
+            // Obtenir les positions des vues
+            val bubbleLocation = IntArray(2)
+            val targetLocation = IntArray(2)
+
+            bubbleView.getLocationInWindow(bubbleLocation)
+            targetView.getLocationInWindow(targetLocation)
+
+            // Calculer le centre horizontal du bouton cible
+            val targetCenterX = targetLocation[0] + (targetView.width / 2)
+
+            // Calculer le centre horizontal de la bulle
+            val bubbleCenterX = bubbleLocation[0] + (bubbleView.width / 2)
+
+            // Calculer l'offset nécessaire pour centrer la flèche sur le bouton
+            val offsetX = targetCenterX - bubbleCenterX
+
+            // Appliquer l'offset à la flèche (avec une limite pour éviter que la flèche sorte de la bulle)
+            val maxOffset = (bubbleView.width / 2) - (arrow.width / 2) - 32 // 32dp de marge
+            val constrainedOffset = offsetX.coerceIn(-maxOffset, maxOffset)
+
+            // Obtenir les paramètres de layout actuels de la flèche
+            val arrowParams = arrow.layoutParams as ConstraintLayout.LayoutParams
+
+            // Supprimer les contraintes de centrage existantes
+            arrowParams.startToStart = ConstraintLayout.LayoutParams.UNSET
+            arrowParams.endToEnd = ConstraintLayout.LayoutParams.UNSET
+
+            // Définir une nouvelle position horizontale
+            if (constrainedOffset >= 0) {
+                arrowParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+                arrowParams.marginStart = (bubbleView.width / 2) + constrainedOffset - (arrow.width / 2)
+            } else {
+                arrowParams.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
+                arrowParams.marginEnd = (bubbleView.width / 2) - constrainedOffset - (arrow.width / 2)
+            }
+
+            // Rotation pour pointer vers le haut si demandé
+            if (pointUp) {
+                arrow.rotation = 180f // Pointer vers le haut
+            } else {
+                arrow.rotation = 0f // Pointer vers le bas par défaut
+            }
+
+            arrow.layoutParams = arrowParams
+
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors du positionnement de la flèche: ${e.message}")
+            // En cas d'erreur, garder la flèche centrée par défaut
+        }
     }
 
     private fun animateMascot(mascotImage: ImageView) {
@@ -405,7 +475,10 @@ class ContextualGuideManager(private val context: Context) {
             subtitleResId = R.string.help_bubble_photo_subtitle,
             position = BubblePosition.BELOW,
             requiresUserAction = true,
-            useOverlay = true
+            useOverlay = true,
+            onDismiss = {
+                markGuideAsShown("photo_guide")
+            }
         )
     }
 
@@ -423,7 +496,10 @@ class ContextualGuideManager(private val context: Context) {
             useOverlay = true,
             showConfirmButton = true,
             confirmButtonTextResId = R.string.got_it_verified,
-            onConfirm = onConfirm
+            onConfirm = {
+                markGuideAsShown("verify_info")
+                onConfirm()
+            }
         )
     }
 
@@ -438,7 +514,10 @@ class ContextualGuideManager(private val context: Context) {
             subtitleResId = R.string.help_bubble_save_subtitle,
             position = BubblePosition.ABOVE,
             requiresUserAction = true,
-            useOverlay = true
+            useOverlay = true,
+            onDismiss = {
+                markGuideAsShown("save_guide")
+            }
         )
     }
 
@@ -470,7 +549,38 @@ class ContextualGuideManager(private val context: Context) {
         )
     }
 
-    enum class BubblePosition {
-        ABOVE, BELOW, CENTER, CHOICE_DIALOG
+    /**
+     * Vérifie si l'utilisateur a besoin du guide photo
+     */
+    fun shouldShowPhotoGuide(): Boolean {
+        return !isGuideShown(context, "photo_guide") && !isFirstProductAdded(context)
     }
+
+    /**
+     * Vérifie si l'utilisateur a besoin du guide de vérification
+     */
+    fun shouldShowVerifyInfoGuide(): Boolean {
+        return !isGuideShown(context, "verify_info") && !isFirstProductAdded(context)
+    }
+
+    /**
+     * Vérifie si l'utilisateur a besoin du guide de sauvegarde
+     */
+    fun shouldShowSaveGuide(): Boolean {
+        return !isGuideShown(context, "save_guide") && !isFirstProductAdded(context)
+    }
+
+    /**
+     * Vérifie si l'utilisateur peut voir les félicitations finales
+     */
+    fun shouldShowFinalCongratulations(): Boolean {
+        return isFirstProductAdded(context) && !isGuideShown(context, "complete_guide")
+    }
+}
+
+enum class BubblePosition {
+    ABOVE,
+    BELOW,
+    CENTER,
+    CHOICE_DIALOG
 }

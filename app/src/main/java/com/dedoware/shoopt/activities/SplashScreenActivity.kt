@@ -103,10 +103,10 @@ class SplashScreenActivity : AppCompatActivity() {
     private fun redirectToMainScreen() {
         try {
             val currentUser = FirebaseAuth.getInstance().currentUser
-
+            
             // Vérifier si l'onboarding a été complété
             val isOnboardingCompleted = UserPreferences.isOnboardingCompleted(this)
-
+            
             val targetActivity = when {
                 !isOnboardingCompleted -> OnboardingActivity::class.java
                 currentUser != null -> MainActivity::class.java

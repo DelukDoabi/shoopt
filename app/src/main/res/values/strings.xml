@@ -263,31 +263,43 @@
     <string name="replay_product_guide_description">Recommencer le guide d\'ajout du premier produit</string>
     <string name="new_badge">Nouveau</string>
 
-    <!-- Contextual Guide System -->
-    <string name="got_it">OK, compris</string>
-    <string name="got_it_verified">OK, vérifié !</string>
-    <string name="awesome_got_it">Génial, j\'ai compris !</string>
 
-    <!-- Original Guide Bubble Messages -->
-    <string name="help_bubble_add_first_product">👋 Bienvenue ! Ajoutons votre premier produit ensemble</string>
-    <string name="help_bubble_subtitle">Appuyez ici pour commencer l\'ajout de votre premier produit</string>
-    <string name="help_bubble_arrow">Flèche d\'aide</string>
-    <string name="help_bubble_choice_explanation">Choisissez votre méthode préférée</string>
-    <string name="help_bubble_choice_subtitle">Scanner un code-barres ou saisie manuelle</string>
-    <string name="help_bubble_congratulations">🎉 Félicitations !</string>
-    <string name="first_product_achievement">Premier produit ajouté ! Continuez comme ça 👍</string>
 
-    <!-- Guide Bubble Messages -->
-    <string name="help_bubble_photo_guide">📸 Commencez par prendre une photo !</string>
-    <string name="help_bubble_photo_subtitle">Pour ajouter un produit, il est recommandé de commencer par ajouter sa photo. Assurez-vous que le produit et ses prix sont bien visibles. Shoopt analysera l\'image pour pré-remplir automatiquement les informations du produit.</string>
-
-    <string name="help_bubble_verify_info">🔍 Vérifiez les informations</string>
-    <string name="help_bubble_verify_subtitle">Shoopt a analysé votre photo ! Vérifiez si les informations sont exactes et n\'hésitez pas à les modifier ou corriger manuellement si nécessaire.</string>
-
+    <!-- Guide contextuel pour le premier produit -->
+    <string name="help_bubble_add_first_product">👋 Bienvenue dans Shoopt !</string>
+    <string name="help_bubble_subtitle">Commencez par ajouter votre premier produit en appuyant sur ce bouton</string>
+    <string name="help_bubble_choice_explanation">✨ Deux façons d\'ajouter un produit</string>
+    <string name="help_bubble_choice_subtitle">Choisissez la méthode qui vous convient le mieux</string>
+    <string name="help_bubble_photo_guide">📸 Ajoutez une photo de votre produit</string>
+    <string name="help_bubble_photo_subtitle">Assurez-vous que le produit et ses prix sont bien visibles pour une meilleure analyse automatique</string>
+    <string name="help_bubble_verify_info">🔍 Vérifiez les informations détectées</string>
+    <string name="help_bubble_verify_subtitle">Shoopt a analysé votre image ! N\'hésitez pas à corriger ou compléter les informations si nécessaire</string>
     <string name="help_bubble_save_guide">💾 Sauvegardez votre produit</string>
-    <string name="help_bubble_save_subtitle">Parfait ! Maintenant appuyez sur le bouton de sauvegarde pour enregistrer votre produit.</string>
+    <string name="help_bubble_save_subtitle">Appuyez ici pour enregistrer votre premier produit</string>
+    <string name="help_bubble_final_congratulations">🎉 Félicitations ! Premier produit ajouté !</string>
+    <string name="help_bubble_final_subtitle">Vous pouvez maintenant visualiser vos produits et analyser vos habitudes d\'achat</string>
+    <string name="help_bubble_congratulations">🎊 Bravo !</string>
+    <string name="first_product_achievement">Votre premier produit a été ajouté avec succès</string>
+    <string name="got_it">Compris !</string>
+    <string name="got_it_verified">OK, vérifié !</string>
+    <string name="awesome_got_it">Super, c\'est parti !</string>
+    <string name="help_bubble_arrow">Flèche d\'aide</string>
 
-    <string name="help_bubble_final_congratulations">🎉 Félicitations ! Votre premier produit est ajouté !</string>
-    <string name="help_bubble_final_subtitle">Vous pouvez maintenant visualiser votre produit en appuyant sur le bouton d\'analyse. Continuez à ajouter des produits pour construire votre historique d\'achats !</string>
+    <!-- Modern Guide System Strings -->
+    <string name="guide_welcome_title">Bienvenue dans Shoopt ! 🎉</string>
+    <string name="guide_welcome_description">Commençons par ajouter votre premier produit. Appuyez sur le bouton d\'ajout pour découvrir la magie de Shoopt !</string>
 
+    <string name="guide_photo_title">Ajoutez une photo 📸</string>
+    <string name="guide_photo_description">Pour la meilleure expérience, prenez une photo de votre produit avec les prix bien visibles. Shoopt analysera automatiquement l\'image !</string>
+
+    <string name="guide_verification_title">Vérifiez les informations ✅</string>
+    <string name="guide_verification_description">Shoopt a analysé votre photo ! Vérifiez que les informations détectées sont correctes et modifiez-les si nécessaire.</string>
+
+    <string name="guide_save_title">Sauvegardez votre produit 💾</string>
+    <string name="guide_save_description">Parfait ! Maintenant sauvegardez votre produit pour l\'ajouter à votre liste de courses intelligente.</string>
+
+    <string name="guide_congratulations_title">Félicitations ! 🎊</string>
+    <string name="guide_congratulations_description">Vous avez ajouté votre premier produit ! Découvrez maintenant vos analyses et suivez l\'évolution des prix.</string>
+
+    <string name="skip">Passer</string>
 </resources>

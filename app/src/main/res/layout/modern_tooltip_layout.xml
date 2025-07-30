@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tooltip_card"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:background="@drawable/modern_tooltip_background"
+    android:elevation="12dp"
+    android:maxWidth="340dp"
+    android:minWidth="280dp"
+    android:padding="20dp">
+
+    <!-- Gradient accent line -->
+    <View
+        android:id="@+id/accent_line"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:background="@drawable/tooltip_accent_gradient"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Tooltip Mascot with circular background -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/mascot_container"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="36dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="@color/main_palette_old_lavender"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/accent_line">
+
+        <ImageView
+            android:id="@+id/tooltip_mascot"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:src="@android:drawable/ic_dialog_info"
+            app:tint="@android:color/white"
+            android:contentDescription="Guide mascot"
+            tools:src="@drawable/ic_scan_product" />
+    </androidx.cardview.widget.CardView>
+
+    <!-- Tooltip Title with improved typography -->
+    <TextView
+        android:id="@+id/tooltip_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:textColor="@color/main_palette_old_lavender"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:letterSpacing="0.01"
+        android:lineSpacingExtra="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mascot_container"
+        tools:text="Découvrez cette fonctionnalité" />
+
+    <!-- Separator line -->
+    <View
+        android:id="@+id/separator"
+        android:layout_width="60dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/tooltip_separator_gradient"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tooltip_title" />
+
+    <!-- Scrollable description for long text -->
+    <ScrollView
+        android:id="@+id/description_scroll"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:maxHeight="120dp"
+        android:scrollbars="vertical"
+        android:fadeScrollbars="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/separator">
+
+        <TextView
+            android:id="@+id/tooltip_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:lineSpacingExtra="4dp"
+            android:textColor="@color/main_palette_old_lavender_variant"
+            android:textSize="15sp"
+            android:letterSpacing="0.005"
+            tools:text="Voici une description détaillée de cette fonctionnalité qui peut être assez longue et qui nécessite un scrolling pour être entièrement visible." />
+    </ScrollView>
+
+    <!-- Button container with modern styling -->
+    <LinearLayout
+        android:id="@+id/button_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/description_scroll">
+
+        <!-- Modern Confirm Button compatible -->
+        <Button
+            android:id="@+id/tooltip_confirm_button"
+            style="@android:style/Widget.Material.Button"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginBottom="12dp"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textAllCaps="false"
+            android:letterSpacing="0.01"
+            android:background="@color/main_palette_old_lavender"
+            tools:text="Compris !" />
+
+        <!-- Modern Skip Button compatible -->
+        <Button
+            android:id="@+id/tooltip_skip_button"
+            style="@android:style/Widget.Material.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/main_palette_old_lavender_variant"
+            android:textSize="14sp"
+            android:textAllCaps="false"
+            android:letterSpacing="0.005"
+            android:text="Passer le guide"
+            android:background="?android:attr/selectableItemBackground" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

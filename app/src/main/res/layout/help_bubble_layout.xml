@@ -5,6 +5,20 @@
     android:layout_height="wrap_content"
     android:background="@android:color/transparent">
 
+    <!-- Flèche pointant vers le haut (pour les bulles sous leur cible) -->
+    <ImageView
+        android:id="@+id/help_bubble_arrow_up"
+        android:layout_width="24dp"
+        android:layout_height="12dp"
+        android:src="@drawable/help_bubble_arrow"
+        android:layout_marginBottom="-1dp"
+        android:rotation="180"
+        app:layout_constraintBottom_toTopOf="@id/help_bubble_card"
+        app:layout_constraintStart_toStartOf="@id/help_bubble_card"
+        app:layout_constraintEnd_toEndOf="@id/help_bubble_card"
+        android:contentDescription="@string/help_bubble_arrow"
+        android:visibility="gone" />
+
     <!-- Bulle d'aide avec flèche -->
     <androidx.cardview.widget.CardView
         android:id="@+id/help_bubble_card"
@@ -110,7 +124,7 @@
 
     </androidx.cardview.widget.CardView>
 
-    <!-- Flèche pointant vers le bas -->
+    <!-- Flèche pointant vers le bas (pour les bulles au-dessus de leur cible) -->
     <ImageView
         android:id="@+id/help_bubble_arrow"
         android:layout_width="24dp"

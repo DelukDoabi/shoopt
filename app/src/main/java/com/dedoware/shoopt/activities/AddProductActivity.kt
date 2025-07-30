@@ -51,6 +51,7 @@ import com.dedoware.shoopt.scanner.BarcodeScannerActivity
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.ContextualGuideManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
+import com.dedoware.shoopt.utils.ModernGuideSystem
 import com.dedoware.shoopt.utils.ShooptUtils
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -96,6 +97,7 @@ class AddProductActivity : AppCompatActivity() {
     val shopList = mutableListOf<String>()
     private lateinit var productRepository: IProductRepository
     private lateinit var imageStorage: IImageStorage
+    private lateinit var guideManager: ContextualGuideManager // Déclaration manquante
     private val database: ShooptRoomDatabase by lazy {
         (application as ShooptApplication).database
     }
@@ -214,8 +216,14 @@ class AddProductActivity : AppCompatActivity() {
         try {
             setContentView(R.layout.activity_add_product)
 
+            // Initialiser le gestionnaire de guide contextuel
+            guideManager = ContextualGuideManager(this)
+
             // Enregistrer l'événement d'ouverture de l'écran AddProduct
             AnalyticsManager.logScreenView("AddProduct", "AddProductActivity")
+
+            // Marquer que l'utilisateur a visité l'écran AddProduct
+            ContextualGuideManager.setGuideShown(this, "add_product_screen", true)
 
             try {
                 productRepository = if (useFirebase) {
@@ -529,59 +537,55 @@ class AddProductActivity : AppCompatActivity() {
     private fun showAddProductGuideIfNeeded() {
         try {
             val fromGuide = intent.getBooleanExtra("from_guide", false)
+            val modernGuide = ModernGuideSystem(this)
 
-            if (fromGuide && !ContextualGuideManager.isGuideShown(this, "add_product_screen")) {
-                // Attendre que la vue soit complètement chargée
+            // Utiliser le nouveau système moderne pour la 3ème étape
+            if (fromGuide && modernGuide.shouldShowPhotoGuide()) {
                 findViewById<View>(android.R.id.content).postDelayed({
                     val rootView = findViewById<View>(android.R.id.content) as ViewGroup
-                    val guideManager = ContextualGuideManager(this)
-
-                    // 3ème étape : Pointer vers l'ImageButton de prise de photo
                     val photoButton = findViewById<View>(R.id.product_picture_IB)
 
-                    guideManager.showPhotoGuide(rootView, photoButton)
+                    // Utiliser le système moderne au lieu de l'ancien
+                    modernGuide.showPhotoGuide(rootView, photoButton)
 
-                    // Marquer ce guide comme vu
-                    ContextualGuideManager.setGuideShown(this, "add_product_screen", true)
-
-                }, 500) // Petit délai pour laisser la vue se charger
+                }, 500)
             }
         } catch (e: Exception) {
-            CrashlyticsManager.log("Erreur lors de l'affichage du guide AddProduct: ${e.message}")
+            CrashlyticsManager.log("Erreur lors de l'affichage du guide moderne AddProduct: ${e.message}")
             CrashlyticsManager.logException(e)
         }
     }
 
     /**
-     * Affiche la 4ème bulle après autocomplétion des champs
+     * Affiche le guide moderne de vérification (4ème étape)
      */
-    private fun showVerificationGuide() {
+    private fun showModernVerificationGuide() {
         try {
             val rootView = findViewById<View>(android.R.id.content) as ViewGroup
-            val guideManager = ContextualGuideManager(this)
+            val modernGuide = ModernGuideSystem(this)
 
-            guideManager.showVerifyInfoGuide(rootView) {
-                // Callback when user confirms - show save guide
-                showSaveGuide()
+            modernGuide.showVerificationGuide(rootView) {
+                // Callback when user confirms - show modern save guide
+                showModernSaveGuide()
             }
         } catch (e: Exception) {
-            CrashlyticsManager.log("Erreur lors de l'affichage du guide de vérification: ${e.message}")
+            CrashlyticsManager.log("Erreur lors de l'affichage du guide de vérification moderne: ${e.message}")
             CrashlyticsManager.logException(e)
         }
     }
 
     /**
-     * Affiche la 5ème bulle pour guider vers la sauvegarde
+     * Affiche le guide moderne de sauvegarde (5ème étape)
      */
-    private fun showSaveGuide() {
+    private fun showModernSaveGuide() {
         try {
             val rootView = findViewById<View>(android.R.id.content) as ViewGroup
             val saveButton = findViewById<View>(R.id.save_product_IB)
-            val guideManager = ContextualGuideManager(this)
+            val modernGuide = ModernGuideSystem(this)
 
-            guideManager.showSaveGuide(rootView, saveButton)
+            modernGuide.showSaveGuide(rootView, saveButton)
         } catch (e: Exception) {
-            CrashlyticsManager.log("Erreur lors de l'affichage du guide de sauvegarde: ${e.message}")
+            CrashlyticsManager.log("Erreur lors de l'affichage du guide de sauvegarde moderne: ${e.message}")
             CrashlyticsManager.logException(e)
         }
     }
@@ -879,7 +883,7 @@ class AddProductActivity : AppCompatActivity() {
             // Fermer la bulle d'aide actuelle (celle qui demandait d'ajouter un produit)
             guideManager.dismissCurrentBubble()
 
-            // Marquer le guide comme terminé maintenant que l'action a été accomplie
+            // Marquer le guide comme termin�� maintenant que l'action a été accomplie
             guideManager.markGuideAsShown("first_product")
 
             // Afficher les félicitations avec la mascotte
@@ -1059,12 +1063,12 @@ class AddProductActivity : AppCompatActivity() {
             productPriceEditText.setText(parsedDetails.getString("unit_price"))
             productUnitPriceEditText.setText(parsedDetails.getString("kilo_price"))
 
-            // 4ème étape : Afficher le guide de vérification après autocomplétion
+            // 4ème étape : Afficher le guide moderne de vérification après autocomplétion
             val fromGuide = intent.getBooleanExtra("from_guide", false)
             if (fromGuide) {
                 // Attendre un peu pour que l'utilisateur voie les champs se remplir
                 findViewById<View>(android.R.id.content).postDelayed({
-                    showVerificationGuide()
+                    showModernVerificationGuide()
                 }, 1500) // 1.5 secondes pour l'effet "wow"
             }
         }

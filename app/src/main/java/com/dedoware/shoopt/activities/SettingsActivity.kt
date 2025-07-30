@@ -10,6 +10,7 @@ import com.dedoware.shoopt.R
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.ContextualGuideManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
+import com.dedoware.shoopt.utils.UnifiedGuideSystem
 import com.dedoware.shoopt.utils.UserPreferences
 import com.google.android.material.button.MaterialButton
 import org.json.JSONArray
@@ -352,40 +353,53 @@ class SettingsActivity : AppCompatActivity() {
         // Bouton de replay du guide de produit
         replayFirstProductGuideCard.setOnClickListener {
             try {
-                // Analytics: suivre le clic sur le bouton de replay du guide de produit
+                // Animation de feedback tactile
+                it.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).withEndAction {
+                    it.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
+                }.start()
+
+                // Analytics pour le replay du guide
                 AnalyticsManager.logUserAction(
-                    action = "click",
+                    action = "replay_first_product_guide",
                     category = "settings",
-                    additionalParams = mapOf("button" to "replay_first_product_guide")
+                    additionalParams = mapOf("initiated_from" to "settings_screen")
                 )
 
-                // Réinitialiser les flags du guide de produit
-                resetFirstProductGuide()
+                // NOUVEAU : Utiliser le système unifié pour réinitialiser et rediriger
+                UnifiedGuideSystem.getInstance().resetAllGuides(this)
 
-                // Message de confirmation
-                Toast.makeText(this, getString(R.string.product_guide_reset_success), Toast.LENGTH_LONG).show()
+                // Message de confirmation avec instruction
+                Toast.makeText(
+                    this,
+                    "Guide réinitialisé ! Retour à l'écran principal...",
+                    Toast.LENGTH_SHORT
+                ).show()
 
-                // Retourner à MainActivity pour voir le guide
-                val intent = Intent(this, MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                // Retourner à l'écran principal pour déclencher le guide
+                val intent = Intent(this, MainActivity::class.java).apply {
+                    // Ajouter un flag pour indiquer qu'on veut forcer le replay du guide
+                    putExtra("force_replay_guide", true)
+                    putExtra("guide_type", "first_product")
+                    // Vider la pile d'activités pour revenir proprement au main
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                }
                 startActivity(intent)
                 finish()
 
             } catch (e: Exception) {
-                // Analytics: suivre l'erreur de replay du guide de produit
                 AnalyticsManager.logUserAction(
-                    action = "replay_first_product_guide_error",
+                    action = "replay_guide_error",
                     category = "settings",
-                    additionalParams = mapOf("error_type" to e.javaClass.simpleName)
+                    additionalParams = mapOf("error" to (e.message ?: "Unknown error"))
                 )
 
-                CrashlyticsManager.log("Erreur lors du replay du guide de produit: ${e.message ?: "Message non disponible"}")
-                CrashlyticsManager.setCustomKey("error_location", "settings_replay_first_product_guide")
+                CrashlyticsManager.log("Erreur lors de la réinitialisation du guide: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "settings_reset_guide")
                 CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
                 CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
                 CrashlyticsManager.logException(e)
 
-                Toast.makeText(this, getString(R.string.product_guide_reset_error), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Erreur lors de la réinitialisation du guide", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -521,49 +535,45 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     /**
-     * Réinitialise tous les flags du guide d'ajout de premier produit
+     * Réinitialise complètement le guide du premier produit
      */
     private fun resetFirstProductGuide() {
-        try {
-            // Réinitialiser le flag du premier produit ajouté
-            ContextualGuideManager.setFirstProductAdded(this, false)
+        val sharedPrefs = getSharedPreferences("shoopt_guide", MODE_PRIVATE)
+        val editor = sharedPrefs.edit()
 
-            // Réinitialiser le flag du guide principal affiché
-            ContextualGuideManager.setGuideShown(this, "first_product", false)
+        // Réinitialiser tous les flags du guide - NOUVEAU SYSTÈME MODERNE
+        editor.putBoolean("first_product_added", false)
 
-            // Réinitialiser AUSSI le flag de l'écran AddProduct
-            ContextualGuideManager.setGuideShown(this, "add_product_screen", false)
+        // Nouveau format utilisé par ModernGuideSystem
+        editor.putBoolean("modern_guide_shown_first_product", false)
+        editor.putBoolean("modern_guide_shown_photo_guide", false)
+        editor.putBoolean("modern_guide_shown_verification_guide", false)
+        editor.putBoolean("modern_guide_shown_save_guide", false)
+        editor.putBoolean("modern_guide_shown_final_congratulations", false)
 
-            // Réinitialiser le flag du dialogue de choix si il existe
-            ContextualGuideManager.setGuideShown(this, "choice_dialog", false)
+        // Maintenir la compatibilité avec l'ancien système (au cas où)
+        editor.putBoolean("contextual_guide_shown_first_product", false)
+        editor.putBoolean("contextual_guide_shown_choice_dialog", false)
+        editor.putBoolean("contextual_guide_shown_add_product_screen", false)
+        editor.putBoolean("contextual_guide_shown_photo_guide", false)
+        editor.putBoolean("contextual_guide_shown_verify_info", false)
+        editor.putBoolean("contextual_guide_shown_save_guide", false)
+        editor.putBoolean("contextual_guide_shown_complete_guide", false)
 
-            // Analytics pour le reset du guide
-            AnalyticsManager.logUserAction(
-                action = "guide_reset",
-                category = "settings",
-                additionalParams = mapOf(
-                    "guide_type" to "first_product",
-                    "reset_successful" to "true"
-                )
+        editor.apply()
+
+        // Analytics pour la réinitialisation réussie
+        AnalyticsManager.logUserAction(
+            action = "guide_reset_completed",
+            category = "settings",
+            additionalParams = mapOf(
+                "reset_type" to "first_product_guide",
+                "system_version" to "modern_tooltips"
             )
+        )
 
-        } catch (e: Exception) {
-            // En cas d'erreur, log et relancer l'exception
-            CrashlyticsManager.log("Erreur lors de la réinitialisation du guide de produit: ${e.message}")
-            CrashlyticsManager.logException(e)
-
-            // Analytics pour l'erreur de reset
-            AnalyticsManager.logUserAction(
-                action = "guide_reset_error",
-                category = "settings",
-                additionalParams = mapOf(
-                    "guide_type" to "first_product",
-                    "error_type" to e.javaClass.simpleName
-                )
-            )
-
-            throw e
-        }
+        // Log pour confirmation
+        CrashlyticsManager.log("Guide moderne réinitialisé avec succès")
     }
 
     data class Currency(val name: String, val code: String)
