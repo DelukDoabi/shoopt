@@ -196,10 +196,14 @@ class MainActivity : AppCompatActivity() {
 
                     // Analytics pour le passage à l'écran d'ajout de produit
                     AnalyticsManager.logSelectContent("navigation", "card", "add_update_product")
-                    showAddProductOptions()
+
+                    // Lancer la nouvelle activité de choix de produit avec animation
+                    val intent = Intent(this, ProductChoiceActivity::class.java)
+                    startActivity(intent)
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                 } catch (e: Exception) {
                     // Capture des erreurs
-                    CrashlyticsManager.log("Erreur lors de l'affichage des options d'ajout de produit: ${e.message ?: "Message non disponible"}")
+                    CrashlyticsManager.log("Erreur lors du lancement de ProductChoiceActivity: ${e.message ?: "Message non disponible"}")
                     CrashlyticsManager.logException(e)
                     Toast.makeText(this, getString(R.string.add_product_options_error), Toast.LENGTH_SHORT).show()
                 }

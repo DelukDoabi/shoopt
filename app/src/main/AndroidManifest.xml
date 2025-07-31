@@ -94,6 +94,11 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activities.ProductChoiceActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Shoopt" />
+        <activity
             android:name=".activities.MainActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
