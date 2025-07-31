@@ -177,7 +177,7 @@
                     android:id="@+id/manual_icon"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:src="@drawable/shoopt_add_update_product"
+                    android:src="@drawable/ic_manual_product_entry"
                     android:contentDescription="@string/manual_entry"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
