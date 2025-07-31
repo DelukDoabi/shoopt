@@ -104,43 +104,6 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-            <!-- Mise à jour liste de courses -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/shopping_list_card"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="8dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="16dp">
-
-                    <ImageButton
-                        android:id="@+id/shopping_list_IB"
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:src="@drawable/shoop_update_shopping_list"
-                        android:background="@drawable/main_rounded_button"
-                        android:contentDescription="@string/update_shopping_list"
-                        android:padding="12dp" />
-
-                    <TextView
-                        android:id="@+id/update_shopping_list_TV"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/update_shopping_list"
-                        android:textStyle="bold"
-                        android:textAlignment="center" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
             <!-- Ajouter ou mettre à jour un produit -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/add_product_card"
@@ -173,6 +136,43 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/add_or_update_product"
+                        android:textStyle="bold"
+                        android:textAlignment="center" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Mise à jour liste de courses -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/shopping_list_card"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="16dp">
+
+                    <ImageButton
+                        android:id="@+id/shopping_list_IB"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:src="@drawable/shoop_update_shopping_list"
+                        android:background="@drawable/main_rounded_button"
+                        android:contentDescription="@string/update_shopping_list"
+                        android:padding="12dp" />
+
+                    <TextView
+                        android:id="@+id/update_shopping_list_TV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/update_shopping_list"
                         android:textStyle="bold"
                         android:textAlignment="center" />
                 </LinearLayout>
