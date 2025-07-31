@@ -83,7 +83,7 @@ class AddFirstProductGuide(private val activity: Activity) {
     /**
      * Sauvegarde l'état actuel du guide pour le reprendre plus tard.
      */
-    private fun saveGuideState(state: GuideState) {
+    fun saveGuideState(state: GuideState) {
         currentState = state
         val preferences = activity.getSharedPreferences(UserGuideManager.PREF_USER_GUIDES, Activity.MODE_PRIVATE)
         preferences.edit()

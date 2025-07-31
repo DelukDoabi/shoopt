@@ -757,6 +757,10 @@ class AddProductActivity : AppCompatActivity() {
 
                     Toast.makeText(this@AddProductActivity, "Product saved with ID: $productId", Toast.LENGTH_SHORT).show()
 
+                    // Guide utilisateur : passer à l'étape de félicitations après ajout du produit
+                    com.dedoware.shoopt.utils.AddFirstProductGuide(this@AddProductActivity)
+                        .saveGuideState(com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.MAIN_SCREEN_PRODUCT_ADDED)
+
                     updateResultIntentForTrackShopping(Product(productId, barcode, timestamp, name, price.toDouble(), unitPrice.toDouble(), shop, productPictureUrl))
 
                     finish()

@@ -153,7 +153,20 @@ class MainActivity : AppCompatActivity() {
             val rootView = findViewById<View>(android.R.id.content)
             UpdateManager.checkForPendingUpdate(this, rootView)
         } catch (e: Exception) {
-            CrashlyticsManager.log("Erreur lors de la vérification des mises à jour en attente: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.log("Erreur lors de la vérification des mises à jour en attente: "+
+                "${e.message ?: "Message non disponible"}")
+        }
+
+        // Guide utilisateur : reprendre à l'étape appropriée
+        val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
+        when (guide.getCurrentGuideState()) {
+            com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.MAIN_SCREEN_PRODUCT_ADDED -> {
+                // Afficher le tooltip de félicitations après ajout du produit
+                val root = findViewById<View>(android.R.id.content)
+                guide.showProductAddedGuide(root)
+            }
+            // ...autres cas si besoin...
+            else -> {}
         }
     }
 
