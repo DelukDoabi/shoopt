@@ -130,13 +130,18 @@ class MainActivity : AppCompatActivity() {
      */
     private fun initializeUnifiedGuideSystem() {
         try {
+            CrashlyticsManager.log("=== DEBUT initializeUnifiedGuideSystem ===")
+            
             // Vérifier si on doit forcer le replay d'un guide
             val forceReplay = intent.getBooleanExtra("force_replay_guide", false)
             val guideType = intent.getStringExtra("guide_type")
 
+            CrashlyticsManager.log("ForceReplay: $forceReplay, GuideType: $guideType")
+
             if (forceReplay && guideType == "first_product") {
                 // Forcer le replay après un délai pour laisser l'interface se charger
                 findViewById<View>(android.R.id.content).postDelayed({
+                    CrashlyticsManager.log("Lancement du guide forcé")
                     showFirstProductGuide(forceShow = true)
                 }, 800)
 
@@ -145,9 +150,138 @@ class MainActivity : AppCompatActivity() {
                 intent.removeExtra("guide_type")
 
                 CrashlyticsManager.log("Replay du guide forcé depuis les paramètres")
+                return
             }
+
+            // Vérifier si c'est la première utilisation pour afficher le guide du premier produit
+            CrashlyticsManager.log("Vérification pour afficher le guide du premier produit")
+            checkAndShowFirstProductGuide()
+
         } catch (e: Exception) {
             CrashlyticsManager.log("Erreur initialisation guide unifié: ${e.message}")
+            CrashlyticsManager.logException(e)
+        }
+    }
+
+    /**
+     * Vérifie s'il faut afficher le guide du premier produit
+     */
+    private fun checkAndShowFirstProductGuide() {
+        CrashlyticsManager.log("=== DEBUT checkAndShowFirstProductGuide ===")
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                CrashlyticsManager.log("Création du productRepository...")
+                val productRepository: IProductRepository = if (useFirebase) {
+                    FirebaseProductRepository()
+                } else {
+                    val database = (application as ShooptApplication).database
+                    LocalProductRepository(
+                        database.productDao(),
+                        database.shopDao(),
+                        database.shoppingCartDao(),
+                        database.cartItemDao()
+                    )
+                }
+
+                CrashlyticsManager.log("Récupération des produits...")
+                val products = productRepository.getAll()
+                CrashlyticsManager.log("Nombre de produits trouvés: ${products.size}")
+
+                withContext(Dispatchers.Main) {
+                    // Si aucun produit n'existe, afficher le guide après un délai
+                    if (products.isEmpty()) {
+                        CrashlyticsManager.log("Aucun produit trouvé - programmation affichage du guide dans 1s")
+                        findViewById<View>(android.R.id.content).postDelayed({
+                            CrashlyticsManager.log("Lancement showFirstProductGuide maintenant")
+                            showFirstProductGuide()
+                        }, 1000) // Délai pour laisser l'interface se charger
+                    } else {
+                        CrashlyticsManager.log("Produits existants trouvés - pas d'affichage du guide")
+                    }
+                }
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur vérification premiers produits: ${e.message}")
+                CrashlyticsManager.logException(e)
+            }
+        }
+    }
+
+    /**
+     * Affiche le guide pour l'ajout du premier produit
+     */
+    private fun showFirstProductGuide(forceShow: Boolean = false) {
+        try {
+            CrashlyticsManager.log("=== DEBUT showFirstProductGuide (forceShow=$forceShow) ===")
+
+            val addProductCard: MaterialCardView = findViewById(R.id.add_product_card)
+            val rootView = findViewById<ViewGroup>(android.R.id.content)
+
+            CrashlyticsManager.log("Récupération des vues - addProductCard: $addProductCard, rootView: $rootView")
+
+            val guideSystem = UnifiedGuideSystem.getInstance()
+            CrashlyticsManager.log("UnifiedGuideSystem obtenu: $guideSystem")
+
+            val guide = guideSystem.getFirstProductGuide(addProductCard)
+            CrashlyticsManager.log("Guide créé: ${guide.id}")
+
+            // Personnaliser le guide avec un callback pour détecter quand l'utilisateur ajoute un produit
+            val enhancedGuide = guide.copy(
+                onComplete = {
+                    CrashlyticsManager.log("Guide premier produit terminé")
+                    AnalyticsManager.logSelectContent("tutorial", "guide", "first_product_completed")
+
+                    // Marquer que l'utilisateur a vu le guide
+                    userPreferences.setFirstProductGuideShown()
+                }
+            )
+
+            CrashlyticsManager.log("Appel showGuide...")
+            guideSystem.showGuide(
+                context = this,
+                parentView = rootView,
+                guide = enhancedGuide,
+                forceShow = forceShow
+            )
+
+            CrashlyticsManager.log("Guide premier produit affiché avec succès")
+            AnalyticsManager.logSelectContent("tutorial", "guide", "first_product_shown")
+
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur affichage guide premier produit: ${e.message}")
+            CrashlyticsManager.logException(e)
+        }
+    }
+
+    /**
+     * Méthode pour déclencher le guide d'analyse après l'ajout du premier produit
+     */
+    private fun showAnalysisGuideAfterFirstProduct() {
+        try {
+            val analyseCard: MaterialCardView = findViewById(R.id.analyse_card)
+            val rootView = findViewById<ViewGroup>(android.R.id.content)
+
+            val guideSystem = UnifiedGuideSystem.getInstance()
+            val guide = guideSystem.getAnalysisGuide(analyseCard)
+
+            val enhancedGuide = guide.copy(
+                onComplete = {
+                    CrashlyticsManager.log("Guide analyse terminé")
+                    AnalyticsManager.logSelectContent("tutorial", "guide", "analysis_completed")
+                }
+            )
+
+            // Afficher après un délai pour laisser l'utilisateur revenir à MainActivity
+            findViewById<View>(android.R.id.content).postDelayed({
+                guideSystem.showGuide(
+                    context = this,
+                    parentView = rootView,
+                    guide = enhancedGuide,
+                    forceShow = true
+                )
+            }, 500)
+
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur affichage guide analyse: ${e.message}")
             CrashlyticsManager.logException(e)
         }
     }
@@ -157,9 +291,6 @@ class MainActivity : AppCompatActivity() {
 
         // Vérifier si l'utilisateur revient après avoir ajouté son premier produit
         checkForFirstProductCompletion()
-
-        // Activer le guide contextuel pour les nouveaux utilisateurs
-        activateContextualGuideIfNeeded()
     }
 
     /**
@@ -168,11 +299,14 @@ class MainActivity : AppCompatActivity() {
      */
     private fun checkForFirstProductCompletion() {
         try {
-            // Vérifier avec le nouveau système unifié
-            if (shouldShowAnalysisGuide()) {
+            // Vérifier si l'utilisateur vient d'ajouter son premier produit
+            val prefs = getSharedPreferences("unified_guide_prefs", Context.MODE_PRIVATE)
+            if (prefs.getBoolean("show_analysis_guide", false)) {
                 // Attendre que la vue soit complètement chargée
                 findViewById<View>(android.R.id.content).postDelayed({
-                    showAnalysisGuide()
+                    showAnalysisGuideAfterFirstProduct()
+                    // Nettoyer le flag
+                    prefs.edit().putBoolean("show_analysis_guide", false).apply()
                 }, 800)
             }
         } catch (e: Exception) {
@@ -392,9 +526,6 @@ class MainActivity : AppCompatActivity() {
                             category = "product_management"
                         )
 
-                        // Marquer que l'utilisateur a choisi le scanner (pour le guide)
-                        guideManager.markGuideAsShown("choice_dialog")
-
                         // Utilisation de notre nouvelle implémentation ML Kit au lieu de ZXing
                         val intent = Intent(this, com.dedoware.shoopt.scanner.BarcodeScannerActivity::class.java)
                         intent.putExtra("from_guide", true) // Indiquer que cela vient du guide
@@ -415,9 +546,6 @@ class MainActivity : AppCompatActivity() {
                             category = "product_management"
                         )
 
-                        // Marquer que l'utilisateur a choisi l'ajout manuel (pour le guide)
-                        guideManager.markGuideAsShown("choice_dialog")
-
                         val intent = Intent(this, AddProductActivity::class.java)
                         intent.putExtra("from_guide", true) // Indiquer que cela vient du guide
                         startActivity(intent)
@@ -428,15 +556,8 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(this, getString(R.string.manual_entry_error), Toast.LENGTH_SHORT).show()
                     }
                 }
-                .setOnCancelListener {
-                    // Si l'utilisateur annule, ne pas marquer le guide comme terminé
-                    // pour qu'il puisse le voir à nouveau
-                }
                 .create()
                 .show()
-
-            // Afficher une bulle d'aide contextuelle pour expliquer les options
-            showChoiceDialogGuide()
 
         } catch (e: Exception) {
             CrashlyticsManager.log("Erreur lors de l'affichage des options d'ajout: ${e.message ?: "Message non disponible"}")
@@ -444,23 +565,6 @@ class MainActivity : AppCompatActivity() {
             CrashlyticsManager.logException(e)
 
             Toast.makeText(this, getString(R.string.dialog_display_error), Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    /**
-     * Affiche une bulle d'aide pour expliquer les choix dans la boîte de dialogue
-     */
-    private fun showChoiceDialogGuide() {
-        try {
-            // Attendre un peu que la boîte de dialogue soit affichée
-            findViewById<View>(android.R.id.content).postDelayed({
-                // CORRIGÉ : Plus besoin d'afficher un guide pour la boîte de dialogue
-                // avec le nouveau système unifié simplifié
-                CrashlyticsManager.log("Guide de choix appelé mais simplifié avec le nouveau système")
-            }, 500)
-        } catch (e: Exception) {
-            CrashlyticsManager.log("Erreur lors de l'affichage du guide de choix: ${e.message}")
-            CrashlyticsManager.logException(e)
         }
     }
 
@@ -489,10 +593,8 @@ class MainActivity : AppCompatActivity() {
                 // Préparer l'intent avec les données appropriées
                 val addProductIntent = Intent(this@MainActivity, AddProductActivity::class.java)
 
-                // CORRECTION : Transmettre le flag from_guide si nous sommes dans le guide du premier produit
-                if (::guideManager.isInitialized && guideManager.shouldShowPhotoGuide()) {
-                    addProductIntent.putExtra("from_guide", true)
-                }
+                // Transmettre le flag from_guide si nous sommes dans le contexte du guide
+                addProductIntent.putExtra("from_guide", true)
 
                 if (existingProduct != null) {
                     // Si le produit existe, ajouter toutes ses informations à l'intent
@@ -507,21 +609,19 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     // Analytics pour le chargement d'un produit existant
-                    val params = Bundle().apply {
+                    AnalyticsManager.logCustomEvent("existing_product_loaded", Bundle().apply {
                         putString("source", "barcode_scan")
                         putString("product_found", "true")
-                    }
-                    AnalyticsManager.logCustomEvent("existing_product_loaded", params)
+                    })
                 } else {
                     // Si le produit n'existe pas, simplement passer le code-barres
                     addProductIntent.putExtra("barcode", barcode)
 
                     // Analytics pour la création d'un nouveau produit
-                    val params = Bundle().apply {
+                    AnalyticsManager.logCustomEvent("new_product_created", Bundle().apply {
                         putString("source", "barcode_scan")
                         putString("product_found", "false")
-                    }
-                    AnalyticsManager.logCustomEvent("new_product_created", params)
+                    })
                 }
 
                 startActivity(addProductIntent)
@@ -537,65 +637,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * NOUVEAU : Affiche le guide du premier produit avec le système unifié
-     */
-    private fun showFirstProductGuide(forceShow: Boolean = false) {
-        try {
-            val addProductCard = findViewById<View>(R.id.add_product_card)
-            val rootView = findViewById<View>(android.R.id.content) as ViewGroup
-
-            val guide = UnifiedGuideSystem.getInstance().getFirstProductGuide(addProductCard)
-            UnifiedGuideSystem.getInstance().showGuide(this, rootView, guide, forceShow)
-
-            // Analytics
-            AnalyticsManager.logUserAction(
-                action = "guide_shown",
-                category = "onboarding",
-                additionalParams = mapOf(
-                    "guide_type" to "first_product",
-                    "force_show" to forceShow.toString()
-                )
-            )
-
-        } catch (e: Exception) {
-            CrashlyticsManager.log("Erreur affichage guide premier produit: ${e.message}")
-            CrashlyticsManager.logException(e)
-        }
-    }
-
-    /**
-     * NOUVEAU : Affiche le guide des félicitations
-     */
-    private fun showAnalysisGuide() {
-        try {
-            val analysisCard = findViewById<View>(R.id.analyse_card)
-            val rootView = findViewById<View>(android.R.id.content) as ViewGroup
-
-            val guide = UnifiedGuideSystem.getInstance().getAnalysisGuide(analysisCard)
-            UnifiedGuideSystem.getInstance().showGuide(this, rootView, guide)
-
-        } catch (e: Exception) {
-            CrashlyticsManager.log("Erreur affichage guide analyse: ${e.message}")
-            CrashlyticsManager.logException(e)
-        }
-    }
-
-    /**
-     * MISE À JOUR : Version simplifiée pour vérifier si on doit montrer le guide
+     * Version simplifiée pour vérifier si on doit montrer le guide
      */
     private fun shouldShowFirstProductGuide(): Boolean {
-        val prefs = getSharedPreferences("unified_guide_prefs", Context.MODE_PRIVATE)
-        val hasFirstProduct = getSharedPreferences("shoopt_guide", Context.MODE_PRIVATE)
-            .getBoolean("first_product_added", false)
-
-        return !hasFirstProduct && !prefs.getBoolean("first_product", false)
-    }
-
-    /**
-     * MISE À JOUR : Vérifie si le guide d'analyse doit être affiché
-     */
-    private fun shouldShowAnalysisGuide(): Boolean {
-        val prefs = getSharedPreferences("unified_guide_prefs", Context.MODE_PRIVATE)
-        return prefs.getBoolean("show_analysis_guide", false)
+        return !userPreferences.isFirstProductGuideShown()
     }
 }

@@ -190,12 +190,12 @@ class ModernGuideSystem(private val context: Context) {
             val overlay = ModernGuideOverlay(context, step) {
                 dismissCurrentGuide()
                 step.onDismiss?.invoke()
-                
+
                 // Marquer comme montré si un ID est fourni
                 if (step.guideId.isNotEmpty()) {
                     setGuideShown(context, step.guideId, true)
                 }
-                
+
                 // Traiter le prochain dans la file
                 processNextInQueue()
             }
@@ -223,7 +223,7 @@ class ModernGuideSystem(private val context: Context) {
 
     private fun processNextInQueue() {
         if (isProcessingQueue || guideQueue.isEmpty()) return
-        
+
         isProcessingQueue = true
         val nextStep = guideQueue.removeAt(0)
 

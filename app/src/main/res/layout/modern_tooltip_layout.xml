@@ -1,154 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tooltip_card"
-    android:layout_width="wrap_content"
+    android:layout_width="340dp"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
-    android:background="@drawable/modern_tooltip_background"
-    android:elevation="12dp"
-    android:maxWidth="340dp"
-    android:minWidth="280dp"
-    android:padding="20dp">
+    android:elevation="16dp"
+    app:cardCornerRadius="20dp"
+    app:cardBackgroundColor="#2D2D2D">
 
-    <!-- Gradient accent line -->
-    <View
-        android:id="@+id/accent_line"
-        android:layout_width="0dp"
-        android:layout_height="3dp"
-        android:background="@drawable/tooltip_accent_gradient"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
 
-    <!-- Tooltip Mascot with circular background -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/mascot_container"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_marginTop="16dp"
-        app:cardCornerRadius="36dp"
-        app:cardElevation="4dp"
-        app:cardBackgroundColor="@color/main_palette_old_lavender"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/accent_line">
+        <!-- Accent line moderne -->
+        <View
+            android:layout_width="60dp"
+            android:layout_height="4dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/tooltip_accent_modern"
+            android:alpha="0.8" />
 
-        <ImageView
-            android:id="@+id/tooltip_mascot"
+        <!-- Icon moderne - taille réduite -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/tooltip_icon_card"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:src="@android:drawable/ic_dialog_info"
-            app:tint="@android:color/white"
-            android:contentDescription="Guide mascot"
-            tools:src="@drawable/ic_scan_product" />
-    </androidx.cardview.widget.CardView>
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="6dp"
+            app:cardBackgroundColor="@color/main_palette_old_lavender">
 
-    <!-- Tooltip Title with improved typography -->
-    <TextView
-        android:id="@+id/tooltip_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center"
-        android:textColor="@color/main_palette_old_lavender"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:letterSpacing="0.01"
-        android:lineSpacingExtra="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mascot_container"
-        tools:text="Découvrez cette fonctionnalité" />
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:src="@android:drawable/ic_input_add"
+                app:tint="@android:color/white"
+                android:contentDescription="Add product icon" />
+        </androidx.cardview.widget.CardView>
 
-    <!-- Separator line -->
-    <View
-        android:id="@+id/separator"
-        android:layout_width="60dp"
-        android:layout_height="2dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/tooltip_separator_gradient"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tooltip_title" />
+        <!-- Tooltip Title -->
+        <TextView
+            android:id="@+id/tooltip_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:shadowColor="#40000000"
+            android:shadowDx="0"
+            android:shadowDy="1"
+            android:shadowRadius="2"
+            tools:text="Bienvenue dans Shoopt !" />
 
-    <!-- Scrollable description for long text -->
-    <ScrollView
-        android:id="@+id/description_scroll"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:maxHeight="120dp"
-        android:scrollbars="vertical"
-        android:fadeScrollbars="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/separator">
-
+        <!-- Description - full content display without scrolling -->
         <TextView
             android:id="@+id/tooltip_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
             android:fontFamily="sans-serif"
             android:gravity="center"
-            android:lineSpacingExtra="4dp"
-            android:textColor="@color/main_palette_old_lavender_variant"
+            android:lineSpacingExtra="3dp"
+            android:textColor="#E0E0E0"
             android:textSize="15sp"
-            android:letterSpacing="0.005"
-            tools:text="Voici une description détaillée de cette fonctionnalité qui peut être assez longue et qui nécessite un scrolling pour être entièrement visible." />
-    </ScrollView>
+            android:alpha="0.9"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            tools:text="Commencez par ajouter votre premier produit en cliquant ici. Vous pourrez scanner son code-barres ou l'ajouter manuellement." />
 
-    <!-- Button container with modern styling -->
-    <LinearLayout
-        android:id="@+id/button_container"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/description_scroll">
-
-        <!-- Modern Confirm Button compatible -->
-        <Button
+        <!-- Modern Gradient Button -->
+        <androidx.cardview.widget.CardView
             android:id="@+id/tooltip_confirm_button"
-            style="@android:style/Widget.Material.Button"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:fontFamily="sans-serif-medium"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:textAllCaps="false"
-            android:letterSpacing="0.01"
-            android:background="@color/main_palette_old_lavender"
-            tools:text="Compris !" />
+            app:cardCornerRadius="25dp"
+            app:cardElevation="6dp"
+            app:cardBackgroundColor="@color/main_palette_old_lavender"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground">
 
-        <!-- Modern Skip Button compatible -->
-        <Button
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:padding="4dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@android:drawable/ic_media_play"
+                    app:tint="@android:color/white"
+                    android:contentDescription="Start icon" />
+
+                <TextView
+                    android:id="@+id/tooltip_confirm_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:textAllCaps="false"
+                    android:textStyle="bold"
+                    tools:text="Commencer !" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Modern Skip Button -->
+        <LinearLayout
             android:id="@+id/tooltip_skip_button"
-            style="@android:style/Widget.Material.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:fontFamily="sans-serif"
-            android:textColor="@color/main_palette_old_lavender_variant"
-            android:textSize="14sp"
-            android:textAllCaps="false"
-            android:letterSpacing="0.005"
-            android:text="Passer le guide"
-            android:background="?android:attr/selectableItemBackground" />
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="12dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackgroundBorderless">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="6dp"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                app:tint="#B0B0B0"
+                android:contentDescription="Skip icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:textColor="#B0B0B0"
+                android:textSize="14sp"
+                android:text="Passer le guide" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

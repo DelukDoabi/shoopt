@@ -10,6 +10,7 @@ class UserPreferences(context: Context) {
         private const val KEY_THEME = "theme_mode"
         private const val KEY_CURRENCY = "currency"
         private const val KEY_ONBOARDING_COMPLETED = "onboarding_completed"
+        private const val KEY_FIRST_PRODUCT_GUIDE_SHOWN = "first_product_guide_shown"
 
         const val THEME_LIGHT = 1
         const val THEME_DARK = 2
@@ -67,5 +68,20 @@ class UserPreferences(context: Context) {
 
     fun formatPrice(price: Double): String {
         return String.format("%.2f %s", price, getCurrencySymbol())
+    }
+
+    /**
+     * Méthodes pour le système de guide du premier produit
+     */
+    fun setFirstProductGuideShown() {
+        preferences.edit().putBoolean(KEY_FIRST_PRODUCT_GUIDE_SHOWN, true).apply()
+    }
+
+    fun isFirstProductGuideShown(): Boolean {
+        return preferences.getBoolean(KEY_FIRST_PRODUCT_GUIDE_SHOWN, false)
+    }
+
+    fun resetFirstProductGuide() {
+        preferences.edit().putBoolean(KEY_FIRST_PRODUCT_GUIDE_SHOWN, false).apply()
     }
 }

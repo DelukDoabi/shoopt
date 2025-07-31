@@ -105,21 +105,18 @@ class ModernGuideOverlay @JvmOverloads constructor(
         tooltipCard = tooltipView.findViewById(R.id.tooltip_card)
         val titleText = tooltipView.findViewById<TextView>(R.id.tooltip_title)
         val descriptionText = tooltipView.findViewById<TextView>(R.id.tooltip_description)
-        val mascotImage = tooltipView.findViewById<ImageView>(R.id.tooltip_mascot)
-        val confirmButton = tooltipView.findViewById<MaterialButton>(R.id.tooltip_confirm_button)
+        val confirmButton = tooltipView.findViewById<View>(R.id.tooltip_confirm_button)
+        val confirmText = tooltipView.findViewById<TextView>(R.id.tooltip_confirm_text)
         val skipButton = tooltipView.findViewById<TextView>(R.id.tooltip_skip_button)
 
-        // Configurer le contenu
-        titleText.setText(currentStep.titleResId)
-        descriptionText.setText(currentStep.descriptionResId)
-
-        // Animation de respiration améliorée pour la mascotte
-        startEnhancedMascotAnimation(mascotImage)
+        // Configurer le contenu avec les données de step
+        titleText.text = context.getString(currentStep.titleResId)
+        descriptionText.text = context.getString(currentStep.descriptionResId)
 
         // Gérer les boutons avec animations
         if (currentStep.showConfirmButton) {
             confirmButton.visibility = VISIBLE
-            confirmButton.setText(currentStep.confirmButtonTextResId)
+            confirmText?.text = context.getString(currentStep.confirmButtonTextResId)
             confirmButton.setOnClickListener {
                 animateButtonPress(confirmButton) {
                     currentStep.onConfirm?.invoke()
