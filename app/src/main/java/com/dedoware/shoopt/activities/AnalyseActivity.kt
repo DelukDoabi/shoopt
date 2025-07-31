@@ -460,7 +460,7 @@ class AnalyseActivity : AppCompatActivity() {
             // Lancer la nouvelle activité de choix de produit avec animation en utilisant le nom complet de la classe
             val intent = Intent(this, com.dedoware.shoopt.activities.ProductChoiceActivity::class.java)
             startActivity(intent)
-
+            
             // Utiliser nos animations personnalisées maintenant qu'elles sont implémentées
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         } catch (e: Exception) {
