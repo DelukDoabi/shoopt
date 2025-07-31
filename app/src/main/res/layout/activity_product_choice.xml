@@ -91,6 +91,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/spacer"
+            app:layout_constraintHeight_default="wrap"
+            app:layout_constraintHeight_min="180dp"
             android:layout_margin="12dp"
             app:cardCornerRadius="16dp"
             app:cardElevation="8dp"
@@ -100,18 +102,18 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="24dp">
+                android:padding="16dp">
 
                 <ImageView
                     android:id="@+id/barcode_icon"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
                     android:src="@drawable/ic_scan_product"
                     android:contentDescription="@string/scan_barcode"
+                    android:layout_marginTop="8dp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/barcode_title"
                     app:layout_constraintVertical_chainStyle="packed" />
 
                 <TextView
@@ -121,11 +123,10 @@
                     android:text="@string/scan_barcode"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     app:layout_constraintTop_toBottomOf="@id/barcode_icon"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/barcode_description" />
+                    app:layout_constraintEnd_toEndOf="parent" />
 
                 <TextView
                     android:id="@+id/barcode_description"
@@ -137,10 +138,15 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:minLines="2"
+                    android:maxLines="4"
+                    android:ellipsize="end"
                     app:layout_constraintTop_toBottomOf="@id/barcode_title"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -162,6 +168,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHeight_default="wrap"
+            app:layout_constraintHeight_min="180dp"
             android:layout_margin="12dp"
             app:cardCornerRadius="16dp"
             app:cardElevation="8dp"
@@ -171,18 +179,18 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="24dp">
+                android:padding="16dp">
 
                 <ImageView
                     android:id="@+id/manual_icon"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
                     android:src="@drawable/ic_manual_product_entry"
                     android:contentDescription="@string/manual_entry"
+                    android:layout_marginTop="8dp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/manual_title"
                     app:layout_constraintVertical_chainStyle="packed" />
 
                 <TextView
@@ -192,11 +200,10 @@
                     android:text="@string/manual_entry"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     app:layout_constraintTop_toBottomOf="@id/manual_icon"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/manual_description" />
+                    app:layout_constraintEnd_toEndOf="parent" />
 
                 <TextView
                     android:id="@+id/manual_description"
@@ -208,10 +215,15 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:minLines="2"
+                    android:maxLines="4"
+                    android:ellipsize="end"
                     app:layout_constraintTop_toBottomOf="@id/manual_title"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
