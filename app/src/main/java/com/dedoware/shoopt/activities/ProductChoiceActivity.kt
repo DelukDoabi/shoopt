@@ -3,6 +3,7 @@ package com.dedoware.shoopt.activities
 import android.content.Intent
 import android.os.Bundle
 import android.view.animation.AnimationUtils
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.scanner.BarcodeScannerActivity
@@ -20,6 +21,15 @@ class ProductChoiceActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_choice)
+
+        // Handle back button with the OnBackPressedDispatcher
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, callback)
 
         setupUI()
     }
@@ -92,7 +102,8 @@ class ProductChoiceActivity : AppCompatActivity() {
         androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == RESULT_OK) {
-            val barcode = result.data?.getStringExtra("barcode_value")
+            // Utilisation de la constante BARCODE_RESULT définie dans BarcodeScannerActivity
+            val barcode = result.data?.getStringExtra(com.dedoware.shoopt.scanner.BarcodeScannerActivity.BARCODE_RESULT)
             if (barcode != null) {
                 try {
                     // Analytics pour le scan réussi
@@ -104,8 +115,13 @@ class ProductChoiceActivity : AppCompatActivity() {
                     // Vérifier le produit dans la base de données
                     val intent = Intent(this, AddProductActivity::class.java).apply {
                         putExtra("barcode", barcode)
+                        // Ajouter des flags pour revenir à MainActivity après la sauvegarde
+                        addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT)
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     }
                     startActivity(intent)
+                    // Terminer cette activité pour qu'elle ne reste pas dans la pile
+                    finish()
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
 
                 } catch (e: Exception) {
@@ -120,11 +136,5 @@ class ProductChoiceActivity : AppCompatActivity() {
 
     private fun showErrorToast(messageResId: Int) {
         android.widget.Toast.makeText(this, getString(messageResId), android.widget.Toast.LENGTH_SHORT).show()
-    }
-
-    // Animation lors du retour
-    override fun onBackPressed() {
-        super.onBackPressed()
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
     }
 }
