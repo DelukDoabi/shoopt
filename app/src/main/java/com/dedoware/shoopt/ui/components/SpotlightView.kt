@@ -42,7 +42,7 @@ class SpotlightView @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     // Propriétés de style
-    private var spotlightColor = Color.parseColor("#80000000") // Noir semi-transparent
+    private var spotlightColor = Color.parseColor("#4D000000") // Noir très léger (30% d'opacité)
     private var animationDuration = 300L
 
     // Propriétés de la vue cible
@@ -79,6 +79,7 @@ class SpotlightView @JvmOverloads constructor(
         // Rendre cette vue plein écran et transparente
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
         setWillNotDraw(false)
+        setBackgroundColor(Color.TRANSPARENT)
 
         // Inflater le layout du tooltip
         val tooltipView = LayoutInflater.from(context).inflate(R.layout.view_spotlight_tooltip, this, false)
@@ -103,6 +104,7 @@ class SpotlightView @JvmOverloads constructor(
      * Définit les différentes formes possibles pour le spotlight.
      */
     enum class Shape {
+        NONE, // Pas de spotlight, juste la tooltip
         CIRCLE,
         RECTANGLE,
         ROUNDED_RECTANGLE
@@ -313,35 +315,37 @@ class SpotlightView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas) {
-        if (::bitmap.isInitialized) {
-            // Dessiner le fond semi-transparent
-            this.canvas.drawColor(spotlightColor)
+        super.onDraw(canvas)
+        if (!::bitmap.isInitialized) return
 
-            // Découper la forme du spotlight
-            when (spotlightShape) {
-                Shape.CIRCLE -> {
-                    val radius = max(targetRect.width(), targetRect.height()) / 2
-                    this.canvas.drawCircle(
-                        targetRect.centerX(),
-                        targetRect.centerY(),
-                        radius,
-                        transparentPaint
-                    )
-                }
-                Shape.RECTANGLE -> {
-                    this.canvas.drawRect(targetRect, transparentPaint)
-                }
-                Shape.ROUNDED_RECTANGLE -> {
-                    val cornerRadius = 16f * context.resources.displayMetrics.density
-                    this.canvas.drawRoundRect(targetRect, cornerRadius, cornerRadius, transparentPaint)
-                }
+        // Efface le bitmap à chaque frame pour éviter l'accumulation
+        bitmap.eraseColor(Color.TRANSPARENT)
+
+        // Toujours dessiner l'overlay sombre
+        this.canvas.drawColor(spotlightColor)
+
+        // Découper la forme du spotlight uniquement si ce n'est pas NONE
+        when (spotlightShape) {
+            Shape.CIRCLE -> {
+                val radius = max(targetRect.width(), targetRect.height()) / 2
+                this.canvas.drawCircle(
+                    targetRect.centerX(),
+                    targetRect.centerY(),
+                    radius,
+                    transparentPaint
+                )
             }
-
-            // Dessiner le bitmap sur le canvas
-            canvas.drawBitmap(bitmap, 0f, 0f, paint)
+            Shape.RECTANGLE -> {
+                this.canvas.drawRect(targetRect, transparentPaint)
+            }
+            Shape.ROUNDED_RECTANGLE -> {
+                val cornerRadius = 16f * context.resources.displayMetrics.density
+                this.canvas.drawRoundRect(targetRect, cornerRadius, cornerRadius, transparentPaint)
+            }
+            Shape.NONE -> { /* Ne rien découper, juste l'overlay sombre */ }
         }
 
-        // Dessiner les éléments enfants (tooltip)
-        super.onDraw(canvas)
+        // Dessiner le bitmap sur le canvas réel avec un Paint sans alpha
+        canvas.drawBitmap(bitmap, 0f, 0f, null)
     }
 }

@@ -323,4 +323,8 @@
 
     <string name="guide_add_product_title">Ajouter un produit</string>
     <string name="guide_add_product_desc">Enregistrez de nouveaux produits et suivez leurs prix pour économiser.</string>
+
+    <!-- Replay Add Product Guide -->
+    <string name="replay_add_product_guide">Rejouer le guide d’ajout du premier produit</string>
+    <string name="replay_add_product_guide_description">Vous pouvez revoir le guide interactif pour apprendre à ajouter un produit à tout moment.</string>
 </resources>

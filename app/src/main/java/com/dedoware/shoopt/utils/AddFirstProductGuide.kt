@@ -134,7 +134,7 @@ class AddFirstProductGuide(private val activity: Activity) {
                 R.string.guide_first_product_welcome_title,
                 R.string.guide_first_product_welcome_desc,
                 R.drawable.ic_launcher_foreground,
-                SpotlightView.Shape.CIRCLE,
+                SpotlightView.Shape.NONE, // Utilise une forme NONE pour désactiver le spotlight
                 0,
                 SpotlightView.TooltipPosition.AUTO
             )

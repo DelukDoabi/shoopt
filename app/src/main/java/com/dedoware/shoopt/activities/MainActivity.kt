@@ -113,6 +113,12 @@ class MainActivity : AppCompatActivity() {
                 CrashlyticsManager.log("Erreur lors de la vérification des mises à jour: ${e.message ?: "Message non disponible"}")
             }
 
+            // Lancer le guide d'ajout du premier produit si demandé par l'extra
+            if (intent?.getBooleanExtra("EXTRA_START_ADD_PRODUCT_GUIDE", false) == true) {
+                val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
+                guide.startWelcomeGuide()
+            }
+
         } catch (e: Exception) {
             // Capture des erreurs générales dans onCreate
             CrashlyticsManager.log("Erreur générale dans MainActivity.onCreate: ${e.message ?: "Message non disponible"}")
