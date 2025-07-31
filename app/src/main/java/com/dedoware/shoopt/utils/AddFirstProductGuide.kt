@@ -120,9 +120,10 @@ class AddFirstProductGuide(private val activity: Activity) {
     }
 
     /**
-     * Démarre le guide de bienvenue initial.
+     * Démarre le guide de bienvenue initial et enchaîne automatiquement sur l'étape suivante si un callback est fourni.
+     * @param onWelcomeComplete Callback appelé après la confirmation du message de bienvenue (ex: pour afficher l'étape suivante)
      */
-    fun startWelcomeGuide() {
+    fun startWelcomeGuide(onWelcomeComplete: (() -> Unit)? = null) {
         saveGuideState(GuideState.WELCOME_SHOWN)
 
         // Trouver la racine de l'activité pour le message de bienvenue
@@ -141,6 +142,7 @@ class AddFirstProductGuide(private val activity: Activity) {
             .setOnCompleteListener {
                 // Passer à l'étape suivante après le message de bienvenue
                 saveGuideState(GuideState.MAIN_SCREEN_ADD_BUTTON)
+                onWelcomeComplete?.invoke()
             }
             .start()
     }

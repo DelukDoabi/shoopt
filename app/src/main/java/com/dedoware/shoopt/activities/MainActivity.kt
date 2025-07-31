@@ -116,7 +116,10 @@ class MainActivity : AppCompatActivity() {
             // Lancer le guide d'ajout du premier produit si demandé par l'extra
             if (intent?.getBooleanExtra("EXTRA_START_ADD_PRODUCT_GUIDE", false) == true) {
                 val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
-                guide.startWelcomeGuide()
+                val addProductButton = findViewById<View>(R.id.add_or_update_product_IB)
+                guide.startWelcomeGuide {
+                    guide.showAddProductButtonGuide(addProductButton)
+                }
             }
 
         } catch (e: Exception) {
