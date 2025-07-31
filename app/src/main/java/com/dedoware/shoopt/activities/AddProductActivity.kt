@@ -499,6 +499,36 @@ class AddProductActivity : AppCompatActivity() {
                 CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
                 CrashlyticsManager.logException(e)
             }
+
+            // --- Déclenchement automatique du guide si besoin (après toutes les initialisations) ---
+            val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
+            when (guide.getCurrentGuideState()) {
+                com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_BARCODE_FILLED ->
+                    productBarcodeEditText.post {
+                        guide.showBarcodeFilledGuide(productBarcodeEditText) {
+                            productPictureImageButton.post {
+                                guide.showTakePhotoButtonGuide(productPictureImageButton)
+                            }
+                        }
+                    }
+                com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_PHOTO_BUTTON ->
+                    productPictureImageButton.post {
+                        guide.showTakePhotoButtonGuide(productPictureImageButton)
+                    }
+                com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_PHOTO_WARNING ->
+                    productPictureImageButton.post {
+                        guide.showPhotoWarningGuide(productPictureImageButton)
+                    }
+                com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_FIELDS_AUTOFILLED ->
+                    findViewById<View>(R.id.product_form_card)?.post {
+                        guide.showFieldsAutofilledGuide(findViewById(R.id.product_form_card))
+                    }
+                com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_SAVE_BUTTON ->
+                    saveProductImageButton.post {
+                        guide.showSaveProductButtonGuide(saveProductImageButton)
+                    }
+                else -> {}
+            }
         } catch (e: Exception) {
             // Capture des erreurs globales dans onCreate
             CrashlyticsManager.log("Erreur globale dans onCreate d'AddProductActivity: ${e.message ?: "Message non disponible"}")
@@ -1209,6 +1239,14 @@ class AddProductActivity : AppCompatActivity() {
     private fun stopDotAnimation() {
         isAnimatingDots = false
         dotHandler.removeCallbacksAndMessages(null)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Show the guide tooltip/spotlight if needed
+        productBarcodeEditText.post {
+            com.dedoware.shoopt.utils.AddFirstProductGuide(this).showBarcodeFilledGuide(productBarcodeEditText)
+        }
     }
 
     companion object {

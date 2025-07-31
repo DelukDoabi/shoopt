@@ -172,8 +172,9 @@ class AddFirstProductGuide(private val activity: Activity) {
 
     /**
      * Affiche le guide sur l'écran de choix de méthode d'ajout de produit.
+     * @param onChoiceComplete Callback appelé après la confirmation de cette étape (ex: pour enchaîner sur l'étape suivante)
      */
-    fun showProductChoiceGuide(scanBarcodeButton: View, manualEntryButton: View) {
+    fun showProductChoiceGuide(scanBarcodeButton: View, manualEntryButton: View, onChoiceComplete: (() -> Unit)? = null) {
         if (getCurrentGuideState() != GuideState.PRODUCT_CHOICE_SCREEN) return
 
         guideManager.initGuide(GUIDE_ID, true)
@@ -198,6 +199,7 @@ class AddFirstProductGuide(private val activity: Activity) {
             .setOnCompleteListener {
                 // Préparer pour le scanner de code-barres
                 saveGuideState(GuideState.BARCODE_SCANNER_SCREEN)
+                onChoiceComplete?.invoke()
             }
             .start()
     }
@@ -216,8 +218,9 @@ class AddFirstProductGuide(private val activity: Activity) {
 
     /**
      * Affiche le guide sur le champ du code-barres déjà rempli.
+     * @param onBarcodeFilledComplete Callback appelé après la confirmation de cette étape (ex: pour enchaîner sur l'étape suivante)
      */
-    fun showBarcodeFilledGuide(barcodeField: View) {
+    fun showBarcodeFilledGuide(barcodeField: View, onBarcodeFilledComplete: (() -> Unit)? = null) {
         if (getCurrentGuideState() != GuideState.PRODUCT_FORM_BARCODE_FILLED) return
 
         guideManager.initGuide(GUIDE_ID, true)
@@ -233,6 +236,7 @@ class AddFirstProductGuide(private val activity: Activity) {
             .setOnCompleteListener {
                 // Préparer pour le bouton de photo
                 saveGuideState(GuideState.PRODUCT_FORM_PHOTO_BUTTON)
+                onBarcodeFilledComplete?.invoke()
             }
             .start()
     }

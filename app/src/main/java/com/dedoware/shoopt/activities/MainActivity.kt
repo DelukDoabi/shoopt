@@ -122,6 +122,17 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+            // Ajout: Déclenchement automatique du guide après onboarding si nécessaire
+            val firstTimeUserManager = com.dedoware.shoopt.utils.FirstTimeUserManager(this)
+            if (firstTimeUserManager.shouldShowAddProductGuide()) {
+                val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
+                val addProductButton = findViewById<View>(R.id.add_or_update_product_IB)
+                guide.startWelcomeGuide {
+                    guide.showAddProductButtonGuide(addProductButton)
+                }
+                firstTimeUserManager.markAddProductGuideShown()
+            }
+
         } catch (e: Exception) {
             // Capture des erreurs générales dans onCreate
             CrashlyticsManager.log("Erreur générale dans MainActivity.onCreate: ${e.message ?: "Message non disponible"}")

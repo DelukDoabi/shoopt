@@ -247,6 +247,9 @@ class BarcodeScannerActivity : AppCompatActivity() {
         if (::scanLineAnimator.isInitialized && !scanLineAnimator.isRunning) {
             scanLineAnimator.start()
         }
+        // Guide: avancer l'état lors de l'entrée dans le scanner
+        val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
+        guide.showBarcodeScannerGuide(findViewById(android.R.id.content))
     }
 
     override fun onPause() {
