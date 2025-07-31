@@ -501,47 +501,7 @@ class AddProductActivity : AppCompatActivity() {
             }
 
             // --- Déclenchement automatique du guide si besoin (après toutes les initialisations) ---
-            val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
-            when (guide.getCurrentGuideState()) {
-                com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_BARCODE_FILLED ->
-                    productBarcodeEditText.post {
-                        guide.showBarcodeFilledGuide(productBarcodeEditText) {
-                            productPictureImageButton.post {
-                                guide.showTakePhotoButtonGuide(productPictureImageButton) {
-                                    // Show warning immediately after photo tooltip confirmation
-                                    if (guide.getCurrentGuideState() == com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_PHOTO_WARNING) {
-                                        productPictureImageButton.post {
-                                            guide.showPhotoWarningGuide(productPictureImageButton)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_PHOTO_BUTTON ->
-                    productPictureImageButton.post {
-                        guide.showTakePhotoButtonGuide(productPictureImageButton) {
-                            if (guide.getCurrentGuideState() == com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_PHOTO_WARNING) {
-                                productPictureImageButton.post {
-                                    guide.showPhotoWarningGuide(productPictureImageButton)
-                                }
-                            }
-                        }
-                    }
-                com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_PHOTO_WARNING ->
-                    productPictureImageButton.post {
-                        guide.showPhotoWarningGuide(productPictureImageButton)
-                    }
-                com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_FIELDS_AUTOFILLED ->
-                    findViewById<View>(R.id.product_form_card)?.post {
-                        guide.showFieldsAutofilledGuide(findViewById(R.id.product_form_card))
-                    }
-                com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_SAVE_BUTTON ->
-                    saveProductImageButton.post {
-                        guide.showSaveProductButtonGuide(saveProductImageButton)
-                    }
-                else -> {}
-            }
+            continueFirstProductGuideIfNeeded()
         } catch (e: Exception) {
             // Capture des erreurs globales dans onCreate
             CrashlyticsManager.log("Erreur globale dans onCreate d'AddProductActivity: ${e.message ?: "Message non disponible"}")
@@ -988,10 +948,7 @@ class AddProductActivity : AppCompatActivity() {
             productPriceEditText.setText(parsedDetails.getString("unit_price"))
             productUnitPriceEditText.setText(parsedDetails.getString("kilo_price"))
             // Déclenchement de l'étape suivante du guide après auto-remplissage
-            val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this@AddProductActivity)
-            findViewById<View>(R.id.product_form_card)?.post {
-                guide.showFieldsAutofilledGuide(findViewById(R.id.product_form_card))
-            }
+            continueFirstProductGuideIfNeeded()
         }
     }
 
@@ -1264,6 +1221,50 @@ class AddProductActivity : AppCompatActivity() {
         // Show the guide tooltip/spotlight if needed
         productBarcodeEditText.post {
             com.dedoware.shoopt.utils.AddFirstProductGuide(this).showBarcodeFilledGuide(productBarcodeEditText)
+        }
+    }
+
+    /**
+     * Continue le guide d'ajout de premier produit si besoin, en fonction de l'état courant.
+     * À appeler après chaque étape du guide pour garantir la continuité.
+     */
+    private fun continueFirstProductGuideIfNeeded() {
+        val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
+        when (guide.getCurrentGuideState()) {
+            com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_BARCODE_FILLED ->
+                productBarcodeEditText.post {
+                    guide.showBarcodeFilledGuide(productBarcodeEditText) {
+                        continueFirstProductGuideIfNeeded()
+                    }
+                }
+            com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_PHOTO_BUTTON ->
+                productPictureImageButton.post {
+                    guide.showTakePhotoButtonGuide(productPictureImageButton) {
+                        continueFirstProductGuideIfNeeded()
+                    }
+                }
+            com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_PHOTO_WARNING ->
+                productPictureImageButton.post {
+                    guide.showPhotoWarningGuide(productPictureImageButton)
+                    // Ne pas enchaîner ici, attendre la prise de photo et l'autoremplissage pour continuer
+                }
+            com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_FIELDS_AUTOFILLED ->
+                findViewById<View>(R.id.product_form_card)?.post {
+                    guide.showFieldsAutofilledGuide(findViewById(R.id.product_form_card)) {
+                        continueFirstProductGuideIfNeeded()
+                    }
+                }
+            com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_SAVE_BUTTON ->
+                saveProductImageButton.post {
+                    guide.showSaveProductButtonGuide(saveProductImageButton) {
+                        continueFirstProductGuideIfNeeded()
+                    }
+                }
+            com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.MAIN_SCREEN_PRODUCT_ADDED -> {
+                // À implémenter si besoin pour la suite du guide
+            }
+            // ...autres états si besoin...
+            else -> {}
         }
     }
 

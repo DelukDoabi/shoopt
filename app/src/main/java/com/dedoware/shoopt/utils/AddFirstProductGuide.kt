@@ -291,7 +291,7 @@ class AddFirstProductGuide(private val activity: Activity) {
     /**
      * Affiche le guide sur les champs automatiquement remplis.
      */
-    fun showFieldsAutofilledGuide(formLayout: View) {
+    fun showFieldsAutofilledGuide(formLayout: View, onComplete: (() -> Unit)? = null) {
         if (getCurrentGuideState() != GuideState.PRODUCT_FORM_FIELDS_AUTOFILLED) return
 
         guideManager.initGuide(GUIDE_ID, true)
@@ -307,6 +307,7 @@ class AddFirstProductGuide(private val activity: Activity) {
             .setOnCompleteListener {
                 // Préparer pour le bouton de sauvegarde
                 saveGuideState(GuideState.PRODUCT_FORM_SAVE_BUTTON)
+                onComplete?.invoke()
             }
             .start()
     }
@@ -314,7 +315,7 @@ class AddFirstProductGuide(private val activity: Activity) {
     /**
      * Affiche le guide sur le bouton de sauvegarde du produit.
      */
-    fun showSaveProductButtonGuide(saveButton: View) {
+    fun showSaveProductButtonGuide(saveButton: View, onComplete: (() -> Unit)? = null) {
         if (getCurrentGuideState() != GuideState.PRODUCT_FORM_SAVE_BUTTON) return
 
         guideManager.initGuide(GUIDE_ID, true)
@@ -330,6 +331,7 @@ class AddFirstProductGuide(private val activity: Activity) {
             .setOnCompleteListener {
                 // Préparer pour le message de confirmation d'ajout
                 saveGuideState(GuideState.MAIN_SCREEN_PRODUCT_ADDED)
+                onComplete?.invoke()
             }
             .start()
     }
