@@ -84,8 +84,14 @@ class ProductChoiceActivity : AppCompatActivity() {
                 )
 
                 // Lancer l'activité d'ajout manuel de produit
-                val intent = Intent(this, AddProductActivity::class.java)
+                val intent = Intent(this, AddProductActivity::class.java).apply {
+                    // Ajouter des flags pour revenir à MainActivity après la sauvegarde
+                    addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT)
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                }
                 startActivity(intent)
+                // Terminer cette activité pour qu'elle ne reste pas dans la pile
+                finish()
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
 
             } catch (e: Exception) {
