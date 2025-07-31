@@ -507,13 +507,26 @@ class AddProductActivity : AppCompatActivity() {
                     productBarcodeEditText.post {
                         guide.showBarcodeFilledGuide(productBarcodeEditText) {
                             productPictureImageButton.post {
-                                guide.showTakePhotoButtonGuide(productPictureImageButton)
+                                guide.showTakePhotoButtonGuide(productPictureImageButton) {
+                                    // Show warning immediately after photo tooltip confirmation
+                                    if (guide.getCurrentGuideState() == com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_PHOTO_WARNING) {
+                                        productPictureImageButton.post {
+                                            guide.showPhotoWarningGuide(productPictureImageButton)
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_PHOTO_BUTTON ->
                     productPictureImageButton.post {
-                        guide.showTakePhotoButtonGuide(productPictureImageButton)
+                        guide.showTakePhotoButtonGuide(productPictureImageButton) {
+                            if (guide.getCurrentGuideState() == com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_PHOTO_WARNING) {
+                                productPictureImageButton.post {
+                                    guide.showPhotoWarningGuide(productPictureImageButton)
+                                }
+                            }
+                        }
                     }
                 com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_PHOTO_WARNING ->
                     productPictureImageButton.post {
@@ -974,6 +987,11 @@ class AddProductActivity : AppCompatActivity() {
             productNameEditText.setText(parsedDetails.getString("name"))
             productPriceEditText.setText(parsedDetails.getString("unit_price"))
             productUnitPriceEditText.setText(parsedDetails.getString("kilo_price"))
+            // Déclenchement de l'étape suivante du guide après auto-remplissage
+            val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this@AddProductActivity)
+            findViewById<View>(R.id.product_form_card)?.post {
+                guide.showFieldsAutofilledGuide(findViewById(R.id.product_form_card))
+            }
         }
     }
 

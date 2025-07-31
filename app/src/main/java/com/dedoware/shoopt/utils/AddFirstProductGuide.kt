@@ -38,7 +38,7 @@ class AddFirstProductGuide(private val activity: Activity) {
      * États possibles du guide
      */
     enum class GuideState {
-        NOT_STARTED,
+        NOT_STARTED, // stateOrdinal = 0
         WELCOME_SHOWN,
         MAIN_SCREEN_ADD_BUTTON,
         PRODUCT_CHOICE_SCREEN,
@@ -244,7 +244,7 @@ class AddFirstProductGuide(private val activity: Activity) {
     /**
      * Affiche le guide sur le bouton de prise de photo.
      */
-    fun showTakePhotoButtonGuide(photoButton: View) {
+    fun showTakePhotoButtonGuide(photoButton: View, onPhotoButtonComplete: (() -> Unit)? = null) {
         if (getCurrentGuideState() != GuideState.PRODUCT_FORM_PHOTO_BUTTON) return
 
         guideManager.initGuide(GUIDE_ID, true)
@@ -260,6 +260,7 @@ class AddFirstProductGuide(private val activity: Activity) {
             .setOnCompleteListener {
                 // Préparer pour l'avertissement sur la photo
                 saveGuideState(GuideState.PRODUCT_FORM_PHOTO_WARNING)
+                onPhotoButtonComplete?.invoke()
             }
             .start()
     }
@@ -301,7 +302,7 @@ class AddFirstProductGuide(private val activity: Activity) {
                 R.drawable.ic_magic_wand,
                 SpotlightView.Shape.RECTANGLE,
                 8,
-                SpotlightView.TooltipPosition.BOTTOM
+                SpotlightView.TooltipPosition.TOP
             )
             .setOnCompleteListener {
                 // Préparer pour le bouton de sauvegarde
