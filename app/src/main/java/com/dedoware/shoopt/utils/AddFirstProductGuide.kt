@@ -181,7 +181,7 @@ class AddFirstProductGuide(private val activity: Activity) {
      * @param onChoiceComplete Callback appelé après la confirmation de cette étape (ex: pour enchaîner sur l'étape suivante)
      */
     fun showProductChoiceGuide(scanBarcodeButton: View, manualEntryButton: View, onChoiceComplete: (() -> Unit)? = null) {
-        if (getCurrentGuideState() != GuideState.PRODUCT_CHOICE_SCREEN) return
+        if (isGuideCompleted() || getCurrentGuideState() != GuideState.PRODUCT_CHOICE_SCREEN) return
 
         guideManager.initGuide(GUIDE_ID, true)
             .addStep(
@@ -218,7 +218,7 @@ class AddFirstProductGuide(private val activity: Activity) {
      * Note: Cette étape peut être passive car l'utilisateur doit scanner un code-barres.
      */
     fun showBarcodeScannerGuide(scannerView: View) {
-        if (getCurrentGuideState() != GuideState.BARCODE_SCANNER_SCREEN) return
+        if (isGuideCompleted() || getCurrentGuideState() != GuideState.BARCODE_SCANNER_SCREEN) return
 
         // Lors de l'entrée dans l'écran de scan, nous prévoyons déjà l'état suivant
         // car nous ne montrons pas de spotlight dans cet écran
@@ -230,7 +230,7 @@ class AddFirstProductGuide(private val activity: Activity) {
      * @param onBarcodeFilledComplete Callback appelé après la confirmation de cette étape (ex: pour enchaîner sur l'étape suivante)
      */
     fun showBarcodeFilledGuide(barcodeField: View, onBarcodeFilledComplete: (() -> Unit)? = null) {
-        if (getCurrentGuideState() != GuideState.PRODUCT_FORM_BARCODE_FILLED) return
+        if (isGuideCompleted() || getCurrentGuideState() != GuideState.PRODUCT_FORM_BARCODE_FILLED) return
 
         guideManager.initGuide(GUIDE_ID, true)
             .addStep(
@@ -257,7 +257,7 @@ class AddFirstProductGuide(private val activity: Activity) {
      * Affiche le guide sur le bouton de prise de photo.
      */
     fun showTakePhotoButtonGuide(photoButton: View, onPhotoButtonComplete: (() -> Unit)? = null) {
-        if (getCurrentGuideState() != GuideState.PRODUCT_FORM_PHOTO_BUTTON) return
+        if (isGuideCompleted() || getCurrentGuideState() != GuideState.PRODUCT_FORM_PHOTO_BUTTON) return
 
         guideManager.initGuide(GUIDE_ID, true)
             .addStep(
@@ -284,7 +284,7 @@ class AddFirstProductGuide(private val activity: Activity) {
      * Affiche l'avertissement sur la prise de photo.
      */
     fun showPhotoWarningGuide(photoPreview: View) {
-        if (getCurrentGuideState() != GuideState.PRODUCT_FORM_PHOTO_WARNING) return
+        if (isGuideCompleted() || getCurrentGuideState() != GuideState.PRODUCT_FORM_PHOTO_WARNING) return
 
         guideManager.initGuide(GUIDE_ID, true)
             .addStep(
@@ -310,7 +310,7 @@ class AddFirstProductGuide(private val activity: Activity) {
      * Affiche le guide sur les champs automatiquement remplis.
      */
     fun showFieldsAutofilledGuide(formLayout: View, onComplete: (() -> Unit)? = null) {
-        if (getCurrentGuideState() != GuideState.PRODUCT_FORM_FIELDS_AUTOFILLED) return
+        if (isGuideCompleted() || getCurrentGuideState() != GuideState.PRODUCT_FORM_FIELDS_AUTOFILLED) return
 
         guideManager.initGuide(GUIDE_ID, true)
             .addStep(
@@ -337,7 +337,7 @@ class AddFirstProductGuide(private val activity: Activity) {
      * Affiche le guide sur le bouton de sauvegarde du produit.
      */
     fun showSaveProductButtonGuide(saveButton: View, onComplete: (() -> Unit)? = null) {
-        if (getCurrentGuideState() != GuideState.PRODUCT_FORM_SAVE_BUTTON) return
+        if (isGuideCompleted() || getCurrentGuideState() != GuideState.PRODUCT_FORM_SAVE_BUTTON) return
 
         guideManager.initGuide(GUIDE_ID, true)
             .addStep(
@@ -364,7 +364,7 @@ class AddFirstProductGuide(private val activity: Activity) {
      * Affiche le guide après l'ajout du produit, puis enchaîne sur le bouton d'analyse.
      */
     fun showProductAddedGuide(root: View, analyzeButton: View) {
-        if (getCurrentGuideState() != GuideState.MAIN_SCREEN_PRODUCT_ADDED) return
+        if (isGuideCompleted() || getCurrentGuideState() != GuideState.MAIN_SCREEN_PRODUCT_ADDED) return
 
         guideManager.initGuide(GUIDE_ID, true)
             .addStep(
@@ -391,7 +391,7 @@ class AddFirstProductGuide(private val activity: Activity) {
      * Affiche le guide sur le bouton d'analyse.
      */
     fun showAnalyzeButtonGuide(analyzeButton: View) {
-        if (getCurrentGuideState() != GuideState.MAIN_SCREEN_ANALYZE_BUTTON) return
+        if (isGuideCompleted() || getCurrentGuideState() != GuideState.MAIN_SCREEN_ANALYZE_BUTTON) return
 
         guideManager.initGuide(GUIDE_ID, true)
             .addStep(
