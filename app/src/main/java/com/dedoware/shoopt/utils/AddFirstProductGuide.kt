@@ -144,6 +144,9 @@ class AddFirstProductGuide(private val activity: Activity) {
                 saveGuideState(GuideState.MAIN_SCREEN_ADD_BUTTON)
                 onWelcomeComplete?.invoke()
             }
+            .setOnSkipListener {
+                completeGuide()
+            }
             .start()
     }
 

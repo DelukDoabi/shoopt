@@ -22,6 +22,7 @@ class UserGuideManager(private val activity: Activity) {
     private var currentStep = 0
     private var steps = mutableListOf<GuideStep>()
     private var onCompleteCallback: (() -> Unit)? = null
+    private var onSkipCallback: (() -> Unit)? = null
     private var rootView: ViewGroup? = null
     private var currentSpotlight: SpotlightView? = null
     private val handler = Handler(Looper.getMainLooper())
@@ -99,6 +100,14 @@ class UserGuideManager(private val activity: Activity) {
     }
 
     /**
+     * Définit une action à exécuter lorsque le guide est ignoré (skip).
+     */
+    fun setOnSkipListener(callback: () -> Unit): UserGuideManager {
+        onSkipCallback = callback
+        return this
+    }
+
+    /**
      * Démarre le guide utilisateur.
      */
     fun start() {
@@ -142,13 +151,11 @@ class UserGuideManager(private val activity: Activity) {
             // Configurer les actions des boutons
             setCallbacks(
                 onSkip = {
-                    // Ignorer le reste du guide
                     hideCurrentSpotlight {
-                        onCompleteCallback?.invoke()
+                        onSkipCallback?.invoke() ?: onCompleteCallback?.invoke()
                     }
                 },
                 onNext = {
-                    // Passer à l'étape suivante
                     hideCurrentSpotlight {
                         currentStep++
                         showCurrentStep()

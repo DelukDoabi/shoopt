@@ -238,6 +238,13 @@ class SpotlightView @JvmOverloads constructor(
     }
 
     /**
+     * Définit le callback appelé lors du clic sur le bouton "Passer" (skip).
+     */
+    fun setOnSkipListener(listener: (() -> Unit)?) {
+        onSkipClickListener = listener
+    }
+
+    /**
      * Change la couleur du fond du spotlight.
      */
     fun setSpotlightColor(@ColorInt color: Int) {
