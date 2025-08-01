@@ -249,7 +249,7 @@
     <string name="guide_first_product_welcome_desc">Wir begleiten dich dabei, dein allererstes Produkt ganz einfach hinzuzufügen.</string>
 
     <string name="guide_add_product_button_title">Produkt hinzufügen</string>
-    <string name="guide_add_product_button_desc">Drücke hier, um mit dem Aufbau deiner personalisierten Produktdatenbank zu beginnen. Los geht's!</string>
+    <string name="guide_add_product_button_desc">Drücke hier, um mit dem Aufbau deiner personalisierten Produktdatenbank zu beginnen. Los geht\'s!</string>
 
     <string name="guide_product_choice_title">Wähle deine Methode</string>
     <string name="guide_product_choice_desc">Du kannst einen Barcode scannen oder die Infos von Hand eingeben. Du entscheidest!</string>
@@ -258,7 +258,7 @@
     <string name="guide_barcode_scan_desc">Richte den Barcode im Rahmen aus und lass Shoopt den Rest machen. Ein echter Zeitgewinn!</string>
 
     <string name="guide_barcode_filled_title">Barcode erkannt</string>
-    <string name="guide_barcode_filled_desc">Super! Der Code wurde erkannt und hinzugefügt. Weiter geht's mit dem Produktfoto.</string>
+    <string name="guide_barcode_filled_desc">Super! Der Code wurde erkannt und hinzugefügt. Weiter geht\'s mit dem Produktfoto.</string>
 
     <string name="guide_take_photo_button_title">Foto machen</string>
     <string name="guide_take_photo_button_desc">Drücke hier, um ein Foto vom Produkt zu machen. Versuche den Preis gut zu zeigen 😉</string>
