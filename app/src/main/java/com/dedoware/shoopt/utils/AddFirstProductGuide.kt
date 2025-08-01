@@ -170,6 +170,9 @@ class AddFirstProductGuide(private val activity: Activity) {
                 // Préparer pour l'écran de choix de produit
                 saveGuideState(GuideState.PRODUCT_CHOICE_SCREEN)
             }
+            .setOnSkipListener {
+                completeGuide()
+            }
             .start()
     }
 
@@ -203,6 +206,9 @@ class AddFirstProductGuide(private val activity: Activity) {
                 // Préparer pour le scanner de code-barres
                 saveGuideState(GuideState.BARCODE_SCANNER_SCREEN)
                 onChoiceComplete?.invoke()
+            }
+            .setOnSkipListener {
+                completeGuide()
             }
             .start()
     }
@@ -241,6 +247,9 @@ class AddFirstProductGuide(private val activity: Activity) {
                 saveGuideState(GuideState.PRODUCT_FORM_PHOTO_BUTTON)
                 onBarcodeFilledComplete?.invoke()
             }
+            .setOnSkipListener {
+                completeGuide()
+            }
             .start()
     }
 
@@ -265,6 +274,9 @@ class AddFirstProductGuide(private val activity: Activity) {
                 saveGuideState(GuideState.PRODUCT_FORM_PHOTO_WARNING)
                 onPhotoButtonComplete?.invoke()
             }
+            .setOnSkipListener {
+                completeGuide()
+            }
             .start()
     }
 
@@ -287,6 +299,9 @@ class AddFirstProductGuide(private val activity: Activity) {
             .setOnCompleteListener {
                 // Préparer pour les champs auto-remplis
                 saveGuideState(GuideState.PRODUCT_FORM_FIELDS_AUTOFILLED)
+            }
+            .setOnSkipListener {
+                completeGuide()
             }
             .start()
     }
@@ -312,6 +327,9 @@ class AddFirstProductGuide(private val activity: Activity) {
                 saveGuideState(GuideState.PRODUCT_FORM_SAVE_BUTTON)
                 onComplete?.invoke()
             }
+            .setOnSkipListener {
+                completeGuide()
+            }
             .start()
     }
 
@@ -335,6 +353,9 @@ class AddFirstProductGuide(private val activity: Activity) {
                 // Préparer pour le message de confirmation d'ajout
                 saveGuideState(GuideState.MAIN_SCREEN_PRODUCT_ADDED)
                 onComplete?.invoke()
+            }
+            .setOnSkipListener {
+                completeGuide()
             }
             .start()
     }
@@ -360,6 +381,9 @@ class AddFirstProductGuide(private val activity: Activity) {
                 // Enchaîner immédiatement sur le guide du bouton analyse
                 showAnalyzeButtonGuide(analyzeButton)
             }
+            .setOnSkipListener {
+                completeGuide()
+            }
             .start()
     }
 
@@ -384,6 +408,9 @@ class AddFirstProductGuide(private val activity: Activity) {
                 // Optionally show a completion message or finish the guide
                 // Terminer avec un message de félicitation
                 showCompletionGuide(analyzeButton)
+            }
+            .setOnSkipListener {
+                completeGuide()
             }
             .start()
     }
