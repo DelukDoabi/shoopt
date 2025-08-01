@@ -114,12 +114,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             // Lancer le guide d'ajout du premier produit si demandé par l'extra
-            if (intent?.getBooleanExtra("EXTRA_START_ADD_PRODUCT_GUIDE", false) == true) {
-                val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
-                val addProductButton = findViewById<View>(R.id.add_or_update_product_IB)
-                guide.startWelcomeGuide {
-                    guide.showAddProductButtonGuide(addProductButton)
-                }
+            if (savedInstanceState == null && intent?.getBooleanExtra("EXTRA_START_ADD_PRODUCT_GUIDE", false) == true) {
+                handleStartAddProductGuide(intent)
             }
 
             // Ajout: Déclenchement automatique du guide après onboarding si nécessaire
@@ -143,6 +139,13 @@ class MainActivity : AppCompatActivity() {
 
             // Afficher un message à l'utilisateur
             Toast.makeText(this, getString(R.string.app_loading_error), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        if (intent?.getBooleanExtra("EXTRA_START_ADD_PRODUCT_GUIDE", false) == true) {
+            handleStartAddProductGuide(intent)
         }
     }
 
@@ -405,6 +408,16 @@ class MainActivity : AppCompatActivity() {
 
             Toast.makeText(this, getString(R.string.dialog_display_error), Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun handleStartAddProductGuide(intent: Intent?) {
+        val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
+        val addProductButton = findViewById<View>(R.id.add_or_update_product_IB)
+        guide.startWelcomeGuide {
+            guide.showAddProductButtonGuide(addProductButton)
+        }
+        // Remove the extra so the guide doesn't restart on future intents
+        intent?.removeExtra("EXTRA_START_ADD_PRODUCT_GUIDE")
     }
 
     private fun checkProductExistenceAndNavigate(barcode: String) {

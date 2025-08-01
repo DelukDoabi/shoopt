@@ -352,10 +352,10 @@ class SettingsActivity : AppCompatActivity() {
         replayAddProductGuideCard.setOnClickListener {
             val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
             guide.resetGuide()
-            android.widget.Toast.makeText(this, getString(R.string.replay_add_product_guide_description), android.widget.Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.replay_add_product_guide_description), Toast.LENGTH_SHORT).show()
             // Lancer MainActivity avec un extra pour démarrer le guide
             val intent = Intent(this, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP // Removed FLAG_ACTIVITY_NEW_TASK
             intent.putExtra("EXTRA_START_ADD_PRODUCT_GUIDE", true)
             startActivity(intent)
             finish()

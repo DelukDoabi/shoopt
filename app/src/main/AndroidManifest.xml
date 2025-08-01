@@ -101,7 +101,8 @@
         <activity
             android:name=".activities.MainActivity"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop" />
     </application>
 
 </manifest>
