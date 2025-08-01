@@ -164,9 +164,15 @@ class MainActivity : AppCompatActivity() {
         val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
         when (guide.getCurrentGuideState()) {
             com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.MAIN_SCREEN_PRODUCT_ADDED -> {
-                // Afficher le tooltip de félicitations après ajout du produit
+                // Afficher le tooltip de félicitations après ajout du produit et enchaîner sur analyse
                 val root = findViewById<View>(android.R.id.content)
-                guide.showProductAddedGuide(root)
+                val analyzeButton = findViewById<View>(R.id.analyse_IB)
+                guide.showProductAddedGuide(root, analyzeButton)
+            }
+            com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.MAIN_SCREEN_ANALYZE_BUTTON -> {
+                // Fallback : si l'app a été mise en arrière-plan entre les étapes
+                val analyzeButton = findViewById<View>(R.id.analyse_IB)
+                guide.showAnalyzeButtonGuide(analyzeButton)
             }
             // ...autres cas si besoin...
             else -> {}

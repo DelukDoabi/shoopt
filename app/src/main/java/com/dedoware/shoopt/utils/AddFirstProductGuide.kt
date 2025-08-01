@@ -337,24 +337,25 @@ class AddFirstProductGuide(private val activity: Activity) {
     }
 
     /**
-     * Affiche le guide de confirmation d'ajout du produit.
+     * Affiche le guide après l'ajout du produit, puis enchaîne sur le bouton d'analyse.
      */
-    fun showProductAddedGuide(rootView: View) {
+    fun showProductAddedGuide(root: View, analyzeButton: View) {
         if (getCurrentGuideState() != GuideState.MAIN_SCREEN_PRODUCT_ADDED) return
 
         guideManager.initGuide(GUIDE_ID, true)
             .addStep(
-                rootView,
+                root,
                 R.string.guide_product_added_title,
                 R.string.guide_product_added_desc,
                 R.drawable.ic_check_circle,
-                SpotlightView.Shape.CIRCLE,
-                0,
-                SpotlightView.TooltipPosition.AUTO
+                SpotlightView.Shape.RECTANGLE,
+                8,
+                SpotlightView.TooltipPosition.BOTTOM
             )
             .setOnCompleteListener {
-                // Préparer pour le bouton d'analyse
                 saveGuideState(GuideState.MAIN_SCREEN_ANALYZE_BUTTON)
+                // Enchaîner immédiatement sur le guide du bouton analyse
+                showAnalyzeButtonGuide(analyzeButton)
             }
             .start()
     }
@@ -373,9 +374,11 @@ class AddFirstProductGuide(private val activity: Activity) {
                 R.drawable.ic_analytics,
                 SpotlightView.Shape.CIRCLE,
                 8,
-                SpotlightView.TooltipPosition.BOTTOM
+                SpotlightView.TooltipPosition.TOP
             )
             .setOnCompleteListener {
+                saveGuideState(GuideState.COMPLETED)
+                // Optionally show a completion message or finish the guide
                 // Terminer avec un message de félicitation
                 showCompletionGuide(analyzeButton)
             }
