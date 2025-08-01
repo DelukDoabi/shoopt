@@ -1223,8 +1223,11 @@ class AddProductActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         // Show the guide tooltip/spotlight if needed
-        productBarcodeEditText.post {
-            com.dedoware.shoopt.utils.AddFirstProductGuide(this).showBarcodeFilledGuide(productBarcodeEditText)
+        val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
+        if (!guide.isGuideCompleted()) {
+            productBarcodeEditText.post {
+                guide.showBarcodeFilledGuide(productBarcodeEditText)
+            }
         }
     }
 
@@ -1234,6 +1237,7 @@ class AddProductActivity : AppCompatActivity() {
      */
     private fun continueFirstProductGuideIfNeeded() {
         val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
+        if (guide.isGuideCompleted()) return
         when (guide.getCurrentGuideState()) {
             com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_BARCODE_FILLED ->
                 productBarcodeEditText.post {
