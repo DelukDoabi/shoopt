@@ -162,6 +162,7 @@ class MainActivity : AppCompatActivity() {
 
         // Guide utilisateur : reprendre à l'étape appropriée
         val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
+        if (guide.isGuideCompleted()) return
         when (guide.getCurrentGuideState()) {
             com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.MAIN_SCREEN_PRODUCT_ADDED -> {
                 // Afficher le tooltip de félicitations après ajout du produit et enchaîner sur analyse
