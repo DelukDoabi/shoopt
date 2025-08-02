@@ -26,6 +26,8 @@ import androidx.annotation.StringRes
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import com.dedoware.shoopt.R
 import com.google.android.material.button.MaterialButton
@@ -76,6 +78,10 @@ class SpotlightView @JvmOverloads constructor(
     private var onSkipClickListener: (() -> Unit)? = null
     private var onNextClickListener: (() -> Unit)? = null
 
+    // System Insets
+    private var systemBarTopInset: Int = 0
+    private var systemBarBottomInset: Int = 0
+
     init {
         // Rendre cette vue plein écran et transparente
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
@@ -103,6 +109,23 @@ class SpotlightView @JvmOverloads constructor(
 
         // Ajouter le tooltip à cette vue
         addView(tooltipView)
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        ViewCompat.setOnApplyWindowInsetsListener(this) { _, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            systemBarTopInset = systemBars.top
+            systemBarBottomInset = systemBars.bottom
+
+            // Reposition tooltip if it's already laid out and insets change
+            if (tooltipCard.width > 0 && tooltipCard.height > 0) {
+                 positionTooltip()
+            }
+            insets // Propagate insets
+        }
+        // Request initial insets application
+        ViewCompat.requestApplyInsets(this)
     }
 
     /**
@@ -139,11 +162,12 @@ class SpotlightView @JvmOverloads constructor(
         this.spotlightShape = shape
         this.targetPadding = context.resources.displayMetrics.density * paddingDp
 
-        updateTargetRect()
+        updateTargetRect() // This calls positionTooltip
 
         if (animate) {
             animateIn()
         } else {
+            alpha = 1f // Ensure view is visible if not animating in
             invalidate()
         }
     }
@@ -164,8 +188,6 @@ class SpotlightView @JvmOverloads constructor(
                 (location[0] + view.width).toFloat() + targetPadding,
                 (location[1] + view.height).toFloat() + targetPadding
             )
-
-            // Positionner le tooltip en fonction de la position choisie
             positionTooltip()
         }
     }
@@ -174,12 +196,13 @@ class SpotlightView @JvmOverloads constructor(
      * Anime l'apparition du spotlight.
      */
     private fun animateIn() {
+        alpha = 0f // Start transparent for fade-in
         val valueAnimator = ValueAnimator.ofFloat(0f, 1f)
         valueAnimator.duration = animationDuration
         valueAnimator.interpolator = AccelerateDecelerateInterpolator()
         valueAnimator.addUpdateListener { animator ->
             alpha = animator.animatedValue as Float
-            invalidate()
+            // invalidate() // Alpha change itself should trigger redraw
         }
         valueAnimator.start()
     }
@@ -188,12 +211,12 @@ class SpotlightView @JvmOverloads constructor(
      * Anime la disparition du spotlight puis exécute une action.
      */
     fun animateOut(onAnimationEnd: () -> Unit) {
-        val valueAnimator = ValueAnimator.ofFloat(1f, 0f)
+        val valueAnimator = ValueAnimator.ofFloat(alpha, 0f) // Animate from current alpha
         valueAnimator.duration = animationDuration
         valueAnimator.interpolator = AccelerateDecelerateInterpolator()
         valueAnimator.addUpdateListener { animator ->
             alpha = animator.animatedValue as Float
-            invalidate()
+            // invalidate()
         }
         valueAnimator.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
@@ -215,7 +238,6 @@ class SpotlightView @JvmOverloads constructor(
         tooltipTitle.setText(titleResId)
         tooltipDescription.setText(descriptionResId)
 
-        // Configurer l'icône si elle est fournie
         if (iconResId != null) {
             tooltipIcon.setImageResource(iconResId)
             tooltipIcon.visibility = View.VISIBLE
@@ -223,7 +245,6 @@ class SpotlightView @JvmOverloads constructor(
             tooltipIcon.visibility = View.GONE
         }
 
-        // Changer le texte du bouton si c'est la dernière étape
         if (isLastStep) {
             nextButton.setText(R.string.got_it)
         } else {
@@ -261,91 +282,105 @@ class SpotlightView @JvmOverloads constructor(
      * Positionne le tooltip par rapport à la cible.
      */
     private fun positionTooltip() {
-        post {
-            val tooltipWidth = tooltipCard.width.toFloat()
-            val tooltipHeight = tooltipCard.height.toFloat()
-            val screenWidth = width.toFloat()
-            val screenHeight = height.toFloat()
-
-            // Calculer l'espace disponible dans chaque direction
-            val spaceAbove = targetRect.top
-            val spaceBelow = screenHeight - targetRect.bottom
-            val spaceLeft = targetRect.left
-            val spaceRight = screenWidth - targetRect.right
-
-            // Déterminer la meilleure position si AUTO est sélectionné
-            val finalPosition = if (tooltipPosition == TooltipPosition.AUTO) {
-                when {
-                    spaceBelow >= tooltipHeight -> TooltipPosition.BOTTOM
-                    spaceAbove >= tooltipHeight -> TooltipPosition.TOP
-                    spaceRight >= tooltipWidth -> TooltipPosition.RIGHT
-                    spaceLeft >= tooltipWidth -> TooltipPosition.LEFT
-                    else -> TooltipPosition.BOTTOM // Par défaut
-                }
-            } else {
-                tooltipPosition
-            }
-
-            // Positionner le tooltip en fonction de la position choisie
-            val params = tooltipCard.layoutParams as ConstraintLayout.LayoutParams
-            when (finalPosition) {
-                TooltipPosition.TOP -> {
-                    tooltipCard.x = targetRect.centerX() - tooltipWidth / 2
-                    tooltipCard.y = targetRect.top - tooltipHeight - 16
-                }
-                TooltipPosition.BOTTOM -> {
-                    tooltipCard.x = targetRect.centerX() - tooltipWidth / 2
-                    tooltipCard.y = targetRect.bottom + 16
-                }
-                TooltipPosition.LEFT -> {
-                    tooltipCard.x = targetRect.left - tooltipWidth - 16
-                    tooltipCard.y = targetRect.centerY() - tooltipHeight / 2
-                }
-                TooltipPosition.RIGHT -> {
-                    tooltipCard.x = targetRect.right + 16
-                    tooltipCard.y = targetRect.centerY() - tooltipHeight / 2
-                }
-                else -> {
-                    // Ne devrait pas arriver, mais géré par sécurité
-                    tooltipCard.x = targetRect.centerX() - tooltipWidth / 2
-                    tooltipCard.y = targetRect.bottom + 16
-                }
-            }
-
-            // S'assurer que le tooltip reste dans les limites de l'écran
-            tooltipCard.x = tooltipCard.x.coerceIn(16f, screenWidth - tooltipWidth - 16)
-            tooltipCard.y = tooltipCard.y.coerceIn(16f, screenHeight - tooltipHeight - 16)
+        // Ensure tooltipCard is measured before trying to position it
+        if (tooltipCard.width == 0 && tooltipCard.height == 0) {
+            tooltipCard.post { positionTooltipInternal() }
+        } else {
+            positionTooltipInternal()
         }
     }
+
+    private fun positionTooltipInternal() {
+        val tooltipWidth = tooltipCard.width.toFloat()
+        val tooltipHeight = tooltipCard.height.toFloat()
+        val screenWidth = width.toFloat() // Width of SpotlightView
+        val screenHeight = height.toFloat() // Height of SpotlightView
+
+        if (tooltipWidth == 0f || tooltipHeight == 0f || screenWidth == 0f || screenHeight == 0f) {
+            // Not ready to position yet
+            return
+        }
+
+        val spaceAbove = targetRect.top
+        val spaceBelow = screenHeight - targetRect.bottom
+        val spaceLeft = targetRect.left
+        val spaceRight = screenWidth - targetRect.right
+
+        val finalPosition = if (tooltipPosition == TooltipPosition.AUTO) {
+            when {
+                spaceBelow >= tooltipHeight + (16 * resources.displayMetrics.density) -> TooltipPosition.BOTTOM
+                spaceAbove >= tooltipHeight + (16 * resources.displayMetrics.density) -> TooltipPosition.TOP
+                spaceRight >= tooltipWidth + (16 * resources.displayMetrics.density) -> TooltipPosition.RIGHT
+                spaceLeft >= tooltipWidth + (16 * resources.displayMetrics.density) -> TooltipPosition.LEFT
+                else -> TooltipPosition.BOTTOM
+            }
+        } else {
+            tooltipPosition
+        }
+
+        val margin = 16f * resources.displayMetrics.density // 16dp margin
+
+        when (finalPosition) {
+            TooltipPosition.TOP -> {
+                tooltipCard.x = targetRect.centerX() - tooltipWidth / 2
+                tooltipCard.y = targetRect.top - tooltipHeight - margin
+            }
+            TooltipPosition.BOTTOM -> {
+                tooltipCard.x = targetRect.centerX() - tooltipWidth / 2
+                tooltipCard.y = targetRect.bottom + margin
+            }
+            TooltipPosition.LEFT -> {
+                tooltipCard.x = targetRect.left - tooltipWidth - margin
+                tooltipCard.y = targetRect.centerY() - tooltipHeight / 2
+            }
+            TooltipPosition.RIGHT -> {
+                tooltipCard.x = targetRect.right + margin
+                tooltipCard.y = targetRect.centerY() - tooltipHeight / 2
+            }
+            else -> { // Should not happen with AUTO
+                tooltipCard.x = targetRect.centerX() - tooltipWidth / 2
+                tooltipCard.y = targetRect.bottom + margin
+            }
+        }
+
+        // S'assurer que le tooltip reste dans les limites de l'écran, en tenant compte des insets
+        val minX = margin
+        val maxX = screenWidth - tooltipWidth - margin
+        val minY = systemBarTopInset + margin
+        // screenHeight is the total height of SpotlightView, which fits the window.
+        // So, the usable height for the tooltip's bottom edge is screenHeight - systemBarBottomInset.
+        // The tooltip's y is its top edge, so maxY for y is (screenHeight - systemBarBottomInset) - tooltipHeight - margin.
+        val maxY = screenHeight - tooltipHeight - systemBarBottomInset - margin
+
+        tooltipCard.x = tooltipCard.x.coerceIn(minX, maxX)
+        tooltipCard.y = tooltipCard.y.coerceIn(minY, maxY)
+    }
+
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (event == null) return super.onTouchEvent(event)
 
-        // If the spotlight shape is NONE, the SpotlightView itself should consume the touch
-        // to prevent interaction with underlying views. The tooltipCard, being a child,
-        // will still receive touch events if the touch is on it, due to standard
-        // ViewGroup touch dispatch.
         if (spotlightShape == Shape.NONE) {
-            return true // Consume the touch
+            return true
         }
 
-        // For other shapes (CIRCLE, RECTANGLE, etc.):
-        // If a targetView is set and the touch is within its spotlighted area (targetRect)
         if (targetView != null && targetRect.contains(event.x, event.y)) {
-            // Do not consume the event; let it pass through to the targetView.
             return false
         }
-
-        // For any other case (e.g., touch on the dimmed background outside the targetRect
-        // when a shape is active), consume the event.
         return true
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         if (w > 0 && h > 0) {
-            bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-            canvas = Canvas(bitmap)
+            if (!::bitmap.isInitialized || bitmap.width != w || bitmap.height != h) {
+                bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+                canvas = Canvas(bitmap)
+            }
+        }
+        // When size changes (e.g. rotation), targetRect and tooltip might need re-calculation
+        if (targetView != null) {
+            updateTargetRect()
         }
     }
 
@@ -353,34 +388,34 @@ class SpotlightView @JvmOverloads constructor(
         super.onDraw(canvas)
         if (!::bitmap.isInitialized) return
 
-        // Efface le bitmap à chaque frame pour éviter l'accumulation
         bitmap.eraseColor(Color.TRANSPARENT)
-
-        // Toujours dessiner l'overlay sombre
         this.canvas.drawColor(spotlightColor)
 
-        // Découper la forme du spotlight uniquement si ce n'est pas NONE
         when (spotlightShape) {
             Shape.CIRCLE -> {
                 val radius = max(targetRect.width(), targetRect.height()) / 2
-                this.canvas.drawCircle(
-                    targetRect.centerX(),
-                    targetRect.centerY(),
-                    radius,
-                    transparentPaint
-                )
+                if (radius > 0) { // Avoid drawing circle with 0 or negative radius
+                    this.canvas.drawCircle(
+                        targetRect.centerX(),
+                        targetRect.centerY(),
+                        radius,
+                        transparentPaint
+                    )
+                }
             }
             Shape.RECTANGLE -> {
-                this.canvas.drawRect(targetRect, transparentPaint)
+                if (targetRect.width() > 0 && targetRect.height() > 0) {
+                    this.canvas.drawRect(targetRect, transparentPaint)
+                }
             }
             Shape.ROUNDED_RECTANGLE -> {
-                val cornerRadius = 16f * context.resources.displayMetrics.density
-                this.canvas.drawRoundRect(targetRect, cornerRadius, cornerRadius, transparentPaint)
+                if (targetRect.width() > 0 && targetRect.height() > 0) {
+                    val cornerRadius = 16f * context.resources.displayMetrics.density
+                    this.canvas.drawRoundRect(targetRect, cornerRadius, cornerRadius, transparentPaint)
+                }
             }
-            Shape.NONE -> { /* Ne rien découper, juste l'overlay sombre */ }
+            Shape.NONE -> { /* No cutout */ }
         }
-
-        // Dessiner le bitmap sur le canvas réel avec un Paint sans alpha
         canvas.drawBitmap(bitmap, 0f, 0f, null)
     }
 }
