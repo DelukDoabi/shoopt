@@ -345,7 +345,7 @@ class AddFirstProductGuide(private val activity: Activity) {
                 R.string.guide_save_product_title,
                 R.string.guide_save_product_desc,
                 R.drawable.ic_save,
-                SpotlightView.Shape.CIRCLE,
+                SpotlightView.Shape.RECTANGLE,
                 8,
                 SpotlightView.TooltipPosition.BOTTOM
             )
@@ -425,7 +425,7 @@ class AddFirstProductGuide(private val activity: Activity) {
                 R.string.guide_completion_title,
                 R.string.guide_completion_desc,
                 R.drawable.ic_celebration,
-                SpotlightView.Shape.CIRCLE,
+                SpotlightView.Shape.NONE,
                 0,
                 SpotlightView.TooltipPosition.AUTO
             )
