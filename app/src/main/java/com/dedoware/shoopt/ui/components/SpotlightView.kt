@@ -14,6 +14,7 @@ import android.graphics.PorterDuffXfermode
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.FrameLayout
@@ -80,6 +81,10 @@ class SpotlightView @JvmOverloads constructor(
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
         setWillNotDraw(false)
         setBackgroundColor(Color.TRANSPARENT)
+
+        // Permettre à cette vue de consommer les événements tactiles
+        isClickable = true
+        isFocusable = true
 
         // Inflater le layout du tooltip
         val tooltipView = LayoutInflater.from(context).inflate(R.layout.view_spotlight_tooltip, this, false)
@@ -311,6 +316,29 @@ class SpotlightView @JvmOverloads constructor(
             tooltipCard.x = tooltipCard.x.coerceIn(16f, screenWidth - tooltipWidth - 16)
             tooltipCard.y = tooltipCard.y.coerceIn(16f, screenHeight - tooltipHeight - 16)
         }
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        if (event == null) return super.onTouchEvent(event)
+
+        // If the spotlight shape is NONE, the SpotlightView itself should consume the touch
+        // to prevent interaction with underlying views. The tooltipCard, being a child,
+        // will still receive touch events if the touch is on it, due to standard
+        // ViewGroup touch dispatch.
+        if (spotlightShape == Shape.NONE) {
+            return true // Consume the touch
+        }
+
+        // For other shapes (CIRCLE, RECTANGLE, etc.):
+        // If a targetView is set and the touch is within its spotlighted area (targetRect)
+        if (targetView != null && targetRect.contains(event.x, event.y)) {
+            // Do not consume the event; let it pass through to the targetView.
+            return false
+        }
+
+        // For any other case (e.g., touch on the dimmed background outside the targetRect
+        // when a shape is active), consume the event.
+        return true
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
