@@ -292,7 +292,7 @@ class AddFirstProductGuide(private val activity: Activity) {
                 R.string.guide_photo_warning_title,
                 R.string.guide_photo_warning_desc,
                 R.drawable.ic_warning,
-                SpotlightView.Shape.RECTANGLE,
+                SpotlightView.Shape.CIRCLE,
                 8,
                 SpotlightView.TooltipPosition.BOTTOM
             )
