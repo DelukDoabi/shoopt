@@ -167,7 +167,8 @@ class UserGuideManager(private val activity: Activity) {
             setTarget(
                 targetView = step.targetView,
                 shape = step.spotlightShape,
-                paddingDp = step.paddingDp
+                paddingDp = step.paddingDp,
+                tooltipPos = step.position
             )
         }
 

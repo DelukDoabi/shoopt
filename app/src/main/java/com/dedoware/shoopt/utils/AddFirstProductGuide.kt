@@ -183,33 +183,43 @@ class AddFirstProductGuide(private val activity: Activity) {
     fun showProductChoiceGuide(scanBarcodeButton: View, manualEntryButton: View, onChoiceComplete: (() -> Unit)? = null) {
         if (isGuideCompleted() || getCurrentGuideState() != GuideState.PRODUCT_CHOICE_SCREEN) return
 
-        guideManager.initGuide(GUIDE_ID, true)
-            .addStep(
-                scanBarcodeButton,
-                R.string.guide_product_choice_title,
-                R.string.guide_product_choice_desc,
-                R.drawable.ic_choice,
-                SpotlightView.Shape.RECTANGLE,
-                8,
-                SpotlightView.TooltipPosition.BOTTOM
-            )
-            .addStep(
-                scanBarcodeButton,
-                R.string.guide_barcode_scan_title,
-                R.string.guide_barcode_scan_desc,
-                R.drawable.ic_barcode_scan,
-                SpotlightView.Shape.RECTANGLE,
-                8,
-                SpotlightView.TooltipPosition.BOTTOM
-            )
-            .setOnCompleteListener {
-                // Préparer pour le scanner de code-barres
-                saveGuideState(GuideState.BARCODE_SCANNER_SCREEN)
+
+        scanBarcodeButton.post {
+            if (activity.isFinishing || activity.isDestroyed) {
+                return@post
             }
-            .setOnSkipListener {
-                completeGuide()
+            if (isGuideCompleted() || getCurrentGuideState() != GuideState.PRODUCT_CHOICE_SCREEN) {
+                return@post
             }
-            .start()
+
+            guideManager.initGuide(GUIDE_ID, true)
+                .addStep(
+                    scanBarcodeButton,
+                    R.string.guide_product_choice_title,
+                    R.string.guide_product_choice_desc,
+                    R.drawable.ic_choice,
+                    SpotlightView.Shape.RECTANGLE,
+                    8,
+                    SpotlightView.TooltipPosition.TOP // This is the one we're interested in
+                )
+                .addStep(
+                    scanBarcodeButton, // Assuming this is correct, targeting the same button
+                    R.string.guide_barcode_scan_title,
+                    R.string.guide_barcode_scan_desc,
+                    R.drawable.ic_barcode_scan,
+                    SpotlightView.Shape.RECTANGLE,
+                    8,
+                    SpotlightView.TooltipPosition.BOTTOM
+                )
+                .setOnCompleteListener {
+                    saveGuideState(GuideState.BARCODE_SCANNER_SCREEN)
+                    // onChoiceComplete?.invoke() // Make sure this is handled if needed
+                }
+                .setOnSkipListener {
+                    completeGuide()
+                }
+                .start()
+        }
     }
 
     /**
@@ -346,7 +356,7 @@ class AddFirstProductGuide(private val activity: Activity) {
                 R.drawable.ic_save,
                 SpotlightView.Shape.RECTANGLE,
                 8,
-                SpotlightView.TooltipPosition.BOTTOM
+                SpotlightView.TooltipPosition.TOP
             )
             .setOnCompleteListener {
                 // Préparer pour le message de confirmation d'ajout

@@ -34,10 +34,6 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import kotlin.math.max
 
-/**
- * Vue personnalisée qui affiche un spotlight sur une vue cible avec un tooltip explicatif.
- * Prend en charge différentes formes de spotlight et positions de tooltip.
- */
 class SpotlightView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -132,21 +128,14 @@ class SpotlightView @JvmOverloads constructor(
      * Définit les différentes formes possibles pour le spotlight.
      */
     enum class Shape {
-        NONE, // Pas de spotlight, juste la tooltip
-        CIRCLE,
-        RECTANGLE,
-        ROUNDED_RECTANGLE
+        NONE, CIRCLE, RECTANGLE, ROUNDED_RECTANGLE
     }
 
     /**
      * Définit les positions possibles du tooltip par rapport à la cible.
      */
     enum class TooltipPosition {
-        TOP,
-        BOTTOM,
-        LEFT, // Not fully implemented in positioning logic yet
-        RIGHT, // Not fully implemented in positioning logic yet
-        AUTO
+        TOP, BOTTOM, LEFT, RIGHT, AUTO
     }
 
     /**
@@ -324,7 +313,7 @@ class SpotlightView @JvmOverloads constructor(
 
         var preferredY: Float
         var fallbackY: Float
-        
+
         // Determine preferred and fallback Y positions based on the desired tooltipPosition
         when (this.tooltipPosition) {
             TooltipPosition.TOP -> {
@@ -347,11 +336,11 @@ class SpotlightView @JvmOverloads constructor(
             }
             // LEFT and RIGHT are not fully handled yet, default to AUTO-like behavior for now
             TooltipPosition.LEFT, TooltipPosition.RIGHT -> {
-                 if (targetRect.centerY() < screenHeight / 2) { 
-                    preferredY = targetRect.bottom + margin 
+                 if (targetRect.centerY() < screenHeight / 2) {
+                    preferredY = targetRect.bottom + margin
                     fallbackY = targetRect.top - tooltipHeight - margin
-                } else { 
-                    preferredY = targetRect.top - tooltipHeight - margin 
+                } else {
+                    preferredY = targetRect.top - tooltipHeight - margin
                     fallbackY = targetRect.bottom + margin
                 }
             }
@@ -365,7 +354,7 @@ class SpotlightView @JvmOverloads constructor(
         if (this.tooltipPosition == TooltipPosition.TOP) {
             // If coerced Y (top of tooltip) is now at or below the target's top edge (considering margin),
             // it means the tooltip couldn't truly be placed "above" the target.
-            if (finalY >= targetRect.top - margin) { 
+            if (finalY >= targetRect.top - margin) {
                 preferredFailed = true
             }
         } else if (this.tooltipPosition == TooltipPosition.BOTTOM) {
@@ -373,7 +362,7 @@ class SpotlightView @JvmOverloads constructor(
             // it means the tooltip couldn't truly be placed "below" the target.
             // finalY is top of tooltip, so finalY + tooltipHeight is bottom of tooltip.
             // targetRect.bottom is bottom of target.
-            if (finalY + tooltipHeight <= targetRect.bottom + margin) { 
+            if (finalY + tooltipHeight <= targetRect.bottom + margin) {
                 preferredFailed = true
             }
         }
