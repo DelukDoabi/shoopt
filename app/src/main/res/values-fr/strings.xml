@@ -280,5 +280,12 @@
     <string name="guide_completion_title">Félicitations !</string>
     <string name="guide_completion_desc">Tu as ajouté ton premier produit avec succès. Continue comme ça pour tirer le meilleur de Shoopt !</string>
 
+    <string name="choose_product_entry_method">Comment souhaites-tu ajouter ton produit ?</string>
+    <string name="scan_barcode_description">Scanne le code-barres du produit pour une saisie rapide avec récupération automatique des informations</string>
+    <string name="manual_entry_description">Saisis manuellement les détails du produit sans utiliser de code-barres</string>
+    <string name="skip_guide">Passer</string>
+    <string name="next">Suivant</string>
+    <string name="got_it">Compris</string>
+    <string name="tooltip_icon_description">Icône de la fonction guide</string>
 
 </resources>

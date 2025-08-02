@@ -215,4 +215,74 @@
     <string name="replay_onboarding_description">Granska app‑introduktionen igen</string>
     <string name="onboarding_replayed">Onboarding startar vid nästa app‑start</string>
 
+    <string name="skip">Hoppa över</string>
+    <string name="finish">Avsluta</string>
+
+    <!-- Product Choice Guide -->
+    <string name="guide_scan_barcode_title">Skanna en streckkod</string>
+    <string name="guide_scan_barcode_desc">Välj det här alternativet för att skanna en produkts streckkod och hämta informationen automatiskt. Enkelt och snabbt!</string>
+
+    <string name="guide_manual_entry_title">Ange informationen manuellt</string>
+    <string name="guide_manual_entry_desc">Använd det här alternativet när en produkt inte har en streckkod eller om du vill ändra detaljerna själv.</string>
+
+    <string name="guide_back_title">Gå tillbaka till föregående skärm</string>
+    <string name="guide_back_desc">Du kan trycka här när som helst för att återgå till startsidan. Praktiskt, eller hur?</string>
+
+    <!-- Main Screen Guide -->
+    <string name="guide_main_screen_title">Välkommen till Shoopt</string>
+    <string name="guide_main_screen_desc">Upptäck hur du spårar dina inköp och sparar pengar med några enkla gester.</string>
+
+    <string name="guide_update_list_title">Uppdatera din lista</string>
+    <string name="guide_update_list_desc">Förbered din inköpslista som du vill innan du går till butiken.</string>
+
+    <string name="guide_add_product_title">Lägg till en produkt</string>
+    <string name="guide_add_product_desc">Spara dina produkter och håll koll på deras priser. Varje krona räknas!</string>
+
+    <!-- Replay Add Product Guide -->
+    <string name="replay_add_product_guide">Se guiden för att lägga till produkt igen</string>
+    <string name="replay_add_product_guide_description">Du kan starta den här lilla guiden när som helst för att påminna dig om hur du enkelt lägger till en produkt.</string>
+
+    <string name="guide_first_product_welcome_title">Välkommen till Shoopt!</string>
+    <string name="guide_first_product_welcome_desc">Vi kommer att hjälpa dig att lägga till din allra första produkt på ett enkelt sätt.</string>
+
+    <string name="guide_add_product_button_title">Lägg till en produkt</string>
+    <string name="guide_add_product_button_desc">Tryck här för att börja skapa din personliga produktdatabas. Nu kör vi!</string>
+
+    <string name="guide_product_choice_title">Välj din metod</string>
+    <string name="guide_product_choice_desc">Du kan skanna en streckkod eller ange informationen för hand. Du bestämmer!</string>
+
+    <string name="guide_barcode_scan_title">Skanna streckkoden</string>
+    <string name="guide_barcode_scan_desc">Rikta in streckkoden i ramen och låt Shoopt göra resten. En riktig tidsbesparing!</string>
+
+    <string name="guide_barcode_filled_title">Streckkod upptäckt</string>
+    <string name="guide_barcode_filled_desc">Fantastiskt! Koden har känts igen och lagts till. Vi fortsätter med produktfotot.</string>
+
+    <string name="guide_take_photo_button_title">Ta ett foto</string>
+    <string name="guide_take_photo_button_desc">Tryck här för att ta ett foto av produkten. Försök att visa priset tydligt 😉</string>
+
+    <string name="guide_photo_warning_title">Litet fototips</string>
+    <string name="guide_photo_warning_desc">För bästa resultat, ta ett skarpt foto där man tydligt kan se produktnamnet och dess pris.</string>
+
+    <string name="guide_fields_autofilled_title">Fält förifyllda</string>
+    <string name="guide_fields_autofilled_desc">Tack vare AI och din plats har vissa uppgifter lagts till automatiskt. Kolla dem snabbt!</string>
+
+    <string name="guide_save_product_title">Spara din produkt</string>
+    <string name="guide_save_product_desc">Tryck på den här knappen för att spara produkten i din personliga databas. Bra jobbat!</string>
+
+    <string name="guide_product_added_title">Produkt tillagd!</string>
+    <string name="guide_product_added_desc">Grattis, din första produkt är sparad. Du kan lägga till andra lika enkelt.</string>
+
+    <string name="guide_analyze_button_title">Analysera dina produkter</string>
+    <string name="guide_analyze_button_desc">Från den här skärmen kan du jämföra priser, se alla dina produkter och följa dina utgifter som en expert.</string>
+
+    <string name="guide_completion_title">Grattis!</string>
+    <string name="guide_completion_desc">Du har framgångsrikt lagt till din första produkt. Fortsätt så här för att få ut det mesta av Shoopt!</string>
+
+    <string name="choose_product_entry_method">Hur vill du lägga till din produkt?</string>
+    <string name="scan_barcode_description">Skanna produktens streckkod för snabb inmatning med automatisk informationshämtning</string>
+    <string name="manual_entry_description">Ange produktdetaljer manuellt utan att använda en streckkod</string>
+    <string name="skip_guide">Hoppa över</string>
+    <string name="next">Nästa</string>
+    <string name="got_it">Förstått</string>
+    <string name="tooltip_icon_description">Ikon för guidefunktion</string>
 </resources>

@@ -217,4 +217,74 @@
     <string name="replay_onboarding_description">Delengen maneh intro app</string>
     <string name="onboarding_replayed">Onboarding bakal diwiwiti nalika mbukak app sabanjure</string>
 
+    <string name="skip">Lewati</string>
+    <string name="finish">Rampung</string>
+
+    <!-- Product Choice Guide -->
+    <string name="guide_scan_barcode_title">Pindai barcode</string>
+    <string name="guide_scan_barcode_desc">Pilih pilihan iki kanggo mindai barcode produk lan njupuk informasi kanthi otomatis. Gampang lan cepet!</string>
+
+    <string name="guide_manual_entry_title">Lebokake informasi kanthi manual</string>
+    <string name="guide_manual_entry_desc">Gunakake pilihan iki nalika produk ora duwe barcode utawa yen sampeyan pengin ngowahi rincian dhewe.</string>
+
+    <string name="guide_back_title">Bali menyang layar sadurunge</string>
+    <string name="guide_back_desc">Sampeyan bisa nutul kene kapan wae kanggo bali menyang omah. Praktis, ta?</string>
+
+    <!-- Main Screen Guide -->
+    <string name="guide_main_screen_title">Sugeng rawuh ing Shoopt</string>
+    <string name="guide_main_screen_desc">Temokake cara nglacak blanja lan ngirit dhuwit kanthi gerakan sawetara.</string>
+
+    <string name="guide_update_list_title">Nganyari dhaptar</string>
+    <string name="guide_update_list_desc">Gawe dhaptar blanja kaya sing dikarepake sadurunge menyang toko.</string>
+
+    <string name="guide_add_product_title">Tambahake produk</string>
+    <string name="guide_add_product_desc">Rekam produk sampeyan lan tetep ngawasi regane. Saben receh iku penting!</string>
+
+    <!-- Replay Add Product Guide -->
+    <string name="replay_add_product_guide">Deleng maneh pandhuan nambah produk</string>
+    <string name="replay_add_product_guide_description">Sampeyan bisa miwiti maneh pandhuan cilik iki kapan wae kanggo ngelingi cara nambah produk kanthi gampang.</string>
+
+    <string name="guide_first_product_welcome_title">Sugeng rawuh ing Shoopt!</string>
+    <string name="guide_first_product_welcome_desc">Kita bakal nuntun sampeyan supaya bisa nambahake produk pisanan kanthi gampang banget.</string>
+
+    <string name="guide_add_product_button_title">Tambahake produk</string>
+    <string name="guide_add_product_button_desc">Tutul kene kanggo miwiti nggawe database produk pribadi. Ayo miwiti!</string>
+
+    <string name="guide_product_choice_title">Pilih cara sampeyan</string>
+    <string name="guide_product_choice_desc">Sampeyan bisa mindai barcode utawa ngetik informasi kanthi tangan. Sampeyan sing mutusake!</string>
+
+    <string name="guide_barcode_scan_title">Pindai barcode</string>
+    <string name="guide_barcode_scan_desc">Sejajarake barcode ing pigura lan biarake Shoopt nindakake sisane. Ngirit wektu tenan!</string>
+
+    <string name="guide_barcode_filled_title">Barcode katemu</string>
+    <string name="guide_barcode_filled_desc">Apik banget! Kode wis dikenali lan ditambahake. Lanjut karo foto produk.</string>
+
+    <string name="guide_take_photo_button_title">Njupuk foto</string>
+    <string name="guide_take_photo_button_desc">Tutul kene kanggo njupuk foto produk. Coba tampilake regane kanthi jelas 😉</string>
+
+    <string name="guide_photo_warning_title">Saran foto cilik</string>
+    <string name="guide_photo_warning_desc">Kanggo asil sing luwih apik, jupuk foto sing cetha ing ngendi jeneng produk lan regane katon jelas.</string>
+
+    <string name="guide_fields_autofilled_title">Kolom wis diisi</string>
+    <string name="guide_fields_autofilled_desc">Kanthi AI lan lokasi sampeyan, sawetara informasi wis ditambahake kanthi otomatis. Cek kanthi cepet!</string>
+
+    <string name="guide_save_product_title">Simpen produk sampeyan</string>
+    <string name="guide_save_product_desc">Tutul tombol iki kanggo nyimpen produk ing database pribadi sampeyan. Apik!</string>
+
+    <string name="guide_product_added_title">Produk ditambahake!</string>
+    <string name="guide_product_added_desc">Sugeng, produk pisanan sampeyan wis kacatet. Sampeyan bisa nambah liyane kanthi gampang sing padha.</string>
+
+    <string name="guide_analyze_button_title">Analisis produk sampeyan</string>
+    <string name="guide_analyze_button_desc">Saka layar iki, sampeyan bisa mbandhingake rega, ndeleng kabeh produk lan nglacak pengeluaran kaya profesional.</string>
+
+    <string name="guide_completion_title">Sugeng!</string>
+    <string name="guide_completion_desc">Sampeyan wis sukses nambahake produk pisanan. Terusake kaya ngene kanggo entuk manfaat paling apik saka Shoopt!</string>
+
+    <string name="choose_product_entry_method">Kepriye carane arep nambah produk sampeyan?</string>
+    <string name="scan_barcode_description">Scan barcode produk kanggo entri cepet karo njupuk informasi otomatis</string>
+    <string name="manual_entry_description">Lebokno rincian produk kanthi manual tanpa nggunakake barcode</string>
+    <string name="skip_guide">Lewati</string>
+    <string name="next">Sabanjure</string>
+    <string name="got_it">Ngerti</string>
+    <string name="tooltip_icon_description">Ikon fitur panuntun</string>
 </resources>

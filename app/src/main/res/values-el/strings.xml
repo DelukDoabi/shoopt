@@ -280,4 +280,11 @@
     <string name="guide_completion_title">Συγχαρητήρια!</string>
     <string name="guide_completion_desc">Πρόσθεσες επιτυχώς το πρώτο σου προϊόν. Συνέχισε έτσι για να αξιοποιήσεις στο έπακρο το Shoopt!</string>
 
+    <string name="choose_product_entry_method">Πώς θα θέλες να προσθέσεις το προϊόν σου;</string>
+    <string name="scan_barcode_description">Σκανάρισε το barcode του προϊόντος για γρήγορη εισαγωγή με αυτόματη ανάκτηση πληροφοριών</string>
+    <string name="manual_entry_description">Εισήγαγε χειροκίνητα τις λεπτομέρειες του προϊόντος χωρίς να χρησιμοποιήσεις barcode</string>
+    <string name="skip_guide">Παράλειψη</string>
+    <string name="next">Επόμενο</string>
+    <string name="got_it">Κατάλαβα</string>
+    <string name="tooltip_icon_description">Εικονίδιο λειτουργίας οδηγού</string>
 </resources>

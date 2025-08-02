@@ -217,4 +217,74 @@
     <string name="replay_onboarding_description">Revedeți din nou introducerea aplicației</string>
     <string name="onboarding_replayed">Onboarding va începe la următoarea lansare a aplicației</string>
 
+    <string name="skip">Sari</string>
+    <string name="finish">Termină</string>
+
+    <!-- Product Choice Guide -->
+    <string name="guide_scan_barcode_title">Scanează un cod de bare</string>
+    <string name="guide_scan_barcode_desc">Alege această opțiune pentru a scana codul de bare al unui produs și pentru a obține informațiile automat. Simplu și rapid!</string>
+
+    <string name="guide_manual_entry_title">Introdu informațiile manual</string>
+    <string name="guide_manual_entry_desc">Folosește această opțiune când un produs nu are cod de bare sau dacă vrei să modifici detaliile singur.</string>
+
+    <string name="guide_back_title">Întoarce-te la ecranul anterior</string>
+    <string name="guide_back_desc">Poți apăsa aici oricând pentru a reveni la început. Practic, nu-i așa?</string>
+
+    <!-- Main Screen Guide -->
+    <string name="guide_main_screen_title">Bun venit în Shoopt</string>
+    <string name="guide_main_screen_desc">Descoperă cum să îți urmărești cumpărăturile și să economisești bani cu câteva gesturi.</string>
+
+    <string name="guide_update_list_title">Actualizează-ți lista</string>
+    <string name="guide_update_list_desc">Pregătește-ți lista de cumpărături cum vrei înainte să mergi la magazin.</string>
+
+    <string name="guide_add_product_title">Adaugă un produs</string>
+    <string name="guide_add_product_desc">Înregistrează-ți produsele și păstrează un ochi pe prețurile lor. Fiecare cent contează!</string>
+
+    <!-- Replay Add Product Guide -->
+    <string name="replay_add_product_guide">Revizuiește ghidul de adăugare produs</string>
+    <string name="replay_add_product_guide_description">Poți relansa acest mic ghid oricând vrei pentru a-ți aminti cum să adaugi un produs cu ușurință.</string>
+
+    <string name="guide_first_product_welcome_title">Bun venit în Shoopt!</string>
+    <string name="guide_first_product_welcome_desc">Te vom îndruma să îți adaugi primul produs în toată simplitatea.</string>
+
+    <string name="guide_add_product_button_title">Adaugă un produs</string>
+    <string name="guide_add_product_button_desc">Apasă aici pentru a începe să îți creezi baza de produse personalizată. Să începem!</string>
+
+    <string name="guide_product_choice_title">Alege-ți metoda</string>
+    <string name="guide_product_choice_desc">Poți scana un cod de bare sau să introduci informațiile manual. Tu decizi!</string>
+
+    <string name="guide_barcode_scan_title">Scanează codul de bare</string>
+    <string name="guide_barcode_scan_desc">Aliniază codul de bare în cadru și lasă Shoopt să facă restul. O adevărată economie de timp!</string>
+
+    <string name="guide_barcode_filled_title">Cod de bare detectat</string>
+    <string name="guide_barcode_filled_desc">Super! Codul a fost recunoscut și adăugat. Continuăm cu fotografia produsului.</string>
+
+    <string name="guide_take_photo_button_title">Fă o fotografie</string>
+    <string name="guide_take_photo_button_desc">Apasă aici pentru a face o fotografie produsului. Încearcă să arăți bine prețul pe ea 😉</string>
+
+    <string name="guide_photo_warning_title">Mic sfat pentru fotografie</string>
+    <string name="guide_photo_warning_desc">Pentru rezultate mai bune, fă o fotografie clară unde să se vadă bine numele produsului și prețul său.</string>
+
+    <string name="guide_fields_autofilled_title">Câmpuri pre-completate</string>
+    <string name="guide_fields_autofilled_desc">Mulțumită AI-ului și locației tale, unele informații au fost adăugate automat. Verifică-le repede!</string>
+
+    <string name="guide_save_product_title">Salvează-ți produsul</string>
+    <string name="guide_save_product_desc">Apasă pe acest buton pentru a salva produsul în baza ta personală. Bravo!</string>
+
+    <string name="guide_product_added_title">Produs adăugat!</string>
+    <string name="guide_product_added_desc">Felicitări, primul tău produs a fost înregistrat. Poți adăuga altele la fel de ușor.</string>
+
+    <string name="guide_analyze_button_title">Analizează-ți produsele</string>
+    <string name="guide_analyze_button_desc">Din acest ecran, poți compara prețurile, vedea toate produsele și urmări cheltuielile ca un profesionist.</string>
+
+    <string name="guide_completion_title">Felicitări!</string>
+    <string name="guide_completion_desc">Ai adăugat primul tău produs cu succes. Continuă așa pentru a trage cel mai bun folos din Shoopt!</string>
+
+    <string name="choose_product_entry_method">Cum ai vrea să îți adaugi produsul?</string>
+    <string name="scan_barcode_description">Scanează codul de bare al produsului pentru introducere rapidă cu obținere automată de informații</string>
+    <string name="manual_entry_description">Introdu manual detaliile produsului fără să folosești un cod de bare</string>
+    <string name="skip_guide">Omite</string>
+    <string name="next">Următorul</string>
+    <string name="got_it">Am înțeles</string>
+    <string name="tooltip_icon_description">Pictogramă funcție ghid</string>
 </resources>

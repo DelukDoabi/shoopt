@@ -280,4 +280,12 @@
     <string name="guide_completion_title">অভিনন্দন!</string>
     <string name="guide_completion_desc">আপনি সফলভাবে আপনার প্রথম পণ্য যোগ করেছেন। Shoopt থেকে সেরাটা পেতে এভাবেই চালিয়ে যান!</string>
 
+    <string name="choose_product_entry_method">তুমি কীভাবে তোমার পণ্য যোগ করতে চাও?</string>
+    <string name="scan_barcode_description">স্বয়ংক্রিয় তথ্য সংগ্রহের সাথে দ্রুত এন্ট্রির জন্য পণ্যের বারকোড স্ক্যান করো</string>
+    <string name="manual_entry_description">বারকোড ব্যবহার না করে ম্যানুয়ালি পণ্যের বিবরণ প্রবেশ করো</string>
+    <string name="skip_guide">এড়িয়ে যাও</string>
+    <string name="next">পরবর্তী</string>
+    <string name="got_it">বুঝেছি</string>
+    <string name="tooltip_icon_description">গাইড বৈশিষ্ট্যের আইকন</string>
+
 </resources>

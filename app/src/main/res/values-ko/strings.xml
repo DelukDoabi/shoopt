@@ -217,4 +217,74 @@
     <string name="replay_onboarding_description">앱 소개를 다시 검토하세요</string>
     <string name="onboarding_replayed">다음 앱 실행 시 온보딩이 시작됩니다</string>
 
+    <string name="skip">건너뛰기</string>
+    <string name="finish">완료</string>
+
+    <!-- Product Choice Guide -->
+    <string name="guide_scan_barcode_title">바코드 스캔하기</string>
+    <string name="guide_scan_barcode_desc">제품의 바코드를 스캔해서 정보를 자동으로 가져오려면 이 옵션을 선택하세요. 간단하고 빨라요!</string>
+
+    <string name="guide_manual_entry_title">수동으로 정보 입력하기</string>
+    <string name="guide_manual_entry_desc">제품에 바코드가 없거나 직접 세부 정보를 수정하고 싶을 때 이 옵션을 사용하세요.</string>
+
+    <string name="guide_back_title">이전 화면으로 돌아가기</string>
+    <string name="guide_back_desc">언제든지 여기를 눌러서 홈으로 돌아갈 수 있어요. 편리하죠?</string>
+
+    <!-- Main Screen Guide -->
+    <string name="guide_main_screen_title">Shoopt에 오신 것을 환영합니다</string>
+    <string name="guide_main_screen_desc">몇 번의 터치로 장보기를 추적하고 돈을 절약하는 방법을 알아보세요.</string>
+
+    <string name="guide_update_list_title">목록 업데이트하기</string>
+    <string name="guide_update_list_desc">매장에 가기 전에 원하는 대로 장보기 목록을 준비하세요.</string>
+
+    <string name="guide_add_product_title">제품 추가하기</string>
+    <string name="guide_add_product_desc">제품을 기록하고 가격을 체크하세요. 한 푼도 소중해요!</string>
+
+    <!-- Replay Add Product Guide -->
+    <string name="replay_add_product_guide">제품 추가 가이드 다시 보기</string>
+    <string name="replay_add_product_guide_description">제품을 쉽게 추가하는 방법을 다시 확인하고 싶을 때 언제든지 이 작은 가이드를 다시 실행할 수 있어요.</string>
+
+    <string name="guide_first_product_welcome_title">Shoopt에 오신 것을 환영합니다!</string>
+    <string name="guide_first_product_welcome_desc">첫 번째 제품을 아주 쉽게 추가할 수 있도록 도와드릴게요.</string>
+
+    <string name="guide_add_product_button_title">제품 추가하기</string>
+    <string name="guide_add_product_button_desc">개인화된 제품 데이터베이스 만들기를 시작하려면 여기를 눌러주세요. 시작해봐요!</string>
+
+    <string name="guide_product_choice_title">방법 선택하기</string>
+    <string name="guide_product_choice_desc">바코드를 스캔하거나 직접 정보를 입력할 수 있어요. 당신이 정하세요!</string>
+
+    <string name="guide_barcode_scan_title">바코드 스캔하기</string>
+    <string name="guide_barcode_scan_desc">프레임에 바코드를 맞추고 나머지는 Shoopt가 알아서 해드려요. 정말 시간 절약이에요!</string>
+
+    <string name="guide_barcode_filled_title">바코드 인식됨</string>
+    <string name="guide_barcode_filled_desc">멋져요! 코드가 인식되어 추가되었어요. 제품 사진으로 계속 진행해요.</string>
+
+    <string name="guide_take_photo_button_title">사진 찍기</string>
+    <string name="guide_take_photo_button_desc">제품 사진을 찍으려면 여기를 눌러주세요. 가격이 잘 보이도록 찍어보세요 😉</string>
+
+    <string name="guide_photo_warning_title">사진 촬영 팁</string>
+    <string name="guide_photo_warning_desc">더 좋은 결과를 위해 제품명과 가격이 잘 보이는 선명한 사진을 찍어주세요.</string>
+
+    <string name="guide_fields_autofilled_title">자동 입력된 필드</string>
+    <string name="guide_fields_autofilled_desc">AI와 위치 정보 덕분에 일부 정보가 자동으로 추가되었어요. 빠르게 확인해보세요!</string>
+
+    <string name="guide_save_product_title">제품 저장하기</string>
+    <string name="guide_save_product_desc">개인 데이터베이스에 제품을 저장하려면 이 버튼을 눌러주세요. 잘했어요!</string>
+
+    <string name="guide_product_added_title">제품이 추가되었어요!</string>
+    <string name="guide_product_added_desc">축하해요, 첫 번째 제품이 기록되었어요. 똑같이 쉽게 다른 제품들도 추가할 수 있어요.</string>
+
+    <string name="guide_analyze_button_title">제품 분석하기</string>
+    <string name="guide_analyze_button_desc">이 화면에서 가격을 비교하고, 모든 제품을 보고, 프로처럼 지출을 추적할 수 있어요.</string>
+
+    <string name="guide_completion_title">축하해요!</string>
+    <string name="guide_completion_desc">첫 번째 제품을 성공적으로 추가했어요. Shoopt를 최대한 활용하기 위해 계속 이렇게 해보세요!</string>
+
+    <string name="choose_product_entry_method">제품을 어떻게 추가하고 싶나요?</string>
+    <string name="scan_barcode_description">자동 정보 검색으로 빠른 입력을 위해 제품 바코드를 스캔하세요</string>
+    <string name="manual_entry_description">바코드를 사용하지 않고 수동으로 제품 세부사항을 입력하세요</string>
+    <string name="skip_guide">건너뛰기</string>
+    <string name="next">다음</string>
+    <string name="got_it">알겠어요</string>
+    <string name="tooltip_icon_description">가이드 기능 아이콘</string>
 </resources>

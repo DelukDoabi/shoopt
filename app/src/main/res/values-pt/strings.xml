@@ -216,4 +216,74 @@
     <string name="replay_onboarding_description">Revise novamente a introdução do aplicativo</string>
     <string name="onboarding_replayed">O onboarding será iniciado no próximo lançamento do app</string>
 
+    <string name="skip">Pular</string>
+    <string name="finish">Concluir</string>
+
+    <!-- Product Choice Guide -->
+    <string name="guide_scan_barcode_title">Escaneie um código de barras</string>
+    <string name="guide_scan_barcode_desc">Escolha esta opção para escanear o código de barras de um produto e obter as informações automaticamente. Simples e rápido!</string>
+
+    <string name="guide_manual_entry_title">Digite as informações manualmente</string>
+    <string name="guide_manual_entry_desc">Use esta opção quando um produto não tiver código de barras ou se você quiser modificar os detalhes.</string>
+
+    <string name="guide_back_title">Volte para a tela anterior</string>
+    <string name="guide_back_desc">Você pode tocar aqui a qualquer momento para retornar ao início. Prático, não é?</string>
+
+    <!-- Main Screen Guide -->
+    <string name="guide_main_screen_title">Bem-vindo ao Shoopt</string>
+    <string name="guide_main_screen_desc">Descubra como acompanhar suas compras e economizar dinheiro com alguns gestos.</string>
+
+    <string name="guide_update_list_title">Atualize sua lista</string>
+    <string name="guide_update_list_desc">Prepare sua lista de compras do jeito que quiser antes de ir à loja.</string>
+
+    <string name="guide_add_product_title">Adicione um produto</string>
+    <string name="guide_add_product_desc">Registre seus produtos e fique de olho nos preços. Cada centavo conta!</string>
+
+    <!-- Replay Add Product Guide -->
+    <string name="replay_add_product_guide">Revisar o guia de adicionar produto</string>
+    <string name="replay_add_product_guide_description">Você pode relançar este pequeno guia quando quiser para relembrar como adicionar um produto facilmente.</string>
+
+    <string name="guide_first_product_welcome_title">Bem-vindo ao Shoopt!</string>
+    <string name="guide_first_product_welcome_desc">Vamos te acompanhar para que você adicione seu primeiro produto com toda simplicidade.</string>
+
+    <string name="guide_add_product_button_title">Adicione um produto</string>
+    <string name="guide_add_product_button_desc">Toque aqui para começar a criar sua base de produtos personalizada. Vamos lá!</string>
+
+    <string name="guide_product_choice_title">Escolha seu método</string>
+    <string name="guide_product_choice_desc">Você pode escanear um código de barras ou digitar as informações manualmente. Você decide!</string>
+
+    <string name="guide_barcode_scan_title">Escaneie o código de barras</string>
+    <string name="guide_barcode_scan_desc">Alinhe o código de barras no quadro e deixe o Shoopt fazer o resto. Uma verdadeira economia de tempo!</string>
+
+    <string name="guide_barcode_filled_title">Código de barras detectado</string>
+    <string name="guide_barcode_filled_desc">Ótimo! O código foi reconhecido e adicionado. Vamos continuar com a foto do produto.</string>
+
+    <string name="guide_take_photo_button_title">Tire uma foto</string>
+    <string name="guide_take_photo_button_desc">Toque aqui para tirar uma foto do produto. Tente mostrar bem o preço nela 😉</string>
+
+    <string name="guide_photo_warning_title">Dica para a foto</string>
+    <string name="guide_photo_warning_desc">Para melhores resultados, tire uma foto nítida onde se veja bem o nome do produto e seu preço.</string>
+
+    <string name="guide_fields_autofilled_title">Campos pré-preenchidos</string>
+    <string name="guide_fields_autofilled_desc">Graças à IA e à sua localização, algumas informações foram adicionadas automaticamente. Verifique rapidamente!</string>
+
+    <string name="guide_save_product_title">Salve seu produto</string>
+    <string name="guide_save_product_desc">Toque neste botão para salvar seu produto na sua base pessoal. Parabéns!</string>
+
+    <string name="guide_product_added_title">Produto adicionado!</string>
+    <string name="guide_product_added_desc">Parabéns, seu primeiro produto foi registrado. Você pode adicionar outros com a mesma facilidade.</string>
+
+    <string name="guide_analyze_button_title">Analise seus produtos</string>
+    <string name="guide_analyze_button_desc">Desta tela, você pode comparar preços, ver todos os seus produtos e acompanhar seus gastos como um profissional.</string>
+
+    <string name="guide_completion_title">Parabéns!</string>
+    <string name="guide_completion_desc">Você adicionou seu primeiro produto com sucesso. Continue assim para tirar o melhor proveito do Shoopt!</string>
+
+    <string name="choose_product_entry_method">Como gostarias de adicionar o teu produto?</string>
+    <string name="scan_barcode_description">Digitaliza o código de barras do produto para entrada rápida com obtenção automática de informações</string>
+    <string name="manual_entry_description">Introduz manualmente os detalhes do produto sem usar um código de barras</string>
+    <string name="skip_guide">Saltar</string>
+    <string name="next">Seguinte</string>
+    <string name="got_it">Percebi</string>
+    <string name="tooltip_icon_description">Ícone da funcionalidade de guia</string>
 </resources>

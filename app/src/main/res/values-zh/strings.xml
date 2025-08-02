@@ -216,4 +216,74 @@
     <string name="replay_onboarding_description">再次查看应用介绍</string>
     <string name="onboarding_replayed">下一次启动应用时将开始入门指导</string>
 
+    <string name="skip">跳过</string>
+    <string name="finish">完成</string>
+
+    <!-- Product Choice Guide -->
+    <string name="guide_scan_barcode_title">扫描条形码</string>
+    <string name="guide_scan_barcode_desc">选择此选项扫描产品条形码并自动获取信息。简单快捷！</string>
+
+    <string name="guide_manual_entry_title">手动输入信息</string>
+    <string name="guide_manual_entry_desc">当产品没有条形码或你想自己修改详情时，使用此选项。</string>
+
+    <string name="guide_back_title">返回上一屏幕</string>
+    <string name="guide_back_desc">你可以随时点击这里返回主页。很方便，对吧？</string>
+
+    <!-- Main Screen Guide -->
+    <string name="guide_main_screen_title">欢迎使用 Shoopt</string>
+    <string name="guide_main_screen_desc">了解如何通过几个简单操作跟踪购物并省钱。</string>
+
+    <string name="guide_update_list_title">更新你的清单</string>
+    <string name="guide_update_list_desc">在去商店之前按你的意愿准备购物清单。</string>
+
+    <string name="guide_add_product_title">添加产品</string>
+    <string name="guide_add_product_desc">记录你的产品并关注价格。每一分钱都很重要！</string>
+
+    <!-- Replay Add Product Guide -->
+    <string name="replay_add_product_guide">重看添加产品指南</string>
+    <string name="replay_add_product_guide_description">你可以随时启动这个小指南，提醒自己如何轻松添加产品。</string>
+
+    <string name="guide_first_product_welcome_title">欢迎使用 Shoopt！</string>
+    <string name="guide_first_product_welcome_desc">我们将指导你以简单的方式添加第一个产品。</string>
+
+    <string name="guide_add_product_button_title">添加产品</string>
+    <string name="guide_add_product_button_desc">点击这里开始创建你的个人产品数据库。开始吧！</string>
+
+    <string name="guide_product_choice_title">选择你的方法</string>
+    <string name="guide_product_choice_desc">你可以扫描条形码或手动输入信息。你来决定！</string>
+
+    <string name="guide_barcode_scan_title">扫描条形码</string>
+    <string name="guide_barcode_scan_desc">将条形码对准框架，让 Shoopt 处理其余工作。真正的时间节省器！</string>
+
+    <string name="guide_barcode_filled_title">检测到条形码</string>
+    <string name="guide_barcode_filled_desc">太棒了！代码已被识别并添加。我们继续拍摄产品照片。</string>
+
+    <string name="guide_take_photo_button_title">拍照</string>
+    <string name="guide_take_photo_button_desc">点击这里为产品拍照。尽量清楚地显示价格 😉</string>
+
+    <string name="guide_photo_warning_title">小拍照建议</string>
+    <string name="guide_photo_warning_desc">为了获得更好的效果，请拍摄清晰的照片，能清楚看到产品名称和价格。</string>
+
+    <string name="guide_fields_autofilled_title">预填字段</string>
+    <string name="guide_fields_autofilled_desc">借助 AI 和你的位置，一些信息已自动添加。快速检查一下！</string>
+
+    <string name="guide_save_product_title">保存你的产品</string>
+    <string name="guide_save_product_desc">点击此按钮将产品保存到你的个人数据库。太棒了！</string>
+
+    <string name="guide_product_added_title">产品已添加！</string>
+    <string name="guide_product_added_desc">恭喜，你的第一个产品已保存。你可以同样轻松地添加其他产品。</string>
+
+    <string name="guide_analyze_button_title">分析你的产品</string>
+    <string name="guide_analyze_button_desc">从这个屏幕，你可以比较价格，查看所有产品，像专业人士一样跟踪支出。</string>
+
+    <string name="guide_completion_title">恭喜！</string>
+    <string name="guide_completion_desc">你已成功添加第一个产品。继续这样做，充分利用 Shoopt！</string>
+
+    <string name="choose_product_entry_method">你想如何添加你的产品？</string>
+    <string name="scan_barcode_description">扫描产品条形码进行快速输入并自动获取信息</string>
+    <string name="manual_entry_description">手动输入产品详细信息而不使用条形码</string>
+    <string name="skip_guide">跳过</string>
+    <string name="next">下一步</string>
+    <string name="got_it">明白了</string>
+    <string name="tooltip_icon_description">指南功能图标</string>
 </resources>

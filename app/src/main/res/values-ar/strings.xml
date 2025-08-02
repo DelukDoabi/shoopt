@@ -281,4 +281,12 @@
     <string name="guide_completion_title">تهانينا!</string>
     <string name="guide_completion_desc">لقد أضفت أول منتج لك بنجاح. استمر هكذا لتحصل على أفضل ما في Shoopt!</string>
 
+    <string name="choose_product_entry_method">كيف تود إضافة منتجك؟</string>
+    <string name="scan_barcode_description">امسح الرمز الشريطي للمنتج للإدخال السريع مع استرجاع المعلومات تلقائياً</string>
+    <string name="manual_entry_description">أدخل تفاصيل المنتج يدوياً دون استخدام الرمز الشريطي</string>
+    <string name="skip_guide">تخطي</string>
+    <string name="next">التالي</string>
+    <string name="got_it">فهمت</string>
+    <string name="tooltip_icon_description">أيقونة ميزة الدليل</string>
+
 </resources>
