@@ -3,7 +3,6 @@ package com.dedoware.shoopt.activities
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
@@ -12,10 +11,11 @@ import androidx.activity.result.ActivityResult
 import androidx.appcompat.app.AppCompatActivity
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.ShooptApplication
-import com.dedoware.shoopt.model.Product
 import com.dedoware.shoopt.persistence.FirebaseProductRepository
 import com.dedoware.shoopt.persistence.IProductRepository
 import com.dedoware.shoopt.persistence.LocalProductRepository
+import com.dedoware.shoopt.utils.AddFirstProductGuide
+import com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.UpdateManager
@@ -240,6 +240,8 @@ class MainActivity : AppCompatActivity() {
                     // Analytics pour le passage à l'écran d'ajout de produit
                     AnalyticsManager.logSelectContent("navigation", "card", "add_update_product")
 
+                    updateAddFirstProductGuideIfNeeded()
+
                     // Lancer la nouvelle activité de choix de produit avec animation
                     val intent = Intent(this, ProductChoiceActivity::class.java)
                     startActivity(intent)
@@ -303,6 +305,21 @@ class MainActivity : AppCompatActivity() {
             CrashlyticsManager.log("Erreur lors de la configuration des cartes: ${e.message ?: "Message non disponible"}")
             CrashlyticsManager.setCustomKey("error_location", "setup_feature_cards")
             CrashlyticsManager.logException(e)
+        }
+    }
+
+    /**
+     * Met à jour l'état du guide d'ajout du premier produit si nécessaire.
+     * Appelé après l'ajout d'un produit pour éviter de redémarrer le guide.
+     */
+    private fun updateAddFirstProductGuideIfNeeded() {
+        val guide = AddFirstProductGuide(this)
+        when (guide.getCurrentGuideState()) {
+            GuideState.MAIN_SCREEN_ADD_BUTTON -> {
+                guide.saveGuideState(GuideState.PRODUCT_CHOICE_SCREEN)
+            }
+
+            else -> {}
         }
     }
 
