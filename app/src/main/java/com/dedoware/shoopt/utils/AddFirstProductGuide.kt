@@ -205,7 +205,6 @@ class AddFirstProductGuide(private val activity: Activity) {
             .setOnCompleteListener {
                 // Préparer pour le scanner de code-barres
                 saveGuideState(GuideState.BARCODE_SCANNER_SCREEN)
-                onChoiceComplete?.invoke()
             }
             .setOnSkipListener {
                 completeGuide()
