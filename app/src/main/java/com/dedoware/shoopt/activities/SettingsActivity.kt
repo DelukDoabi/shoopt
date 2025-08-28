@@ -27,7 +27,6 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var saveButton: ImageButton
     private lateinit var backButton: ImageButton
     private lateinit var replayOnboardingCard: CardView
-    private lateinit var replayAddProductGuideCard: CardView
 
     private lateinit var currencyList: List<Currency>
 
@@ -148,7 +147,6 @@ class SettingsActivity : AppCompatActivity() {
             saveButton = findViewById(R.id.save_settings_button) ?: throw IllegalStateException("Missing save_settings_button")
             backButton = findViewById(R.id.back_IB) ?: throw IllegalStateException("Missing back_IB")
             replayOnboardingCard = findViewById(R.id.replay_onboarding_card) ?: throw IllegalStateException("Missing replay_onboarding_card")
-            replayAddProductGuideCard = findViewById(R.id.replay_add_product_guide_card)
 
             // Configuration du spinner de devises
             currencyList = loadCurrenciesFromJson()
@@ -346,19 +344,6 @@ class SettingsActivity : AppCompatActivity() {
 
                 Toast.makeText(this, "Erreur lors du redémarrage de l'onboarding", Toast.LENGTH_SHORT).show()
             }
-        }
-
-        // CardView pour rejouer le guide d'ajout du premier produit
-        replayAddProductGuideCard.setOnClickListener {
-            val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
-            guide.resetGuide()
-            Toast.makeText(this, getString(R.string.replay_add_product_guide_description), Toast.LENGTH_SHORT).show()
-            // Lancer MainActivity avec un extra pour démarrer le guide
-            val intent = Intent(this, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP // Removed FLAG_ACTIVITY_NEW_TASK
-            intent.putExtra("EXTRA_START_ADD_PRODUCT_GUIDE", true)
-            startActivity(intent)
-            finish()
         }
 
         // Suivi des changements de thème

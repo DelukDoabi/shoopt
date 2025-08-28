@@ -10,6 +10,8 @@ class UserPreferences(context: Context) {
         private const val KEY_THEME = "theme_mode"
         private const val KEY_CURRENCY = "currency"
         private const val KEY_ONBOARDING_COMPLETED = "onboarding_completed"
+        private const val KEY_ONBOARDING_VERSION = "onboarding_version"
+        private const val CURRENT_ONBOARDING_VERSION = 1 // Incrémenter quand l'onboarding change
 
         const val THEME_LIGHT = 1
         const val THEME_DARK = 2
@@ -33,12 +35,19 @@ class UserPreferences(context: Context) {
         // Nouvelle méthode statique pour l'onboarding
         fun setOnboardingCompleted(context: Context, completed: Boolean) {
             val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            prefs.edit().putBoolean(KEY_ONBOARDING_COMPLETED, completed).apply()
+            prefs.edit()
+                .putBoolean(KEY_ONBOARDING_COMPLETED, completed)
+                .putInt(KEY_ONBOARDING_VERSION, CURRENT_ONBOARDING_VERSION)
+                .apply()
         }
 
         fun isOnboardingCompleted(context: Context): Boolean {
             val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            return prefs.getBoolean(KEY_ONBOARDING_COMPLETED, false)
+            val completed = prefs.getBoolean(KEY_ONBOARDING_COMPLETED, false)
+            val version = prefs.getInt(KEY_ONBOARDING_VERSION, 0)
+
+            // Si la version de l'onboarding a changé, considérer comme non complété
+            return completed && version >= CURRENT_ONBOARDING_VERSION
         }
     }
 

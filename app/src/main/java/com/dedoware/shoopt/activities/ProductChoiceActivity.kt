@@ -32,17 +32,6 @@ class ProductChoiceActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this, callback)
 
         setupUI()
-
-        // --- Ajout du déclenchement automatique du guide si besoin ---
-        val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
-        val scanBarcodeCard: android.view.View = findViewById(R.id.scan_barcode_card)
-        val manualEntryCard: android.view.View = findViewById(R.id.manual_entry_card)
-        if (guide.getCurrentGuideState() == com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_CHOICE_SCREEN) {
-            guide.showProductChoiceGuide(scanBarcodeCard, manualEntryCard) {
-                // Enchaînement automatique : lancer le scanner après la fin du guide
-                scanBarcodeCard.performClick()
-            }
-        }
     }
 
     private fun setupUI() {
