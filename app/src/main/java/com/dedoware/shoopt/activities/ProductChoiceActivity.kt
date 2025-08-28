@@ -11,6 +11,11 @@ import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
+// Imports pour le système de spotlight
+import com.dedoware.shoopt.extensions.startSpotlightTour
+import com.dedoware.shoopt.extensions.createSpotlightItem
+import com.dedoware.shoopt.extensions.isSpotlightAvailable
+import com.dedoware.shoopt.models.SpotlightShape
 
 /**
  * ProductChoiceActivity - Un écran moderne qui permet à l'utilisateur de choisir
@@ -32,6 +37,9 @@ class ProductChoiceActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this, callback)
 
         setupUI()
+
+        // Démarrer le système de spotlight si nécessaire
+        setupSpotlightTour()
     }
 
     private fun setupUI() {
@@ -137,6 +145,63 @@ class ProductChoiceActivity : AppCompatActivity() {
                     showErrorToast(R.string.product_check_error)
                 }
             }
+        }
+    }
+
+    /**
+     * Configure et démarre le tour de spotlight pour guider l'utilisateur
+     * sur les options d'ajout de produit disponibles
+     */
+    private fun setupSpotlightTour() {
+        try {
+            // Vérifier si le spotlight doit être affiché
+            if (!isSpotlightAvailable()) {
+                return
+            }
+
+            // Créer la liste des éléments à mettre en surbrillance
+            val spotlightItems = mutableListOf<com.dedoware.shoopt.models.SpotlightItem>()
+
+            // Récupérer les éléments UI
+            val scanBarcodeCard: MaterialCardView = findViewById(R.id.scan_barcode_card)
+            val manualEntryCard: MaterialCardView = findViewById(R.id.manual_entry_card)
+
+            // Spotlight pour le scan de code-barres
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = scanBarcodeCard,
+                    titleRes = R.string.spotlight_choice_scan_title,
+                    descriptionRes = R.string.spotlight_choice_scan_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour la saisie manuelle
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = manualEntryCard,
+                    titleRes = R.string.spotlight_choice_manual_title,
+                    descriptionRes = R.string.spotlight_choice_manual_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Démarrer le tour de spotlight avec un léger délai pour que l'interface soit prête
+            window.decorView.post {
+                startSpotlightTour(spotlightItems) {
+                    // Callback appelé à la fin du tour
+                    AnalyticsManager.logUserAction(
+                        "spotlight_tour_completed",
+                        "onboarding",
+                        mapOf("screen" to "ProductChoiceActivity")
+                    )
+                }
+            }
+
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la configuration du spotlight: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "setup_spotlight_tour_product_choice")
+            CrashlyticsManager.logException(e)
         }
     }
 

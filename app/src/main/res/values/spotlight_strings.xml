@@ -32,5 +32,11 @@
 
     <string name="spotlight_track_total_title">Total des achats</string>
     <string name="spotlight_track_total_description">Voici le montant total de votre session de shopping actuelle</string>
-</resources>
 
+    <!-- Messages pour ProductChoiceActivity -->
+    <string name="spotlight_choice_scan_title">Scanner un code-barres</string>
+    <string name="spotlight_choice_scan_description">Utilisez l\'appareil photo pour scanner rapidement le code-barres d\'un produit et récupérer automatiquement ses informations</string>
+
+    <string name="spotlight_choice_manual_title">Saisie manuelle</string>
+    <string name="spotlight_choice_manual_description">Ajoutez un produit en saisissant manuellement toutes ses informations (nom, prix, magasin, etc.)</string>
+</resources>
