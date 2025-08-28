@@ -215,4 +215,74 @@
     <string name="replay_onboarding_description">Uygulama tanıtımını tekrar inceleyin</string>
     <string name="onboarding_replayed">Onboarding bir sonraki uygulama başlatıldığında başlayacak</string>
 
+    <string name="skip">Geç</string>
+    <string name="finish">Bitir</string>
+
+    <!-- Product Choice Guide -->
+    <string name="guide_scan_barcode_title">Barkod tara</string>
+    <string name="guide_scan_barcode_desc">Bir ürünün barkodunu tarayıp bilgilerini otomatik olarak almak için bu seçeneği seç. Basit ve hızlı!</string>
+
+    <string name="guide_manual_entry_title">Bilgileri elle gir</string>
+    <string name="guide_manual_entry_desc">Bir ürünün barkodu yoksa veya detayları kendin değiştirmek istiyorsan bu seçeneği kullan.</string>
+
+    <string name="guide_back_title">Önceki ekrana dön</string>
+    <string name="guide_back_desc">Ana sayfaya dönmek için istediğin zaman buraya basabilirsin. Pratik, değil mi?</string>
+
+    <!-- Main Screen Guide -->
+    <string name="guide_main_screen_title">Shoopt\'a hoş geldin</string>
+    <string name="guide_main_screen_desc">Alışverişlerini nasıl takip edeceğini ve birkaç basit hareketle nasıl tasarruf yapacağını keşfet.</string>
+
+    <string name="guide_update_list_title">Listeni güncelle</string>
+    <string name="guide_update_list_desc">Mağazaya gitmeden önce alışveriş listeni istediğin gibi hazırla.</string>
+
+    <string name="guide_add_product_title">Ürün ekle</string>
+    <string name="guide_add_product_desc">Ürünlerini kaydet ve fiyatlarını takip et. Her kuruş önemli!</string>
+
+    <!-- Replay Add Product Guide -->
+    <string name="replay_add_product_guide">Ürün ekleme rehberini tekrar gör</string>
+    <string name="replay_add_product_guide_description">Bir ürünü nasıl kolayca ekleyeceğini hatırlamak için bu küçük rehberi istediğin zaman başlatabilirsin.</string>
+
+    <string name="guide_first_product_welcome_title">Shoopt\'a hoş geldin!</string>
+    <string name="guide_first_product_welcome_desc">İlk ürününü basit bir şekilde eklemen için sana eşlik edeceğiz.</string>
+
+    <string name="guide_add_product_button_title">Ürün ekle</string>
+    <string name="guide_add_product_button_desc">Kişiselleştirilmiş ürün veritabanını oluşturmaya başlamak için buraya bas. Başlıyoruz!</string>
+
+    <string name="guide_product_choice_title">Yöntemini seç</string>
+    <string name="guide_product_choice_desc">Barkod tarayabilir veya bilgileri elle girebilirsin. Sen karar veriyorsun!</string>
+
+    <string name="guide_barcode_scan_title">Barkodu tara</string>
+    <string name="guide_barcode_scan_desc">Barkodu çerçeveye hizala ve Shoopt\'un gerisini yapmasına izin ver. Gerçek bir zaman tasarrufu!</string>
+
+    <string name="guide_barcode_filled_title">Barkod algılandı</string>
+    <string name="guide_barcode_filled_desc">Harika! Kod tanındı ve eklendi. Ürün fotoğrafıyla devam ediyoruz.</string>
+
+    <string name="guide_take_photo_button_title">Fotoğraf çek</string>
+    <string name="guide_take_photo_button_desc">Ürünün fotoğrafını çekmek için buraya bas. Üzerindeki fiyatı güzelce göstermeye çalış 😉</string>
+
+    <string name="guide_photo_warning_title">Küçük fotoğraf tavsiyesi</string>
+    <string name="guide_photo_warning_desc">Daha iyi sonuçlar için ürün adının ve fiyatının net görüldüğü keskin bir fotoğraf çek.</string>
+
+    <string name="guide_fields_autofilled_title">Önceden doldurulmuş alanlar</string>
+    <string name="guide_fields_autofilled_desc">AI ve konumun sayesinde bazı bilgiler otomatik olarak eklendi. Hemen kontrol et!</string>
+
+    <string name="guide_save_product_title">Ürününü kaydet</string>
+    <string name="guide_save_product_desc">Ürünü kişisel veritabanına kaydetmek için bu düğmeye bas. Bravo!</string>
+
+    <string name="guide_product_added_title">Ürün eklendi!</string>
+    <string name="guide_product_added_desc">Tebrikler, ilk ürünün kaydedildi. Diğerlerini de aynı kolaylıkla ekleyebilirsin.</string>
+
+    <string name="guide_analyze_button_title">Ürünlerini analiz et</string>
+    <string name="guide_analyze_button_desc">Bu ekrandan fiyatları karşılaştırabilir, tüm ürünlerini görebilir ve harcamalarını bir profesyonel gibi takip edebilirsin.</string>
+
+    <string name="guide_completion_title">Tebrikler!</string>
+    <string name="guide_completion_desc">İlk ürününü başarıyla ekledin. Shoopt\'tan en iyi şekilde yararlanmak için böyle devam et!</string>
+
+    <string name="choose_product_entry_method">Ürününü nasıl eklemek istersin?</string>
+    <string name="scan_barcode_description">Otomatik bilgi alımı ile hızlı giriş için ürün barkodunu tara</string>
+    <string name="manual_entry_description">Barkod kullanmadan ürün detaylarını manuel olarak gir</string>
+    <string name="skip_guide">Atla</string>
+    <string name="next">İleri</string>
+    <string name="got_it">Anladım</string>
+    <string name="tooltip_icon_description">Rehber özelliği simgesi</string>
 </resources>

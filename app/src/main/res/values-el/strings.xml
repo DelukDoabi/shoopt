@@ -217,4 +217,74 @@
     <string name="replay_onboarding_description">Επανεξετάστε την εισαγωγή της εφαρμογής</string>
     <string name="onboarding_replayed">Η εισαγωγή θα ξεκινήσει στην επόμενη εκκίνηση της εφαρμογής</string>
 
+    <string name="skip">Παράλειψη</string>
+    <string name="finish">Τέλος</string>
+
+    <!-- Product Choice Guide -->
+    <string name="guide_scan_barcode_title">Σκάναρε έναν barcode</string>
+    <string name="guide_scan_barcode_desc">Διάλεξε αυτή την επιλογή για να σκανάρεις το barcode ενός προϊόντος και να πάρεις τις πληροφορίες του αυτόματα. Απλό και γρήγορο!</string>
+
+    <string name="guide_manual_entry_title">Εισάγε τις πληροφορίες manually</string>
+    <string name="guide_manual_entry_desc">Χρησιμοποίησε αυτή την επιλογή όταν ένα προϊόν δεν έχει barcode ή αν θέλεις να τροποποιήσεις τις λεπτομέρειες μόνος σου.</string>
+
+    <string name="guide_back_title">Γύρισε στην προηγούμενη οθόνη</string>
+    <string name="guide_back_desc">Μπορείς να πατήσεις εδώ οποιαδήποτε στιγμή για να επιστρέψεις στην αρχική. Πρακτικό, έτσι δεν είναι;</string>
+
+    <!-- Main Screen Guide -->
+    <string name="guide_main_screen_title">Καλώς ήρθες στο Shoopt</string>
+    <string name="guide_main_screen_desc">Ανακάλυψε πώς να παρακολουθείς τα ψώνια σου και να κάνεις οικονομία με λίγες κινήσεις.</string>
+
+    <string name="guide_update_list_title">Ενημέρωσε τη λίστα σου</string>
+    <string name="guide_update_list_desc">Ετοίμασε τη λίστα αγορών σου όπως θέλεις πριν πας στο μαγαζί.</string>
+
+    <string name="guide_add_product_title">Πρόσθεσε ένα προϊόν</string>
+    <string name="guide_add_product_desc">Καταγράψτε τα προϊόντα σας και κρατήστε το μάτι σας στις τιμές τους. Κάθε σεντ μετράει!</string>
+
+    <!-- Replay Add Product Guide -->
+    <string name="replay_add_product_guide">Επανάληψη οδηγού προσθήκης προϊόντος</string>
+    <string name="replay_add_product_guide_description">Μπορείς να ξεκινήσεις ξανά αυτόν τον μικρό οδηγό όποτε θέλεις για να θυμηθείς πώς να προσθέσεις εύκολα ένα προϊόν.</string>
+
+    <string name="guide_first_product_welcome_title">Καλώς ήρθες στο Shoopt!</string>
+    <string name="guide_first_product_welcome_desc">Θα σε συνοδεύσουμε για να προσθέσεις το πρώτο σου προϊόν με απόλυτη απλότητα.</string>
+
+    <string name="guide_add_product_button_title">Πρόσθεσε ένα προϊόν</string>
+    <string name="guide_add_product_button_desc">Πάτησε εδώ για να αρχίσεις να δημιουργείς την προσωπική σου βάση προϊόντων. Πάμε!</string>
+
+    <string name="guide_product_choice_title">Διάλεξε τη μέθοδό σου</string>
+    <string name="guide_product_choice_desc">Μπορείς να σκανάρεις ένα barcode ή να εισάγεις τις πληροφορίες στο χέρι. Εσύ αποφασίζεις!</string>
+
+    <string name="guide_barcode_scan_title">Σκάναρε το barcode</string>
+    <string name="guide_barcode_scan_desc">Ευθυγράμμισε το barcode στο πλαίσιο και άφησε το Shoopt να κάνει τα υπόλοιπα. Πραγματική εξοικονόμηση χρόνου!</string>
+
+    <string name="guide_barcode_filled_title">Barcode εντοπίστηκε</string>
+    <string name="guide_barcode_filled_desc">Τέλεια! Ο κωδικός αναγνωρίστηκε και προστέθηκε. Συνεχίζουμε με τη φωτογραφία του προϊόντος.</string>
+
+    <string name="guide_take_photo_button_title">Βγάλε μια φωτογραφία</string>
+    <string name="guide_take_photo_button_desc">Πάτησε εδώ για να βγάλεις φωτογραφία του προϊόντος. Προσπάθησε να δείξεις καλά την τιμή πάνω του 😉</string>
+
+    <string name="guide_photo_warning_title">Μικρή συμβουλή για φωτογραφία</string>
+    <string name="guide_photo_warning_desc">Για καλύτερα αποτελέσματα, βγάλε μια καθαρή φωτογραφία όπου φαίνεται καλά το όνομα του προϊόντος και η τιμή του.</string>
+
+    <string name="guide_fields_autofilled_title">Πεδία προσυμπληρωμένα</string>
+    <string name="guide_fields_autofilled_desc">Χάρη στην τεχνητή νοημοσύνη και την τοποθεσία σου, κάποιες πληροφορίες προστέθηκαν αυτόματα. Έλεγξέ τες γρήγορα!</string>
+
+    <string name="guide_save_product_title">Αποθήκευσε το προϊόν σου</string>
+    <string name="guide_save_product_desc">Πάτησε αυτό το κουμπί για να αποθηκεύσεις το προϊόν σου στην προσωπική σου βάση. Μπράβο!</string>
+
+    <string name="guide_product_added_title">Προϊόν προστέθηκε!</string>
+    <string name="guide_product_added_desc">Συγχαρητήρια, το πρώτο σου προϊόν αποθηκεύτηκε. Μπορείς να προσθέσεις και άλλα το ίδια εύκολα.</string>
+
+    <string name="guide_analyze_button_title">Ανέλυσε τα προϊόντα σου</string>
+    <string name="guide_analyze_button_desc">Από αυτήν την οθόνη, μπορείς να συγκρίνεις τιμές, να δεις όλα τα προϊόντα σου και να παρακολουθείς τις δαπάνες σου σαν επαγγελματίας.</string>
+
+    <string name="guide_completion_title">Συγχαρητήρια!</string>
+    <string name="guide_completion_desc">Πρόσθεσες επιτυχώς το πρώτο σου προϊόν. Συνέχισε έτσι για να αξιοποιήσεις στο έπακρο το Shoopt!</string>
+
+    <string name="choose_product_entry_method">Πώς θα θέλες να προσθέσεις το προϊόν σου;</string>
+    <string name="scan_barcode_description">Σκανάρισε το barcode του προϊόντος για γρήγορη εισαγωγή με αυτόματη ανάκτηση πληροφοριών</string>
+    <string name="manual_entry_description">Εισήγαγε χειροκίνητα τις λεπτομέρειες του προϊόντος χωρίς να χρησιμοποιήσεις barcode</string>
+    <string name="skip_guide">Παράλειψη</string>
+    <string name="next">Επόμενο</string>
+    <string name="got_it">Κατάλαβα</string>
+    <string name="tooltip_icon_description">Εικονίδιο λειτουργίας οδηγού</string>
 </resources>

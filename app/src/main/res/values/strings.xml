@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Shoopt</string>
-    <string name="add_or_update_product">Add or update product</string>
+    <string name="add_or_update_product">Add or update a product</string>
     <string name="track_shopping">Track shopping</string>
     <string name="analyse">Analyse</string>
     <string name="insert_product_name">Insert name</string>
@@ -49,6 +49,49 @@
     <string name="login_successful">Login Successful</string>
     <string name="login_failed">Login Failed: %1$s</string>
     <string name="google_sign_in_successful">Google Sign-In Successful</string>
+
+    <!-- User Guide Strings -->
+    <string name="skip_guide">Skip</string>
+    <string name="next">Next</string>
+    <string name="got_it">Got it</string>
+    <string name="tooltip_icon_description">Guide feature icon</string>
+
+    <!-- Add First Product Guide -->
+    <string name="guide_first_product_welcome_title">Bienvenue dans Shoopt!</string>
+    <string name="guide_first_product_welcome_desc">Nous allons vous guider à travers l\'ajout de votre premier produit pour vous familiariser avec l\'application.</string>
+
+    <string name="guide_add_product_button_title">Ajouter un produit</string>
+    <string name="guide_add_product_button_desc">Appuyez sur ce bouton pour commencer à ajouter votre premier produit à votre base de données personnelle.</string>
+
+    <string name="guide_product_choice_title">Choisissez une méthode</string>
+    <string name="guide_product_choice_desc">Vous pouvez scanner un code-barres ou entrer manuellement les détails du produit. Les deux méthodes sont simples!</string>
+
+    <string name="guide_barcode_scan_title">Scannez le code-barres</string>
+    <string name="guide_barcode_scan_desc">Alignez le code-barres dans le cadre pour l\'identifier automatiquement et gagner du temps.</string>
+
+    <string name="guide_barcode_filled_title">Code-barres détecté</string>
+    <string name="guide_barcode_filled_desc">Le code-barres a été automatiquement détecté et ajouté. Poursuivons avec la photo du produit.</string>
+
+    <string name="guide_take_photo_button_title">Prenez une photo</string>
+    <string name="guide_take_photo_button_desc">Appuyez ici pour prendre une photo du produit. Assurez-vous que le prix soit bien visible!</string>
+
+    <string name="guide_photo_warning_title">Conseil pour la photo</string>
+    <string name="guide_photo_warning_desc">Pour de meilleurs résultats, prenez une photo claire où le prix et le nom du produit sont bien visibles.</string>
+
+    <string name="guide_fields_autofilled_title">Champs pré-remplis</string>
+    <string name="guide_fields_autofilled_desc">Grâce à l\'IA et à votre localisation, les informations du produit ont été automatiquement complétées. Vérifiez-les!</string>
+
+    <string name="guide_save_product_title">Enregistrez votre produit</string>
+    <string name="guide_save_product_desc">Appuyez sur ce bouton pour sauvegarder votre premier produit dans votre base de données personnelle.</string>
+
+    <string name="guide_product_added_title">Produit ajouté avec succès!</string>
+    <string name="guide_product_added_desc">Votre premier produit a été ajouté à votre base de données personnelle. Vous pouvez en ajouter d\'autres de la même façon.</string>
+
+    <string name="guide_analyze_button_title">Analysez vos produits</string>
+    <string name="guide_analyze_button_desc">Dans cet écran, vous pourrez consulter tous vos produits, comparer les prix et suivre vos dépenses.</string>
+
+    <string name="guide_completion_title">Félicitations!</string>
+    <string name="guide_completion_desc">Vous avez ajouté votre premier produit avec succès. Continuez à enrichir votre base de données pour tirer le meilleur parti de Shoopt!</string>
 
     <!-- Update Shopping List Screen strings -->
     <string name="shopping_list_input_help">Enter products separated by commas, lines, or dashes</string>
@@ -101,6 +144,11 @@
     <string name="empty_cart_message">Your cart is empty</string>
     <string name="empty_cart_subtitle">Add products to start shopping</string>
     <string name="product_add_tips">💡 Tip: Take a photo to auto-fill product details or scan barcode for quick entry</string>
+
+    <!-- Product Choice Screen -->
+    <string name="choose_product_entry_method">How would you like to add your product?</string>
+    <string name="scan_barcode_description">Scan product barcode for quick entry with automatic information retrieval</string>
+    <string name="manual_entry_description">Manually enter product details without using a barcode</string>
 
     <!-- Activity Analysis Screen -->
     <string name="empty_products_image">Empty Products</string>
@@ -252,4 +300,31 @@
     <string name="replay_onboarding_description">Review the app introduction again</string>
     <string name="onboarding_replayed">Onboarding will start on next app launch</string>
 
+    <!-- User Guide Strings -->
+    <string name="skip">Passer</string>
+    <string name="finish">Terminer</string>
+
+    <!-- Product Choice Guide -->
+    <string name="guide_scan_barcode_title">Scannez un code-barres</string>
+    <string name="guide_scan_barcode_desc">Utilisez cette option pour scanner le code-barres d\'un produit et récupérer ses informations automatiquement.</string>
+
+    <string name="guide_manual_entry_title">Saisie manuelle</string>
+    <string name="guide_manual_entry_desc">Préférez cette option quand un produit n\'a pas de code-barres ou pour modifier les détails manuellement.</string>
+
+    <string name="guide_back_title">Retourner à l\'écran précédent</string>
+    <string name="guide_back_desc">Appuyez sur ce bouton pour revenir à l\'écran principal à tout moment.</string>
+
+    <!-- Main Screen Guide -->
+    <string name="guide_main_screen_title">Bienvenue dans Shoopt</string>
+    <string name="guide_main_screen_desc">Découvrez comment utiliser l\'application pour suivre vos courses et économiser de l\'argent.</string>
+
+    <string name="guide_update_list_title">Mettre à jour votre liste</string>
+    <string name="guide_update_list_desc">Créez et modifiez votre liste de courses avant d\'aller au magasin.</string>
+
+    <string name="guide_add_product_title">Ajouter un produit</string>
+    <string name="guide_add_product_desc">Enregistrez de nouveaux produits et suivez leurs prix pour économiser.</string>
+
+    <!-- Replay Add Product Guide -->
+    <string name="replay_add_product_guide">Rejouer le guide d’ajout du premier produit</string>
+    <string name="replay_add_product_guide_description">Vous pouvez revoir le guide interactif pour apprendre à ajouter un produit à tout moment.</string>
 </resources>

@@ -15,8 +15,8 @@ android {
         applicationId "com.dedoware.shoopt"
         minSdk 33
         targetSdk 36
-        versionCode 41
-        versionName "0.0.41-beta"
+        versionCode 42
+        versionName "0.0.42-beta"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

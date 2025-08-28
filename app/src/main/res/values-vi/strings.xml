@@ -215,4 +215,75 @@
     <string name="replay_onboarding_description">Xem lại phần giới thiệu ứng dụng lần nữa</string>
     <string name="onboarding_replayed">Chương trình hướng dẫn sẽ bắt đầu khi ứng dụng được khởi chạy lần sau</string>
 
+    <string name="skip">Bỏ qua</string>
+    <string name="finish">Hoàn thành</string>
+
+    <!-- Product Choice Guide -->
+    <string name="guide_scan_barcode_title">Quét mã vạch</string>
+    <string name="guide_scan_barcode_desc">Chọn tùy chọn này để quét mã vạch của sản phẩm và tự động lấy thông tin. Đơn giản và nhanh chóng!</string>
+
+    <string name="guide_manual_entry_title">Nhập thông tin thủ công</string>
+    <string name="guide_manual_entry_desc">Sử dụng tùy chọn này khi sản phẩm không có mã vạch hoặc bạn muốn tự thay đổi chi tiết.</string>
+
+    <string name="guide_back_title">Quay lại màn hình trước</string>
+    <string name="guide_back_desc">Bạn có thể nhấn vào đây bất cứ lúc nào để quay về trang chủ. Tiện lợi phải không?</string>
+
+    <!-- Main Screen Guide -->
+    <string name="guide_main_screen_title">Chào mừng đến với Shoopt</string>
+    <string name="guide_main_screen_desc">Khám phá cách theo dõi mua sắm và tiết kiệm tiền chỉ với vài thao tác đơn giản.</string>
+
+    <string name="guide_update_list_title">Cập nhật danh sách của bạn</string>
+    <string name="guide_update_list_desc">Chuẩn bị danh sách mua sắm theo ý muốn trước khi đến cửa hàng.</string>
+
+    <string name="guide_add_product_title">Thêm sản phẩm</string>
+    <string name="guide_add_product_desc">Lưu các sản phẩm và theo dõi giá cả. Từng đồng đều quan trọng!</string>
+
+    <!-- Replay Add Product Guide -->
+    <string name="replay_add_product_guide">Xem lại hướng dẫn thêm sản phẩm</string>
+    <string name="replay_add_product_guide_description">Bạn có thể khởi động hướng dẫn nhỏ này bất cứ lúc nào để nhớ cách thêm sản phẩm một cách dễ dàng.</string>
+
+    <string name="guide_first_product_welcome_title">Chào mừng đến với Shoopt!</string>
+    <string name="guide_first_product_welcome_desc">Chúng tôi sẽ hướng dẫn bạn thêm sản phẩm đầu tiên một cách đơn giản.</string>
+
+    <string name="guide_add_product_button_title">Thêm sản phẩm</string>
+    <string name="guide_add_product_button_desc">Nhấn vào đây để bắt đầu tạo cơ sở dữ liệu sản phẩm cá nhân. Bắt đầu thôi!</string>
+
+    <string name="guide_product_choice_title">Chọn phương pháp của bạn</string>
+    <string name="guide_product_choice_desc">Bạn có thể quét mã vạch hoặc nhập thông tin thủ công. Bạn quyết định!</string>
+
+    <string name="guide_barcode_scan_title">Quét mã vạch</string>
+    <string name="guide_barcode_scan_desc">Căn chỉnh mã vạch trong khung và để Shoopt làm phần còn lại. Thật sự tiết kiệm thời gian!</string>
+
+    <string name="guide_barcode_filled_title">Đã phát hiện mã vạch</string>
+    <string name="guide_barcode_filled_desc">Tuyệt vời! Mã đã được nhận diện và thêm vào. Chúng ta tiếp tục với ảnh sản phẩm.</string>
+
+    <string name="guide_take_photo_button_title">Chụp ảnh</string>
+    <string name="guide_take_photo_button_desc">Nhấn vào đây để chụp ảnh sản phẩm. Cố gắng hiển thị rõ giá trên đó nhé 😉</string>
+
+    <string name="guide_photo_warning_title">Lời khuyên nhỏ về ảnh</string>
+    <string name="guide_photo_warning_desc">Để có kết quả tốt hơn, hãy chụp ảnh sắc nét có thể thấy rõ tên sản phẩm và giá cả.</string>
+
+    <string name="guide_fields_autofilled_title">Các trường đã điền sẵn</string>
+    <string name="guide_fields_autofilled_desc">Nhờ AI và vị trí của bạn, một số thông tin đã được thêm tự động. Kiểm tra nhanh nhé!</string>
+
+    <string name="guide_save_product_title">Lưu sản phẩm của bạn</string>
+    <string name="guide_save_product_desc">Nhấn nút này để lưu sản phẩm vào cơ sở dữ liệu cá nhân. Xuất sắc!</string>
+
+    <string name="guide_product_added_title">Đã thêm sản phẩm!</string>
+    <string name="guide_product_added_desc">Chúc mừng, sản phẩm đầu tiên đã được lưu. Bạn có thể thêm các sản phẩm khác cũng dễ dàng như vậy.</string>
+
+    <string name="guide_analyze_button_title">Phân tích sản phẩm của bạn</string>
+    <string name="guide_analyze_button_desc">Từ màn hình này, bạn có thể so sánh giá cả, xem tất cả sản phẩm và theo dõi chi tiêu như một chuyên gia.</string>
+
+    <string name="guide_completion_title">Chúc mừng!</string>
+    <string name="guide_completion_desc">Bạn đã thêm thành công sản phẩm đầu tiên. Tiếp tục như vậy để tận dụng tối đa Shoopt!</string>
+
+    <string name="choose_product_entry_method">Bạn muốn thêm sản phẩm như thế nào?</string>
+    <string name="scan_barcode_description">Quét mã vạch sản phẩm để nhập nhanh với tự động lấy thông tin</string>
+    <string name="manual_entry_description">Nhập thủ công chi tiết sản phẩm mà không sử dụng mã vạch</string>
+    <string name="skip_guide">Bỏ qua</string>
+    <string name="next">Tiếp theo</string>
+    <string name="got_it">Hiểu rồi</string>
+    <string name="tooltip_icon_description">Biểu tượng tính năng hướng dẫn</string>
+
 </resources>

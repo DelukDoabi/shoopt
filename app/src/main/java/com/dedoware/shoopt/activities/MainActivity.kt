@@ -3,7 +3,6 @@ package com.dedoware.shoopt.activities
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
@@ -12,10 +11,11 @@ import androidx.activity.result.ActivityResult
 import androidx.appcompat.app.AppCompatActivity
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.ShooptApplication
-import com.dedoware.shoopt.model.Product
 import com.dedoware.shoopt.persistence.FirebaseProductRepository
 import com.dedoware.shoopt.persistence.IProductRepository
 import com.dedoware.shoopt.persistence.LocalProductRepository
+import com.dedoware.shoopt.utils.AddFirstProductGuide
+import com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.UpdateManager
@@ -113,6 +113,22 @@ class MainActivity : AppCompatActivity() {
                 CrashlyticsManager.log("Erreur lors de la vérification des mises à jour: ${e.message ?: "Message non disponible"}")
             }
 
+            // Lancer le guide d'ajout du premier produit si demandé par l'extra
+            if (savedInstanceState == null && intent?.getBooleanExtra("EXTRA_START_ADD_PRODUCT_GUIDE", false) == true) {
+                handleStartAddProductGuide(intent)
+            }
+
+            // Ajout: Déclenchement automatique du guide après onboarding si nécessaire
+            val firstTimeUserManager = com.dedoware.shoopt.utils.FirstTimeUserManager(this)
+            if (firstTimeUserManager.shouldShowAddProductGuide()) {
+                val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
+                val addProductButton = findViewById<View>(R.id.add_or_update_product_IB)
+                guide.startWelcomeGuide {
+                    guide.showAddProductButtonGuide(addProductButton)
+                }
+                firstTimeUserManager.markAddProductGuideShown()
+            }
+
         } catch (e: Exception) {
             // Capture des erreurs générales dans onCreate
             CrashlyticsManager.log("Erreur générale dans MainActivity.onCreate: ${e.message ?: "Message non disponible"}")
@@ -126,6 +142,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        if (intent?.getBooleanExtra("EXTRA_START_ADD_PRODUCT_GUIDE", false) == true) {
+            handleStartAddProductGuide(intent)
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         // Vérifier si une mise à jour est en attente d'installation
@@ -133,7 +156,27 @@ class MainActivity : AppCompatActivity() {
             val rootView = findViewById<View>(android.R.id.content)
             UpdateManager.checkForPendingUpdate(this, rootView)
         } catch (e: Exception) {
-            CrashlyticsManager.log("Erreur lors de la vérification des mises à jour en attente: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.log("Erreur lors de la vérification des mises à jour en attente: "+
+                "${e.message ?: "Message non disponible"}")
+        }
+
+        // Guide utilisateur : reprendre à l'étape appropriée
+        val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
+        if (guide.isGuideCompleted()) return
+        when (guide.getCurrentGuideState()) {
+            com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.MAIN_SCREEN_PRODUCT_ADDED -> {
+                // Afficher le tooltip de félicitations après ajout du produit et enchaîner sur analyse
+                val root = findViewById<View>(android.R.id.content)
+                val analyzeButton = findViewById<View>(R.id.analyse_IB)
+                guide.showProductAddedGuide(root, analyzeButton)
+            }
+            com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.MAIN_SCREEN_ANALYZE_BUTTON -> {
+                // Fallback : si l'app a été mise en arrière-plan entre les étapes
+                val analyzeButton = findViewById<View>(R.id.analyse_IB)
+                guide.showAnalyzeButtonGuide(analyzeButton)
+            }
+            // ...autres cas si besoin...
+            else -> {}
         }
     }
 
@@ -196,10 +239,16 @@ class MainActivity : AppCompatActivity() {
 
                     // Analytics pour le passage à l'écran d'ajout de produit
                     AnalyticsManager.logSelectContent("navigation", "card", "add_update_product")
-                    showAddProductOptions()
+
+                    updateAddFirstProductGuideIfNeeded()
+
+                    // Lancer la nouvelle activité de choix de produit avec animation
+                    val intent = Intent(this, ProductChoiceActivity::class.java)
+                    startActivity(intent)
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                 } catch (e: Exception) {
                     // Capture des erreurs
-                    CrashlyticsManager.log("Erreur lors de l'affichage des options d'ajout de produit: ${e.message ?: "Message non disponible"}")
+                    CrashlyticsManager.log("Erreur lors du lancement de ProductChoiceActivity: ${e.message ?: "Message non disponible"}")
                     CrashlyticsManager.logException(e)
                     Toast.makeText(this, getString(R.string.add_product_options_error), Toast.LENGTH_SHORT).show()
                 }
@@ -256,6 +305,21 @@ class MainActivity : AppCompatActivity() {
             CrashlyticsManager.log("Erreur lors de la configuration des cartes: ${e.message ?: "Message non disponible"}")
             CrashlyticsManager.setCustomKey("error_location", "setup_feature_cards")
             CrashlyticsManager.logException(e)
+        }
+    }
+
+    /**
+     * Met à jour l'état du guide d'ajout du premier produit si nécessaire.
+     * Appelé après l'ajout d'un produit pour éviter de redémarrer le guide.
+     */
+    private fun updateAddFirstProductGuideIfNeeded() {
+        val guide = AddFirstProductGuide(this)
+        when (guide.getCurrentGuideState()) {
+            GuideState.MAIN_SCREEN_ADD_BUTTON -> {
+                guide.saveGuideState(GuideState.PRODUCT_CHOICE_SCREEN)
+            }
+
+            else -> {}
         }
     }
 
@@ -368,6 +432,16 @@ class MainActivity : AppCompatActivity() {
 
             Toast.makeText(this, getString(R.string.dialog_display_error), Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun handleStartAddProductGuide(intent: Intent?) {
+        val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
+        val addProductButton = findViewById<View>(R.id.add_or_update_product_IB)
+        guide.startWelcomeGuide {
+            guide.showAddProductButtonGuide(addProductButton)
+        }
+        // Remove the extra so the guide doesn't restart on future intents
+        intent?.removeExtra("EXTRA_START_ADD_PRODUCT_GUIDE")
     }
 
     private fun checkProductExistenceAndNavigate(barcode: String) {

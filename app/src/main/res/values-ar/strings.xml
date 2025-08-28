@@ -217,4 +217,76 @@
     <string name="replay_onboarding_description">راجع مقدمة التطبيق مرة أخرى</string>
     <string name="onboarding_replayed">سيتم بدء الشرح التمهيدي عند فتح التطبيق التالي</string>
 
+
+    <string name="skip">تخطي</string>
+    <string name="finish">إنهاء</string>
+
+    <!-- Product Choice Guide -->
+    <string name="guide_scan_barcode_title">امسح الرمز الشريطي</string>
+    <string name="guide_scan_barcode_desc">اختر هذا الخيار لمسح الرمز الشريطي للمنتج والحصول على معلوماته تلقائياً. بسيط وسريع!</string>
+
+    <string name="guide_manual_entry_title">أدخل المعلومات يدوياً</string>
+    <string name="guide_manual_entry_desc">استخدم هذا الخيار عندما لا يحتوي المنتج على رمز شريطي أو إذا كنت تريد تعديل التفاصيل بنفسك.</string>
+
+    <string name="guide_back_title">العودة للشاشة السابقة</string>
+    <string name="guide_back_desc">يمكنك الضغط هنا في أي وقت للعودة إلى الصفحة الرئيسية. مفيد، أليس كذلك؟</string>
+
+    <!-- Main Screen Guide -->
+    <string name="guide_main_screen_title">مرحباً بك في Shoopt</string>
+    <string name="guide_main_screen_desc">اكتشف كيفية تتبع مشترياتك وتوفير المال ببضع لمسات.</string>
+
+    <string name="guide_update_list_title">حدّث قائمتك</string>
+    <string name="guide_update_list_desc">حضّر قائمة مشترياتك كما تريد قبل الذهاب إلى المتجر.</string>
+
+    <string name="guide_add_product_title">أضف منتجاً</string>
+    <string name="guide_add_product_desc">سجّل منتجاتك وراقب أسعارها. كل قرش مهم!</string>
+
+    <!-- Replay Add Product Guide -->
+    <string name="replay_add_product_guide">مراجعة دليل إضافة المنتج</string>
+    <string name="replay_add_product_guide_description">يمكنك إعادة تشغيل هذا الدليل الصغير متى شئت لتتذكر كيفية إضافة منتج بسهولة.</string>
+
+    <string name="guide_first_product_welcome_title">مرحباً بك في Shoopt!</string>
+    <string name="guide_first_product_welcome_desc">سنرافقك لتضيف أول منتج لك بكل بساطة.</string>
+
+    <string name="guide_add_product_button_title">أضف منتجاً</string>
+    <string name="guide_add_product_button_desc">اضغط هنا لبدء إنشاء قاعدة منتجاتك الشخصية. هيا بنا!</string>
+
+    <string name="guide_product_choice_title">اختر طريقتك</string>
+    <string name="guide_product_choice_desc">يمكنك مسح رمز شريطي أو إدخال المعلومات يدوياً. الخيار لك!</string>
+
+    <string name="guide_barcode_scan_title">امسح الرمز الشريطي</string>
+    <string name="guide_barcode_scan_desc">حاذ الرمز الشريطي في الإطار ودع Shoopt يقوم بالباقي. توفير حقيقي للوقت!</string>
+
+    <string name="guide_barcode_filled_title">تم اكتشاف الرمز الشريطي</string>
+    <string name="guide_barcode_filled_desc">ممتاز! تم التعرف على الرمز وإضافته. لنكمل مع صورة المنتج.</string>
+
+    <string name="guide_take_photo_button_title">التقط صورة</string>
+    <string name="guide_take_photo_button_desc">اضغط هنا لالتقاط صورة للمنتج. حاول إظهار السعر بوضوح 😉</string>
+
+    <string name="guide_photo_warning_title">نصيحة للتصوير</string>
+    <string name="guide_photo_warning_desc">للحصول على أفضل النتائج، التقط صورة واضحة تُظهر اسم المنتج وسعره بوضوح.</string>
+
+    <string name="guide_fields_autofilled_title">حقول مُعبأة مسبقاً</string>
+    <string name="guide_fields_autofilled_desc">بفضل الذكاء الاصطناعي وموقعك، تم إضافة بعض المعلومات تلقائياً. تحقق منها سريعاً!</string>
+
+    <string name="guide_save_product_title">احفظ منتجك</string>
+    <string name="guide_save_product_desc">اضغط على هذا الزر لحفظ منتجك في قاعدتك الشخصية. أحسنت!</string>
+
+    <string name="guide_product_added_title">تم إضافة المنتج!</string>
+    <string name="guide_product_added_desc">تهانينا، تم حفظ أول منتج لك. يمكنك إضافة المزيد بنفس السهولة.</string>
+
+    <string name="guide_analyze_button_title">حلّل منتجاتك</string>
+    <string name="guide_analyze_button_desc">من هذه الشاشة، يمكنك مقارنة الأسعار ورؤية جميع منتجاتك وتتبع مصاريفك كالمحترفين.</string>
+
+    <string name="guide_completion_title">تهانينا!</string>
+    <string name="guide_completion_desc">لقد أضفت أول منتج لك بنجاح. استمر هكذا لتحصل على أفضل ما في Shoopt!</string>
+
+    <string name="choose_product_entry_method">كيف تود إضافة منتجك؟</string>
+    <string name="scan_barcode_description">امسح الرمز الشريطي للمنتج للإدخال السريع مع استرجاع المعلومات تلقائياً</string>
+    <string name="manual_entry_description">أدخل تفاصيل المنتج يدوياً دون استخدام الرمز الشريطي</string>
+    <string name="skip_guide">تخطي</string>
+    <string name="next">التالي</string>
+    <string name="got_it">فهمت</string>
+    <string name="tooltip_icon_description">أيقونة ميزة الدليل</string>
+
 </resources>

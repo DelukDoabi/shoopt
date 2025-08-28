@@ -454,52 +454,20 @@ class AnalyseActivity : AppCompatActivity() {
 
     private fun showAddProductOptions() {
         try {
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle(getString(R.string.add_product_options_title))
-                .setMessage(getString(R.string.add_product_options_message))
-                .setPositiveButton(getString(R.string.scan_barcode)) { _, _ ->
-                    try {
-                        // Analytics pour l'utilisation du scanner de code-barres
-                        AnalyticsManager.logUserAction(
-                            action = "open_barcode_scanner",
-                            category = "product_management"
-                        )
+            // Analytics pour le passage à l'écran d'ajout de produit
+            AnalyticsManager.logSelectContent("navigation", "button", "add_update_product")
 
-                        // Utilisation de notre nouvelle implémentation ML Kit au lieu de ZXing
-                        val intent = Intent(this, com.dedoware.shoopt.scanner.BarcodeScannerActivity::class.java)
-                        barcodeScannerLauncher.launch(intent)
-                    } catch (e: Exception) {
-                        CrashlyticsManager.log("Erreur lors du lancement du scanner: ${e.message ?: "Message non disponible"}")
-                        CrashlyticsManager.setCustomKey("error_location", "launch_barcode_scanner")
-                        CrashlyticsManager.logException(e)
-
-                        Toast.makeText(this, getString(R.string.scanner_launch_error), Toast.LENGTH_SHORT).show()
-                    }
-                }
-                .setNegativeButton(getString(R.string.manual_entry)) { _, _ ->
-                    try {
-                        // Analytics pour l'ajout manuel de produit
-                        AnalyticsManager.logUserAction(
-                            action = "manual_product_entry",
-                            category = "product_management"
-                        )
-
-                        openAddProductActivity(Product())
-                    } catch (e: Exception) {
-                        CrashlyticsManager.log("Erreur lors du lancement de l'activité d'ajout manuel: ${e.message ?: "Message non disponible"}")
-                        CrashlyticsManager.logException(e)
-
-                        Toast.makeText(this, getString(R.string.manual_entry_error), Toast.LENGTH_SHORT).show()
-                    }
-                }
-                .create()
-                .show()
+            // Lancer la nouvelle activité de choix de produit avec animation en utilisant le nom complet de la classe
+            val intent = Intent(this, com.dedoware.shoopt.activities.ProductChoiceActivity::class.java)
+            startActivity(intent)
+            
+            // Utiliser nos animations personnalisées maintenant qu'elles sont implémentées
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         } catch (e: Exception) {
-            CrashlyticsManager.log("Erreur lors de l'affichage des options d'ajout: ${e.message ?: "Message non disponible"}")
-            CrashlyticsManager.setCustomKey("error_location", "show_add_product_options")
+            // Capture des erreurs
+            CrashlyticsManager.log("Erreur lors du lancement de ProductChoiceActivity: ${e.message ?: "Message non disponible"}")
             CrashlyticsManager.logException(e)
-
-            Toast.makeText(this, getString(R.string.dialog_display_error), Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.add_product_options_error), Toast.LENGTH_SHORT).show()
         }
     }
 
