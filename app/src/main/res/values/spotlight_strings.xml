@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Système de spotlight -->
+    <string name="spotlight_next">Suivant</string>
+    <string name="spotlight_skip">Passer</string>
+    <string name="spotlight_finish">Terminer</string>
+    <string name="spotlight_got_it">Compris !</string>
+
+    <!-- Messages pour MainActivity -->
+    <string name="spotlight_main_scan_title">Scanner un produit</string>
+    <string name="spotlight_main_scan_description">Utilisez ce bouton pour scanner le code-barres d\'un produit et l\'ajouter rapidement à votre liste</string>
+
+    <string name="spotlight_main_add_title">Ajouter manuellement</string>
+    <string name="spotlight_main_add_description">Ajoutez un produit manuellement si vous n\'avez pas de code-barres</string>
+
+    <string name="spotlight_main_list_title">Vos listes de courses</string>
+    <string name="spotlight_main_list_description">Consultez et gérez vos différentes listes de courses ici</string>
+
+    <string name="spotlight_main_settings_title">Paramètres</string>
+    <string name="spotlight_main_settings_description">Personnalisez l\'application selon vos préférences</string>
+
+    <!-- Messages pour AnalyseActivity -->
+    <string name="spotlight_analyse_chart_title">Graphiques d\'analyse</string>
+    <string name="spotlight_analyse_chart_description">Visualisez vos dépenses et habitudes de consommation avec ces graphiques détaillés</string>
+
+    <string name="spotlight_analyse_filter_title">Filtres d\'analyse</string>
+    <string name="spotlight_analyse_filter_description">Utilisez ces filtres pour analyser vos données par période, magasin ou catégorie</string>
+
+    <!-- Messages pour TrackShoppingActivity -->
+    <string name="spotlight_track_cart_title">Panier en cours</string>
+    <string name="spotlight_track_cart_description">Suivez le contenu de votre panier et le total de vos achats en temps réel</string>
+
+    <string name="spotlight_track_total_title">Total des achats</string>
+    <string name="spotlight_track_total_description">Voici le montant total de votre session de shopping actuelle</string>
+</resources>
+

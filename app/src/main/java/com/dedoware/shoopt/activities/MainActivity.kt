@@ -26,6 +26,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+// Imports pour le système de spotlight
+import com.dedoware.shoopt.extensions.startSpotlightTour
+import com.dedoware.shoopt.extensions.createSpotlightItem
+import com.dedoware.shoopt.extensions.isSpotlightAvailable
+import com.dedoware.shoopt.models.SpotlightShape
 
 
 class MainActivity : AppCompatActivity() {
@@ -102,6 +107,9 @@ class MainActivity : AppCompatActivity() {
 
             // Configuration des cartes pour une meilleure expérience utilisateur
             setupFeatureCards()
+
+            // Démarrer le système de spotlight si nécessaire
+            setupSpotlightTour()
 
             // Vérification des mises à jour disponibles
             try {
@@ -263,6 +271,96 @@ class MainActivity : AppCompatActivity() {
             // Capture des erreurs lors de la configuration des cartes
             CrashlyticsManager.log("Erreur lors de la configuration des cartes: ${e.message ?: "Message non disponible"}")
             CrashlyticsManager.setCustomKey("error_location", "setup_feature_cards")
+            CrashlyticsManager.logException(e)
+        }
+    }
+
+    /**
+     * Configure et démarre le tour de spotlight pour guider l'utilisateur
+     * sur les fonctionnalités principales de l'écran d'accueil
+     */
+    private fun setupSpotlightTour() {
+        try {
+            // Vérifier si le spotlight doit être affiché
+            if (!isSpotlightAvailable()) {
+                return
+            }
+
+            // Créer la liste des éléments à mettre en surbrillance
+            val spotlightItems = mutableListOf<com.dedoware.shoopt.models.SpotlightItem>()
+
+            // Ajouter les cartes principales au spotlight
+            val shoppingListCard: MaterialCardView = findViewById(R.id.shopping_list_card)
+            val addProductCard: MaterialCardView = findViewById(R.id.add_product_card)
+            val trackShoppingCard: MaterialCardView = findViewById(R.id.track_shopping_card)
+            val analyseCard: MaterialCardView = findViewById(R.id.analyse_card)
+            val settingsButton: MaterialButton = findViewById(R.id.settings_button)
+
+            // Spotlight pour la liste de courses
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = shoppingListCard,
+                    titleRes = R.string.spotlight_main_list_title,
+                    descriptionRes = R.string.spotlight_main_list_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour l'ajout de produit
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = addProductCard,
+                    titleRes = R.string.spotlight_main_add_title,
+                    descriptionRes = R.string.spotlight_main_add_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour le suivi des achats
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = trackShoppingCard,
+                    titleRes = R.string.spotlight_main_scan_title,
+                    descriptionRes = R.string.spotlight_main_scan_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour l'analyse
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = analyseCard,
+                    titleRes = R.string.spotlight_analyse_chart_title,
+                    descriptionRes = R.string.spotlight_analyse_chart_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour les paramètres
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = settingsButton,
+                    titleRes = R.string.spotlight_main_settings_title,
+                    descriptionRes = R.string.spotlight_main_settings_description,
+                    shape = SpotlightShape.CIRCLE
+                )
+            )
+
+            // Démarrer le tour de spotlight avec un léger délai pour que l'interface soit prête
+            window.decorView.post {
+                startSpotlightTour(spotlightItems) {
+                    // Callback appelé à la fin du tour
+                    AnalyticsManager.logUserAction(
+                        "spotlight_tour_completed",
+                        "onboarding",
+                        mapOf("screen" to "MainActivity")
+                    )
+                }
+            }
+
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la configuration du spotlight: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "setup_spotlight_tour")
             CrashlyticsManager.logException(e)
         }
     }

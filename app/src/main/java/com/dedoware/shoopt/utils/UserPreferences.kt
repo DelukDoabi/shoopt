@@ -13,6 +13,11 @@ class UserPreferences(context: Context) {
         private const val KEY_ONBOARDING_VERSION = "onboarding_version"
         private const val CURRENT_ONBOARDING_VERSION = 1 // Incrémenter quand l'onboarding change
 
+        // Spotlight system constants
+        private const val KEY_SPOTLIGHT_PREFIX = "spotlight_seen_"
+        private const val KEY_SPOTLIGHT_VERSION = "spotlight_version"
+        private const val CURRENT_SPOTLIGHT_VERSION = 1 // Incrémenter pour forcer l'affichage
+
         const val THEME_LIGHT = 1
         const val THEME_DARK = 2
         const val THEME_SYSTEM = 0
@@ -48,6 +53,52 @@ class UserPreferences(context: Context) {
 
             // Si la version de l'onboarding a changé, considérer comme non complété
             return completed && version >= CURRENT_ONBOARDING_VERSION
+        }
+
+        /**
+         * Vérifie si le spotlight doit être affiché pour un écran donné
+         * Le spotlight s'affiche seulement après l'onboarding principal
+         */
+        fun shouldShowSpotlight(context: Context, screenKey: String): Boolean {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
+            // Vérifier que l'onboarding principal est terminé
+            if (!isOnboardingCompleted(context)) {
+                return false
+            }
+
+            // Vérifier si le spotlight a déjà été vu pour cet écran
+            val spotlightSeen = prefs.getBoolean(KEY_SPOTLIGHT_PREFIX + screenKey, false)
+            val currentVersion = prefs.getInt(KEY_SPOTLIGHT_VERSION, 0)
+
+            // Afficher si pas encore vu ou si la version a changé
+            return !spotlightSeen || currentVersion < CURRENT_SPOTLIGHT_VERSION
+        }
+
+        /**
+         * Marque le spotlight comme vu pour un écran donné
+         */
+        fun markSpotlightSeen(context: Context, screenKey: String) {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            prefs.edit()
+                .putBoolean(KEY_SPOTLIGHT_PREFIX + screenKey, true)
+                .putInt(KEY_SPOTLIGHT_VERSION, CURRENT_SPOTLIGHT_VERSION)
+                .apply()
+        }
+
+        /**
+         * Réinitialise tous les spotlights (utile pour les tests ou les démos)
+         */
+        fun resetSpotlights(context: Context) {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            val editor = prefs.edit()
+
+            // Supprimer tous les flags de spotlight
+            prefs.all.keys.filter { it.startsWith(KEY_SPOTLIGHT_PREFIX) }
+                .forEach { editor.remove(it) }
+
+            editor.putInt(KEY_SPOTLIGHT_VERSION, 0)
+            editor.apply()
         }
     }
 
