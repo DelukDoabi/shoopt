@@ -39,4 +39,29 @@
 
     <string name="spotlight_choice_manual_title">Saisie manuelle</string>
     <string name="spotlight_choice_manual_description">Ajoutez un produit en saisissant manuellement toutes ses informations (nom, prix, magasin, etc.)</string>
+
+    <!-- Messages pour AddProductActivity -->
+    <string name="spotlight_add_photo_title">Photo du produit</string>
+    <string name="spotlight_add_photo_description">Prenez une photo du produit pour faciliter son identification et bénéficier de l\'analyse automatique</string>
+
+    <string name="spotlight_add_barcode_title">Code-barres</string>
+    <string name="spotlight_add_barcode_description">Saisissez ou scannez le code-barres du produit pour une identification précise</string>
+
+    <string name="spotlight_add_scan_button_title">Scanner le code-barres</string>
+    <string name="spotlight_add_scan_button_description">Utilisez ce bouton pour scanner rapidement le code-barres avec l\'appareil photo</string>
+
+    <string name="spotlight_add_name_title">Nom du produit</string>
+    <string name="spotlight_add_name_description">Nom du produit - peut être rempli automatiquement via l\'analyse de l\'image</string>
+
+    <string name="spotlight_add_price_title">Prix</string>
+    <string name="spotlight_add_price_description">Prix d\'achat du produit en magasin</string>
+
+    <string name="spotlight_add_unit_price_title">Prix unitaire</string>
+    <string name="spotlight_add_unit_price_description">Prix au kilo, litre ou à l\'unité pour comparer les produits</string>
+
+    <string name="spotlight_add_shop_title">Magasin</string>
+    <string name="spotlight_add_shop_description">Nom du magasin - peut être détecté automatiquement selon votre localisation</string>
+
+    <string name="spotlight_add_save_title">Sauvegarder</string>
+    <string name="spotlight_add_save_description">Enregistrez le produit dans votre base de données personnelle</string>
 </resources>

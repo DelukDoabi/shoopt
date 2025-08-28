@@ -77,6 +77,11 @@ import java.net.URL
 import java.util.UUID
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+// Imports pour le système de spotlight
+import com.dedoware.shoopt.extensions.startSpotlightTour
+import com.dedoware.shoopt.extensions.createSpotlightItem
+import com.dedoware.shoopt.extensions.isSpotlightAvailable
+import com.dedoware.shoopt.models.SpotlightShape
 
 
 class AddProductActivity : AppCompatActivity() {
@@ -501,6 +506,9 @@ class AddProductActivity : AppCompatActivity() {
             }
 
             // --- Onboarding simplifié - plus de guide complexe ---
+
+            // Démarrer le système de spotlight si nécessaire
+            setupSpotlightTour()
         } catch (e: Exception) {
             // Capture des erreurs globales dans onCreate
             CrashlyticsManager.log("Erreur globale dans onCreate d'AddProductActivity: ${e.message ?: "Message non disponible"}")
@@ -793,7 +801,7 @@ class AddProductActivity : AppCompatActivity() {
     // Mise à jour de la méthode pour inclure l'analytique lors de l'analyse d'image
     private suspend fun analyzeProductImage(imageUrl: String) {
         try {
-            // Analytique pour le début de l'analyse d'image
+            // Analytique pour le d��but de l'analyse d'image
             withContext(Dispatchers.Main) {
                 val params = Bundle().apply {
                     putString("image_source", if (imageUrl.isEmpty()) "camera" else "url")
@@ -1219,6 +1227,119 @@ class AddProductActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         // Guide utilisateur supprimé pour simplifier l'onboarding
+    }
+
+    /**
+     * Configure et démarre le tour de spotlight pour guider l'utilisateur
+     * dans l'ajout d'un produit avec toutes les fonctionnalités disponibles
+     */
+    private fun setupSpotlightTour() {
+        try {
+            // Vérifier si le spotlight doit être affiché
+            if (!isSpotlightAvailable()) {
+                return
+            }
+
+            // Créer la liste des éléments à mettre en surbrillance
+            val spotlightItems = mutableListOf<com.dedoware.shoopt.models.SpotlightItem>()
+
+            // Spotlight pour la photo du produit
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = productPictureImageButton,
+                    titleRes = R.string.spotlight_add_photo_title,
+                    descriptionRes = R.string.spotlight_add_photo_description,
+                    shape = SpotlightShape.CIRCLE
+                )
+            )
+
+            // Spotlight pour le champ code-barres
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = productBarcodeEditText,
+                    titleRes = R.string.spotlight_add_barcode_title,
+                    descriptionRes = R.string.spotlight_add_barcode_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour le bouton de scan de code-barres
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = scanBarcodeButton,
+                    titleRes = R.string.spotlight_add_scan_button_title,
+                    descriptionRes = R.string.spotlight_add_scan_button_description,
+                    shape = SpotlightShape.CIRCLE
+                )
+            )
+
+            // Spotlight pour le nom du produit
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = productNameEditText,
+                    titleRes = R.string.spotlight_add_name_title,
+                    descriptionRes = R.string.spotlight_add_name_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour le prix
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = productPriceEditText,
+                    titleRes = R.string.spotlight_add_price_title,
+                    descriptionRes = R.string.spotlight_add_price_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour le prix unitaire
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = productUnitPriceEditText,
+                    titleRes = R.string.spotlight_add_unit_price_title,
+                    descriptionRes = R.string.spotlight_add_unit_price_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour le magasin
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = productShopAutoCompleteTextView,
+                    titleRes = R.string.spotlight_add_shop_title,
+                    descriptionRes = R.string.spotlight_add_shop_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour le bouton de sauvegarde
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = saveProductImageButton,
+                    titleRes = R.string.spotlight_add_save_title,
+                    descriptionRes = R.string.spotlight_add_save_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Démarrer le tour de spotlight avec un léger délai pour que l'interface soit prête
+            window.decorView.post {
+                startSpotlightTour(spotlightItems) {
+                    // Callback appelé à la fin du tour
+                    AnalyticsManager.logUserAction(
+                        "spotlight_tour_completed",
+                        "onboarding",
+                        mapOf("screen" to "AddProductActivity")
+                    )
+                }
+            }
+
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la configuration du spotlight: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "setup_spotlight_tour_add_product")
+            CrashlyticsManager.logException(e)
+        }
     }
 
     companion object {
