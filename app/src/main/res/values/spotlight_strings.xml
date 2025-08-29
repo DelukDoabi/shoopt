@@ -7,21 +7,24 @@
     <string name="spotlight_got_it">Compris !</string>
 
     <!-- Messages pour MainActivity -->
-    <string name="spotlight_main_scan_title">Scanner un produit</string>
-    <string name="spotlight_main_scan_description">Utilisez ce bouton pour scanner le code-barres d\'un produit et l\'ajouter rapidement à votre liste</string>
+    <string name="spotlight_main_scan_title">Suivi de tes achats</string>
+    <string name="spotlight_main_scan_description">Pendant que tu fais les courses, ajoutes les produits que tu achètes au fur et à mesure pour suivre en temps réel tes dépenses et les mesurer avant d\'arriver en caisse</string>
 
-    <string name="spotlight_main_add_title">Ajouter manuellement</string>
-    <string name="spotlight_main_add_description">Ajoutez un produit manuellement si vous n\'avez pas de code-barres</string>
+    <string name="spotlight_main_add_title">Ajoutes ou modifies un produit</string>
+    <string name="spotlight_main_add_description">Ici tu pourras ajouter ou modifier un produit manuellement ou en scannant son code barre</string>
 
-    <string name="spotlight_main_list_title">Vos listes de courses</string>
-    <string name="spotlight_main_list_description">Consultez et gérez vos différentes listes de courses ici</string>
+    <string name="spotlight_main_list_title">Ta liste de course</string>
+    <string name="spotlight_main_list_description">Consultes et géres ta liste de courses ici</string>
 
     <string name="spotlight_main_settings_title">Paramètres</string>
-    <string name="spotlight_main_settings_description">Personnalisez l\'application selon vos préférences</string>
+    <string name="spotlight_main_settings_description">Personnalises l\'application selon tes préférences</string>
+
+    <string name="spotlight_main_logout_title">Déconnexion</string>
+    <string name="spotlight_main_logout_description">Déconnectes toi à tout moment de l\'application comme bon te semble</string>
 
     <!-- Messages pour AnalyseActivity -->
-    <string name="spotlight_analyse_chart_title">Graphiques d\'analyse</string>
-    <string name="spotlight_analyse_chart_description">Visualisez vos dépenses et habitudes de consommation avec ces graphiques détaillés</string>
+    <string name="spotlight_analyse_chart_title">Analyse tes produits</string>
+    <string name="spotlight_analyse_chart_description">Consultes et analyses à tout moment tes produits (tu peux aussi les modifiers à ta guise)</string>
 
     <string name="spotlight_analyse_filter_title">Filtres d\'analyse</string>
     <string name="spotlight_analyse_filter_description">Utilisez ces filtres pour analyser vos données par période, magasin ou catégorie</string>
@@ -34,30 +37,30 @@
     <string name="spotlight_track_total_description">Voici le montant total de votre session de shopping actuelle</string>
 
     <!-- Messages pour ProductChoiceActivity -->
-    <string name="spotlight_choice_scan_title">Scanner un code-barres</string>
-    <string name="spotlight_choice_scan_description">Utilisez l\'appareil photo pour scanner rapidement le code-barres d\'un produit et récupérer automatiquement ses informations</string>
+    <string name="spotlight_choice_scan_title">Scannes un code-barres</string>
+    <string name="spotlight_choice_scan_description">Utilises l\'appareil photo pour scanner rapidement le code-barres d\'un produit et récupérer automatiquement ses informations si déjà existantes</string>
 
     <string name="spotlight_choice_manual_title">Saisie manuelle</string>
-    <string name="spotlight_choice_manual_description">Ajoutez un produit en saisissant manuellement toutes ses informations (nom, prix, magasin, etc.)</string>
+    <string name="spotlight_choice_manual_description">Ou alors ajoutes un produit en saisissant manuellement toutes ses informations (nom, prix, magasin, etc.)</string>
 
     <!-- Messages pour AddProductActivity -->
     <string name="spotlight_add_photo_title">Photo du produit</string>
     <string name="spotlight_add_photo_description">Prenez une photo du produit pour faciliter son identification et bénéficier de l\'analyse automatique</string>
 
     <string name="spotlight_add_barcode_title">Code-barres</string>
-    <string name="spotlight_add_barcode_description">Saisissez ou scannez le code-barres du produit pour une identification précise</string>
+    <string name="spotlight_add_barcode_description">Saisis le code-barres du produit pour une identification précise - peut aussi être rempli automatiquement via le scanne du code barre précédemment</string>
 
-    <string name="spotlight_add_scan_button_title">Scanner le code-barres</string>
-    <string name="spotlight_add_scan_button_description">Utilisez ce bouton pour scanner rapidement le code-barres avec l\'appareil photo</string>
+    <string name="spotlight_add_scan_button_title">Scannes le code-barres</string>
+    <string name="spotlight_add_scan_button_description">A tout moment, tu peux utiliser ce bouton pour scanner ou rescanner rapidement le code-barres avec l\'appareil photo</string>
 
     <string name="spotlight_add_name_title">Nom du produit</string>
     <string name="spotlight_add_name_description">Nom du produit - peut être rempli automatiquement via l\'analyse de l\'image</string>
 
     <string name="spotlight_add_price_title">Prix</string>
-    <string name="spotlight_add_price_description">Prix d\'achat du produit en magasin</string>
+    <string name="spotlight_add_price_description">Prix d\'achat du produit en magasin - peut aussi être rempli automatiquement via l\'analyse de l\'image</string>
 
     <string name="spotlight_add_unit_price_title">Prix unitaire</string>
-    <string name="spotlight_add_unit_price_description">Prix au kilo, litre ou à l\'unité pour comparer les produits</string>
+    <string name="spotlight_add_unit_price_description">Prix au kilo, litre ou à l\'unité pour comparer les produits - peut aussi être rempli automatiquement via l\'analyse de l\'image</string>
 
     <string name="spotlight_add_shop_title">Magasin</string>
     <string name="spotlight_add_shop_description">Nom du magasin - peut être détecté automatiquement selon votre localisation</string>

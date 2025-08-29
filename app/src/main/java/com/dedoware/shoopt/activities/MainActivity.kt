@@ -295,16 +295,7 @@ class MainActivity : AppCompatActivity() {
             val trackShoppingCard: MaterialCardView = findViewById(R.id.track_shopping_card)
             val analyseCard: MaterialCardView = findViewById(R.id.analyse_card)
             val settingsButton: MaterialButton = findViewById(R.id.settings_button)
-
-            // Spotlight pour la liste de courses
-            spotlightItems.add(
-                createSpotlightItem(
-                    targetView = shoppingListCard,
-                    titleRes = R.string.spotlight_main_list_title,
-                    descriptionRes = R.string.spotlight_main_list_description,
-                    shape = SpotlightShape.ROUNDED_RECTANGLE
-                )
-            )
+            val logoutButton: MaterialButton = findViewById(R.id.logout_button)
 
             // Spotlight pour l'ajout de produit
             spotlightItems.add(
@@ -312,6 +303,16 @@ class MainActivity : AppCompatActivity() {
                     targetView = addProductCard,
                     titleRes = R.string.spotlight_main_add_title,
                     descriptionRes = R.string.spotlight_main_add_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour la liste de courses
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = shoppingListCard,
+                    titleRes = R.string.spotlight_main_list_title,
+                    descriptionRes = R.string.spotlight_main_list_description,
                     shape = SpotlightShape.ROUNDED_RECTANGLE
                 )
             )
@@ -342,6 +343,16 @@ class MainActivity : AppCompatActivity() {
                     targetView = settingsButton,
                     titleRes = R.string.spotlight_main_settings_title,
                     descriptionRes = R.string.spotlight_main_settings_description,
+                    shape = SpotlightShape.CIRCLE
+                )
+            )
+
+            // Spotlight pour les paramètres
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = logoutButton,
+                    titleRes = R.string.spotlight_main_logout_title,
+                    descriptionRes = R.string.spotlight_main_logout_description,
                     shape = SpotlightShape.CIRCLE
                 )
             )

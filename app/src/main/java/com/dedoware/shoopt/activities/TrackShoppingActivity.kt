@@ -31,6 +31,12 @@ import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+// Imports pour le système de spotlight
+import com.dedoware.shoopt.extensions.startSpotlightTour
+import com.dedoware.shoopt.extensions.createSpotlightItem
+import com.dedoware.shoopt.extensions.isSpotlightAvailable
+import com.dedoware.shoopt.models.SpotlightShape
+import com.google.android.material.card.MaterialCardView
 
 class TrackShoppingActivity : AppCompatActivity() {
 
@@ -95,6 +101,9 @@ class TrackShoppingActivity : AppCompatActivity() {
             }
 
             loadShoppingCart()
+
+            // Démarrer le système de spotlight si nécessaire
+            setupSpotlightTour()
         } catch (e: Exception) {
             // Capture des erreurs globales dans onCreate
             CrashlyticsManager.log("Erreur globale dans TrackShoppingActivity.onCreate: ${e.message ?: "Message non disponible"}")
@@ -606,6 +615,71 @@ class TrackShoppingActivity : AppCompatActivity() {
             CrashlyticsManager.logException(e)
 
             showToast("Erreur lors de l'affichage du dialogue de confirmation")
+        }
+    }
+
+    /**
+     * Configure et démarre le tour de spotlight pour guider l'utilisateur
+     * sur les fonctionnalités principales de l'écran de suivi des achats
+     */
+    private fun setupSpotlightTour() {
+        try {
+            // Vérifier si le spotlight doit être affiché
+            if (!isSpotlightAvailable()) {
+                return
+            }
+
+            // Créer la liste des éléments à mettre en surbrillance
+            val spotlightItems = mutableListOf<com.dedoware.shoopt.models.SpotlightItem>()
+
+            // Spotlight pour le bouton d'ajout de produit
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = addProductButton,
+                    titleRes = R.string.spotlight_track_add_title,
+                    descriptionRes = R.string.spotlight_track_add_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour les statistiques du panier
+            val cartSummaryCardView = findViewById<MaterialCardView>(R.id.cart_summary_card)
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = cartSummaryCardView,
+                    titleRes = R.string.spotlight_track_stats_title,
+                    descriptionRes = R.string.spotlight_track_stats_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour la liste des produits (toujours affiché)
+            val productsListCardView = findViewById<MaterialCardView>(R.id.products_list_card)
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = productsListCardView,
+                    titleRes = R.string.spotlight_track_list_title,
+                    descriptionRes = R.string.spotlight_track_list_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Démarrer le tour de spotlight avec un léger délai pour que l'interface soit prête
+            window.decorView.post {
+                startSpotlightTour(spotlightItems) {
+                    // Callback appelé à la fin du tour
+                    AnalyticsManager.logUserAction(
+                        "spotlight_tour_completed",
+                        "onboarding",
+                        mapOf("screen" to "TrackShoppingActivity")
+                    )
+                }
+            }
+
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la configuration du spotlight: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "setup_spotlight_tour")
+            CrashlyticsManager.logException(e)
         }
     }
 }

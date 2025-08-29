@@ -166,6 +166,38 @@
     <string name="spotlight_analyse_list_title">Votre collection de produits</string>
     <string name="spotlight_analyse_list_description">Consultez tous vos produits. Appuyez pour modifier, maintenez pour plus d\'options</string>
 
+    <!-- Spotlight System Strings for TrackShoppingActivity -->
+    <string name="spotlight_track_add_title">Ajoutes des produits au panier</string>
+    <string name="spotlight_track_add_description">Appuies ici pour ajouter des produits à tes achats en cours</string>
+
+    <string name="spotlight_track_stats_title">Suivi des achats en cours</string>
+    <string name="spotlight_track_stats_description">Suis en temps réel le nombres d\'articles et le total de tes achats en cours</string>
+
+    <string name="spotlight_track_clear_title">Vider le panier</string>
+    <string name="spotlight_track_clear_description">Supprimez tous les articles de votre panier de courses</string>
+
+    <string name="spotlight_track_list_title">Tes achats en cours</string>
+    <string name="spotlight_track_list_description">Visualises tes articles. Balayes pour supprimer un produit</string>
+
+    <!-- Spotlight System Strings for UpdateShoppingListActivity -->
+    <string name="spotlight_list_input_title">Saisis ta liste de courses</string>
+    <string name="spotlight_list_input_description">Tapes ou copie-colle ta liste de courses ici. Sépares tes articles par des virgules ou des retours à la ligne</string>
+
+    <string name="spotlight_list_convert_title">Convertis en produits organisés</string>
+    <string name="spotlight_list_convert_description">Transformes ta liste de courses en produits organisés</string>
+
+    <string name="spotlight_list_converted_title">Tes produits organisés</string>
+    <string name="spotlight_list_converted_description">Ici s\'affichera la liste de tes produits organisés</string>
+
+    <string name="spotlight_list_count_title">Compteur de produits</string>
+    <string name="spotlight_list_count_description">Nombre total de produits dans ta liste de produits bien organisés</string>
+
+    <string name="spotlight_list_fullscreen_title">Vue plein écran</string>
+    <string name="spotlight_list_fullscreen_description">Ouvres ta liste de produits bien organisés en mode plein écran pour une meilleure visibilité</string>
+
+    <string name="spotlight_list_clear_title">Vide la liste</string>
+    <string name="spotlight_list_clear_description">Supprimes tous les produits de ta liste à tout moment</string>
+
     <!-- Error messages -->
     <string name="app_loading_error">Erreur lors du chargement de l\'application</string>
     <string name="settings_open_error">Impossible d\'ouvrir les paramètres</string>
