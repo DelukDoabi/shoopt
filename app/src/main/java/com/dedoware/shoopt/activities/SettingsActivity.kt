@@ -320,6 +320,8 @@ class SettingsActivity : AppCompatActivity() {
 
                 // Réinitialiser le flag d'onboarding complété
                 UserPreferences.setOnboardingCompleted(this, false)
+                // Réinitialiser les spotlights vus
+                UserPreferences.resetSpotlights(this)
 
                 // Démarrer l'activité d'onboarding
                 val intent = Intent(this, OnboardingActivity::class.java)
