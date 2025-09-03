@@ -287,4 +287,73 @@
     <string name="next">다음</string>
     <string name="got_it">알겠어요</string>
     <string name="tooltip_icon_description">가이드 기능 아이콘</string>
+
+    <!-- Spotlight -->
+    <string name="spotlight_next">다음</string>
+    <string name="spotlight_skip">건너뛰기</string>
+    <string name="spotlight_finish">완료</string>
+    <string name="spotlight_got_it">알겠어요!</string>
+
+    <!-- MainActivity 메시지 -->
+    <string name="spotlight_main_scan_title">쇼핑 기록</string>
+    <string name="spotlight_main_scan_description">쇼핑 중에 구매한 상품을 추가하여 계산대에 가기 전에 실시간으로 지출을 추적하세요</string>
+
+    <string name="spotlight_main_add_title">상품 추가 및 편집</string>
+    <string name="spotlight_main_add_description">여기에서 수동으로 상품을 추가하거나 바코드를 스캔할 수 있습니다</string>
+
+    <string name="spotlight_main_list_title">쇼핑 목록</string>
+    <string name="spotlight_main_list_description">여기에서 쇼핑 목록을 보고 관리하세요</string>
+
+    <string name="spotlight_main_settings_title">설정</string>
+    <string name="spotlight_main_settings_description">앱을 취향에 맞게 개인화하세요</string>
+
+    <string name="spotlight_main_logout_title">로그아웃</string>
+    <string name="spotlight_main_logout_description">언제든지 앱에서 로그아웃할 수 있습니다</string>
+
+    <!-- AnalyseActivity 메시지 -->
+    <string name="spotlight_analyse_chart_title">상품 분석</string>
+    <string name="spotlight_analyse_chart_description">언제든지 상품을 확인하고 분석할 수 있습니다 (자유롭게 편집 가능)</string>
+
+    <string name="spotlight_analyse_filter_title">분석 필터</string>
+    <string name="spotlight_analyse_filter_description">기간, 매장, 카테고리별로 데이터를 분석하기 위해 필터를 사용하세요</string>
+
+    <!-- TrackShoppingActivity 메시지 -->
+    <string name="spotlight_track_cart_title">현재 장바구니</string>
+    <string name="spotlight_track_cart_description">장바구니의 내용과 총 금액을 실시간으로 추적하세요</string>
+
+    <string name="spotlight_track_total_title">총 금액</string>
+    <string name="spotlight_track_total_description">현재 쇼핑 세션의 총 금액입니다</string>
+
+    <!-- ProductChoiceActivity 메시지 -->
+    <string name="spotlight_choice_scan_title">바코드 스캔</string>
+    <string name="spotlight_choice_scan_description">카메라를 사용해 바코드를 빠르게 스캔하여 이미 저장된 데이터를 가져옵니다</string>
+
+    <string name="spotlight_choice_manual_title">수동 입력</string>
+    <string name="spotlight_choice_manual_description">또는 상품명, 가격, 매장 등을 수동으로 입력하여 상품을 추가하세요</string>
+
+    <!-- AddProductActivity 메시지 -->
+    <string name="spotlight_add_photo_title">상품 사진</string>
+    <string name="spotlight_add_photo_description">상품 사진을 찍어 쉽게 식별하고 자동 분석을 활용하세요</string>
+
+    <string name="spotlight_add_barcode_title">바코드</string>
+    <string name="spotlight_add_barcode_description">상품을 정확하게 식별하기 위해 바코드를 입력하세요 - 스캔 시 자동 입력됩니다</string>
+
+    <string name="spotlight_add_scan_button_title">바코드 스캔</string>
+    <string name="spotlight_add_scan_button_description">언제든지 이 버튼을 사용해 카메라로 바코드를 스캔할 수 있습니다</string>
+
+    <string name="spotlight_add_name_title">상품명</string>
+    <string name="spotlight_add_name_description">상품 이름 - 이미지 분석을 통해 자동으로 입력될 수 있습니다</string>
+
+    <string name="spotlight_add_price_title">가격</string>
+    <string name="spotlight_add_price_description">구매 시 가격 - 이미지 분석으로 자동 입력될 수도 있습니다</string>
+
+    <string name="spotlight_add_unit_price_title">단가</string>
+    <string name="spotlight_add_unit_price_description">비교를 위한 kg/L당 또는 단위당 가격 - 자동 입력될 수 있습니다</string>
+
+    <string name="spotlight_add_shop_title">매장</string>
+    <string name="spotlight_add_shop_description">매장 이름 - 위치 정보를 기반으로 자동 감지될 수 있습니다</string>
+
+    <string name="spotlight_add_save_title">저장</string>
+    <string name="spotlight_add_save_description">상품을 개인 데이터베이스에 저장합니다</string>
+
 </resources>

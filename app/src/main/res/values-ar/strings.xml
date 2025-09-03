@@ -289,4 +289,73 @@
     <string name="got_it">فهمت</string>
     <string name="tooltip_icon_description">أيقونة ميزة الدليل</string>
 
+    <!-- Spotlight -->
+    <string name="spotlight_next">التالي</string>
+    <string name="spotlight_skip">تخطي</string>
+    <string name="spotlight_finish">إنهاء</string>
+    <string name="spotlight_got_it">تم!</string>
+
+    <!-- Messages pour MainActivity -->
+    <string name="spotlight_main_scan_title">تتبع مشترياتك</string>
+    <string name="spotlight_main_scan_description">أثناء التسوق، أضف المنتجات التي تشتريها لمتابعة نفقاتك في الوقت الفعلي قبل الوصول إلى الصندوق</string>
+
+    <string name="spotlight_main_add_title">إضافة أو تعديل منتج</string>
+    <string name="spotlight_main_add_description">يمكنك هنا إضافة منتج يدويًا أو مسح الباركود الخاص به</string>
+
+    <string name="spotlight_main_list_title">قائمة التسوق الخاصة بك</string>
+    <string name="spotlight_main_list_description">اعرض وأدر قائمة التسوق هنا</string>
+
+    <string name="spotlight_main_settings_title">الإعدادات</string>
+    <string name="spotlight_main_settings_description">خصص التطبيق حسب تفضيلاتك</string>
+
+    <string name="spotlight_main_logout_title">تسجيل الخروج</string>
+    <string name="spotlight_main_logout_description">يمكنك تسجيل الخروج من التطبيق في أي وقت</string>
+
+    <!-- Messages pour AnalyseActivity -->
+    <string name="spotlight_analyse_chart_title">حلل منتجاتك</string>
+    <string name="spotlight_analyse_chart_description">اعرض وحلل منتجاتك في أي وقت (يمكنك أيضًا تعديلها كما تشاء)</string>
+
+    <string name="spotlight_analyse_filter_title">فلاتر التحليل</string>
+    <string name="spotlight_analyse_filter_description">استخدم هذه الفلاتر لتحليل بياناتك حسب الفترة، المتجر أو الفئة</string>
+
+    <!-- Messages pour TrackShoppingActivity -->
+    <string name="spotlight_track_cart_title">سلة التسوق الحالية</string>
+    <string name="spotlight_track_cart_description">تابع محتوى سلة التسوق وإجمالي المشتريات في الوقت الفعلي</string>
+
+    <string name="spotlight_track_total_title">إجمالي المشتريات</string>
+    <string name="spotlight_track_total_description">إليك المبلغ الإجمالي لجلسة التسوق الحالية</string>
+
+    <!-- Messages pour ProductChoiceActivity -->
+    <string name="spotlight_choice_scan_title">مسح الباركود</string>
+    <string name="spotlight_choice_scan_description">استخدم الكاميرا لمسح باركود المنتج بسرعة واسترجاع بياناته إن كانت موجودة</string>
+
+    <string name="spotlight_choice_manual_title">إدخال يدوي</string>
+    <string name="spotlight_choice_manual_description">أو أضف منتجًا بإدخال جميع تفاصيله يدويًا (الاسم، السعر، المتجر، إلخ)</string>
+
+    <!-- Messages pour AddProductActivity -->
+    <string name="spotlight_add_photo_title">صورة المنتج</string>
+    <string name="spotlight_add_photo_description">التقط صورة للمنتج لتسهيل التعرف عليه والاستفادة من التحليل التلقائي</string>
+
+    <string name="spotlight_add_barcode_title">الباركود</string>
+    <string name="spotlight_add_barcode_description">أدخل باركود المنتج للتعرف بدقة - يمكن تعبئته تلقائيًا عبر المسح</string>
+
+    <string name="spotlight_add_scan_button_title">مسح الباركود</string>
+    <string name="spotlight_add_scan_button_description">يمكنك دائمًا استخدام هذا الزر لمسح الباركود بالكاميرا</string>
+
+    <string name="spotlight_add_name_title">اسم المنتج</string>
+    <string name="spotlight_add_name_description">اسم المنتج - يمكن ملؤه تلقائيًا عبر تحليل الصورة</string>
+
+    <string name="spotlight_add_price_title">السعر</string>
+    <string name="spotlight_add_price_description">سعر شراء المنتج من المتجر - يمكن أيضًا ملؤه تلقائيًا عبر تحليل الصورة</string>
+
+    <string name="spotlight_add_unit_price_title">سعر الوحدة</string>
+    <string name="spotlight_add_unit_price_description">السعر لكل كيلو/لتر أو وحدة للمقارنة - يمكن أيضًا ملؤه تلقائيًا</string>
+
+    <string name="spotlight_add_shop_title">المتجر</string>
+    <string name="spotlight_add_shop_description">اسم المتجر - يمكن اكتشافه تلقائيًا حسب موقعك</string>
+
+    <string name="spotlight_add_save_title">حفظ</string>
+    <string name="spotlight_add_save_description">احفظ المنتج في قاعدة بياناتك الشخصية</string>
+
+
 </resources>

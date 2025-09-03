@@ -288,4 +288,67 @@
     <string name="next">Weiter</string>
     <string name="got_it">Verstanden</string>
     <string name="tooltip_icon_description">Leitfaden-Symbol</string>
+
+    <string name="spotlight_next">Weiter</string>
+    <string name="spotlight_skip">Überspringen</string>
+    <string name="spotlight_finish">Fertig</string>
+    <string name="spotlight_got_it">Verstanden!</string>
+
+    <string name="spotlight_main_scan_title">Verfolge deine Einkäufe</string>
+    <string name="spotlight_main_scan_description">Füge während des Einkaufens Schritt für Schritt die Produkte hinzu, die du kaufst, um deine Ausgaben in Echtzeit zu verfolgen und sie vor der Kasse zu überprüfen</string>
+
+    <string name="spotlight_main_add_title">Produkt hinzufügen oder bearbeiten</string>
+    <string name="spotlight_main_add_description">Hier kannst du ein Produkt manuell hinzufügen oder bearbeiten oder seinen Barcode scannen</string>
+
+    <string name="spotlight_main_list_title">Deine Einkaufsliste</string>
+    <string name="spotlight_main_list_description">Hier kannst du deine Einkaufsliste ansehen und verwalten</string>
+
+    <string name="spotlight_main_settings_title">Einstellungen</string>
+    <string name="spotlight_main_settings_description">Passe die App nach deinen Wünschen an</string>
+
+    <string name="spotlight_main_logout_title">Abmelden</string>
+    <string name="spotlight_main_logout_description">Melde dich jederzeit von der App ab, wenn du möchtest</string>
+
+    <string name="spotlight_analyse_chart_title">Produkte analysieren</string>
+    <string name="spotlight_analyse_chart_description">Überprüfe und analysiere deine Produkte jederzeit (du kannst sie auch nach Belieben bearbeiten)</string>
+
+    <string name="spotlight_analyse_filter_title">Analysefilter</string>
+    <string name="spotlight_analyse_filter_description">Nutze diese Filter, um deine Daten nach Zeitraum, Geschäft oder Kategorie zu analysieren</string>
+
+    <string name="spotlight_track_cart_title">Aktueller Warenkorb</string>
+    <string name="spotlight_track_cart_description">Verfolge den Inhalt deines Warenkorbs und deine Gesamtausgaben in Echtzeit</string>
+
+    <string name="spotlight_track_total_title">Gesamte Einkäufe</string>
+    <string name="spotlight_track_total_description">Hier siehst du den Gesamtbetrag deiner aktuellen Einkaufssession</string>
+
+    <string name="spotlight_choice_scan_title">Barcode scannen</string>
+    <string name="spotlight_choice_scan_description">Nutze die Kamera, um schnell den Barcode eines Produkts zu scannen und seine Details automatisch abzurufen, falls verfügbar</string>
+
+    <string name="spotlight_choice_manual_title">Manuelle Eingabe</string>
+    <string name="spotlight_choice_manual_description">Oder füge ein Produkt hinzu, indem du alle Details manuell eingibst (Name, Preis, Geschäft usw.)</string>
+
+    <string name="spotlight_add_photo_title">Produktfoto</string>
+    <string name="spotlight_add_photo_description">Mache ein Foto des Produkts, um es leichter zu identifizieren und von der automatischen Analyse zu profitieren</string>
+
+    <string name="spotlight_add_barcode_title">Barcode</string>
+    <string name="spotlight_add_barcode_description">Gib den Barcode des Produkts zur genauen Identifizierung ein – er kann auch automatisch durch Scannen ausgefüllt werden</string>
+
+    <string name="spotlight_add_scan_button_title">Barcode scannen</string>
+    <string name="spotlight_add_scan_button_description">Du kannst jederzeit diese Schaltfläche nutzen, um den Barcode schnell mit deiner Kamera zu scannen oder erneut zu scannen</string>
+
+    <string name="spotlight_add_name_title">Produktname</string>
+    <string name="spotlight_add_name_description">Produktname – kann automatisch durch Bilderkennung ausgefüllt werden</string>
+
+    <string name="spotlight_add_price_title">Preis</string>
+    <string name="spotlight_add_price_description">Kaufpreis des Produkts im Geschäft – kann ebenfalls automatisch durch Bilderkennung ausgefüllt werden</string>
+
+    <string name="spotlight_add_unit_price_title">Einheitspreis</string>
+    <string name="spotlight_add_unit_price_description">Preis pro Kilo, Liter oder Einheit zum Vergleichen von Produkten – kann ebenfalls automatisch durch Bilderkennung ausgefüllt werden</string>
+
+    <string name="spotlight_add_shop_title">Geschäft</string>
+    <string name="spotlight_add_shop_description">Name des Geschäfts – kann automatisch anhand deines Standorts erkannt werden</string>
+
+    <string name="spotlight_add_save_title">Speichern</string>
+    <string name="spotlight_add_save_description">Speichere das Produkt in deiner persönlichen Datenbank</string>
+
 </resources>

@@ -289,4 +289,73 @@
     <string name="next">次へ</string>
     <string name="got_it">わかりました</string>
     <string name="tooltip_icon_description">ガイド機能のアイコン</string>
+
+    <!-- Spotlight -->
+    <string name="spotlight_next">次へ</string>
+    <string name="spotlight_skip">スキップ</string>
+    <string name="spotlight_finish">完了</string>
+    <string name="spotlight_got_it">わかった！</string>
+
+    <!-- MainActivity のメッセージ -->
+    <string name="spotlight_main_scan_title">買い物を記録</string>
+    <string name="spotlight_main_scan_description">買い物中に購入した商品を追加して、レジに行く前にリアルタイムで支出を追跡しましょう</string>
+
+    <string name="spotlight_main_add_title">商品を追加・編集</string>
+    <string name="spotlight_main_add_description">ここから商品を手動で追加するか、バーコードをスキャンできます</string>
+
+    <string name="spotlight_main_list_title">買い物リスト</string>
+    <string name="spotlight_main_list_description">ここで買い物リストを表示・管理できます</string>
+
+    <string name="spotlight_main_settings_title">設定</string>
+    <string name="spotlight_main_settings_description">アプリを自分の好みに合わせてカスタマイズしましょう</string>
+
+    <string name="spotlight_main_logout_title">ログアウト</string>
+    <string name="spotlight_main_logout_description">いつでもアプリからログアウトできます</string>
+
+    <!-- AnalyseActivity のメッセージ -->
+    <string name="spotlight_analyse_chart_title">商品の分析</string>
+    <string name="spotlight_analyse_chart_description">いつでも商品を確認・分析できます（自由に編集することも可能）</string>
+
+    <string name="spotlight_analyse_filter_title">分析フィルター</string>
+    <string name="spotlight_analyse_filter_description">期間、店舗、カテゴリでデータを分析するためにフィルターを使用してください</string>
+
+    <!-- TrackShoppingActivity のメッセージ -->
+    <string name="spotlight_track_cart_title">現在のカート</string>
+    <string name="spotlight_track_cart_description">カートの内容と合計金額をリアルタイムで追跡します</string>
+
+    <string name="spotlight_track_total_title">合計金額</string>
+    <string name="spotlight_track_total_description">現在の買い物セッションの合計金額です</string>
+
+    <!-- ProductChoiceActivity のメッセージ -->
+    <string name="spotlight_choice_scan_title">バーコードをスキャン</string>
+    <string name="spotlight_choice_scan_description">カメラを使ってバーコードをすばやくスキャンし、既に保存されているデータを取得します</string>
+
+    <string name="spotlight_choice_manual_title">手動入力</string>
+    <string name="spotlight_choice_manual_description">または、商品名、価格、店舗などを手動で入力して商品を追加します</string>
+
+    <!-- AddProductActivity のメッセージ -->
+    <string name="spotlight_add_photo_title">商品の写真</string>
+    <string name="spotlight_add_photo_description">商品を撮影して識別を容易にし、自動分析を活用しましょう</string>
+
+    <string name="spotlight_add_barcode_title">バーコード</string>
+    <string name="spotlight_add_barcode_description">商品を正確に識別するためにバーコードを入力します - スキャンで自動入力可能です</string>
+
+    <string name="spotlight_add_scan_button_title">バーコードをスキャン</string>
+    <string name="spotlight_add_scan_button_description">いつでもこのボタンを使ってカメラでバーコードをスキャンできます</string>
+
+    <string name="spotlight_add_name_title">商品名</string>
+    <string name="spotlight_add_name_description">商品の名前 - 画像分析で自動入力される場合もあります</string>
+
+    <string name="spotlight_add_price_title">価格</string>
+    <string name="spotlight_add_price_description">購入時の価格 - 画像分析で自動入力されることもあります</string>
+
+    <string name="spotlight_add_unit_price_title">単価</string>
+    <string name="spotlight_add_unit_price_description">比較用の1kg/1Lあたり、または単位あたりの価格 - 自動入力される場合もあります</string>
+
+    <string name="spotlight_add_shop_title">店舗</string>
+    <string name="spotlight_add_shop_description">店舗名 - 位置情報に基づいて自動検出される場合もあります</string>
+
+    <string name="spotlight_add_save_title">保存</string>
+    <string name="spotlight_add_save_description">商品をあなたの個人データベースに保存します</string>
+
 </resources>

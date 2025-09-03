@@ -287,4 +287,73 @@
     <string name="next">Dalej</string>
     <string name="got_it">Rozumiem</string>
     <string name="tooltip_icon_description">Ikona funkcji przewodnika</string>
+
+    <!-- Spotlight -->
+    <string name="spotlight_next">Dalej</string>
+    <string name="spotlight_skip">Pomiń</string>
+    <string name="spotlight_finish">Zakończ</string>
+    <string name="spotlight_got_it">Rozumiem!</string>
+
+    <!-- MainActivity komunikaty -->
+    <string name="spotlight_main_scan_title">Rejestr zakupów</string>
+    <string name="spotlight_main_scan_description">Dodaj produkty podczas zakupów, aby śledzić wydatki w czasie rzeczywistym przed kasą</string>
+
+    <string name="spotlight_main_add_title">Dodaj lub edytuj produkt</string>
+    <string name="spotlight_main_add_description">Tutaj możesz ręcznie dodać produkt lub zeskanować kod kreskowy</string>
+
+    <string name="spotlight_main_list_title">Lista zakupów</string>
+    <string name="spotlight_main_list_description">Tutaj przeglądaj i zarządzaj swoją listą zakupów</string>
+
+    <string name="spotlight_main_settings_title">Ustawienia</string>
+    <string name="spotlight_main_settings_description">Dostosuj aplikację do swoich preferencji</string>
+
+    <string name="spotlight_main_logout_title">Wyloguj się</string>
+    <string name="spotlight_main_logout_description">Możesz wylogować się z aplikacji w dowolnym momencie</string>
+
+    <!-- AnalyseActivity komunikaty -->
+    <string name="spotlight_analyse_chart_title">Analiza produktów</string>
+    <string name="spotlight_analyse_chart_description">Możesz sprawdzać i analizować produkty w dowolnym momencie (swobodnie edytowalne)</string>
+
+    <string name="spotlight_analyse_filter_title">Filtry analizy</string>
+    <string name="spotlight_analyse_filter_description">Używaj filtrów, aby analizować dane według okresu, sklepu i kategorii</string>
+
+    <!-- TrackShoppingActivity komunikaty -->
+    <string name="spotlight_track_cart_title">Aktualny koszyk</string>
+    <string name="spotlight_track_cart_description">Śledź zawartość koszyka i całkowity koszt zakupów w czasie rzeczywistym</string>
+
+    <string name="spotlight_track_total_title">Suma całkowita</string>
+    <string name="spotlight_track_total_description">Łączna kwota obecnej sesji zakupowej</string>
+
+    <!-- ProductChoiceActivity komunikaty -->
+    <string name="spotlight_choice_scan_title">Skanowanie kodu kreskowego</string>
+    <string name="spotlight_choice_scan_description">Użyj aparatu, aby szybko zeskanować kod kreskowy i pobrać już zapisane dane</string>
+
+    <string name="spotlight_choice_manual_title">Wprowadzanie ręczne</string>
+    <string name="spotlight_choice_manual_description">Lub ręcznie dodaj produkt, wpisując nazwę, cenę, sklep itp.</string>
+
+    <!-- AddProductActivity komunikaty -->
+    <string name="spotlight_add_photo_title">Zdjęcie produktu</string>
+    <string name="spotlight_add_photo_description">Zrób zdjęcie produktu, aby łatwo go rozpoznać i wykorzystać automatyczną analizę</string>
+
+    <string name="spotlight_add_barcode_title">Kod kreskowy</string>
+    <string name="spotlight_add_barcode_description">Wprowadź kod kreskowy, aby dokładnie zidentyfikować produkt – automatycznie uzupełniany po zeskanowaniu</string>
+
+    <string name="spotlight_add_scan_button_title">Skanuj kod kreskowy</string>
+    <string name="spotlight_add_scan_button_description">Użyj tego przycisku, aby w dowolnym momencie zeskanować kod kreskowy aparatem</string>
+
+    <string name="spotlight_add_name_title">Nazwa produktu</string>
+    <string name="spotlight_add_name_description">Nazwa produktu – może być automatycznie wypełniona dzięki analizie obrazu</string>
+
+    <string name="spotlight_add_price_title">Cena</string>
+    <string name="spotlight_add_price_description">Cena przy zakupie – może być automatycznie wykryta przez analizę obrazu</string>
+
+    <string name="spotlight_add_unit_price_title">Cena jednostkowa</string>
+    <string name="spotlight_add_unit_price_description">Cena za kg/L lub jednostkę – przydatna do porównań, może być automatycznie uzupełniona</string>
+
+    <string name="spotlight_add_shop_title">Sklep</string>
+    <string name="spotlight_add_shop_description">Nazwa sklepu – może być automatycznie wykryta na podstawie lokalizacji</string>
+
+    <string name="spotlight_add_save_title">Zapisz</string>
+    <string name="spotlight_add_save_description">Zapisz produkt w swojej osobistej bazie danych</string>
+
 </resources>

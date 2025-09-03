@@ -288,4 +288,115 @@
     <string name="got_it">Compris</string>
     <string name="tooltip_icon_description">Icône de la fonction guide</string>
 
+
+    <string name="spotlight_next">Suivant</string>
+    <string name="spotlight_skip">Passer</string>
+    <string name="spotlight_finish">Terminer</string>
+    <string name="spotlight_got_it">Compris !</string>
+
+    <string name="spotlight_main_scan_title">Suis tes achats</string>
+    <string name="spotlight_main_scan_description">Pendant tes courses, ajoute les produits que tu achètes étape par étape pour suivre tes dépenses en temps réel et les vérifier avant de passer en caisse</string>
+
+    <string name="spotlight_main_add_title">Ajoute ou modifie un produit</string>
+    <string name="spotlight_main_add_description">Ici, tu peux ajouter ou modifier un produit manuellement, ou scanner son code-barres</string>
+
+    <string name="spotlight_main_list_title">Ta liste de courses</string>
+    <string name="spotlight_main_list_description">Consulte et gère ta liste de courses ici</string>
+
+    <string name="spotlight_main_settings_title">Paramètres</string>
+    <string name="spotlight_main_settings_description">Personnalise l’application selon tes préférences</string>
+
+    <string name="spotlight_main_logout_title">Déconnexion</string>
+    <string name="spotlight_main_logout_description">Déconnecte-toi de l’application à tout moment, comme tu le souhaites</string>
+
+    <string name="spotlight_analyse_chart_title">Analyse tes produits</string>
+    <string name="spotlight_analyse_chart_description">Consulte et analyse tes produits à tout moment (tu peux aussi les modifier comme tu veux)</string>
+
+    <string name="spotlight_analyse_filter_title">Filtres d’analyse</string>
+    <string name="spotlight_analyse_filter_description">Utilise ces filtres pour analyser tes données par période, magasin ou catégorie</string>
+
+    <string name="spotlight_track_cart_title">Panier en cours</string>
+    <string name="spotlight_track_cart_description">Suis le contenu de ton panier et tes dépenses totales en temps réel</string>
+
+    <string name="spotlight_track_total_title">Total des achats</string>
+    <string name="spotlight_track_total_description">Voici le montant total de ta session de courses en cours</string>
+
+    <string name="spotlight_choice_scan_title">Scanne un code-barres</string>
+    <string name="spotlight_choice_scan_description">Utilise la caméra pour scanner rapidement le code-barres d’un produit et récupérer automatiquement ses détails s’ils sont déjà disponibles</string>
+
+    <string name="spotlight_choice_manual_title">Saisie manuelle</string>
+    <string name="spotlight_choice_manual_description">Ou ajoute un produit en saisissant manuellement tous ses détails (nom, prix, magasin, etc.)</string>
+
+    <string name="spotlight_add_photo_title">Photo du produit</string>
+    <string name="spotlight_add_photo_description">Prends une photo du produit pour le reconnaître plus facilement et bénéficier d’une analyse automatique</string>
+
+    <string name="spotlight_add_barcode_title">Code-barres</string>
+    <string name="spotlight_add_barcode_description">Saisis le code-barres du produit pour une identification précise – il peut aussi être rempli automatiquement via le scan du code-barres</string>
+
+    <string name="spotlight_add_scan_button_title">Scanne le code-barres</string>
+    <string name="spotlight_add_scan_button_description">À tout moment, tu peux utiliser ce bouton pour scanner ou rescanner rapidement le code-barres avec ta caméra</string>
+
+    <string name="spotlight_add_name_title">Nom du produit</string>
+    <string name="spotlight_add_name_description">Nom du produit – peut être rempli automatiquement grâce à l’analyse d’image</string>
+
+    <string name="spotlight_add_price_title">Prix</string>
+    <string name="spotlight_add_price_description">Prix d’achat du produit en magasin – peut aussi être rempli automatiquement grâce à l’analyse d’image</string>
+
+    <string name="spotlight_add_unit_price_title">Prix unitaire</string>
+    <string name="spotlight_add_unit_price_description">Prix au kilo, au litre ou à l’unité pour comparer les produits – peut aussi être rempli automatiquement grâce à l’analyse d’image</string>
+
+    <string name="spotlight_add_shop_title">Magasin</string>
+    <string name="spotlight_add_shop_description">Nom du magasin – peut être détecté automatiquement en fonction de ta localisation</string>
+
+    <string name="spotlight_add_save_title">Enregistrer</string>
+    <string name="spotlight_add_save_description">Enregistre le produit dans ta base de données personnelle</string>
+
+    <!-- Spotlight System Strings for AnalyseActivity -->
+    <string name="spotlight_analyse_stats_title">Statistiques de tes produits</string>
+    <string name="spotlight_analyse_stats_description">Consulte le nombre total de produits dans ta base de données personnelle</string>
+
+    <string name="spotlight_analyse_search_title">Recherche tes produits</string>
+    <string name="spotlight_analyse_search_description">Utilise cette barre de recherche pour trouver rapidement un produit spécifique</string>
+
+    <string name="spotlight_analyse_sort_title">Trier et filtrer</string>
+    <string name="spotlight_analyse_sort_description">Organise tes produits par nom, prix, magasin ou date d’ajout</string>
+
+    <string name="spotlight_analyse_add_title">Ajoute un nouveau produit</string>
+    <string name="spotlight_analyse_add_description">Appuie ici pour ajouter un nouveau produit à ta collection</string>
+
+    <string name="spotlight_analyse_list_title">Ta collection de produits</string>
+    <string name="spotlight_analyse_list_description">Consulte tous tes produits. Appuie pour modifier, maintiens pour plus d’options</string>
+
+    <!-- Spotlight System Strings for TrackShoppingActivity -->
+    <string name="spotlight_track_add_title">Ajoute des produits au panier</string>
+    <string name="spotlight_track_add_description">Appuie ici pour ajouter des produits à ta session de courses en cours</string>
+
+    <string name="spotlight_track_stats_title">Suivi de tes courses en cours</string>
+    <string name="spotlight_track_stats_description">Suis en temps réel le nombre d’articles et le coût total de tes courses en cours</string>
+
+    <string name="spotlight_track_clear_title">Vide le panier</string>
+    <string name="spotlight_track_clear_description">Supprime tous les articles de ton panier</string>
+
+    <string name="spotlight_track_list_title">Tes courses en cours</string>
+    <string name="spotlight_track_list_description">Visualise tes articles. Balaye pour supprimer un produit</string>
+
+    <!-- Spotlight System Strings for UpdateShoppingListActivity -->
+    <string name="spotlight_list_input_title">Saisis ta liste de courses</string>
+    <string name="spotlight_list_input_description">Tape ou colle ta liste de courses ici. Sépare tes articles par des virgules ou des retours à la ligne</string>
+
+    <string name="spotlight_list_convert_title">Convertis en produits organisés</string>
+    <string name="spotlight_list_convert_description">Transforme ta liste de courses en produits organisés</string>
+
+    <string name="spotlight_list_converted_title">Tes produits organisés</string>
+    <string name="spotlight_list_converted_description">Ici s’affichera la liste de tes produits organisés</string>
+
+    <string name="spotlight_list_count_title">Compteur de produits</string>
+    <string name="spotlight_list_count_description">Nombre total de produits dans ta liste organisée</string>
+
+    <string name="spotlight_list_fullscreen_title">Vue plein écran</string>
+    <string name="spotlight_list_fullscreen_description">Ouvre ta liste de produits organisés en plein écran pour une meilleure visibilité</string>
+
+    <string name="spotlight_list_clear_title">Vide la liste</string>
+    <string name="spotlight_list_clear_description">Supprime tous les produits de ta liste à tout moment</string>
+
 </resources>
