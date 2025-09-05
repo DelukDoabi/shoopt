@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Couleurs pour le système de spotlight -->
+    <color name="spotlight_overlay">#CC000000</color>
+    <color name="spotlight_content_background">@color/design_default_color_surface</color>
+</resources>
+

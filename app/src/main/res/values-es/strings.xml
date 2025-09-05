@@ -287,4 +287,67 @@
     <string name="next">Siguiente</string>
     <string name="got_it">Entendido</string>
     <string name="tooltip_icon_description">Icono de la función de guía</string>
+
+    <string name="spotlight_next">Siguiente</string>
+    <string name="spotlight_skip">Saltar</string>
+    <string name="spotlight_finish">Finalizar</string>
+    <string name="spotlight_got_it">¡Entendido!</string>
+
+    <string name="spotlight_main_scan_title">Sigue tus compras</string>
+    <string name="spotlight_main_scan_description">Agrega paso a paso los productos que compras mientras haces tus compras para seguir tus gastos en tiempo real y verificarlos antes de la caja</string>
+
+    <string name="spotlight_main_add_title">Añadir o editar producto</string>
+    <string name="spotlight_main_add_description">Aquí puedes añadir o editar manualmente un producto o escanear su código de barras</string>
+
+    <string name="spotlight_main_list_title">Tu lista de compras</string>
+    <string name="spotlight_main_list_description">Consulta y gestiona tu lista de compras aquí</string>
+
+    <string name="spotlight_main_settings_title">Configuración</string>
+    <string name="spotlight_main_settings_description">Personaliza la aplicación según tus preferencias</string>
+
+    <string name="spotlight_main_logout_title">Cerrar sesión</string>
+    <string name="spotlight_main_logout_description">Cierra sesión en la aplicación cuando lo desees</string>
+
+    <string name="spotlight_analyse_chart_title">Análisis de productos</string>
+    <string name="spotlight_analyse_chart_description">Consulta y analiza tus productos en cualquier momento (también puedes editarlos como quieras)</string>
+
+    <string name="spotlight_analyse_filter_title">Filtros de análisis</string>
+    <string name="spotlight_analyse_filter_description">Usa estos filtros para analizar tus datos por período, tienda o categoría</string>
+
+    <string name="spotlight_track_cart_title">Carrito actual</string>
+    <string name="spotlight_track_cart_description">Sigue el contenido de tu carrito y tus gastos totales en tiempo real</string>
+
+    <string name="spotlight_track_total_title">Total de compras</string>
+    <string name="spotlight_track_total_description">Aquí ves el monto total de la sesión de compras actual</string>
+
+    <string name="spotlight_choice_scan_title">Escanear código de barras</string>
+    <string name="spotlight_choice_scan_description">Usa la cámara para escanear rápidamente el código de barras de un producto y recuperar automáticamente sus detalles, si están disponibles</string>
+
+    <string name="spotlight_choice_manual_title">Entrada manual</string>
+    <string name="spotlight_choice_manual_description">O añade un producto introduciendo todos los detalles manualmente (nombre, precio, tienda, etc.)</string>
+
+    <string name="spotlight_add_photo_title">Foto del producto</string>
+    <string name="spotlight_add_photo_description">Toma una foto del producto para reconocerlo más fácilmente y beneficiarte del análisis automático</string>
+
+    <string name="spotlight_add_barcode_title">Código de barras</string>
+    <string name="spotlight_add_barcode_description">Introduce el código de barras del producto para una identificación precisa; también puede completarse automáticamente mediante escaneo</string>
+
+    <string name="spotlight_add_scan_button_title">Escanear código de barras</string>
+    <string name="spotlight_add_scan_button_description">Puedes usar este botón en cualquier momento para escanear rápidamente el código de barras con tu cámara o volver a escanearlo</string>
+
+    <string name="spotlight_add_name_title">Nombre del producto</string>
+    <string name="spotlight_add_name_description">Nombre del producto; puede completarse automáticamente con reconocimiento de imagen</string>
+
+    <string name="spotlight_add_price_title">Precio</string>
+    <string name="spotlight_add_price_description">El precio de compra del producto en la tienda; también puede completarse automáticamente con reconocimiento de imagen</string>
+
+    <string name="spotlight_add_unit_price_title">Precio por unidad</string>
+    <string name="spotlight_add_unit_price_description">Precio por kilo, litro o unidad para comparar productos; también puede completarse automáticamente con reconocimiento de imagen</string>
+
+    <string name="spotlight_add_shop_title">Tienda</string>
+    <string name="spotlight_add_shop_description">Nombre de la tienda; puede detectarse automáticamente según tu ubicación</string>
+
+    <string name="spotlight_add_save_title">Guardar</string>
+    <string name="spotlight_add_save_description">Guarda el producto en tu base de datos personal</string>
+
 </resources>

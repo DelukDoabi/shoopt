@@ -1,5 +1,6 @@
 package com.dedoware.shoopt.activities
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -169,20 +170,49 @@ class OnboardingActivity : AppCompatActivity() {
 
     private fun finishOnboarding() {
         try {
-            // Marquer l'onboarding comme terminé
+            // Marquer l'introduction comme terminée
             UserPreferences.setOnboardingCompleted(this, true)
 
             // Analytics pour la fin de l'onboarding
-            AnalyticsManager.logUserAction("onboarding_finished", "completion", null)
+            AnalyticsManager.logUserAction("onboarding_introduction_finished", "completion", null)
 
-            // Rediriger vers l'écran de connexion
-            redirectToLogin()
+            // Vérifier si c'est un replay depuis les paramètres
+            val isReplay = intent.getBooleanExtra("is_replay", false)
+
+            if (isReplay) {
+                // Si c'est un replay, ajouter un flag spécial pour forcer les spotlights
+                val prefs = getSharedPreferences("user_preferences", Context.MODE_PRIVATE)
+                prefs.edit().putBoolean("force_spotlights_on_next_resume", true).apply()
+
+                CrashlyticsManager.log("OnboardingActivity: Replay completed, setting force_spotlights flag")
+            }
+
+            // Rediriger vers l'écran principal où les spotlights se déclencheront automatiquement
+            redirectToMain()
 
         } catch (e: Exception) {
             CrashlyticsManager.log("Erreur lors de la finalisation de l'onboarding: ${e.message}")
             CrashlyticsManager.logException(e)
             redirectToLogin()
         }
+    }
+
+    private fun redirectToMain() {
+        val intent = Intent(this, MainActivity::class.java)
+
+        // Vérifier si c'est un replay depuis l'intent actuel de cette activité
+        val isReplay = this.intent.getBooleanExtra("is_replay", false)
+        if (isReplay) {
+            // Au lieu de forcer une nouvelle instance, ajouter un flag pour forcer le refresh
+            intent.putExtra("force_spotlight_refresh", true)
+            // Utiliser FLAG_ACTIVITY_CLEAR_TOP pour revenir à MainActivity existante ou en créer une nouvelle
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            CrashlyticsManager.log("OnboardingActivity: Replay redirect - using CLEAR_TOP and SINGLE_TOP")
+        }
+
+        startActivity(intent)
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+        finish()
     }
 
     private fun redirectToLogin() {

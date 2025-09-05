@@ -77,6 +77,12 @@ import java.net.URL
 import java.util.UUID
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+// Imports pour le système de spotlight
+import com.dedoware.shoopt.extensions.startSpotlightTour
+import com.dedoware.shoopt.extensions.createSpotlightItem
+import com.dedoware.shoopt.extensions.isSpotlightAvailable
+import com.dedoware.shoopt.models.SpotlightShape
+import com.dedoware.shoopt.utils.UserPreferences
 
 
 class AddProductActivity : AppCompatActivity() {
@@ -500,8 +506,10 @@ class AddProductActivity : AppCompatActivity() {
                 CrashlyticsManager.logException(e)
             }
 
-            // --- Déclenchement automatique du guide si besoin (après toutes les initialisations) ---
-            continueFirstProductGuideIfNeeded()
+            // --- Onboarding simplifié - plus de guide complexe ---
+
+            // Démarrer le système de spotlight si nécessaire
+            setupSpotlightTour()
         } catch (e: Exception) {
             // Capture des erreurs globales dans onCreate
             CrashlyticsManager.log("Erreur globale dans onCreate d'AddProductActivity: ${e.message ?: "Message non disponible"}")
@@ -757,11 +765,7 @@ class AddProductActivity : AppCompatActivity() {
 
                     Toast.makeText(this@AddProductActivity, "Product saved with ID: $productId", Toast.LENGTH_SHORT).show()
 
-                    // Guide utilisateur : passer à l'étape de félicitations après ajout du produit
-                    val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this@AddProductActivity)
-                    if (!guide.isGuideCompleted()) {
-                        guide.saveGuideState(com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.MAIN_SCREEN_PRODUCT_ADDED)
-                    }
+                    // Guide utilisateur supprimé pour simplifier l'onboarding
 
                     updateResultIntentForTrackShopping(Product(productId, barcode, timestamp, name, price.toDouble(), unitPrice.toDouble(), shop, productPictureUrl))
 
@@ -798,7 +802,7 @@ class AddProductActivity : AppCompatActivity() {
     // Mise à jour de la méthode pour inclure l'analytique lors de l'analyse d'image
     private suspend fun analyzeProductImage(imageUrl: String) {
         try {
-            // Analytique pour le début de l'analyse d'image
+            // Analytique pour le d��but de l'analyse d'image
             withContext(Dispatchers.Main) {
                 val params = Bundle().apply {
                     putString("image_source", if (imageUrl.isEmpty()) "camera" else "url")
@@ -953,8 +957,7 @@ class AddProductActivity : AppCompatActivity() {
             productNameEditText.setText(parsedDetails.getString("name"))
             productPriceEditText.setText(parsedDetails.getString("unit_price"))
             productUnitPriceEditText.setText(parsedDetails.getString("kilo_price"))
-            // Déclenchement de l'étape suivante du guide après auto-remplissage
-            continueFirstProductGuideIfNeeded()
+            // Auto-remplissage des champs terminé - onboarding simplifié
         }
     }
 
@@ -1224,57 +1227,138 @@ class AddProductActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Show the guide tooltip/spotlight if needed
-        val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
-        if (!guide.isGuideCompleted()) {
-            productBarcodeEditText.post {
-                guide.showBarcodeFilledGuide(productBarcodeEditText)
-            }
-        }
+        // Guide utilisateur supprimé pour simplifier l'onboarding
     }
 
     /**
-     * Continue le guide d'ajout de premier produit si besoin, en fonction de l'état courant.
-     * À appeler après chaque étape du guide pour garantir la continuité.
+     * Configure et démarre le tour de spotlight pour guider l'utilisateur
+     * dans l'ajout d'un produit avec toutes les fonctionnalités disponibles
      */
-    private fun continueFirstProductGuideIfNeeded() {
-        val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
-        if (guide.isGuideCompleted()) return
-        when (guide.getCurrentGuideState()) {
-            com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_BARCODE_FILLED ->
-                productBarcodeEditText.post {
-                    guide.showBarcodeFilledGuide(productBarcodeEditText) {
-                        continueFirstProductGuideIfNeeded()
-                    }
-                }
-            com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_PHOTO_BUTTON ->
-                productPictureImageButton.post {
-                    guide.showTakePhotoButtonGuide(productPictureImageButton) {
-                        continueFirstProductGuideIfNeeded()
-                    }
-                }
-            com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_PHOTO_WARNING ->
-                productPictureImageButton.post {
-                    guide.showPhotoWarningGuide(productPictureImageButton)
-                    // Ne pas enchaîner ici, attendre la prise de photo et l'autoremplissage pour continuer
-                }
-            com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_FIELDS_AUTOFILLED ->
-                findViewById<View>(R.id.product_form_card)?.post {
-                    guide.showFieldsAutofilledGuide(findViewById(R.id.product_form_card)) {
-                        continueFirstProductGuideIfNeeded()
-                    }
-                }
-            com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_FORM_SAVE_BUTTON ->
-                saveProductImageButton.post {
-                    guide.showSaveProductButtonGuide(saveProductImageButton) {
-                        continueFirstProductGuideIfNeeded()
-                    }
-                }
-            com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.MAIN_SCREEN_PRODUCT_ADDED -> {
-                // À implémenter si besoin pour la suite du guide
+    private fun setupSpotlightTour() {
+        try {
+            // Vérifier si le spotlight doit être affiché
+            if (!isSpotlightAvailable()) {
+                return
             }
-            // ...autres états si besoin...
-            else -> {}
+
+            // Créer la liste des éléments à mettre en surbrillance
+            val spotlightItems = mutableListOf<com.dedoware.shoopt.models.SpotlightItem>()
+
+            // Spotlight pour la photo du produit
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = productPictureImageButton,
+                    titleRes = R.string.spotlight_add_photo_title,
+                    descriptionRes = R.string.spotlight_add_photo_description,
+                    shape = SpotlightShape.CIRCLE
+                )
+            )
+
+            // Spotlight pour le champ code-barres
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = productBarcodeEditText,
+                    titleRes = R.string.spotlight_add_barcode_title,
+                    descriptionRes = R.string.spotlight_add_barcode_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour le bouton de scan de code-barres
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = scanBarcodeButton,
+                    titleRes = R.string.spotlight_add_scan_button_title,
+                    descriptionRes = R.string.spotlight_add_scan_button_description,
+                    shape = SpotlightShape.CIRCLE
+                )
+            )
+
+            // Spotlight pour le nom du produit
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = productNameEditText,
+                    titleRes = R.string.spotlight_add_name_title,
+                    descriptionRes = R.string.spotlight_add_name_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour le prix
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = productPriceEditText,
+                    titleRes = R.string.spotlight_add_price_title,
+                    descriptionRes = R.string.spotlight_add_price_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour le prix unitaire
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = productUnitPriceEditText,
+                    titleRes = R.string.spotlight_add_unit_price_title,
+                    descriptionRes = R.string.spotlight_add_unit_price_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour le magasin
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = productShopAutoCompleteTextView,
+                    titleRes = R.string.spotlight_add_shop_title,
+                    descriptionRes = R.string.spotlight_add_shop_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour le bouton de sauvegarde
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = saveProductImageButton,
+                    titleRes = R.string.spotlight_add_save_title,
+                    descriptionRes = R.string.spotlight_add_save_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Démarrer le tour de spotlight avec un léger délai pour que l'interface soit prête
+            window.decorView.post {
+                startSpotlightTour(spotlightItems) {
+                    // Callback appelé à la fin du tour
+                    AnalyticsManager.logUserAction(
+                        "spotlight_tour_completed",
+                        "onboarding",
+                        mapOf("screen" to "AddProductActivity")
+                    )
+                }
+            }
+
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la configuration du spotlight: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "setup_spotlight_tour_add_product")
+            CrashlyticsManager.logException(e)
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent) // Important: mettre à jour l'intent de l'activité
+
+        // Vérifier si on doit forcer un refresh des spotlights
+        val forceRefresh = intent?.getBooleanExtra("force_spotlight_refresh", false) ?: false
+        if (forceRefresh) {
+            CrashlyticsManager.log("AddProductActivity onNewIntent: Force spotlight refresh requested")
+
+            // Vérifier si l'onboarding est complété et forcer les spotlights
+            if (UserPreferences.isOnboardingCompleted(this)) {
+                // Délai court pour laisser l'interface se stabiliser
+                window.decorView.postDelayed({
+                    setupSpotlightTour()
+                }, 500)
+            }
         }
     }
 

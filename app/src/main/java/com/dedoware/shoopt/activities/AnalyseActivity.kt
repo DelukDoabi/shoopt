@@ -31,6 +31,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.DecimalFormat
+// Imports pour le système de spotlight
+import com.dedoware.shoopt.extensions.startSpotlightTour
+import com.dedoware.shoopt.extensions.createSpotlightItem
+import com.dedoware.shoopt.extensions.isSpotlightAvailable
+import com.dedoware.shoopt.models.SpotlightShape
 
 class AnalyseActivity : AppCompatActivity() {
     private lateinit var productListRecyclerView: RecyclerView
@@ -140,6 +145,9 @@ class AnalyseActivity : AppCompatActivity() {
                 setupClickListeners()
                 loadProducts()
                 addSearch()
+
+                // Démarrer le système de spotlight si nécessaire
+                setupSpotlightTour()
             } catch (e: Exception) {
                 CrashlyticsManager.log("Erreur lors de l'initialisation de l'interface: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "ui_init")
@@ -524,8 +532,112 @@ class AnalyseActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Configure et démarre le tour de spotlight pour guider l'utilisateur
+     * sur les fonctionnalités principales de l'écran d'analyse
+     */
+    private fun setupSpotlightTour() {
+        try {
+            // Vérifier si le spotlight doit être affiché
+            if (!isSpotlightAvailable()) {
+                return
+            }
+
+            // Créer la liste des éléments à mettre en surbrillance
+            val spotlightItems = mutableListOf<com.dedoware.shoopt.models.SpotlightItem>()
+
+            // Spotlight pour les statistiques - Badge de comptage des produits
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = productCountBadge,
+                    titleRes = R.string.spotlight_analyse_stats_title,
+                    descriptionRes = R.string.spotlight_analyse_stats_description,
+                    shape = SpotlightShape.CIRCLE
+                )
+            )
+
+            // Spotlight pour la barre de recherche
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = searchView,
+                    titleRes = R.string.spotlight_analyse_search_title,
+                    descriptionRes = R.string.spotlight_analyse_search_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour le bouton de tri/filtre
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = sortFilterButton,
+                    titleRes = R.string.spotlight_analyse_sort_title,
+                    descriptionRes = R.string.spotlight_analyse_sort_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour le bouton d'ajout de produit
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = addButton,
+                    titleRes = R.string.spotlight_analyse_add_title,
+                    descriptionRes = R.string.spotlight_analyse_add_description,
+                    shape = SpotlightShape.CIRCLE
+                )
+            )
+
+            // Spotlight pour la liste de produits (si elle contient des produits)
+            if (products.isNotEmpty()) {
+                spotlightItems.add(
+                    createSpotlightItem(
+                        targetView = productListRecyclerView,
+                        titleRes = R.string.spotlight_analyse_list_title,
+                        descriptionRes = R.string.spotlight_analyse_list_description,
+                        shape = SpotlightShape.ROUNDED_RECTANGLE
+                    )
+                )
+            }
+
+            // Démarrer le tour de spotlight avec un léger délai pour que l'interface soit prête
+            window.decorView.post {
+                startSpotlightTour(spotlightItems) {
+                    // Callback appelé à la fin du tour
+                    AnalyticsManager.logUserAction(
+                        "spotlight_tour_completed",
+                        "onboarding",
+                        mapOf("screen" to "AnalyseActivity")
+                    )
+                }
+            }
+
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la configuration du spotlight: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "setup_spotlight_tour")
+            CrashlyticsManager.logException(e)
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         loadProducts() // Reload products to ensure UI is updated with the latest data
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent) // Important: mettre à jour l'intent de l'activité
+
+        // Vérifier si on doit forcer un refresh des spotlights
+        val forceRefresh = intent?.getBooleanExtra("force_spotlight_refresh", false) ?: false
+        if (forceRefresh) {
+            CrashlyticsManager.log("AnalyseActivity onNewIntent: Force spotlight refresh requested")
+
+            // Vérifier si l'onboarding est complété et forcer les spotlights
+            if (UserPreferences.isOnboardingCompleted(this)) {
+                // Délai court pour laisser l'interface se stabiliser
+                window.decorView.postDelayed({
+                    setupSpotlightTour()
+                }, 500)
+            }
+        }
     }
 }

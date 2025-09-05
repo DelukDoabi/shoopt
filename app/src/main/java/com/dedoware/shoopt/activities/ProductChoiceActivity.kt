@@ -11,6 +11,12 @@ import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
+// Imports pour le système de spotlight
+import com.dedoware.shoopt.extensions.startSpotlightTour
+import com.dedoware.shoopt.extensions.createSpotlightItem
+import com.dedoware.shoopt.extensions.isSpotlightAvailable
+import com.dedoware.shoopt.models.SpotlightShape
+import com.dedoware.shoopt.utils.UserPreferences
 
 /**
  * ProductChoiceActivity - Un écran moderne qui permet à l'utilisateur de choisir
@@ -33,16 +39,8 @@ class ProductChoiceActivity : AppCompatActivity() {
 
         setupUI()
 
-        // --- Ajout du déclenchement automatique du guide si besoin ---
-        val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
-        val scanBarcodeCard: android.view.View = findViewById(R.id.scan_barcode_card)
-        val manualEntryCard: android.view.View = findViewById(R.id.manual_entry_card)
-        if (guide.getCurrentGuideState() == com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.PRODUCT_CHOICE_SCREEN) {
-            guide.showProductChoiceGuide(scanBarcodeCard, manualEntryCard) {
-                // Enchaînement automatique : lancer le scanner après la fin du guide
-                scanBarcodeCard.performClick()
-            }
-        }
+        // Démarrer le système de spotlight si nécessaire
+        setupSpotlightTour()
     }
 
     private fun setupUI() {
@@ -151,7 +149,83 @@ class ProductChoiceActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Configure et démarre le tour de spotlight pour guider l'utilisateur
+     * sur les options d'ajout de produit disponibles
+     */
+    private fun setupSpotlightTour() {
+        try {
+            // Vérifier si le spotlight doit être affiché
+            if (!isSpotlightAvailable()) {
+                return
+            }
+
+            // Créer la liste des éléments à mettre en surbrillance
+            val spotlightItems = mutableListOf<com.dedoware.shoopt.models.SpotlightItem>()
+
+            // Récupérer les éléments UI
+            val scanBarcodeCard: MaterialCardView = findViewById(R.id.scan_barcode_card)
+            val manualEntryCard: MaterialCardView = findViewById(R.id.manual_entry_card)
+
+            // Spotlight pour le scan de code-barres
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = scanBarcodeCard,
+                    titleRes = R.string.spotlight_choice_scan_title,
+                    descriptionRes = R.string.spotlight_choice_scan_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour la saisie manuelle
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = manualEntryCard,
+                    titleRes = R.string.spotlight_choice_manual_title,
+                    descriptionRes = R.string.spotlight_choice_manual_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Démarrer le tour de spotlight avec un léger délai pour que l'interface soit prête
+            window.decorView.post {
+                startSpotlightTour(spotlightItems) {
+                    // Callback appelé à la fin du tour
+                    AnalyticsManager.logUserAction(
+                        "spotlight_tour_completed",
+                        "onboarding",
+                        mapOf("screen" to "ProductChoiceActivity")
+                    )
+                }
+            }
+
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la configuration du spotlight: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "setup_spotlight_tour_product_choice")
+            CrashlyticsManager.logException(e)
+        }
+    }
+
     private fun showErrorToast(messageResId: Int) {
         android.widget.Toast.makeText(this, getString(messageResId), android.widget.Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent) // Important: mettre à jour l'intent de l'activité
+
+        // Vérifier si on doit forcer un refresh des spotlights
+        val forceRefresh = intent?.getBooleanExtra("force_spotlight_refresh", false) ?: false
+        if (forceRefresh) {
+            CrashlyticsManager.log("ProductChoiceActivity onNewIntent: Force spotlight refresh requested")
+
+            // Vérifier si l'onboarding est complété et forcer les spotlights
+            if (UserPreferences.isOnboardingCompleted(this)) {
+                // Délai court pour laisser l'interface se stabiliser
+                window.decorView.postDelayed({
+                    setupSpotlightTour()
+                }, 500)
+            }
+        }
     }
 }

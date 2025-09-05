@@ -288,4 +288,72 @@
     <string name="got_it">Понятно</string>
     <string name="tooltip_icon_description">Иконка функции руководства</string>
 
+    <!-- Spotlight -->
+    <string name="spotlight_next">Далее</string>
+    <string name="spotlight_skip">Пропустить</string>
+    <string name="spotlight_finish">Завершить</string>
+    <string name="spotlight_got_it">Понял!</string>
+
+    <!-- Сообщения для MainActivity -->
+    <string name="spotlight_main_scan_title">Отслеживание покупок</string>
+    <string name="spotlight_main_scan_description">Во время покупок добавляйте товары, чтобы отслеживать расходы в реальном времени перед кассой</string>
+
+    <string name="spotlight_main_add_title">Добавить или изменить товар</string>
+    <string name="spotlight_main_add_description">Здесь можно вручную добавить товар или отсканировать его штрих-код</string>
+
+    <string name="spotlight_main_list_title">Список покупок</string>
+    <string name="spotlight_main_list_description">Просматривайте и управляйте своим списком покупок здесь</string>
+
+    <string name="spotlight_main_settings_title">Настройки</string>
+    <string name="spotlight_main_settings_description">Настройте приложение по своему усмотрению</string>
+
+    <string name="spotlight_main_logout_title">Выход</string>
+    <string name="spotlight_main_logout_description">Вы можете выйти из приложения в любое время</string>
+
+    <!-- Сообщения для AnalyseActivity -->
+    <string name="spotlight_analyse_chart_title">Анализ продуктов</string>
+    <string name="spotlight_analyse_chart_description">Просматривайте и анализируйте свои продукты в любое время (можно редактировать)</string>
+
+    <string name="spotlight_analyse_filter_title">Фильтры анализа</string>
+    <string name="spotlight_analyse_filter_description">Используйте фильтры для анализа данных по периоду, магазину или категории</string>
+
+    <!-- Сообщения для TrackShoppingActivity -->
+    <string name="spotlight_track_cart_title">Текущая корзина</string>
+    <string name="spotlight_track_cart_description">Следите за содержимым корзины и общей суммой покупок в реальном времени</string>
+
+    <string name="spotlight_track_total_title">Общая сумма</string>
+    <string name="spotlight_track_total_description">Общая стоимость текущей сессии покупок</string>
+
+    <!-- Сообщения для ProductChoiceActivity -->
+    <string name="spotlight_choice_scan_title">Сканировать штрих-код</string>
+    <string name="spotlight_choice_scan_description">Используйте камеру, чтобы быстро отсканировать штрих-код и получить сохраненные данные</string>
+
+    <string name="spotlight_choice_manual_title">Ручной ввод</string>
+    <string name="spotlight_choice_manual_description">Или добавьте продукт вручную, введя название, цену, магазин и т.д.</string>
+
+    <!-- Сообщения для AddProductActivity -->
+    <string name="spotlight_add_photo_title">Фото продукта</string>
+    <string name="spotlight_add_photo_description">Сделайте фото продукта для облегчения идентификации и автоматического анализа</string>
+
+    <string name="spotlight_add_barcode_title">Штрих-код</string>
+    <string name="spotlight_add_barcode_description">Введите штрих-код для точной идентификации товара – может быть заполнено автоматически при сканировании</string>
+
+    <string name="spotlight_add_scan_button_title">Сканировать штрих-код</string>
+    <string name="spotlight_add_scan_button_description">В любое время используйте эту кнопку, чтобы быстро отсканировать штрих-код камерой</string>
+
+    <string name="spotlight_add_name_title">Название продукта</string>
+    <string name="spotlight_add_name_description">Название продукта – может быть заполнено автоматически с помощью анализа изображения</string>
+
+    <string name="spotlight_add_price_title">Цена</string>
+    <string name="spotlight_add_price_description">Цена покупки в магазине – может быть определена автоматически с помощью анализа изображения</string>
+
+    <string name="spotlight_add_unit_price_title">Цена за единицу</string>
+    <string name="spotlight_add_unit_price_description">Цена за кг, литр или штуку – удобно для сравнения, может быть заполнено автоматически</string>
+
+    <string name="spotlight_add_shop_title">Магазин</string>
+    <string name="spotlight_add_shop_description">Название магазина – может быть определено автоматически по вашей геолокации</string>
+
+    <string name="spotlight_add_save_title">Сохранить</string>
+    <string name="spotlight_add_save_description">Сохраните продукт в своей личной базе данных</string>
+
 </resources>

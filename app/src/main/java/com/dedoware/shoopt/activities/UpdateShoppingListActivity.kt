@@ -32,6 +32,7 @@ import com.dedoware.shoopt.persistence.LocalShoppingListRepository
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
+import com.dedoware.shoopt.utils.UserPreferences
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
@@ -42,12 +43,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.ArrayList
+// Imports pour le système de spotlight
+import com.dedoware.shoopt.extensions.startSpotlightTour
+import com.dedoware.shoopt.extensions.createSpotlightItem
+import com.dedoware.shoopt.extensions.isSpotlightAvailable
+import com.dedoware.shoopt.models.SpotlightShape
+import com.google.android.material.card.MaterialCardView
 
 class UpdateShoppingListActivity : AppCompatActivity() {
     private lateinit var mainShoppingListEditText: TextInputEditText
     private lateinit var backButton: MaterialButton
     private lateinit var shoppingListRepository: IShoppingListRepository
     private lateinit var convertToProductTrackButton: MaterialButton
+    private lateinit var productsListCardMaterialCardView: MaterialCardView
     private lateinit var emptyMainListButton: MaterialButton
     private lateinit var productTrackRecyclerView: RecyclerView
     private lateinit var productTrackAdapter: ProductTrackAdapter
@@ -116,6 +124,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
             try {
                 mainShoppingListEditText = findViewById(R.id.main_shopping_list_edit_text)
                 convertToProductTrackButton = findViewById(R.id.convert_to_product_track_IB)
+                productsListCardMaterialCardView = findViewById(R.id.products_list_card)
                 productTrackRecyclerView = findViewById(R.id.product_track_recycler_view)
                 emptyStateContainer = findViewById(R.id.empty_state_container)
                 productCountBadge = findViewById(R.id.product_count_badge)
@@ -299,6 +308,9 @@ class UpdateShoppingListActivity : AppCompatActivity() {
             backButton.setOnClickListener {
                 finish()
             }
+
+            // Démarrer le système de spotlight si nécessaire
+            setupSpotlightTour()
         } catch (e: Exception) {
             CrashlyticsManager.log("Erreur générale dans onCreate: ${e.message ?: "Message non disponible"}")
             CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
@@ -707,6 +719,98 @@ class UpdateShoppingListActivity : AppCompatActivity() {
     }
 
 
+    /**
+     * Configure et démarre le tour de spotlight pour guider l'utilisateur
+     * sur les fonctionnalités principales de l'écran de mise à jour de liste de courses
+     */
+    private fun setupSpotlightTour() {
+        try {
+            // Vérifier si le spotlight doit être affiché
+            if (!isSpotlightAvailable()) {
+                return
+            }
+
+            // Créer la liste des éléments à mettre en surbrillance
+            val spotlightItems = mutableListOf<com.dedoware.shoopt.models.SpotlightItem>()
+
+            // Spotlight pour le champ de saisie de la liste de courses
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = mainShoppingListEditText,
+                    titleRes = R.string.spotlight_list_input_title,
+                    descriptionRes = R.string.spotlight_list_input_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour le bouton de conversion
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = convertToProductTrackButton,
+                    titleRes = R.string.spotlight_list_convert_title,
+                    descriptionRes = R.string.spotlight_list_convert_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour le champ d'affichage de la liste de produits organisés
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = productsListCardMaterialCardView,
+                    titleRes = R.string.spotlight_list_converted_title,
+                    descriptionRes = R.string.spotlight_list_converted_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour le compteur de produits
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = productCountBadge,
+                    titleRes = R.string.spotlight_list_count_title,
+                    descriptionRes = R.string.spotlight_list_count_description,
+                    shape = SpotlightShape.CIRCLE
+                )
+            )
+
+            // Spotlight pour le bouton plein écran (toujours affiché)
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = fullscreenZoomButton,
+                    titleRes = R.string.spotlight_list_fullscreen_title,
+                    descriptionRes = R.string.spotlight_list_fullscreen_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour le bouton de vidage (toujours affiché)
+            spotlightItems.add(
+                createSpotlightItem(
+                    targetView = emptyMainListButton,
+                    titleRes = R.string.spotlight_list_clear_title,
+                    descriptionRes = R.string.spotlight_list_clear_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Démarrer le tour de spotlight avec un léger délai pour que l'interface soit prête
+            window.decorView.post {
+                startSpotlightTour(spotlightItems) {
+                    // Callback appelé à la fin du tour
+                    AnalyticsManager.logUserAction(
+                        "spotlight_tour_completed",
+                        "onboarding",
+                        mapOf("screen" to "UpdateShoppingListActivity")
+                    )
+                }
+            }
+
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la configuration du spotlight: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "setup_spotlight_tour")
+            CrashlyticsManager.logException(e)
+        }
+    }
     override fun onDestroy() {
         try {
             super.onDestroy()

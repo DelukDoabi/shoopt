@@ -287,4 +287,67 @@
     <string name="next">Επόμενο</string>
     <string name="got_it">Κατάλαβα</string>
     <string name="tooltip_icon_description">Εικονίδιο λειτουργίας οδηγού</string>
+
+    <string name="spotlight_next">Επόμενο</string>
+    <string name="spotlight_skip">Παράλειψη</string>
+    <string name="spotlight_finish">Τέλος</string>
+    <string name="spotlight_got_it">Το κατάλαβα!</string>
+
+    <string name="spotlight_main_scan_title">Παρακολούθησε τα ψώνια σου</string>
+    <string name="spotlight_main_scan_description">Πρόσθεσε βήμα-βήμα τα προϊόντα που αγοράζεις ενώ ψωνίζεις, για να παρακολουθείς τα έξοδά σου σε πραγματικό χρόνο και να τα ελέγχεις πριν το ταμείο</string>
+
+    <string name="spotlight_main_add_title">Προσθήκη ή επεξεργασία προϊόντος</string>
+    <string name="spotlight_main_add_description">Εδώ μπορείς να προσθέσεις ή να επεξεργαστείς χειροκίνητα ένα προϊόν ή να σαρώσεις τον γραμμωτό κωδικό του</string>
+
+    <string name="spotlight_main_list_title">Η λίστα αγορών σου</string>
+    <string name="spotlight_main_list_description">Δες και διαχειρίσου τη λίστα αγορών σου εδώ</string>
+
+    <string name="spotlight_main_settings_title">Ρυθμίσεις</string>
+    <string name="spotlight_main_settings_description">Προσαρμόστε την εφαρμογή σύμφωνα με τις προτιμήσεις σας</string>
+
+    <string name="spotlight_main_logout_title">Αποσύνδεση</string>
+    <string name="spotlight_main_logout_description">Αποσυνδέσου από την εφαρμογή οποιαδήποτε στιγμή θέλεις</string>
+
+    <string name="spotlight_analyse_chart_title">Ανάλυση προϊόντων</string>
+    <string name="spotlight_analyse_chart_description">Έλεγξε και ανέλυσε τα προϊόντα σου οποιαδήποτε στιγμή (μπορείς επίσης να τα επεξεργαστείς όπως θέλεις)</string>
+
+    <string name="spotlight_analyse_filter_title">Φίλτρα ανάλυσης</string>
+    <string name="spotlight_analyse_filter_description">Χρησιμοποίησε αυτά τα φίλτρα για να αναλύσεις τα δεδομένα σου ανά περίοδο, κατάστημα ή κατηγορία</string>
+
+    <string name="spotlight_track_cart_title">Τρέχον καλάθι</string>
+    <string name="spotlight_track_cart_description">Παρακολούθησε τα περιεχόμενα του καλαθιού σου και τα συνολικά έξοδά σου σε πραγματικό χρόνο</string>
+
+    <string name="spotlight_track_total_title">Συνολικές αγορές</string>
+    <string name="spotlight_track_total_description">Εδώ βλέπεις το συνολικό ποσό της τρέχουσας συνεδρίας αγορών</string>
+
+    <string name="spotlight_choice_scan_title">Σάρωση γραμμωτού κώδικα</string>
+    <string name="spotlight_choice_scan_description">Χρησιμοποίησε την κάμερα για να σαρώσεις γρήγορα τον γραμμωτό κώδικα ενός προϊόντος και να ανακτήσεις αυτόματα τις λεπτομέρειες του, εφόσον είναι διαθέσιμες</string>
+
+    <string name="spotlight_choice_manual_title">Χειροκίνητη εισαγωγή</string>
+    <string name="spotlight_choice_manual_description">Ή πρόσθεσε ένα προϊόν εισάγοντας όλα τα στοιχεία χειροκίνητα (όνομα, τιμή, κατάστημα κ.λπ.)</string>
+
+    <string name="spotlight_add_photo_title">Φωτογραφία προϊόντος</string>
+    <string name="spotlight_add_photo_description">Τράβηξε μια φωτογραφία του προϊόντος για να το αναγνωρίζεις πιο εύκολα και να επωφεληθείς από την αυτόματη ανάλυση</string>
+
+    <string name="spotlight_add_barcode_title">Γραμμωτός κώδικας</string>
+    <string name="spotlight_add_barcode_description">Εισήγαγε τον γραμμωτό κώδικα του προϊόντος για ακριβή ταυτοποίηση – μπορεί επίσης να συμπληρωθεί αυτόματα μέσω σάρωσης</string>
+
+    <string name="spotlight_add_scan_button_title">Σάρωση γραμμωτού κώδικα</string>
+    <string name="spotlight_add_scan_button_description">Μπορείς να χρησιμοποιήσεις αυτό το κουμπί οποιαδήποτε στιγμή για να σαρώσεις γρήγορα τον γραμμωτό κώδικα με την κάμερά σου ή να τον σαρώσεις ξανά</string>
+
+    <string name="spotlight_add_name_title">Όνομα προϊόντος</string>
+    <string name="spotlight_add_name_description">Όνομα προϊόντος – μπορεί να συμπληρωθεί αυτόματα με αναγνώριση εικόνας</string>
+
+    <string name="spotlight_add_price_title">Τιμή</string>
+    <string name="spotlight_add_price_description">Η τιμή αγοράς του προϊόντος στο κατάστημα – μπορεί επίσης να συμπληρωθεί αυτόματα με αναγνώριση εικόνας</string>
+
+    <string name="spotlight_add_unit_price_title">Τιμή μονάδας</string>
+    <string name="spotlight_add_unit_price_description">Τιμή ανά κιλό, λίτρο ή μονάδα για σύγκριση προϊόντων – μπορεί επίσης να συμπληρωθεί αυτόματα με αναγνώριση εικόνας</string>
+
+    <string name="spotlight_add_shop_title">Κατάστημα</string>
+    <string name="spotlight_add_shop_description">Όνομα καταστήματος – μπορεί να αναγνωριστεί αυτόματα με βάση την τοποθεσία σου</string>
+
+    <string name="spotlight_add_save_title">Αποθήκευση</string>
+    <string name="spotlight_add_save_description">Αποθήκευσε το προϊόν στη προσωπική σου βάση δεδομένων</string>
+
 </resources>

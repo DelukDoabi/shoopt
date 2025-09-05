@@ -286,4 +286,73 @@
     <string name="next">下一步</string>
     <string name="got_it">明白了</string>
     <string name="tooltip_icon_description">指南功能图标</string>
+
+    <!-- Spotlight -->
+    <string name="spotlight_next">下一步</string>
+    <string name="spotlight_skip">跳过</string>
+    <string name="spotlight_finish">完成</string>
+    <string name="spotlight_got_it">明白了！</string>
+
+    <!-- MainActivity 消息 -->
+    <string name="spotlight_main_scan_title">购物跟踪</string>
+    <string name="spotlight_main_scan_description">购物时添加商品，以便在到收银台前实时跟踪支出</string>
+
+    <string name="spotlight_main_add_title">添加或修改商品</string>
+    <string name="spotlight_main_add_description">您可以在此手动添加商品或扫描其条形码</string>
+
+    <string name="spotlight_main_list_title">购物清单</string>
+    <string name="spotlight_main_list_description">在此查看和管理您的购物清单</string>
+
+    <string name="spotlight_main_settings_title">设置</string>
+    <string name="spotlight_main_settings_description">根据您的偏好自定义应用程序</string>
+
+    <string name="spotlight_main_logout_title">退出登录</string>
+    <string name="spotlight_main_logout_description">您可以随时退出应用程序</string>
+
+    <!-- AnalyseActivity 消息 -->
+    <string name="spotlight_analyse_chart_title">商品分析</string>
+    <string name="spotlight_analyse_chart_description">随时查看和分析您的商品（可自由编辑）</string>
+
+    <string name="spotlight_analyse_filter_title">分析筛选器</string>
+    <string name="spotlight_analyse_filter_description">使用筛选器按时间段、商店或类别分析数据</string>
+
+    <!-- TrackShoppingActivity 消息 -->
+    <string name="spotlight_track_cart_title">当前购物车</string>
+    <string name="spotlight_track_cart_description">实时跟踪购物车内容和总花费</string>
+
+    <string name="spotlight_track_total_title">总金额</string>
+    <string name="spotlight_track_total_description">当前购物会话的总金额</string>
+
+    <!-- ProductChoiceActivity 消息 -->
+    <string name="spotlight_choice_scan_title">扫描条形码</string>
+    <string name="spotlight_choice_scan_description">使用相机快速扫描条形码并获取已保存的信息</string>
+
+    <string name="spotlight_choice_manual_title">手动输入</string>
+    <string name="spotlight_choice_manual_description">或者手动输入商品的名称、价格、商店等信息</string>
+
+    <!-- AddProductActivity 消息 -->
+    <string name="spotlight_add_photo_title">商品照片</string>
+    <string name="spotlight_add_photo_description">拍摄商品照片以便于识别并享受自动分析</string>
+
+    <string name="spotlight_add_barcode_title">条形码</string>
+    <string name="spotlight_add_barcode_description">输入条形码以精确识别商品 – 扫描后可自动填写</string>
+
+    <string name="spotlight_add_scan_button_title">扫描条形码</string>
+    <string name="spotlight_add_scan_button_description">随时使用此按钮通过相机快速扫描条形码</string>
+
+    <string name="spotlight_add_name_title">商品名称</string>
+    <string name="spotlight_add_name_description">商品名称 – 可通过图像分析自动填写</string>
+
+    <string name="spotlight_add_price_title">价格</string>
+    <string name="spotlight_add_price_description">商品购买价格 – 可通过图像分析自动检测</string>
+
+    <string name="spotlight_add_unit_price_title">单价</string>
+    <string name="spotlight_add_unit_price_description">每公斤、升或单件的价格 – 方便比较，可自动填写</string>
+
+    <string name="spotlight_add_shop_title">商店</string>
+    <string name="spotlight_add_shop_description">商店名称 – 可根据您的位置自动检测</string>
+
+    <string name="spotlight_add_save_title">保存</string>
+    <string name="spotlight_add_save_description">将商品保存到您的个人数据库</string>
+
 </resources>

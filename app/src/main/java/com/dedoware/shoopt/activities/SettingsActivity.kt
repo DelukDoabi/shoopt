@@ -1,5 +1,6 @@
 package com.dedoware.shoopt.activities
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.cardview.widget.CardView
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
+import com.dedoware.shoopt.utils.OnboardingManager
 import com.dedoware.shoopt.utils.UserPreferences
 import com.google.android.material.button.MaterialButton
 import org.json.JSONArray
@@ -27,7 +29,6 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var saveButton: ImageButton
     private lateinit var backButton: ImageButton
     private lateinit var replayOnboardingCard: CardView
-    private lateinit var replayAddProductGuideCard: CardView
 
     private lateinit var currencyList: List<Currency>
 
@@ -148,7 +149,6 @@ class SettingsActivity : AppCompatActivity() {
             saveButton = findViewById(R.id.save_settings_button) ?: throw IllegalStateException("Missing save_settings_button")
             backButton = findViewById(R.id.back_IB) ?: throw IllegalStateException("Missing back_IB")
             replayOnboardingCard = findViewById(R.id.replay_onboarding_card) ?: throw IllegalStateException("Missing replay_onboarding_card")
-            replayAddProductGuideCard = findViewById(R.id.replay_add_product_guide_card)
 
             // Configuration du spinner de devises
             currencyList = loadCurrenciesFromJson()
@@ -320,11 +320,21 @@ class SettingsActivity : AppCompatActivity() {
                     additionalParams = mapOf("button" to "replay_onboarding")
                 )
 
-                // Réinitialiser le flag d'onboarding complété
+                // RESET COMPLET : Réinitialiser TOUT l'état d'onboarding
                 UserPreferences.setOnboardingCompleted(this, false)
+                UserPreferences.resetSpotlights(this)
+
+                // Ajouter un flag spécial pour indiquer qu'on vient de faire un replay
+                val prefs = getSharedPreferences("user_preferences", Context.MODE_PRIVATE)
+                prefs.edit().putBoolean("onboarding_replay_requested", true).apply()
+
+                // Log pour debug
+                CrashlyticsManager.log("Settings: Replay onboarding - Reset completed, starting OnboardingActivity")
 
                 // Démarrer l'activité d'onboarding
                 val intent = Intent(this, OnboardingActivity::class.java)
+                // Ajouter un flag pour indiquer que c'est un replay
+                intent.putExtra("is_replay", true)
                 startActivity(intent)
 
                 // Fermer l'activité des paramètres
@@ -346,19 +356,6 @@ class SettingsActivity : AppCompatActivity() {
 
                 Toast.makeText(this, "Erreur lors du redémarrage de l'onboarding", Toast.LENGTH_SHORT).show()
             }
-        }
-
-        // CardView pour rejouer le guide d'ajout du premier produit
-        replayAddProductGuideCard.setOnClickListener {
-            val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
-            guide.resetGuide()
-            Toast.makeText(this, getString(R.string.replay_add_product_guide_description), Toast.LENGTH_SHORT).show()
-            // Lancer MainActivity avec un extra pour démarrer le guide
-            val intent = Intent(this, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP // Removed FLAG_ACTIVITY_NEW_TASK
-            intent.putExtra("EXTRA_START_ADD_PRODUCT_GUIDE", true)
-            startActivity(intent)
-            finish()
         }
 
         // Suivi des changements de thème

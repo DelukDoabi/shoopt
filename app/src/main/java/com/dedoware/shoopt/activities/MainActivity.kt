@@ -1,6 +1,7 @@
 package com.dedoware.shoopt.activities
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -14,8 +15,6 @@ import com.dedoware.shoopt.ShooptApplication
 import com.dedoware.shoopt.persistence.FirebaseProductRepository
 import com.dedoware.shoopt.persistence.IProductRepository
 import com.dedoware.shoopt.persistence.LocalProductRepository
-import com.dedoware.shoopt.utils.AddFirstProductGuide
-import com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.UpdateManager
@@ -28,6 +27,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+// Imports pour le système de spotlight
+import com.dedoware.shoopt.models.SpotlightShape
+import com.dedoware.shoopt.models.SpotlightItem
+import com.dedoware.shoopt.utils.SpotlightManager
+import com.dedoware.shoopt.utils.OnboardingManager
 
 
 class MainActivity : AppCompatActivity() {
@@ -105,28 +109,21 @@ class MainActivity : AppCompatActivity() {
             // Configuration des cartes pour une meilleure expérience utilisateur
             setupFeatureCards()
 
+            // Vérifier si l'onboarding introduction doit être démarré
+            if (!UserPreferences.isOnboardingCompleted(this)) {
+                OnboardingManager.checkAndStartOnboarding(this)
+                return // L'activité sera fermée par OnboardingManager
+            }
+
+            // Si l'introduction est terminée, configurer les spotlights
+            setupSpotlightTour()
+
             // Vérification des mises à jour disponibles
             try {
                 val rootView = findViewById<View>(android.R.id.content)
                 UpdateManager.checkForUpdate(this, rootView)
             } catch (e: Exception) {
                 CrashlyticsManager.log("Erreur lors de la vérification des mises à jour: ${e.message ?: "Message non disponible"}")
-            }
-
-            // Lancer le guide d'ajout du premier produit si demandé par l'extra
-            if (savedInstanceState == null && intent?.getBooleanExtra("EXTRA_START_ADD_PRODUCT_GUIDE", false) == true) {
-                handleStartAddProductGuide(intent)
-            }
-
-            // Ajout: Déclenchement automatique du guide après onboarding si nécessaire
-            val firstTimeUserManager = com.dedoware.shoopt.utils.FirstTimeUserManager(this)
-            if (firstTimeUserManager.shouldShowAddProductGuide()) {
-                val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
-                val addProductButton = findViewById<View>(R.id.add_or_update_product_IB)
-                guide.startWelcomeGuide {
-                    guide.showAddProductButtonGuide(addProductButton)
-                }
-                firstTimeUserManager.markAddProductGuideShown()
             }
 
         } catch (e: Exception) {
@@ -144,8 +141,20 @@ class MainActivity : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        if (intent?.getBooleanExtra("EXTRA_START_ADD_PRODUCT_GUIDE", false) == true) {
-            handleStartAddProductGuide(intent)
+        setIntent(intent) // Important: mettre à jour l'intent de l'activité
+
+        // Vérifier si on doit forcer un refresh des spotlights
+        val forceRefresh = intent?.getBooleanExtra("force_spotlight_refresh", false) ?: false
+        if (forceRefresh) {
+            CrashlyticsManager.log("MainActivity onNewIntent: Force spotlight refresh requested")
+
+            // Vérifier si l'onboarding est complété et forcer les spotlights
+            if (UserPreferences.isOnboardingCompleted(this)) {
+                // Délai court pour laisser l'interface se stabiliser
+                window.decorView.postDelayed({
+                    setupSpotlightTour()
+                }, 500)
+            }
         }
     }
 
@@ -160,23 +169,22 @@ class MainActivity : AppCompatActivity() {
                 "${e.message ?: "Message non disponible"}")
         }
 
-        // Guide utilisateur : reprendre à l'étape appropriée
-        val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
-        if (guide.isGuideCompleted()) return
-        when (guide.getCurrentGuideState()) {
-            com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.MAIN_SCREEN_PRODUCT_ADDED -> {
-                // Afficher le tooltip de félicitations après ajout du produit et enchaîner sur analyse
-                val root = findViewById<View>(android.R.id.content)
-                val analyzeButton = findViewById<View>(R.id.analyse_IB)
-                guide.showProductAddedGuide(root, analyzeButton)
+        // Vérifier si des spotlights doivent être affichés (utile après replay onboarding)
+        try {
+            // Si l'onboarding est complété mais les spotlights n'ont pas encore été vus
+            if (UserPreferences.isOnboardingCompleted(this) &&
+                UserPreferences.shouldShowSpotlight(this, "MainActivity")) {
+
+                CrashlyticsManager.log("MainActivity onResume: Triggering spotlights")
+
+                // Délai court pour laisser l'interface se stabiliser
+                window.decorView.postDelayed({
+                    setupSpotlightTour()
+                }, 500)
             }
-            com.dedoware.shoopt.utils.AddFirstProductGuide.GuideState.MAIN_SCREEN_ANALYZE_BUTTON -> {
-                // Fallback : si l'app a été mise en arrière-plan entre les étapes
-                val analyzeButton = findViewById<View>(R.id.analyse_IB)
-                guide.showAnalyzeButtonGuide(analyzeButton)
-            }
-            // ...autres cas si besoin...
-            else -> {}
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la vérification des spotlights en onResume: ${e.message}")
+            CrashlyticsManager.logException(e)
         }
     }
 
@@ -239,8 +247,6 @@ class MainActivity : AppCompatActivity() {
 
                     // Analytics pour le passage à l'écran d'ajout de produit
                     AnalyticsManager.logSelectContent("navigation", "card", "add_update_product")
-
-                    updateAddFirstProductGuideIfNeeded()
 
                     // Lancer la nouvelle activité de choix de produit avec animation
                     val intent = Intent(this, ProductChoiceActivity::class.java)
@@ -309,17 +315,120 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Met à jour l'état du guide d'ajout du premier produit si nécessaire.
-     * Appelé après l'ajout d'un produit pour éviter de redémarrer le guide.
+     * Configure et démarre le tour de spotlight pour guider l'utilisateur
+     * sur les fonctionnalités principales de l'écran d'accueil
      */
-    private fun updateAddFirstProductGuideIfNeeded() {
-        val guide = AddFirstProductGuide(this)
-        when (guide.getCurrentGuideState()) {
-            GuideState.MAIN_SCREEN_ADD_BUTTON -> {
-                guide.saveGuideState(GuideState.PRODUCT_CHOICE_SCREEN)
+    private fun setupSpotlightTour() {
+        try {
+            val prefs = getSharedPreferences("user_preferences", Context.MODE_PRIVATE)
+            val isForced = prefs.getBoolean("force_spotlights_on_next_resume", false)
+
+            // Vérifier si le spotlight doit être affiché (sauf si forcé)
+            if (!isForced && !UserPreferences.shouldShowSpotlight(this, "MainActivity")) {
+                CrashlyticsManager.log("MainActivity setupSpotlightTour: Not showing - shouldShow=false, isForced=$isForced")
+                return
             }
 
-            else -> {}
+            CrashlyticsManager.log("MainActivity setupSpotlightTour: Starting spotlight tour (isForced=$isForced)")
+
+            // Créer la liste des éléments à mettre en surbrillance
+            val spotlightItems = mutableListOf<SpotlightItem>()
+
+            // Ajouter les cartes principales au spotlight
+            val shoppingListCard: MaterialCardView = findViewById(R.id.shopping_list_card)
+            val addProductCard: MaterialCardView = findViewById(R.id.add_product_card)
+            val trackShoppingCard: MaterialCardView = findViewById(R.id.track_shopping_card)
+            val analyseCard: MaterialCardView = findViewById(R.id.analyse_card)
+            val settingsButton: MaterialButton = findViewById(R.id.settings_button)
+            val logoutButton: MaterialButton = findViewById(R.id.logout_button)
+
+            // Spotlight pour l'ajout de produit
+            spotlightItems.add(
+                SpotlightItem(
+                    targetView = addProductCard,
+                    titleRes = R.string.spotlight_main_add_title,
+                    descriptionRes = R.string.spotlight_main_add_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour la liste de courses
+            spotlightItems.add(
+                SpotlightItem(
+                    targetView = shoppingListCard,
+                    titleRes = R.string.spotlight_main_list_title,
+                    descriptionRes = R.string.spotlight_main_list_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour le suivi des achats
+            spotlightItems.add(
+                SpotlightItem(
+                    targetView = trackShoppingCard,
+                    titleRes = R.string.spotlight_main_scan_title,
+                    descriptionRes = R.string.spotlight_main_scan_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour l'analyse
+            spotlightItems.add(
+                SpotlightItem(
+                    targetView = analyseCard,
+                    titleRes = R.string.spotlight_analyse_chart_title,
+                    descriptionRes = R.string.spotlight_analyse_chart_description,
+                    shape = SpotlightShape.ROUNDED_RECTANGLE
+                )
+            )
+
+            // Spotlight pour les paramètres
+            spotlightItems.add(
+                SpotlightItem(
+                    targetView = settingsButton,
+                    titleRes = R.string.spotlight_main_settings_title,
+                    descriptionRes = R.string.spotlight_main_settings_description,
+                    shape = SpotlightShape.CIRCLE
+                )
+            )
+
+            // Spotlight pour la déconnexion
+            spotlightItems.add(
+                SpotlightItem(
+                    targetView = logoutButton,
+                    titleRes = R.string.spotlight_main_logout_title,
+                    descriptionRes = R.string.spotlight_main_logout_description,
+                    shape = SpotlightShape.CIRCLE
+                )
+            )
+
+            // Supprimer le flag de forçage maintenant qu'on va démarrer
+            if (isForced) {
+                prefs.edit().remove("force_spotlights_on_next_resume").apply()
+                CrashlyticsManager.log("MainActivity setupSpotlightTour: Removed force flag")
+            }
+
+            // Démarrer le tour de spotlight avec un léger délai pour que l'interface soit prête
+            window.decorView.post {
+                CrashlyticsManager.log("MainActivity setupSpotlightTour: Actually starting SpotlightManager")
+                SpotlightManager.getInstance(this)
+                    .setSpotlightItems(spotlightItems)
+                    .setOnCompleteListener {
+                        // Callback appelé à la fin du tour
+                        CrashlyticsManager.log("MainActivity setupSpotlightTour: Spotlight tour completed")
+                        AnalyticsManager.logUserAction(
+                            "spotlight_tour_completed",
+                            "onboarding",
+                            mapOf("screen" to "MainActivity")
+                        )
+                    }
+                    .start("MainActivity")
+            }
+
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la configuration du spotlight: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "setup_spotlight_tour")
+            CrashlyticsManager.logException(e)
         }
     }
 
@@ -432,16 +541,6 @@ class MainActivity : AppCompatActivity() {
 
             Toast.makeText(this, getString(R.string.dialog_display_error), Toast.LENGTH_SHORT).show()
         }
-    }
-
-    private fun handleStartAddProductGuide(intent: Intent?) {
-        val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
-        val addProductButton = findViewById<View>(R.id.add_or_update_product_IB)
-        guide.startWelcomeGuide {
-            guide.showAddProductButtonGuide(addProductButton)
-        }
-        // Remove the extra so the guide doesn't restart on future intents
-        intent?.removeExtra("EXTRA_START_ADD_PRODUCT_GUIDE")
     }
 
     private fun checkProductExistenceAndNavigate(barcode: String) {

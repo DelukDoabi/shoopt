@@ -247,9 +247,6 @@ class BarcodeScannerActivity : AppCompatActivity() {
         if (::scanLineAnimator.isInitialized && !scanLineAnimator.isRunning) {
             scanLineAnimator.start()
         }
-        // Guide: avancer l'état lors de l'entrée dans le scanner
-        val guide = com.dedoware.shoopt.utils.AddFirstProductGuide(this)
-        guide.showBarcodeScannerGuide(findViewById(android.R.id.content))
     }
 
     override fun onPause() {
@@ -272,6 +269,7 @@ class BarcodeScannerActivity : AppCompatActivity() {
         private val onBarcodesDetected: (List<Barcode>) -> Unit
     ) : ImageAnalysis.Analyzer {
 
+        @androidx.camera.core.ExperimentalGetImage
         override fun analyze(imageProxy: ImageProxy) {
             val mediaImage = imageProxy.image
             if (mediaImage != null) {
