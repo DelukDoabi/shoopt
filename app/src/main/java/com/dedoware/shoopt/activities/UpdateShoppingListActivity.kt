@@ -32,6 +32,7 @@ import com.dedoware.shoopt.persistence.LocalShoppingListRepository
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
+import com.dedoware.shoopt.utils.UserPreferences
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.textfield.TextInputEditText

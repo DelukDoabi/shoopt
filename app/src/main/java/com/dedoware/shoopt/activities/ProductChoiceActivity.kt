@@ -16,6 +16,7 @@ import com.dedoware.shoopt.extensions.startSpotlightTour
 import com.dedoware.shoopt.extensions.createSpotlightItem
 import com.dedoware.shoopt.extensions.isSpotlightAvailable
 import com.dedoware.shoopt.models.SpotlightShape
+import com.dedoware.shoopt.utils.UserPreferences
 
 /**
  * ProductChoiceActivity - Un écran moderne qui permet à l'utilisateur de choisir
@@ -207,5 +208,24 @@ class ProductChoiceActivity : AppCompatActivity() {
 
     private fun showErrorToast(messageResId: Int) {
         android.widget.Toast.makeText(this, getString(messageResId), android.widget.Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent) // Important: mettre à jour l'intent de l'activité
+
+        // Vérifier si on doit forcer un refresh des spotlights
+        val forceRefresh = intent?.getBooleanExtra("force_spotlight_refresh", false) ?: false
+        if (forceRefresh) {
+            CrashlyticsManager.log("ProductChoiceActivity onNewIntent: Force spotlight refresh requested")
+
+            // Vérifier si l'onboarding est complété et forcer les spotlights
+            if (UserPreferences.isOnboardingCompleted(this)) {
+                // Délai court pour laisser l'interface se stabiliser
+                window.decorView.postDelayed({
+                    setupSpotlightTour()
+                }, 500)
+            }
+        }
     }
 }

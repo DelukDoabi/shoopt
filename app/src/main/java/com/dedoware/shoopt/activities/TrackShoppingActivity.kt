@@ -37,6 +37,7 @@ import com.dedoware.shoopt.extensions.createSpotlightItem
 import com.dedoware.shoopt.extensions.isSpotlightAvailable
 import com.dedoware.shoopt.models.SpotlightShape
 import com.google.android.material.card.MaterialCardView
+import com.dedoware.shoopt.utils.UserPreferences
 
 class TrackShoppingActivity : AppCompatActivity() {
 
@@ -680,6 +681,25 @@ class TrackShoppingActivity : AppCompatActivity() {
             CrashlyticsManager.log("Erreur lors de la configuration du spotlight: ${e.message ?: "Message non disponible"}")
             CrashlyticsManager.setCustomKey("error_location", "setup_spotlight_tour")
             CrashlyticsManager.logException(e)
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent) // Important: mettre à jour l'intent de l'activité
+
+        // Vérifier si on doit forcer un refresh des spotlights
+        val forceRefresh = intent?.getBooleanExtra("force_spotlight_refresh", false) ?: false
+        if (forceRefresh) {
+            CrashlyticsManager.log("TrackShoppingActivity onNewIntent: Force spotlight refresh requested")
+
+            // Vérifier si l'onboarding est complété et forcer les spotlights
+            if (UserPreferences.isOnboardingCompleted(this)) {
+                // Délai court pour laisser l'interface se stabiliser
+                window.decorView.postDelayed({
+                    setupSpotlightTour()
+                }, 500)
+            }
         }
     }
 }

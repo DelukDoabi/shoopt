@@ -621,4 +621,23 @@ class AnalyseActivity : AppCompatActivity() {
         super.onResume()
         loadProducts() // Reload products to ensure UI is updated with the latest data
     }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent) // Important: mettre à jour l'intent de l'activité
+
+        // Vérifier si on doit forcer un refresh des spotlights
+        val forceRefresh = intent?.getBooleanExtra("force_spotlight_refresh", false) ?: false
+        if (forceRefresh) {
+            CrashlyticsManager.log("AnalyseActivity onNewIntent: Force spotlight refresh requested")
+
+            // Vérifier si l'onboarding est complété et forcer les spotlights
+            if (UserPreferences.isOnboardingCompleted(this)) {
+                // Délai court pour laisser l'interface se stabiliser
+                window.decorView.postDelayed({
+                    setupSpotlightTour()
+                }, 500)
+            }
+        }
+    }
 }
