@@ -1,6 +1,7 @@
 package com.dedoware.shoopt.activities
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -27,10 +28,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 // Imports pour le système de spotlight
-import com.dedoware.shoopt.extensions.startSpotlightTour
-import com.dedoware.shoopt.extensions.createSpotlightItem
-import com.dedoware.shoopt.extensions.isSpotlightAvailable
 import com.dedoware.shoopt.models.SpotlightShape
+import com.dedoware.shoopt.models.SpotlightItem
+import com.dedoware.shoopt.utils.SpotlightManager
+import com.dedoware.shoopt.utils.OnboardingManager
 
 
 class MainActivity : AppCompatActivity() {
@@ -108,7 +109,13 @@ class MainActivity : AppCompatActivity() {
             // Configuration des cartes pour une meilleure expérience utilisateur
             setupFeatureCards()
 
-            // Démarrer le système de spotlight si nécessaire
+            // Vérifier si l'onboarding introduction doit être démarré
+            if (!UserPreferences.isOnboardingCompleted(this)) {
+                OnboardingManager.checkAndStartOnboarding(this)
+                return // L'activité sera fermée par OnboardingManager
+            }
+
+            // Si l'introduction est terminée, configurer les spotlights
             setupSpotlightTour()
 
             // Vérification des mises à jour disponibles
@@ -134,7 +141,21 @@ class MainActivity : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        // Removed guide handling for simplified onboarding
+        setIntent(intent) // Important: mettre à jour l'intent de l'activité
+
+        // Vérifier si on doit forcer un refresh des spotlights
+        val forceRefresh = intent?.getBooleanExtra("force_spotlight_refresh", false) ?: false
+        if (forceRefresh) {
+            CrashlyticsManager.log("MainActivity onNewIntent: Force spotlight refresh requested")
+
+            // Vérifier si l'onboarding est complété et forcer les spotlights
+            if (UserPreferences.isOnboardingCompleted(this)) {
+                // Délai court pour laisser l'interface se stabiliser
+                window.decorView.postDelayed({
+                    setupSpotlightTour()
+                }, 500)
+            }
+        }
     }
 
     override fun onResume() {
@@ -146,6 +167,24 @@ class MainActivity : AppCompatActivity() {
         } catch (e: Exception) {
             CrashlyticsManager.log("Erreur lors de la vérification des mises à jour en attente: "+
                 "${e.message ?: "Message non disponible"}")
+        }
+
+        // Vérifier si des spotlights doivent être affichés (utile après replay onboarding)
+        try {
+            // Si l'onboarding est complété mais les spotlights n'ont pas encore été vus
+            if (UserPreferences.isOnboardingCompleted(this) &&
+                UserPreferences.shouldShowSpotlight(this, "MainActivity")) {
+
+                CrashlyticsManager.log("MainActivity onResume: Triggering spotlights")
+
+                // Délai court pour laisser l'interface se stabiliser
+                window.decorView.postDelayed({
+                    setupSpotlightTour()
+                }, 500)
+            }
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la vérification des spotlights en onResume: ${e.message}")
+            CrashlyticsManager.logException(e)
         }
     }
 
@@ -281,13 +320,19 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setupSpotlightTour() {
         try {
-            // Vérifier si le spotlight doit être affiché
-            if (!isSpotlightAvailable()) {
+            val prefs = getSharedPreferences("user_preferences", Context.MODE_PRIVATE)
+            val isForced = prefs.getBoolean("force_spotlights_on_next_resume", false)
+
+            // Vérifier si le spotlight doit être affiché (sauf si forcé)
+            if (!isForced && !UserPreferences.shouldShowSpotlight(this, "MainActivity")) {
+                CrashlyticsManager.log("MainActivity setupSpotlightTour: Not showing - shouldShow=false, isForced=$isForced")
                 return
             }
 
+            CrashlyticsManager.log("MainActivity setupSpotlightTour: Starting spotlight tour (isForced=$isForced)")
+
             // Créer la liste des éléments à mettre en surbrillance
-            val spotlightItems = mutableListOf<com.dedoware.shoopt.models.SpotlightItem>()
+            val spotlightItems = mutableListOf<SpotlightItem>()
 
             // Ajouter les cartes principales au spotlight
             val shoppingListCard: MaterialCardView = findViewById(R.id.shopping_list_card)
@@ -299,7 +344,7 @@ class MainActivity : AppCompatActivity() {
 
             // Spotlight pour l'ajout de produit
             spotlightItems.add(
-                createSpotlightItem(
+                SpotlightItem(
                     targetView = addProductCard,
                     titleRes = R.string.spotlight_main_add_title,
                     descriptionRes = R.string.spotlight_main_add_description,
@@ -309,7 +354,7 @@ class MainActivity : AppCompatActivity() {
 
             // Spotlight pour la liste de courses
             spotlightItems.add(
-                createSpotlightItem(
+                SpotlightItem(
                     targetView = shoppingListCard,
                     titleRes = R.string.spotlight_main_list_title,
                     descriptionRes = R.string.spotlight_main_list_description,
@@ -319,7 +364,7 @@ class MainActivity : AppCompatActivity() {
 
             // Spotlight pour le suivi des achats
             spotlightItems.add(
-                createSpotlightItem(
+                SpotlightItem(
                     targetView = trackShoppingCard,
                     titleRes = R.string.spotlight_main_scan_title,
                     descriptionRes = R.string.spotlight_main_scan_description,
@@ -329,7 +374,7 @@ class MainActivity : AppCompatActivity() {
 
             // Spotlight pour l'analyse
             spotlightItems.add(
-                createSpotlightItem(
+                SpotlightItem(
                     targetView = analyseCard,
                     titleRes = R.string.spotlight_analyse_chart_title,
                     descriptionRes = R.string.spotlight_analyse_chart_description,
@@ -339,7 +384,7 @@ class MainActivity : AppCompatActivity() {
 
             // Spotlight pour les paramètres
             spotlightItems.add(
-                createSpotlightItem(
+                SpotlightItem(
                     targetView = settingsButton,
                     titleRes = R.string.spotlight_main_settings_title,
                     descriptionRes = R.string.spotlight_main_settings_description,
@@ -347,9 +392,9 @@ class MainActivity : AppCompatActivity() {
                 )
             )
 
-            // Spotlight pour les paramètres
+            // Spotlight pour la déconnexion
             spotlightItems.add(
-                createSpotlightItem(
+                SpotlightItem(
                     targetView = logoutButton,
                     titleRes = R.string.spotlight_main_logout_title,
                     descriptionRes = R.string.spotlight_main_logout_description,
@@ -357,16 +402,27 @@ class MainActivity : AppCompatActivity() {
                 )
             )
 
+            // Supprimer le flag de forçage maintenant qu'on va démarrer
+            if (isForced) {
+                prefs.edit().remove("force_spotlights_on_next_resume").apply()
+                CrashlyticsManager.log("MainActivity setupSpotlightTour: Removed force flag")
+            }
+
             // Démarrer le tour de spotlight avec un léger délai pour que l'interface soit prête
             window.decorView.post {
-                startSpotlightTour(spotlightItems) {
-                    // Callback appelé à la fin du tour
-                    AnalyticsManager.logUserAction(
-                        "spotlight_tour_completed",
-                        "onboarding",
-                        mapOf("screen" to "MainActivity")
-                    )
-                }
+                CrashlyticsManager.log("MainActivity setupSpotlightTour: Actually starting SpotlightManager")
+                SpotlightManager.getInstance(this)
+                    .setSpotlightItems(spotlightItems)
+                    .setOnCompleteListener {
+                        // Callback appelé à la fin du tour
+                        CrashlyticsManager.log("MainActivity setupSpotlightTour: Spotlight tour completed")
+                        AnalyticsManager.logUserAction(
+                            "spotlight_tour_completed",
+                            "onboarding",
+                            mapOf("screen" to "MainActivity")
+                        )
+                    }
+                    .start("MainActivity")
             }
 
         } catch (e: Exception) {

@@ -1,5 +1,6 @@
 package com.dedoware.shoopt.activities
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.cardview.widget.CardView
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
+import com.dedoware.shoopt.utils.OnboardingManager
 import com.dedoware.shoopt.utils.UserPreferences
 import com.google.android.material.button.MaterialButton
 import org.json.JSONArray
@@ -318,13 +320,21 @@ class SettingsActivity : AppCompatActivity() {
                     additionalParams = mapOf("button" to "replay_onboarding")
                 )
 
-                // Réinitialiser le flag d'onboarding complété
+                // RESET COMPLET : Réinitialiser TOUT l'état d'onboarding
                 UserPreferences.setOnboardingCompleted(this, false)
-                // Réinitialiser les spotlights vus
                 UserPreferences.resetSpotlights(this)
+
+                // Ajouter un flag spécial pour indiquer qu'on vient de faire un replay
+                val prefs = getSharedPreferences("user_preferences", Context.MODE_PRIVATE)
+                prefs.edit().putBoolean("onboarding_replay_requested", true).apply()
+
+                // Log pour debug
+                CrashlyticsManager.log("Settings: Replay onboarding - Reset completed, starting OnboardingActivity")
 
                 // Démarrer l'activité d'onboarding
                 val intent = Intent(this, OnboardingActivity::class.java)
+                // Ajouter un flag pour indiquer que c'est un replay
+                intent.putExtra("is_replay", true)
                 startActivity(intent)
 
                 // Fermer l'activité des paramètres

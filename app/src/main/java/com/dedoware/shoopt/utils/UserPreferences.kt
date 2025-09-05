@@ -62,6 +62,12 @@ class UserPreferences(context: Context) {
         fun shouldShowSpotlight(context: Context, screenKey: String): Boolean {
             val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
+            // Vérifier s'il y a un flag de forçage pour les spotlights (après replay onboarding)
+            val isForced = prefs.getBoolean("force_spotlights_on_next_resume", false)
+            if (isForced) {
+                return true
+            }
+
             // Vérifier que l'onboarding principal est terminé
             if (!isOnboardingCompleted(context)) {
                 return false
@@ -93,12 +99,32 @@ class UserPreferences(context: Context) {
             val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             val editor = prefs.edit()
 
-            // Supprimer tous les flags de spotlight
+            // Supprimer tous les flags de spotlight pour forcer leur réaffichage
             prefs.all.keys.filter { it.startsWith(KEY_SPOTLIGHT_PREFIX) }
                 .forEach { editor.remove(it) }
 
-            editor.putInt(KEY_SPOTLIGHT_VERSION, 0)
+            // Réinitialiser la version des spotlights pour forcer leur affichage
+            editor.remove(KEY_SPOTLIGHT_VERSION)
             editor.apply()
+        }
+
+        /**
+         * Obtient la liste des écrans pour lesquels les spotlights ont été vus
+         */
+        fun getCompletedSpotlightScreens(context: Context): Set<String> {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            return prefs.all.keys
+                .filter { it.startsWith(KEY_SPOTLIGHT_PREFIX) && prefs.getBoolean(it, false) }
+                .map { it.removePrefix(KEY_SPOTLIGHT_PREFIX) }
+                .toSet()
+        }
+
+        /**
+         * Vérifie si l'expérience d'onboarding complète (introduction + spotlights) est terminée
+         */
+        fun isOnboardingCompletelyFinished(context: Context): Boolean {
+            return isOnboardingCompleted(context) &&
+                   getCompletedSpotlightScreens(context).contains("MainActivity")
         }
     }
 
