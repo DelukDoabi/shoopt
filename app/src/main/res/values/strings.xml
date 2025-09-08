@@ -49,6 +49,11 @@
     <string name="login_successful">Login Successful</string>
     <string name="login_failed">Login Failed: %1$s</string>
     <string name="google_sign_in_successful">Google Sign-In Successful</string>
+    <string name="autocompletion_disabled_message">Autocompletion disabled</string>
+    <string name="autocompletion_toggle_title">Smart Autocompletion</string>
+    <string name="autocompletion_toggle_description">Enable automatic image analysis and shop detection</string>
+    <string name="ai_autocompletion">AI Image Analysis</string>
+    <string name="maps_autocompletion">Maps Shop Detection</string>
 
     <!-- User Guide Strings -->
     <string name="skip_guide">Skip</string>

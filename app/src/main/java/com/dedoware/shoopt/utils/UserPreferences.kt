@@ -18,6 +18,10 @@ class UserPreferences(context: Context) {
         private const val KEY_SPOTLIGHT_VERSION = "spotlight_version"
         private const val CURRENT_SPOTLIGHT_VERSION = 1 // Incrémenter pour forcer l'affichage
 
+        // Autocompletion constants
+        private const val KEY_AI_AUTOCOMPLETION_ENABLED = "ai_autocompletion_enabled"
+        private const val KEY_MAPS_AUTOCOMPLETION_ENABLED = "maps_autocompletion_enabled"
+
         const val THEME_LIGHT = 1
         const val THEME_DARK = 2
         const val THEME_SYSTEM = 0
@@ -125,6 +129,27 @@ class UserPreferences(context: Context) {
         fun isOnboardingCompletelyFinished(context: Context): Boolean {
             return isOnboardingCompleted(context) &&
                    getCompletedSpotlightScreens(context).contains("MainActivity")
+        }
+
+        // Auto-completion preferences methods
+        fun isAiAutocompletionEnabled(context: Context): Boolean {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            return prefs.getBoolean(KEY_AI_AUTOCOMPLETION_ENABLED, true) // Activé par défaut
+        }
+
+        fun setAiAutocompletionEnabled(context: Context, enabled: Boolean) {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            prefs.edit().putBoolean(KEY_AI_AUTOCOMPLETION_ENABLED, enabled).apply()
+        }
+
+        fun isMapsAutocompletionEnabled(context: Context): Boolean {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            return prefs.getBoolean(KEY_MAPS_AUTOCOMPLETION_ENABLED, true) // Activé par défaut
+        }
+
+        fun setMapsAutocompletionEnabled(context: Context, enabled: Boolean) {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            prefs.edit().putBoolean(KEY_MAPS_AUTOCOMPLETION_ENABLED, enabled).apply()
         }
     }
 

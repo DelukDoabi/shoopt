@@ -58,6 +58,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import kotlinx.coroutines.CoroutineScope
@@ -98,6 +99,7 @@ class AddProductActivity : AppCompatActivity() {
     private lateinit var productPictureFile: File
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var placesClient: PlacesClient
+    private lateinit var autocompletionSwitch: SwitchMaterial
     val shopList = mutableListOf<String>()
     private lateinit var productRepository: IProductRepository
     private lateinit var imageStorage: IImageStorage
@@ -112,42 +114,56 @@ class AddProductActivity : AppCompatActivity() {
                 if (result.resultCode == Activity.RESULT_OK) {
                     displayProductPictureOnImageButton()
 
-                    val pictureUrl = intent.getStringExtra("pictureUrl") ?: ""
+                    // Vérifier si l'autocomplétion intelligente est activée
+                    if (autocompletionSwitch.isChecked) {
+                        val pictureUrl = intent.getStringExtra("pictureUrl") ?: ""
 
-                    // Trigger image analysis and shop name auto-completion in parallel
-                    CoroutineScope(Dispatchers.Main).launch {
-                        try {
-                            showLoadingOverlay()
-                            val imageAnalysisJob = async {
-                                analyzeProductImageWithMessage(pictureUrl)
-                            }
-
-                            val shopNameAutoCompleteJob = async {
-                                fetchCurrentLocationAndFillShopNameWithMessage()
-                            }
-
-                            // Wait for both tasks to complete
+                        // Trigger image analysis and shop name auto-completion in parallel
+                        CoroutineScope(Dispatchers.Main).launch {
                             try {
-                                imageAnalysisJob.await()
-                                shopNameAutoCompleteJob.await()
+                                showLoadingOverlay()
+
+                                val jobs = mutableListOf<kotlinx.coroutines.Deferred<Unit>>()
+
+                                // Lancer l'analyse AI seulement si activée
+                                if (UserPreferences.isAiAutocompletionEnabled(this@AddProductActivity)) {
+                                    jobs.add(async {
+                                        analyzeProductImageWithMessage(pictureUrl)
+                                    })
+                                }
+
+                                // Lancer la localisation Maps seulement si activée
+                                if (UserPreferences.isMapsAutocompletionEnabled(this@AddProductActivity)) {
+                                    jobs.add(async {
+                                        fetchCurrentLocationAndFillShopNameWithMessage()
+                                    })
+                                }
+
+                                // Attendre que toutes les tâches activées se terminent
+                                try {
+                                    jobs.forEach { it.await() }
+                                } catch (e: Exception) {
+                                    CrashlyticsManager.log("Erreur lors de l'attente des tâches asynchrones: ${e.message ?: "Message non disponible"}")
+                                    CrashlyticsManager.setCustomKey("error_location", "async_tasks")
+                                    CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                                    CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                                    CrashlyticsManager.logException(e)
+                                } finally {
+                                    hideLoadingOverlay()
+                                }
                             } catch (e: Exception) {
-                                CrashlyticsManager.log("Erreur lors de l'attente des tâches asynchrones: ${e.message ?: "Message non disponible"}")
-                                CrashlyticsManager.setCustomKey("error_location", "async_tasks")
+                                CrashlyticsManager.log("Erreur lors de l'analyse de l'image ou de la récupération de l'emplacement: ${e.message ?: "Message non disponible"}")
+                                CrashlyticsManager.setCustomKey("error_location", "product_analysis")
                                 CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
                                 CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
                                 CrashlyticsManager.logException(e)
-                            } finally {
+
                                 hideLoadingOverlay()
                             }
-                        } catch (e: Exception) {
-                            CrashlyticsManager.log("Erreur lors de l'analyse de l'image ou de la récupération de l'emplacement: ${e.message ?: "Message non disponible"}")
-                            CrashlyticsManager.setCustomKey("error_location", "product_analysis")
-                            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
-                            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
-                            CrashlyticsManager.logException(e)
-
-                            hideLoadingOverlay()
                         }
+                    } else {
+                        // Autocomplétion désactivée - afficher un message informatif discret
+                        Toast.makeText(this, getString(R.string.autocompletion_disabled_message), Toast.LENGTH_SHORT).show()
                     }
                 }
             } catch (e: Exception) {
@@ -156,6 +172,8 @@ class AddProductActivity : AppCompatActivity() {
                 CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
                 CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
                 CrashlyticsManager.logException(e)
+
+                Log.e("AddProductActivity", "Error in resultLauncher", e)
 
                 Toast.makeText(this, "Une erreur est survenue lors du traitement de l'image", Toast.LENGTH_SHORT).show()
             }
@@ -517,6 +535,8 @@ class AddProductActivity : AppCompatActivity() {
             CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
             CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
             CrashlyticsManager.logException(e)
+
+            Log.e("AddProductActivity", "Error in resultLauncher", e)
 
             // Affichage d'un message d'erreur à l'utilisateur
             Toast.makeText(this, "Une erreur est survenue lors du démarrage de l'application. Veuillez réessayer.", Toast.LENGTH_LONG).show()
@@ -1064,6 +1084,105 @@ class AddProductActivity : AppCompatActivity() {
         productUnitPriceEditText = findViewById(R.id.product_unit_price_ET)
         productShopAutoCompleteTextView = findViewById(R.id.shop_autocomplete)
         scanBarcodeButton = findViewById(R.id.scan_barcode_IB)
+
+        // Initialiser le switch d'autocomplétion avec vérification de sécurité
+        val switchView = findViewById<SwitchMaterial>(R.id.autocompletion_switch)
+        if (switchView != null) {
+            autocompletionSwitch = switchView
+            // Configurer le switch d'autocomplétion
+            setupAutocompletionSwitch()
+        } else {
+            CrashlyticsManager.log("Switch d'autocomplétion non trouvé dans le layout")
+            CrashlyticsManager.setCustomKey("error_location", "autocompletion_switch_not_found")
+        }
+    }
+
+    /**
+     * Configure le switch d'autocomplétion intelligente
+     */
+    private fun setupAutocompletionSwitch() {
+        try {
+            // Initialiser l'état du switch basé sur les préférences actuelles
+            val isAiEnabled = UserPreferences.isAiAutocompletionEnabled(this)
+            val isMapsEnabled = UserPreferences.isMapsAutocompletionEnabled(this)
+
+            // Le switch est activé si au moins une des deux fonctionnalités est activée
+            autocompletionSwitch.isChecked = isAiEnabled || isMapsEnabled
+
+            // Mettre à jour le texte de statut
+            updateAutocompletionStatusText()
+
+            // Configurer le listener pour les changements d'état
+            autocompletionSwitch.setOnCheckedChangeListener { _, isChecked ->
+                try {
+                    // Enregistrer l'analytique du changement de préférence
+                    val params = Bundle().apply {
+                        putBoolean("autocompletion_enabled", isChecked)
+                    }
+                    AnalyticsManager.logCustomEvent("autocompletion_toggle_changed", params)
+
+                    if (isChecked) {
+                        // Activer les deux fonctionnalités quand le switch est activé
+                        UserPreferences.setAiAutocompletionEnabled(this, true)
+                        UserPreferences.setMapsAutocompletionEnabled(this, true)
+
+                        Toast.makeText(this, getString(R.string.ai_autocompletion) + " et " +
+                                     getString(R.string.maps_autocompletion) + " activées",
+                                     Toast.LENGTH_SHORT).show()
+                    } else {
+                        // Désactiver les deux fonctionnalités quand le switch est désactivé
+                        UserPreferences.setAiAutocompletionEnabled(this, false)
+                        UserPreferences.setMapsAutocompletionEnabled(this, false)
+
+                        Toast.makeText(this, getString(R.string.autocompletion_disabled_message),
+                                     Toast.LENGTH_SHORT).show()
+                    }
+
+                    // Mettre à jour le texte de statut
+                    updateAutocompletionStatusText()
+
+                } catch (e: Exception) {
+                    CrashlyticsManager.log("Erreur lors du changement d'état du switch d'autocomplétion: ${e.message ?: "Message non disponible"}")
+                    CrashlyticsManager.setCustomKey("error_location", "autocompletion_switch_change")
+                    CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                    CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                    CrashlyticsManager.logException(e)
+                }
+            }
+
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la configuration du switch d'autocomplétion: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "autocompletion_switch_setup")
+            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+            CrashlyticsManager.logException(e)
+        }
+    }
+
+    /**
+     * Met à jour le texte de statut de l'autocomplétion
+     */
+    private fun updateAutocompletionStatusText() {
+        try {
+            val statusTextView = findViewById<TextView>(R.id.autocompletion_status_text)
+
+            val isAiEnabled = UserPreferences.isAiAutocompletionEnabled(this)
+            val isMapsEnabled = UserPreferences.isMapsAutocompletionEnabled(this)
+
+            val statusText = when {
+                isAiEnabled && isMapsEnabled -> "${getString(R.string.ai_autocompletion)} + ${getString(R.string.maps_autocompletion)}"
+                isAiEnabled -> getString(R.string.ai_autocompletion)
+                isMapsEnabled -> getString(R.string.maps_autocompletion)
+                else -> getString(R.string.autocompletion_disabled_message)
+            }
+
+            statusTextView?.text = statusText
+
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la mise à jour du texte de statut: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "status_text_update")
+            CrashlyticsManager.logException(e)
+        }
     }
 
     private fun retrieveMainData(savedInstanceState: Bundle?) {
@@ -1089,7 +1208,7 @@ class AddProductActivity : AppCompatActivity() {
         if (productId != null) {
             retrievedProductId = productId
         } else {
-            Log.w("AddProductActivity", "Missing productId")
+
         }
 
         productBarcodeEditText.setText(if (barcode != 0L) barcode.toString() else "")
@@ -1101,7 +1220,7 @@ class AddProductActivity : AppCompatActivity() {
         if (!pictureUrl.isNullOrEmpty()) {
             // Set scale type to centerCrop for consistent image display
             productPictureImageButton.scaleType = ImageView.ScaleType.CENTER_CROP
-            
+
             // Use consistent sizing with displayProductPictureOnImageButton method
             Glide.with(this)
                 .load(pictureUrl)
@@ -1112,7 +1231,6 @@ class AddProductActivity : AppCompatActivity() {
             Log.w("AddProductActivity", "Missing pictureUrl")
         }
     }
-
 
     private fun updateResultIntentForTrackShopping(product: Product) {
         val source = intent.getStringExtra("source")
