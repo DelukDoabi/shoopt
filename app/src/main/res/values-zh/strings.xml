@@ -355,4 +355,10 @@
     <string name="spotlight_add_save_title">保存</string>
     <string name="spotlight_add_save_description">将商品保存到您的个人数据库</string>
 
+
+    <string name="autocompletion_disabled_message">自动完成已禁用</string>
+    <string name="autocompletion_toggle_title">智能自动完成</string>
+    <string name="autocompletion_toggle_description">启用自动图像分析和商店检测</string>
+    <string name="ai_autocompletion">AI图像分析</string>
+    <string name="maps_autocompletion">通过地图检测商店</string>
 </resources>

@@ -355,4 +355,10 @@
     <string name="spotlight_add_save_title">Salvar</string>
     <string name="spotlight_add_save_description">Salve o produto em seu banco de dados pessoal</string>
 
+    <string name="autocompletion_disabled_message">Autocompletar desativado</string>
+    <string name="autocompletion_toggle_title">Autocompletar inteligente</string>
+    <string name="autocompletion_toggle_description">Ativa a análise automática de imagens e a deteção da loja</string>
+    <string name="ai_autocompletion">Análise de imagem por IA</string>
+    <string name="maps_autocompletion">Deteção de loja via Mapas</string>
+
 </resources>
