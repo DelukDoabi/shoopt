@@ -138,7 +138,6 @@
     <string name="dialog_display_error">Fehler beim Anzeigen des Dialogs</string>
     <string name="product_check_error">Fehler beim Überprüfen des Produkts</string>
     <string name="ai_assistant_tips">KI-Assistent-Tipps</string>
-    <string name="product_add_tips">Mach ein klares Foto von deinem Produkt und dem Preis, damit die KI es erkennt. Der Barcode-Scanner und die Standortdienste helfen dir, Produkte schnell und genau hinzuzufügen.</string>
     <string name="shopping_cart_items">Warenkorb-Artikel</string>
     <string name="empty_cart_message">Dein Warenkorb ist leer</string>
     <string name="empty_cart_subtitle">Füge Produkte hinzu, um deine Einkäufe zu verfolgen</string>
@@ -359,4 +358,11 @@
     <string name="maps_autocompletion">Filialerkennung über Maps</string>
     <string name="ai_autocompletion_enabled">KI-Bildanalyse aktiviert</string>
     <string name="maps_autocompletion_enabled">Filialerkennung über Maps aktiviert</string>
+
+    <string name="photo_tips_title">Fototipps</string>
+    <string name="photo_tips_message">Für die besten Autovervollständigungs-Ergebnisse:\n• Platziere das Produkt in der Mitte\n• Achte darauf, dass Preisschilder sichtbar sind\n• Gute Beleuchtung verbessert die Genauigkeit\n• Halte die Kamera ruhig</string>
+    <string name="dont_show_again">Nicht mehr anzeigen</string>
+    <string name="continue_to_camera">Fortfahren</string>
+    <string name="product_add_tips">Für beste Ergebnisse, platziere das Produkt mittig mit sichtbaren Preisschildern.</string>
+
 </resources>

@@ -138,7 +138,6 @@
     <string name="dialog_display_error">Errore nella visualizzazione della finestra</string>
     <string name="product_check_error">Errore nel controllo del prodotto</string>
     <string name="ai_assistant_tips">Consigli dell\'assistente IA</string>
-    <string name="product_add_tips">Fai una foto chiara del tuo prodotto e del suo prezzo così l\'IA potrà riconoscerlo. Lo scanner di codici a barre e i servizi di localizzazione ti aiuteranno ad aggiungere prodotti velocemente e con precisione.</string>
     <string name="shopping_cart_items">Articoli nel carrello</string>
     <string name="empty_cart_message">Il tuo carrello è vuoto</string>
     <string name="empty_cart_subtitle">Aggiungi prodotti per iniziare a monitorare i tuoi acquisti</string>
@@ -364,4 +363,11 @@
     <string name="maps_autocompletion">Rilevamento negozio tramite Maps</string>
     <string name="ai_autocompletion_enabled">Analisi delle immagini con IA abilitata</string>
     <string name="maps_autocompletion_enabled">Rilevamento del negozio tramite Maps abilitato</string>
+
+    <string name="photo_tips_title">Consigli per la foto</string>
+    <string name="photo_tips_message">Per i migliori risultati di completamento automatico:\n• Centra il prodotto nell\'inquadratura\n• Assicurati che i cartellini dei prezzi siano visibili\n• Una buona illuminazione migliora la precisione\n• Tieni la fotocamera ferma</string>
+    <string name="dont_show_again">Non mostrare più</string>
+    <string name="continue_to_camera">Continua</string>
+    <string name="product_add_tips">Per i migliori risultati, centra il prodotto nell\'inquadratura con i cartellini dei prezzi visibili.</string>
+
 </resources>

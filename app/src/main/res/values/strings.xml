@@ -448,10 +448,6 @@
     <string name="guide_completion_title">Congratulations!</string>
     <string name="guide_completion_desc">You have successfully added your first product. Keep enriching your database to get the most out of Shoopt!</string>
 
-    <!-- Scan & Photo Tips -->
-    <string name="photo_tip_title">Conseils pour la photo</string>
-    <string name="photo_tip_message">Pour de meilleurs résultats d\'autocomplétion :\n• Centrez bien le produit dans la photo\n• Assurez-vous que l\'étiquette de prix est visible\n• Évitez les reflets et les ombres\n• Prenez la photo en bonne luminosité</string>
-
     <!-- Photo Tips Dialog -->
     <string name="photo_tips_title">Photo Tips</string>
     <string name="photo_tips_message">For best autocompletion results:\n• Center the product in frame\n• Ensure price tags are visible\n• Good lighting improves accuracy\n• Hold camera steady</string>

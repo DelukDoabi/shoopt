@@ -138,7 +138,6 @@
     <string name="dialog_display_error">Błąd wyświetlania okna dialogowego</string>
     <string name="product_check_error">Błąd podczas sprawdzania produktu</string>
     <string name="ai_assistant_tips">Wskazówki asystenta AI</string>
-    <string name="product_add_tips">Zrób wyraźne zdjęcie swojego produktu oraz jego ceny, aby AI mogła go zidentyfikować. Skaner kodów kreskowych i usługi lokalizacyjne pomogą Ci szybko i dokładnie dodawać produkty.</string>
     <string name="shopping_cart_items">Pozycje w koszyku</string>
     <string name="empty_cart_message">Twój koszyk jest pusty</string>
     <string name="empty_cart_subtitle">Dodaj produkty, aby rozpocząć śledzenie zakupów</string>
@@ -363,4 +362,11 @@
     <string name="maps_autocompletion">Wykrywanie sklepu przez Mapy</string>
     <string name="ai_autocompletion_enabled">Analiza obrazu AI włączona</string>
     <string name="maps_autocompletion_enabled">Wykrywanie sklepu przez Maps włączone</string>
+
+    <string name="photo_tips_title">Wskazówki dotyczące zdjęć</string>
+    <string name="photo_tips_message">Aby uzyskać najlepsze wyniki autouzupełniania:\n• Umieść produkt na środku kadru\n• Upewnij się, że metki cenowe są widoczne\n• Dobre oświetlenie poprawia dokładność\n• Trzymaj aparat nieruchomo</string>
+    <string name="dont_show_again">Nie pokazuj ponownie</string>
+    <string name="continue_to_camera">Kontynuuj</string>
+    <string name="product_add_tips">Aby uzyskać najlepsze wyniki, umieść produkt na środku kadru z widocznymi metkami cenowymi.</string>
+
 </resources>

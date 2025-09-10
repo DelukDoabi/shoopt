@@ -138,7 +138,6 @@
     <string name="dialog_display_error">显示对话框时出错</string>
     <string name="product_check_error">检查产品时出错</string>
     <string name="ai_assistant_tips">AI 助手提示</string>
-    <string name="product_add_tips">拍摄清晰的产品照片和价格，让 AI 进行识别。条形码扫描器和位置服务将帮助您快速准确地添加产品。</string>
     <string name="shopping_cart_items">购物车商品</string>
     <string name="empty_cart_message">您的购物车为空</string>
     <string name="empty_cart_subtitle">添加商品以开始跟踪您的购物</string>
@@ -363,4 +362,11 @@
     <string name="maps_autocompletion">通过地图检测商店</string>
     <string name="ai_autocompletion_enabled">已启用AI图像分析</string>
     <string name="maps_autocompletion_enabled">已启用地图商店检测</string>
+
+    <string name="photo_tips_title">拍照提示</string>
+    <string name="photo_tips_message">为获得最佳自动完成效果：\n• 将产品置于画面中央\n• 确保价格标签可见\n• 良好的光线可提高准确性\n• 保持相机稳定</string>
+    <string name="dont_show_again">不再显示</string>
+    <string name="continue_to_camera">继续</string>
+    <string name="product_add_tips">为获得最佳效果，请将产品置于画面中央并确保价格标签可见。</string>
+
 </resources>
