@@ -350,4 +350,11 @@
     <string name="spotlight_add_save_title">Guardar</string>
     <string name="spotlight_add_save_description">Guarda el producto en tu base de datos personal</string>
 
+    <string name="autocompletion_disabled_message">Autocompletado desactivado</string>
+    <string name="autocompletion_toggle_title">Autocompletado inteligente</string>
+    <string name="autocompletion_toggle_description">Activa el análisis automático de imágenes y la detección de la tienda</string>
+    <string name="ai_autocompletion">Análisis de imagen con IA</string>
+    <string name="maps_autocompletion">Detección de tienda mediante Maps</string>
+    <string name="ai_autocompletion_enabled">Análisis de imagen con IA activado</string>
+    <string name="maps_autocompletion_enabled">Detección de tienda mediante Maps activada</string>
 </resources>

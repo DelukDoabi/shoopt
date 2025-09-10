@@ -30,7 +30,7 @@
     <string name="registration_failed">Oups, inscription échouée : %1$s</string>
     <string name="login_successful">Connexion réussie, te voilà de retour !</string>
     <string name="login_failed">Oups, connexion échouée : %1$s</string>
-    <string name="google_sign_in_successful">Connexion Google réussie !</string>
+    <string name="google_sign_in_successful">Connexion Google réussie</string>
     <string name="authentication_failed">Oups, authentification échouée : %1$s</string>
     <string name="google_sign_in_failed">Oups, connexion Google échouée : %1$s</string>
     <string name="unexpected_error">Oups, une erreur inattendue est survenue : %1$s</string>
@@ -399,4 +399,11 @@
     <string name="spotlight_list_clear_title">Vide la liste</string>
     <string name="spotlight_list_clear_description">Supprime tous les produits de ta liste à tout moment</string>
 
+    <string name="autocompletion_disabled_message">Autocomplétion désactivée</string>
+    <string name="autocompletion_toggle_title">Autocomplétion intelligente</string>
+    <string name="autocompletion_toggle_description">Active l\'analyse automatique de l\'image et la détection du magasin</string>
+    <string name="ai_autocompletion">Analyse IA de l\'image</string>
+    <string name="maps_autocompletion">Détection automatique du magasin</string>
+    <string name="ai_autocompletion_enabled">Analyse d\'image par IA activée</string>
+    <string name="maps_autocompletion_enabled">Détection du magasin via Maps activée</string>
 </resources>

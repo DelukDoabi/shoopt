@@ -356,4 +356,11 @@
     <string name="spotlight_add_save_title">Zapisz</string>
     <string name="spotlight_add_save_description">Zapisz produkt w swojej osobistej bazie danych</string>
 
+    <string name="autocompletion_disabled_message">Autouzupełnianie wyłączone</string>
+    <string name="autocompletion_toggle_title">Inteligentne autouzupełnianie</string>
+    <string name="autocompletion_toggle_description">Włącz automatyczną analizę obrazów i wykrywanie sklepu</string>
+    <string name="ai_autocompletion">Analiza obrazu AI</string>
+    <string name="maps_autocompletion">Wykrywanie sklepu przez Mapy</string>
+    <string name="ai_autocompletion_enabled">Analiza obrazu AI włączona</string>
+    <string name="maps_autocompletion_enabled">Wykrywanie sklepu przez Maps włączone</string>
 </resources>

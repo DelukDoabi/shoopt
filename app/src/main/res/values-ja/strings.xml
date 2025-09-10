@@ -358,4 +358,11 @@
     <string name="spotlight_add_save_title">保存</string>
     <string name="spotlight_add_save_description">商品をあなたの個人データベースに保存します</string>
 
+    <string name="autocompletion_disabled_message">自動補完が無効になっています</string>
+    <string name="autocompletion_toggle_title">スマート自動補完</string>
+    <string name="autocompletion_toggle_description">画像の自動解析と店舗検出を有効にする</string>
+    <string name="ai_autocompletion">AI画像解析</string>
+    <string name="maps_autocompletion">マップによる店舗検出</string>
+    <string name="ai_autocompletion_enabled">AI画像解析が有効になりました</string>
+    <string name="maps_autocompletion_enabled">マップによる店舗検出が有効になりました</string>
 </resources>

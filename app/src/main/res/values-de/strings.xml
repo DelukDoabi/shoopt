@@ -351,4 +351,12 @@
     <string name="spotlight_add_save_title">Speichern</string>
     <string name="spotlight_add_save_description">Speichere das Produkt in deiner persönlichen Datenbank</string>
 
+
+    <string name="autocompletion_disabled_message">Automatische Vervollständigung deaktiviert</string>
+    <string name="autocompletion_toggle_title">Intelligente Autovervollständigung</string>
+    <string name="autocompletion_toggle_description">Aktiviere automatische Bildanalyse und Filialerkennung</string>
+    <string name="ai_autocompletion">KI-Bildanalyse</string>
+    <string name="maps_autocompletion">Filialerkennung über Maps</string>
+    <string name="ai_autocompletion_enabled">KI-Bildanalyse aktiviert</string>
+    <string name="maps_autocompletion_enabled">Filialerkennung über Maps aktiviert</string>
 </resources>

@@ -134,6 +134,74 @@
                     android:autoSizeMaxTextSize="12sp"/>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Smart Autocompletion Toggle Card - Modern and Simple -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/autocompletion_toggle_card"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginHorizontal="8dp"
+                android:visibility="visible"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="@color/main_palette_isabelline"
+                app:strokeWidth="2dp"
+                app:strokeColor="@color/main_palette_old_lavender_variant"
+                app:layout_constraintWidth_percent="0.9"
+                app:layout_constraintWidth_max="600dp"
+                app:layout_constraintTop_toBottomOf="@id/product_image_container"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="12dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/shoopt_smart_autocomplete"
+                        android:layout_marginEnd="12dp"
+                        app:tint="@color/main_palette_old_lavender_variant" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/autocompletion_toggle_title"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/autocompletion_status_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/autocompletion_toggle_description"
+                            android:textColor="@color/main_palette_old_lavender_variant"
+                            android:textSize="12sp"
+                            android:layout_marginTop="2dp" />
+                    </LinearLayout>
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/autocompletion_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        app:thumbTint="@color/switch_thumb_color"
+                        app:trackTint="@color/switch_track_color" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
             <!-- Main form card - Optimized for better screen fit -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/product_form_card"
@@ -146,7 +214,7 @@
                 app:cardElevation="8dp"
                 app:layout_constraintWidth_percent="@dimen/card_width_percent"
                 app:layout_constraintWidth_max="600dp"
-                app:layout_constraintTop_toBottomOf="@id/product_image_container"
+                app:layout_constraintTop_toBottomOf="@id/autocompletion_toggle_card"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

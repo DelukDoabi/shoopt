@@ -357,5 +357,11 @@
     <string name="spotlight_add_save_title">حفظ</string>
     <string name="spotlight_add_save_description">احفظ المنتج في قاعدة بياناتك الشخصية</string>
 
-
+    <string name="autocompletion_disabled_message">تم تعطيل الإكمال التلقائي</string>
+    <string name="autocompletion_toggle_title">الإكمال الذكي</string>
+    <string name="autocompletion_toggle_description">قم بتفعيل تحليل الصور التلقائي واكتشاف المتجر</string>
+    <string name="ai_autocompletion">تحليل الصور بالذكاء الاصطناعي</string>
+    <string name="maps_autocompletion">اكتشاف المتجر عبر الخرائط</string>
+    <string name="ai_autocompletion_enabled">تم تفعيل تحليل الصور بالذكاء الاصطناعي</string>
+    <string name="maps_autocompletion_enabled">تم تفعيل اكتشاف المتاجر عبر الخرائط</string>
 </resources>

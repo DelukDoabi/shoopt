@@ -356,4 +356,12 @@
     <string name="spotlight_add_save_title">Salva</string>
     <string name="spotlight_add_save_description">Salva il prodotto nel tuo database personale</string>
 
+
+    <string name="autocompletion_disabled_message">Completamento automatico disattivato</string>
+    <string name="autocompletion_toggle_title">Completamento intelligente</string>
+    <string name="autocompletion_toggle_description">Attiva l’analisi automatica delle immagini e il rilevamento del negozio</string>
+    <string name="ai_autocompletion">Analisi immagini con IA</string>
+    <string name="maps_autocompletion">Rilevamento negozio tramite Maps</string>
+    <string name="ai_autocompletion_enabled">Analisi delle immagini con IA abilitata</string>
+    <string name="maps_autocompletion_enabled">Rilevamento del negozio tramite Maps abilitato</string>
 </resources>
