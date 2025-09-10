@@ -362,4 +362,6 @@
     <string name="autocompletion_toggle_description">Включи автоматический анализ изображений и определение магазина</string>
     <string name="ai_autocompletion">Анализ изображений ИИ</string>
     <string name="maps_autocompletion">Определение магазина через Карты</string>
+    <string name="ai_autocompletion_enabled">Анализ изображений с помощью ИИ включен</string>
+    <string name="maps_autocompletion_enabled">Обнаружение магазинов через Maps включено</string>
 </resources>

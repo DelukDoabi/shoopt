@@ -361,4 +361,6 @@
     <string name="autocompletion_toggle_description">启用自动图像分析和商店检测</string>
     <string name="ai_autocompletion">AI图像分析</string>
     <string name="maps_autocompletion">通过地图检测商店</string>
+    <string name="ai_autocompletion_enabled">已启用AI图像分析</string>
+    <string name="maps_autocompletion_enabled">已启用地图商店检测</string>
 </resources>

@@ -404,4 +404,6 @@
     <string name="autocompletion_toggle_description">Active l\'analyse automatique de l\'image et la détection du magasin</string>
     <string name="ai_autocompletion">Analyse IA de l\'image</string>
     <string name="maps_autocompletion">Détection automatique du magasin</string>
+    <string name="ai_autocompletion_enabled">Analyse d\'image par IA activée</string>
+    <string name="maps_autocompletion_enabled">Détection du magasin via Maps activée</string>
 </resources>

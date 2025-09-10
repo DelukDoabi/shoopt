@@ -357,4 +357,6 @@
     <string name="autocompletion_toggle_description">Aktiviere automatische Bildanalyse und Filialerkennung</string>
     <string name="ai_autocompletion">KI-Bildanalyse</string>
     <string name="maps_autocompletion">Filialerkennung über Maps</string>
+    <string name="ai_autocompletion_enabled">KI-Bildanalyse aktiviert</string>
+    <string name="maps_autocompletion_enabled">Filialerkennung über Maps aktiviert</string>
 </resources>

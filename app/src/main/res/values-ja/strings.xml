@@ -363,4 +363,6 @@
     <string name="autocompletion_toggle_description">画像の自動解析と店舗検出を有効にする</string>
     <string name="ai_autocompletion">AI画像解析</string>
     <string name="maps_autocompletion">マップによる店舗検出</string>
+    <string name="ai_autocompletion_enabled">AI画像解析が有効になりました</string>
+    <string name="maps_autocompletion_enabled">マップによる店舗検出が有効になりました</string>
 </resources>

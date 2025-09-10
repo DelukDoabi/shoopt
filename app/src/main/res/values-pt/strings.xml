@@ -360,5 +360,6 @@
     <string name="autocompletion_toggle_description">Ativa a análise automática de imagens e a deteção da loja</string>
     <string name="ai_autocompletion">Análise de imagem por IA</string>
     <string name="maps_autocompletion">Deteção de loja via Mapas</string>
-
+    <string name="ai_autocompletion_enabled">Análise de imagem por IA ativada</string>
+    <string name="maps_autocompletion_enabled">Detecção de loja via Maps ativada</string>
 </resources>

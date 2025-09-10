@@ -361,4 +361,6 @@
     <string name="autocompletion_toggle_description">자동 이미지 분석 및 매장 감지를 활성화하세요</string>
     <string name="ai_autocompletion">AI 이미지 분석</string>
     <string name="maps_autocompletion">지도 기반 매장 감지</string>
+    <string name="ai_autocompletion_enabled">AI 이미지 분석이 활성화됨</string>
+    <string name="maps_autocompletion_enabled">지도 매장 감지가 활성화됨</string>
 </resources>
