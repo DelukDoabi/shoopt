@@ -112,7 +112,6 @@
     <string name="clear_cart">Clear Cart</string>
     <string name="empty_cart_message">Your cart is empty</string>
     <string name="empty_cart_subtitle">Add products to start shopping</string>
-    <string name="product_add_tips">💡 Tip: Take a photo to auto-fill product details or scan barcode for quick entry</string>
 
     <!-- Product Choice Screen -->
     <string name="choose_product_entry_method">How would you like to add your product?</string>
@@ -449,4 +448,10 @@
     <string name="guide_completion_title">Congratulations!</string>
     <string name="guide_completion_desc">You have successfully added your first product. Keep enriching your database to get the most out of Shoopt!</string>
 
+    <!-- Photo Tips Dialog -->
+    <string name="photo_tips_title">Photo Tips</string>
+    <string name="photo_tips_message">For best autocompletion results:\n• Center the product in frame\n• Ensure price tags are visible\n• Good lighting improves accuracy\n• Hold camera steady</string>
+    <string name="dont_show_again">Don\'t show again</string>
+    <string name="continue_to_camera">Continue</string>
+    <string name="product_add_tips">For best autocompletion results, center the product in frame with price tags visible.</string>
 </resources>

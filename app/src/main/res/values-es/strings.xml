@@ -138,7 +138,6 @@
     <string name="dialog_display_error">Error al mostrar el diálogo</string>
     <string name="product_check_error">Error al verificar el producto</string>
     <string name="ai_assistant_tips">Consejos del asistente IA</string>
-    <string name="product_add_tips">Haz una foto clara de tu producto y su precio para que la IA pueda identificarlo. El escáner de códigos de barras y los servicios de ubicación te ayudarán a añadir productos rápido y fácil.</string>
     <string name="shopping_cart_items">Artículos del carrito</string>
     <string name="empty_cart_message">Tu carrito está vacío</string>
     <string name="empty_cart_subtitle">Añade productos para empezar a seguir tus compras</string>
@@ -357,4 +356,11 @@
     <string name="maps_autocompletion">Detección de tienda mediante Maps</string>
     <string name="ai_autocompletion_enabled">Análisis de imagen con IA activado</string>
     <string name="maps_autocompletion_enabled">Detección de tienda mediante Maps activada</string>
+
+    <string name="photo_tips_title">Consejos para la foto</string>
+    <string name="photo_tips_message">Para mejores resultados de autocompletado:\n• Centra el producto en el encuadre\n• Asegúrate de que las etiquetas de precio sean visibles\n• Una buena iluminación mejora la precisión\n• Mantén la cámara estable</string>
+    <string name="dont_show_again">No mostrar de nuevo</string>
+    <string name="continue_to_camera">Continuar</string>
+    <string name="product_add_tips">Para mejores resultados de autocompletado, centra el producto en el encuadre con las etiquetas de precio visibles.</string>
+
 </resources>

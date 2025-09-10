@@ -400,40 +400,6 @@
                             android:autoSizeMaxTextSize="@dimen/button_text_max" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Enhanced tips section - Larger for better visibility -->
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/tips_card"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="4dp"
-                        app:cardBackgroundColor="#1A000000"
-                        app:strokeColor="@color/main_palette_old_lavender_variant"
-                        app:strokeWidth="1dp"
-                        android:alpha="0.9"
-                        app:layout_constraintTop_toBottomOf="@id/shop_layout"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent">
-
-                        <TextView
-                            android:id="@+id/tips_text"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/product_add_tips"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/text_small"
-                            android:padding="12dp"
-                            app:drawableStartCompat="@drawable/ic_tip"
-                            android:drawablePadding="8dp"
-                            app:drawableTint="@color/main_palette_old_lavender_variant"
-                            android:gravity="start|center_vertical"
-                            android:lineSpacingExtra="2dp"
-                            android:autoSizeTextType="uniform"
-                            android:autoSizeMinTextSize="11sp"
-                            android:autoSizeMaxTextSize="15sp"/>
-                    </com.google.android.material.card.MaterialCardView>
-
                     <!-- Save button - Enhanced for tall screens -->
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/save_product_IB"
@@ -454,7 +420,7 @@
                         android:layout_marginTop="@dimen/margin_medium"
                         android:layout_marginBottom="6dp"
                         app:layout_constraintWidth_percent="@dimen/button_width_percent"
-                        app:layout_constraintTop_toBottomOf="@id/tips_card"
+                        app:layout_constraintTop_toBottomOf="@id/shop_layout"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent" />

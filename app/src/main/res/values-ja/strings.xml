@@ -138,7 +138,6 @@
     <string name="dialog_display_error">ダイアログの表示中にエラーが発生したよ</string>
     <string name="product_check_error">商品の確認中にエラーが発生したよ</string>
     <string name="ai_assistant_tips">AIアシスタントからのヒント</string>
-    <string name="product_add_tips">商品と価格の写真をはっきり撮ってAIに認識させよう。バーコードスキャナーや位置情報サービスを使えば、商品を素早く正確に追加できるよ！</string>
     <string name="shopping_cart_items">カートの商品</string>
     <string name="empty_cart_message">君のカートは空だよ</string>
     <string name="empty_cart_subtitle">商品を追加して買い物を始めよう！</string>
@@ -365,4 +364,11 @@
     <string name="maps_autocompletion">マップによる店舗検出</string>
     <string name="ai_autocompletion_enabled">AI画像解析が有効になりました</string>
     <string name="maps_autocompletion_enabled">マップによる店舗検出が有効になりました</string>
+
+    <string name="photo_tips_title">写真のヒント</string>
+    <string name="photo_tips_message">最適な自動補完結果のために:\n• 商品をフレームの中央に配置\n• 価格タグが見えるようにする\n• 良い照明で精度が向上\n• カメラをしっかり固定</string>
+    <string name="dont_show_again">再表示しない</string>
+    <string name="continue_to_camera">続行</string>
+    <string name="product_add_tips">最適な結果のために、商品をフレーム中央に配置し価格タグを見えるようにしてください。</string>
+
 </resources>

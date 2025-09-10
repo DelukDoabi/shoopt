@@ -138,7 +138,6 @@
     <string name="dialog_display_error">Ошибка отображения диалога</string>
     <string name="product_check_error">Ошибка при проверке товара</string>
     <string name="ai_assistant_tips">Советы ИИ-ассистента</string>
-    <string name="product_add_tips">Сделайте четкую фотографию вашего товара и его цены, чтобы ИИ смог его идентифицировать. Сканер штрих-кода и службы определения местоположения помогут вам быстро и точно добавлять товары.</string>
     <string name="shopping_cart_items">Товары в корзине</string>
     <string name="empty_cart_message">Ваша корзина пуста</string>
     <string name="empty_cart_subtitle">Добавьте товары, чтобы начать отслеживать покупки</string>
@@ -364,4 +363,11 @@
     <string name="maps_autocompletion">Определение магазина через Карты</string>
     <string name="ai_autocompletion_enabled">Анализ изображений с помощью ИИ включен</string>
     <string name="maps_autocompletion_enabled">Обнаружение магазинов через Maps включено</string>
+
+    <string name="photo_tips_title">Советы по фото</string>
+    <string name="photo_tips_message">Для лучших результатов автозаполнения:\n• Размести продукт по центру кадра\n• Убедись, что ценники видны\n• Хорошее освещение повышает точность\n• Держи камеру неподвижно</string>
+    <string name="dont_show_again">Больше не показывать</string>
+    <string name="continue_to_camera">Продолжить</string>
+    <string name="product_add_tips">Для лучших результатов размещай продукт по центру кадра с видимыми ценниками.</string>
+
 </resources>

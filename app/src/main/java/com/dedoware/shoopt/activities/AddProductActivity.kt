@@ -23,6 +23,7 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -30,6 +31,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
@@ -613,9 +615,55 @@ class AddProductActivity : AppCompatActivity() {
 
     private fun launchCamera() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            launchCameraInternal()
+            // Show photo tips dialog only if autocompletion is enabled AND user hasn't disabled the tips
+            if (autocompletionSwitch.isChecked && UserPreferences.shouldShowPhotoTips(this)) {
+                showPhotoTipsDialog()
+            } else {
+                launchCameraInternal()
+            }
         } else {
             cameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
+        }
+    }
+
+    private fun showPhotoTipsDialog() {
+        try {
+            // Create dialog with custom layout
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_photo_tips, null)
+            val dialog = AlertDialog.Builder(this)
+                .setView(dialogView)
+                .setCancelable(false)
+                .create()
+
+            // Set up dialog window with rounded corners
+            dialog.window?.setBackgroundDrawableResource(R.drawable.rounded_dialog_background)
+
+            // Find views in dialog layout
+            val continueButton = dialogView.findViewById<MaterialButton>(R.id.continue_button)
+            val dontShowAgainCheckbox = dialogView.findViewById<CheckBox>(R.id.dont_show_again_checkbox)
+
+            // Set up button click listener
+            continueButton.setOnClickListener {
+                // Save user preference if "Don't show again" is checked
+                if (dontShowAgainCheckbox.isChecked) {
+                    UserPreferences.setPhotoTipsEnabled(this, false)
+                }
+
+                // Dismiss dialog and launch camera
+                dialog.dismiss()
+                launchCameraInternal()
+            }
+
+            // Show the dialog
+            dialog.show()
+
+            // Optional: Track analytics for dialog shown
+            AnalyticsManager.logCustomEvent("photo_tips_dialog_shown", null)
+        } catch (e: Exception) {
+            // Fallback to camera launch if dialog fails
+            CrashlyticsManager.log("Error showing photo tips dialog: ${e.message ?: "Unknown error"}")
+            CrashlyticsManager.logException(e)
+            launchCameraInternal()
         }
     }
 
