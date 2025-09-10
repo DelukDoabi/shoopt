@@ -54,6 +54,8 @@
     <string name="autocompletion_toggle_description">Enable automatic image analysis and shop detection</string>
     <string name="ai_autocompletion">AI Image Analysis</string>
     <string name="maps_autocompletion">Maps Shop Detection</string>
+    <string name="ai_autocompletion_enabled">AI image analysis enabled</string>
+    <string name="maps_autocompletion_enabled">Maps shop detection enabled</string>
 
     <!-- User Guide Strings -->
     <string name="skip_guide">Skip</string>

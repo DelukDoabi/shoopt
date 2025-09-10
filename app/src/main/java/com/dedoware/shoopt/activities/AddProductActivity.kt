@@ -1098,6 +1098,30 @@ class AddProductActivity : AppCompatActivity() {
     }
 
     /**
+     * Met à jour le texte de statut de l'autocomplétion
+     */
+    private fun updateAutocompletionStatusText() {
+        try {
+            val statusTextView = findViewById<TextView>(R.id.autocompletion_status_text)
+            val isAiEnabled = UserPreferences.isAiAutocompletionEnabled(this)
+            val isMapsEnabled = UserPreferences.isMapsAutocompletionEnabled(this)
+
+            val statusText = when {
+                isAiEnabled && isMapsEnabled -> getString(R.string.autocompletion_toggle_description)
+                isAiEnabled -> getString(R.string.ai_autocompletion_enabled)
+                isMapsEnabled -> getString(R.string.maps_autocompletion_enabled)
+                else -> getString(R.string.autocompletion_disabled_message)
+            }
+
+            statusTextView?.text = statusText
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la mise à jour du texte de statut: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "status_text_update")
+            CrashlyticsManager.logException(e)
+        }
+    }
+
+    /**
      * Configure le switch d'autocomplétion intelligente
      */
     private fun setupAutocompletionSwitch() {
@@ -1109,8 +1133,9 @@ class AddProductActivity : AppCompatActivity() {
             // Le switch est activé si au moins une des deux fonctionnalités est activée
             autocompletionSwitch.isChecked = isAiEnabled || isMapsEnabled
 
-            // Mettre à jour le texte de statut
+            // Mettre à jour le texte de statut et l'apparence initiale
             updateAutocompletionStatusText()
+            updateAutocompletionCardAppearance(autocompletionSwitch.isChecked)
 
             // Configurer le listener pour les changements d'état
             autocompletionSwitch.setOnCheckedChangeListener { _, isChecked ->
@@ -1138,8 +1163,9 @@ class AddProductActivity : AppCompatActivity() {
                                      Toast.LENGTH_SHORT).show()
                     }
 
-                    // Mettre à jour le texte de statut
+                    // Mettre à jour le texte de statut et l'apparence avec animation
                     updateAutocompletionStatusText()
+                    updateAutocompletionCardAppearance(isChecked)
 
                 } catch (e: Exception) {
                     CrashlyticsManager.log("Erreur lors du changement d'état du switch d'autocomplétion: ${e.message ?: "Message non disponible"}")
@@ -1160,27 +1186,76 @@ class AddProductActivity : AppCompatActivity() {
     }
 
     /**
-     * Met à jour le texte de statut de l'autocomplétion
+     * Met à jour l'apparence du card d'autocomplétion avec une animation fluide
      */
-    private fun updateAutocompletionStatusText() {
+    private fun updateAutocompletionCardAppearance(isEnabled: Boolean) {
         try {
+            val autocompletionCard = findViewById<com.google.android.material.card.MaterialCardView>(R.id.autocompletion_toggle_card)
             val statusTextView = findViewById<TextView>(R.id.autocompletion_status_text)
 
-            val isAiEnabled = UserPreferences.isAiAutocompletionEnabled(this)
-            val isMapsEnabled = UserPreferences.isMapsAutocompletionEnabled(this)
-
-            val statusText = when {
-                isAiEnabled && isMapsEnabled -> "${getString(R.string.ai_autocompletion)} + ${getString(R.string.maps_autocompletion)}"
-                isAiEnabled -> getString(R.string.ai_autocompletion)
-                isMapsEnabled -> getString(R.string.maps_autocompletion)
-                else -> getString(R.string.autocompletion_disabled_message)
+            // Chercher l'icône dans le layout LinearLayout du card
+            val iconView = autocompletionCard?.let { card ->
+                val linearLayout = card.getChildAt(0) as? android.widget.LinearLayout
+                linearLayout?.findViewById<ImageView>(android.R.id.icon)
+                    ?: linearLayout?.getChildAt(0) as? ImageView // Premier ImageView dans le LinearLayout
             }
 
-            statusTextView?.text = statusText
+            // Animation de transition fluide
+            val animationDuration = 300L
+
+            // Couleurs pour les différents états
+            val enabledCardColor = androidx.core.content.ContextCompat.getColor(this, R.color.main_palette_isabelline)
+            val disabledCardColor = androidx.core.content.ContextCompat.getColor(this, R.color.main_palette_old_lavender_variant)
+            val enabledTextColor = androidx.core.content.ContextCompat.getColor(this, R.color.main_palette_old_lavender_variant)
+            val disabledTextColor = androidx.core.content.ContextCompat.getColor(this, R.color.white)
+            val enabledStrokeColor = androidx.core.content.ContextCompat.getColor(this, R.color.main_palette_old_lavender_variant)
+            val disabledStrokeColor = androidx.core.content.ContextCompat.getColor(this, R.color.main_palette_old_lavender_variant)
+
+            if (isEnabled) {
+                // État activé : couleurs normales
+                autocompletionCard?.animate()
+                    ?.alpha(1.0f)
+                    ?.scaleX(1.0f)
+                    ?.scaleY(1.0f)
+                    ?.setDuration(animationDuration)
+                    ?.withStartAction {
+                        autocompletionCard.setCardBackgroundColor(enabledCardColor)
+                        autocompletionCard.strokeColor = enabledStrokeColor
+                        autocompletionCard.strokeWidth = 2
+                        statusTextView?.setTextColor(enabledTextColor)
+                    }
+                    ?.start()
+            } else {
+                // État désactivé : couleurs atténuées avec effet visuel
+                autocompletionCard?.animate()
+                    ?.alpha(0.7f)
+                    ?.scaleX(0.98f)
+                    ?.scaleY(0.98f)
+                    ?.setDuration(animationDuration)
+                    ?.withStartAction {
+                        autocompletionCard.setCardBackgroundColor(disabledCardColor)
+                        autocompletionCard.strokeColor = disabledStrokeColor
+                        autocompletionCard.strokeWidth = 1
+                        statusTextView?.setTextColor(disabledTextColor)
+                    }
+                    ?.start()
+            }
+
+            // Animation de l'icône si présente
+            iconView?.let { icon ->
+                val iconColor = if (isEnabled) enabledTextColor else disabledTextColor
+                icon.animate()
+                    .rotation(if (isEnabled) 0f else -5f)
+                    .setDuration(animationDuration)
+                    .withStartAction {
+                        icon.setColorFilter(iconColor)
+                    }
+                    .start()
+            }
 
         } catch (e: Exception) {
-            CrashlyticsManager.log("Erreur lors de la mise à jour du texte de statut: ${e.message ?: "Message non disponible"}")
-            CrashlyticsManager.setCustomKey("error_location", "status_text_update")
+            CrashlyticsManager.log("Erreur lors de la mise à jour de l'apparence du card: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "card_appearance_update")
             CrashlyticsManager.logException(e)
         }
     }

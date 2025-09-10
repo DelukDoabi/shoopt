@@ -184,8 +184,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
-                        app:thumbTint="@color/white"
-                        app:trackTint="@color/main_palette_old_lavender_variant" />
+                        app:thumbTint="@color/switch_thumb_color"
+                        app:trackTint="@color/switch_track_color" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
