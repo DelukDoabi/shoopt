@@ -1205,7 +1205,7 @@ class AddProductActivity : AppCompatActivity() {
 
             // Couleurs pour les différents états
             val enabledCardColor = androidx.core.content.ContextCompat.getColor(this, R.color.main_palette_isabelline)
-            val disabledCardColor = androidx.core.content.ContextCompat.getColor(this, R.color.main_palette_old_lavender_variant)
+            val disabledCardColor = androidx.core.content.ContextCompat.getColor(this, R.color.main_palette_old_lavender)
             val enabledTextColor = androidx.core.content.ContextCompat.getColor(this, R.color.main_palette_old_lavender_variant)
             val disabledTextColor = androidx.core.content.ContextCompat.getColor(this, R.color.white)
             val enabledStrokeColor = androidx.core.content.ContextCompat.getColor(this, R.color.main_palette_old_lavender_variant)
