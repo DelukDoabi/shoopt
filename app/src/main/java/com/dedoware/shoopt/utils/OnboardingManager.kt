@@ -59,7 +59,7 @@ object OnboardingManager {
      */
     fun reset(activity: Activity) {
         UserPreferences.setOnboardingCompleted(activity, false)
-        UserPreferences.resetSpotlights(activity)
+        UserPreferences.resetAllSpotlights(activity)
 
         AnalyticsManager.logUserAction(
             "onboarding_reset",

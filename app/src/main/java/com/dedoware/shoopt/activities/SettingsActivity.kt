@@ -322,7 +322,7 @@ class SettingsActivity : AppCompatActivity() {
 
                 // RESET COMPLET : Réinitialiser TOUT l'état d'onboarding
                 UserPreferences.setOnboardingCompleted(this, false)
-                UserPreferences.resetSpotlights(this)
+                UserPreferences.resetAllSpotlights(this)
 
                 // Ajouter un flag spécial pour indiquer qu'on vient de faire un replay
                 val prefs = getSharedPreferences("user_preferences", Context.MODE_PRIVATE)

@@ -21,6 +21,7 @@ class UserPreferences(context: Context) {
         // Autocompletion constants
         private const val KEY_AI_AUTOCOMPLETION_ENABLED = "ai_autocompletion_enabled"
         private const val KEY_MAPS_AUTOCOMPLETION_ENABLED = "maps_autocompletion_enabled"
+        private const val KEY_PHOTO_TIP_ENABLED = "photo_tip_enabled"
 
         const val THEME_LIGHT = 1
         const val THEME_DARK = 2
@@ -99,39 +100,23 @@ class UserPreferences(context: Context) {
         /**
          * Réinitialise tous les spotlights (utile pour les tests ou les démos)
          */
-        fun resetSpotlights(context: Context) {
+        fun resetAllSpotlights(context: Context) {
             val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             val editor = prefs.edit()
 
-            // Supprimer tous les flags de spotlight pour forcer leur réaffichage
-            prefs.all.keys.filter { it.startsWith(KEY_SPOTLIGHT_PREFIX) }
-                .forEach { editor.remove(it) }
+            // Supprimer tous les flags de spotlight
+            for (key in prefs.all.keys) {
+                if (key.startsWith(KEY_SPOTLIGHT_PREFIX)) {
+                    editor.remove(key)
+                }
+            }
 
-            // Réinitialiser la version des spotlights pour forcer leur affichage
-            editor.remove(KEY_SPOTLIGHT_VERSION)
+            // Forcer le réaffichage des spotlights au prochain lancement
+            editor.putBoolean("force_spotlights_on_next_resume", true)
             editor.apply()
         }
 
-        /**
-         * Obtient la liste des écrans pour lesquels les spotlights ont été vus
-         */
-        fun getCompletedSpotlightScreens(context: Context): Set<String> {
-            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            return prefs.all.keys
-                .filter { it.startsWith(KEY_SPOTLIGHT_PREFIX) && prefs.getBoolean(it, false) }
-                .map { it.removePrefix(KEY_SPOTLIGHT_PREFIX) }
-                .toSet()
-        }
-
-        /**
-         * Vérifie si l'expérience d'onboarding complète (introduction + spotlights) est terminée
-         */
-        fun isOnboardingCompletelyFinished(context: Context): Boolean {
-            return isOnboardingCompleted(context) &&
-                   getCompletedSpotlightScreens(context).contains("MainActivity")
-        }
-
-        // Auto-completion preferences methods
+        // Méthodes pour l'autocomplétion AI
         fun isAiAutocompletionEnabled(context: Context): Boolean {
             val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             return prefs.getBoolean(KEY_AI_AUTOCOMPLETION_ENABLED, true) // Activé par défaut
@@ -142,6 +127,7 @@ class UserPreferences(context: Context) {
             prefs.edit().putBoolean(KEY_AI_AUTOCOMPLETION_ENABLED, enabled).apply()
         }
 
+        // Méthodes pour l'autocomplétion Maps
         fun isMapsAutocompletionEnabled(context: Context): Boolean {
             val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             return prefs.getBoolean(KEY_MAPS_AUTOCOMPLETION_ENABLED, true) // Activé par défaut
@@ -150,6 +136,17 @@ class UserPreferences(context: Context) {
         fun setMapsAutocompletionEnabled(context: Context, enabled: Boolean) {
             val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             prefs.edit().putBoolean(KEY_MAPS_AUTOCOMPLETION_ENABLED, enabled).apply()
+        }
+
+        // Méthodes pour les conseils photo
+        fun shouldShowPhotoTips(context: Context): Boolean {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            return prefs.getBoolean(KEY_PHOTO_TIP_ENABLED, true) // Activé par défaut
+        }
+
+        fun setPhotoTipsEnabled(context: Context, enabled: Boolean) {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            prefs.edit().putBoolean(KEY_PHOTO_TIP_ENABLED, enabled).apply()
         }
     }
 
