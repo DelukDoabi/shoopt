@@ -973,7 +973,7 @@ class AddProductActivity : AppCompatActivity() {
                                 "content": [
                                     {
                                         "type": "text",
-                                        "text": "Identify this product, its unit price, and its price per kilo in this image. Respond in JSON format with only 3 fields: name, unit_price, and kilo_price."
+                                        "text": "Identify this product, its unit price, and its price per kilo in this image. Do not add currency. Stick to plain price without currency. Respond in JSON format with only 3 fields: name, unit_price, and kilo_price."
                                     },
                                     {
                                         "type": "image_url",
