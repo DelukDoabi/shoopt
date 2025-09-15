@@ -49,13 +49,13 @@
     <string name="login_successful">Login Successful</string>
     <string name="login_failed">Login Failed: %1$s</string>
     <string name="google_sign_in_successful">Google Sign-In Successful</string>
-    <string name="autocompletion_disabled_message">Autocompletion disabled</string>
-    <string name="autocompletion_toggle_title">Smart Autocompletion</string>
-    <string name="autocompletion_toggle_description">Enable automatic image analysis and shop detection</string>
-    <string name="ai_autocompletion">AI Image Analysis</string>
-    <string name="maps_autocompletion">Maps Shop Detection</string>
-    <string name="ai_autocompletion_enabled">AI image analysis enabled</string>
-    <string name="maps_autocompletion_enabled">Maps shop detection enabled</string>
+
+    <!-- Nouvelles chaînes pour la gestion des devises -->
+    <string name="select_currency">Sélectionnez votre devise</string>
+    <string name="currency_selection_info">La devise sélectionnée sera utilisée pour afficher tous les prix dans l\'application.</string>
+    <string name="currency">Devise</string>
+    <string name="confirm">Confirmer</string>
+    <string name="currency_changed">Devise changée en %1$s</string>
 
     <!-- User Guide Strings -->
     <string name="skip_guide">Skip</string>
@@ -454,4 +454,13 @@
     <string name="dont_show_again">Don\'t show again</string>
     <string name="continue_to_camera">Continue</string>
     <string name="product_add_tips">For best autocompletion results, center the product in frame with price tags visible.</string>
+
+    <!-- Nouvelles chaînes pour l'autocomplétion -->
+    <string name="ai_autocompletion">AI Autocompletion</string>
+    <string name="ai_autocompletion_enabled">AI Autocompletion Enabled</string>
+    <string name="autocompletion_toggle_title">Enable AI Autocompletion</string>
+    <string name="autocompletion_toggle_description">Let AI help fill product details automatically</string>
+    <string name="autocompletion_disabled_message">Autocompletion is disabled</string>
+    <string name="maps_autocompletion">Maps Autocompletion</string>
+    <string name="maps_autocompletion_enabled">Maps Autocompletion Enabled</string>
 </resources>
