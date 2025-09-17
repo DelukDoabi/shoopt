@@ -50,6 +50,10 @@ class CurrencyManager private constructor(private val context: Context) {
     private val _conversionError = MutableLiveData<String?>(null)
     val conversionError: LiveData<String?> = _conversionError
 
+    // LiveData qui émet un événement à chaque changement de devise
+    private val _currencyChangeEvent = MutableLiveData<String>()
+    val currencyChangeEvent: LiveData<String> = _currencyChangeEvent
+
     init {
         loadCurrenciesFromJson()
         updateCurrentCurrency(userPreferences.currency ?: getDefaultCurrency())
@@ -131,8 +135,19 @@ class CurrencyManager private constructor(private val context: Context) {
     fun setCurrency(currencyCode: String) {
         val currencies = _availableCurrencies.value ?: return
         if (currencies.any { it.code == currencyCode }) {
+            // Vérifier si la devise a vraiment changé
+            val oldCurrencyCode = _currentCurrency.value?.code
+
+            // Stocker la nouvelle devise
             userPreferences.currency = currencyCode
             updateCurrentCurrency(currencyCode)
+
+            // Précharger les taux de change pour la nouvelle devise
+            if (oldCurrencyCode != currencyCode) {
+                preloadExchangeRates()
+                // Notifier les observateurs que la devise a changé
+                _currencyChangeEvent.value = currencyCode
+            }
         }
     }
 

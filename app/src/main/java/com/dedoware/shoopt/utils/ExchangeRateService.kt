@@ -20,8 +20,8 @@ import java.util.concurrent.TimeUnit
 class ExchangeRateService private constructor(private val context: Context) {
 
     companion object {
-        private const val API_KEY = "YOUR_API_KEY" // À remplacer par une vraie clé API
-        private const val API_URL = "https://open.er-api.com/v6/latest/"
+        // API publique qui ne nécessite pas de clé
+        private const val API_URL = "https://api.exchangerate-api.com/v4/latest/"
         private const val CACHE_EXPIRY_HOURS = 24 // Durée de validité du cache en heures
 
         @Volatile
