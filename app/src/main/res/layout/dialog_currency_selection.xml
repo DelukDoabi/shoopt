@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/currency_selection_info"
+        android:textAppearance="?attr/textAppearanceBody1"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Information sur la conversion de devises -->
+    <TextView
+        android:id="@+id/currency_conversion_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/currency_conversion_info"
+        android:textAppearance="?attr/textAppearanceCaption"
+        android:textStyle="italic"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Indicateur de progression pour le chargement des taux de change -->
+    <LinearLayout
+        android:id="@+id/loading_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:visibility="gone"
+        android:layout_marginBottom="16dp">
+
+        <ProgressBar
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading_exchange_rates"
+            android:textAppearance="?attr/textAppearanceCaption"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioGroup
+            android:id="@+id/currency_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+</LinearLayout>

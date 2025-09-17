@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
+import com.dedoware.shoopt.utils.CurrencyManager
 import com.google.firebase.FirebaseApp
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 
@@ -14,6 +15,10 @@ class ShooptApplication : Application() {
     val database: ShooptRoomDatabase by lazy {
         ShooptRoomDatabase.getDatabase(this)
     }
+
+    // Gestionnaire de devises accessible dans toute l'application
+    lateinit var currencyManager: CurrencyManager
+        private set
 
     override fun onCreate() {
         super.onCreate()
@@ -26,6 +31,9 @@ class ShooptApplication : Application() {
 
         // Configuration de Firebase Analytics
         setupAnalytics()
+
+        // Initialisation du gestionnaire de devises
+        currencyManager = CurrencyManager.getInstance(this)
 
         // Initialize other components here if necessary
     }

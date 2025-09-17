@@ -8,144 +8,192 @@
     android:fitsSystemWindows="true"
     tools:context=".activities.SettingsActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?backgroundColor">
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <ImageButton
-            android:id="@+id/back_IB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="40dp"
-            android:background="@null"
-            android:contentDescription="@string/back"
-            android:src="@drawable/shoopt_back" />
-
-        <TextView
-            android:id="@+id/theme_title_TV"
+        <!-- En-tête avec bouton retour -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/back_IB"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="24dp">
+
+            <ImageButton
+                android:id="@+id/back_IB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:contentDescription="@string/back"
+                android:src="@drawable/shoopt_back"
+                android:padding="8dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/settings"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginStart="16dp" />
+
+            <ImageButton
+                android:id="@+id/save_settings_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:contentDescription="@string/save"
+                android:src="@drawable/ic_check"
+                android:padding="8dp" />
+
+        </LinearLayout>
+
+        <!-- Section Thème -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/theme_settings"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
 
-        <RadioGroup
-            android:id="@+id/theme_radio_group"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/theme_title_TV"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="20dp"
-            android:orientation="vertical">
-
-            <RadioButton
-                android:id="@+id/theme_light"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/theme_light" />
-
-            <RadioButton
-                android:id="@+id/theme_dark"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/theme_dark" />
-
-            <RadioButton
-                android:id="@+id/theme_system"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/theme_system" />
-        </RadioGroup>
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/theme_radio_group"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="20dp"
             android:layout_marginBottom="16dp"
-            android:background="#CCCCCC" />
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp">
 
+            <RadioGroup
+                android:id="@+id/theme_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <RadioButton
+                    android:id="@+id/theme_light"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/theme_light"
+                    android:padding="8dp" />
+
+                <RadioButton
+                    android:id="@+id/theme_dark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/theme_dark"
+                    android:padding="8dp" />
+
+                <RadioButton
+                    android:id="@+id/theme_system"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/theme_system"
+                    android:padding="8dp" />
+            </RadioGroup>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Section Devise -->
         <TextView
-            android:id="@+id/currency_title_TV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/divider"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
             android:text="@string/currency_settings"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
 
-        <Spinner
-            android:id="@+id/currency_spinner"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/currencyContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/currency_title_TV"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="20dp"
-            android:minHeight="48dp" />
+            android:layout_marginBottom="8dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground">
 
-        <!-- Section Onboarding -->
-        <View
-            android:id="@+id/onboarding_divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/currency_spinner"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="16dp"
-            android:background="#CCCCCC" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <ImageView
+                    android:id="@+id/currencyIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_currency"
+                    android:contentDescription="@string/currency"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/currencyTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/currency"
+                    android:textAppearance="?attr/textAppearanceSubtitle1"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/chevron"
+                    app:layout_constraintStart_toEndOf="@+id/currencyIcon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/currencyValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    app:layout_constraintEnd_toStartOf="@+id/chevron"
+                    app:layout_constraintStart_toEndOf="@+id/currencyIcon"
+                    app:layout_constraintTop_toBottomOf="@+id/currencyTitle"
+                    tools:text="EUR (€) - Euro" />
+
+                <ImageView
+                    android:id="@+id/chevron"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_chevron_right"
+                    android:contentDescription="@string/select_currency"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/onboarding_title_TV"
+            android:id="@+id/currencySettingsInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/onboarding_divider"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="20dp"
-            android:text="@string/replay_onboarding"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/onboarding_description_TV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/onboarding_title_TV"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="20dp"
-            android:text="@string/replay_onboarding_description"
-            android:textSize="14sp"
+            android:layout_marginBottom="24dp"
+            android:text="@string/currency_selection_info"
+            android:textAppearance="?attr/textAppearanceCaption"
             android:alpha="0.7" />
 
-        <!-- Carte pour l'option onboarding -->
+        <!-- Section Onboarding -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/other_settings"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/replay_onboarding_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/onboarding_description_TV"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="8dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground">
@@ -154,20 +202,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="20dp"
+                android:padding="16dp"
                 android:gravity="center_vertical">
 
-                <!-- Icône -->
                 <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:src="@drawable/ic_replay"
                     android:background="@drawable/onboarding_icon_background"
-                    android:padding="12dp"
+                    android:padding="8dp"
                     android:layout_marginEnd="16dp"
                     android:contentDescription="@string/replay_onboarding" />
 
-                <!-- Contenu textuel -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -192,40 +238,15 @@
 
                 </LinearLayout>
 
-                <!-- Flèche -->
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_arrow_forward"
+                    android:src="@drawable/ic_chevron_right"
                     android:layout_marginStart="12dp"
-                    android:contentDescription="@string/replay_onboarding"
-                    android:alpha="0.6" />
+                    android:contentDescription="@string/replay_onboarding" />
 
             </LinearLayout>
-
         </androidx.cardview.widget.CardView>
 
-        <ImageButton
-            android:id="@+id/save_settings_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/replay_onboarding_card"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="32dp"
-            android:background="@drawable/main_rounded_button"
-            android:contentDescription="@string/save_settings"
-            android:padding="15dp"
-            android:src="@drawable/ic_save" />
-
-        <TextView
-            android:id="@+id/save_settings_TV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/save_settings_button"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="20dp"
-            android:text="@string/save_settings"
-            android:textStyle="bold" />
-    </RelativeLayout>
+    </LinearLayout>
 </ScrollView>

@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
@@ -26,8 +27,10 @@ import com.dedoware.shoopt.persistence.ShooptRoomDatabase
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.UserPreferences
+import com.dedoware.shoopt.utils.getCurrencyManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.DecimalFormat
@@ -53,7 +56,14 @@ class AnalyseActivity : AppCompatActivity() {
     private lateinit var uniqueShopsCount: TextView
     private lateinit var sortFilterButton: MaterialButton
 
-    private var products: List<Product> = emptyList()
+
+    // UI elements for currency conversion
+    private lateinit var statsContainer: View
+    private lateinit var emptyStateContainer: View
+    private lateinit var productCountTV: TextView
+    private lateinit var avgPriceTV: TextView
+    private lateinit var shopsCountTV: TextView
+
     private lateinit var productRepository: IProductRepository
 
     private val database: ShooptRoomDatabase by lazy {
@@ -169,6 +179,9 @@ class AnalyseActivity : AppCompatActivity() {
         }
     }
 
+    private var products: List<Product> = emptyList()
+    private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
+
     private fun initializeViews() {
         progressBar = findViewById(R.id.loading_indicator)
         searchView = findViewById(R.id.search_view)
@@ -184,8 +197,20 @@ class AnalyseActivity : AppCompatActivity() {
         uniqueShopsCount = findViewById(R.id.unique_shops_count)
         sortFilterButton = findViewById(R.id.sort_filter_button)
 
+        // UI elements for currency conversion
+        statsContainer = findViewById(R.id.stats_card)
+        emptyStateContainer = findViewById(R.id.empty_state_layout)
+
+        // Utiliser les vrais identifiants disponibles
+        productCountTV = totalProductsCount // Utiliser totalProductsCount pour productCountTV
+        avgPriceTV = averagePrice // Utiliser averagePrice pour avgPriceTV
+        shopsCountTV = uniqueShopsCount // Utiliser uniqueShopsCount pour shopsCountTV
+
         productListRecyclerView.layoutManager = GridLayoutManager(this, 2)
         productListRecyclerView.adapter = ProductListAdapter(emptyList(), userPreferences)
+
+        // Ajouter l'observation des changements de devise
+        observeCurrencyChanges()
     }
 
     private fun setupClickListeners() {
@@ -639,5 +664,67 @@ class AnalyseActivity : AppCompatActivity() {
                 }, 500)
             }
         }
+    }
+
+    // Méthode pour observer les changements de devise
+    private fun observeCurrencyChanges() {
+        getCurrencyManager().currencyChangeEvent.observe(this, Observer { newCurrencyCode ->
+            // Rafraîchir l'interface utilisateur lorsque la devise change
+            Toast.makeText(this, getString(R.string.currency_changed, newCurrencyCode), Toast.LENGTH_SHORT).show()
+
+            // Recharger l'adaptateur avec les produits existants pour déclencher la conversion
+            setupAdapter(products)
+
+            // Mettre à jour les statistiques avec les nouveaux prix convertis
+            updateStats(products)
+        })
+    }
+
+    // Mise à jour de la méthode updateStats pour utiliser la conversion de devises
+    private fun updateStats(products: List<Product>) {
+        if (products.isEmpty()) {
+            statsContainer.visibility = View.GONE
+            emptyStateContainer.visibility = View.VISIBLE
+            return
+        }
+
+        statsContainer.visibility = View.VISIBLE
+        emptyStateContainer.visibility = View.GONE
+
+        // Nombre de produits
+        val productCount = products.size
+        productCountTV.text = productCount.toString()
+
+        // Calcul du prix moyen avec conversion
+        coroutineScope.launch {
+            try {
+                var totalPrice = 0.0
+                val currencyManager = getCurrencyManager()
+
+                // Convertir tous les prix avant de calculer la moyenne
+                for (product in products) {
+                    val convertedPrice = currencyManager.convertToCurrentCurrencySuspend(product.price, "EUR")
+                    totalPrice += convertedPrice
+                }
+
+                val avgPrice = if (productCount > 0) totalPrice / productCount else 0.0
+                val formattedAvgPrice = currencyManager.formatPrice(avgPrice)
+
+                withContext(Dispatchers.Main) {
+                    avgPriceTV.text = formattedAvgPrice
+                }
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors du calcul des statistiques: ${e.message}")
+                withContext(Dispatchers.Main) {
+                    // En cas d'erreur, utiliser le format simple
+                    val avgPrice = products.map { it.price }.average()
+                    avgPriceTV.text = userPreferences.formatPrice(avgPrice)
+                }
+            }
+        }
+
+        // Nombre de magasins
+        val shopCount = products.map { it.shop }.distinct().size
+        shopsCountTV.text = shopCount.toString()
     }
 }
