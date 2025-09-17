@@ -370,7 +370,7 @@
     <string name="continue_to_camera">Continua</string>
     <string name="product_add_tips">Per i migliori risultati, centra il prodotto nell\'inquadratura con i cartellini dei prezzi visibili.</string>
 
-    <string name="currency_selection_info">La valuta selezionata sarà utilizzata per mostrare tutti i prezzi nell'applicazione.</string>
+    <string name="currency_selection_info">La valuta selezionata sarà utilizzata per mostrare tutti i prezzi nell\'applicazione.</string>
     <string name="currency">Valuta</string>
     <string name="save">Salva</string>
     <string name="currency_changed">Valuta cambiata in %1$s</string>
