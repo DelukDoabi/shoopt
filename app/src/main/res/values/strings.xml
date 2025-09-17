@@ -50,20 +50,21 @@
     <string name="login_failed">Login Failed: %1$s</string>
     <string name="google_sign_in_successful">Google Sign-In Successful</string>
 
-    <!-- Nouvelles chaînes pour la gestion des devises -->
-    <string name="currency_selection_info">La devise sélectionnée sera utilisée pour afficher tous les prix dans l\'application.</string>
-    <string name="currency">Devise</string>
-    <string name="save">Enregistrer</string>
-    <string name="currency_changed">Devise changée en %1$s</string>
-    <string name="other_settings">Autres paramètres</string>
+    <!-- New strings for currency management -->
+    <string name="currency_selection_info">The selected currency will be used to display all prices in the application.</string>
+    <string name="currency">Currency</string>
+    <string name="save">Save</string>
+    <string name="currency_changed">Currency changed to %1$s</string>
+    <string name="other_settings">Other settings</string>
 
-    <!-- Nouvelles chaînes pour la conversion de devises -->
-    <string name="currency_conversion_info">Les prix seront automatiquement convertis dans la devise sélectionnée en utilisant les taux de change actuels.</string>
-    <string name="loading_exchange_rates">Chargement des taux de change...</string>
-    <string name="currency_conversion_success">Conversion de devise effectuée avec succès</string>
-    <string name="currency_conversion_error">Erreur lors de la conversion. Les prix restent dans leur devise d\'origine.</string>
-    <string name="select_currency">Sélectionner une devise</string>
+    <!-- New strings for currency conversion -->
+    <string name="currency_conversion_info">Prices will be automatically converted into the selected currency using current exchange rates.</string>
+    <string name="loading_exchange_rates">Loading exchange rates...</string>
+    <string name="currency_conversion_success">Currency conversion completed successfully</string>
+    <string name="currency_conversion_error">Error during conversion. Prices remain in their original currency.</string>
+    <string name="select_currency">Select a currency</string>
     <string name="confirm">Confirm</string>
+
 
     <!-- User Guide Strings -->
     <string name="skip_guide">Skip</string>

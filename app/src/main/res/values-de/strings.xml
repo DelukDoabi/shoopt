@@ -365,4 +365,15 @@
     <string name="continue_to_camera">Fortfahren</string>
     <string name="product_add_tips">Für beste Ergebnisse, platziere das Produkt mittig mit sichtbaren Preisschildern.</string>
 
+    <string name="currency_selection_info">Die ausgewählte Währung wird verwendet, um alle Preise in der Anwendung anzuzeigen.</string>
+    <string name="currency">Währung</string>
+    <string name="save">Speichern</string>
+    <string name="currency_changed">Währung geändert zu %1$s</string>
+    <string name="other_settings">Weitere Einstellungen</string>
+    <string name="currency_conversion_info">Preise werden automatisch in die ausgewählte Währung umgerechnet, basierend auf den aktuellen Wechselkursen.</string>
+    <string name="loading_exchange_rates">Wechselkurse werden geladen...</string>
+    <string name="currency_conversion_success">Währungsumrechnung erfolgreich abgeschlossen</string>
+    <string name="currency_conversion_error">Fehler bei der Umrechnung. Preise bleiben in ihrer ursprünglichen Währung.</string>
+    <string name="select_currency">Währung auswählen</string>
+    <string name="confirm">Bestätigen</string>
 </resources>

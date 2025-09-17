@@ -370,4 +370,16 @@
     <string name="continue_to_camera">Continua</string>
     <string name="product_add_tips">Per i migliori risultati, centra il prodotto nell\'inquadratura con i cartellini dei prezzi visibili.</string>
 
+    <string name="currency_selection_info">La valuta selezionata sarà utilizzata per mostrare tutti i prezzi nell'applicazione.</string>
+    <string name="currency">Valuta</string>
+    <string name="save">Salva</string>
+    <string name="currency_changed">Valuta cambiata in %1$s</string>
+    <string name="other_settings">Altre impostazioni</string>
+    <string name="currency_conversion_info">I prezzi saranno automaticamente convertiti nella valuta selezionata utilizzando i tassi di cambio attuali.</string>
+    <string name="loading_exchange_rates">Caricamento dei tassi di cambio...</string>
+    <string name="currency_conversion_success">Conversione della valuta completata con successo</string>
+    <string name="currency_conversion_error">Errore durante la conversione. I prezzi restano nella valuta originale.</string>
+    <string name="select_currency">Seleziona una valuta</string>
+    <string name="confirm">Conferma</string>
+
 </resources>

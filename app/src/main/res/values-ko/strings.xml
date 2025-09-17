@@ -369,4 +369,15 @@
     <string name="continue_to_camera">계속</string>
     <string name="product_add_tips">최적의 결과를 위해 제품을 중앙에 두고 가격표가 보이도록 하세요.</string>
 
+    <string name="currency_selection_info">선택한 통화는 앱에서 모든 가격을 표시하는 데 사용됩니다.</string>
+    <string name="currency">통화</string>
+    <string name="save">저장</string>
+    <string name="currency_changed">통화가 %1$s(으)로 변경되었습니다</string>
+    <string name="other_settings">기타 설정</string>
+    <string name="currency_conversion_info">가격은 현재 환율을 사용하여 자동으로 선택한 통화로 변환됩니다.</string>
+    <string name="loading_exchange_rates">환율 불러오는 중...</string>
+    <string name="currency_conversion_success">통화 변환이 성공적으로 완료되었습니다</string>
+    <string name="currency_conversion_error">변환 중 오류가 발생했습니다. 가격은 원래 통화로 유지됩니다.</string>
+    <string name="select_currency">통화 선택</string>
+    <string name="confirm">확인</string>
 </resources>

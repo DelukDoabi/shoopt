@@ -368,4 +368,15 @@
     <string name="continue_to_camera">Continuar</string>
     <string name="product_add_tips">Para melhores resultados, centraliza o produto no enquadramento com etiquetas de preço visíveis.</string>
 
+    <string name="currency_selection_info">A moeda selecionada será usada para exibir todos os preços no aplicativo.</string>
+    <string name="currency">Moeda</string>
+    <string name="save">Salvar</string>
+    <string name="currency_changed">Moeda alterada para %1$s</string>
+    <string name="other_settings">Outras configurações</string>
+    <string name="currency_conversion_info">Os preços serão automaticamente convertidos para a moeda selecionada usando as taxas de câmbio atuais.</string>
+    <string name="loading_exchange_rates">Carregando taxas de câmbio...</string>
+    <string name="currency_conversion_success">Conversão de moeda concluída com sucesso</string>
+    <string name="currency_conversion_error">Erro durante a conversão. Os preços permanecem na moeda original.</string>
+    <string name="select_currency">Selecionar uma moeda</string>
+    <string name="confirm">Confirmar</string>
 </resources>

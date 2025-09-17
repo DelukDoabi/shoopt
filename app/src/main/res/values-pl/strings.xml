@@ -369,4 +369,15 @@
     <string name="continue_to_camera">Kontynuuj</string>
     <string name="product_add_tips">Aby uzyskać najlepsze wyniki, umieść produkt na środku kadru z widocznymi metkami cenowymi.</string>
 
+    <string name="currency_selection_info">Wybrana waluta będzie używana do wyświetlania wszystkich cen w aplikacji.</string>
+    <string name="currency">Waluta</string>
+    <string name="save">Zapisz</string>
+    <string name="currency_changed">Waluta zmieniona na %1$s</string>
+    <string name="other_settings">Inne ustawienia</string>
+    <string name="currency_conversion_info">Ceny będą automatycznie przeliczane na wybraną walutę według aktualnych kursów wymiany.</string>
+    <string name="loading_exchange_rates">Ładowanie kursów wymiany...</string>
+    <string name="currency_conversion_success">Konwersja waluty zakończona pomyślnie</string>
+    <string name="currency_conversion_error">Błąd podczas konwersji. Ceny pozostają w swojej oryginalnej walucie.</string>
+    <string name="select_currency">Wybierz walutę</string>
+    <string name="confirm">Potwierdź</string>
 </resources>

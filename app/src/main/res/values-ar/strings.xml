@@ -370,4 +370,15 @@
     <string name="continue_to_camera">متابعة</string>
     <string name="product_add_tips">للحصول على أفضل النتائج، ضع المنتج في منتصف الإطار مع بطاقات أسعار مرئية.</string>
 
+    <string name="currency_selection_info">سيتم استخدام العملة المحددة لعرض جميع الأسعار في التطبيق.</string>
+    <string name="currency">العملة</string>
+    <string name="save">حفظ</string>
+    <string name="currency_changed">تم تغيير العملة إلى %1$s</string>
+    <string name="other_settings">إعدادات أخرى</string>
+    <string name="currency_conversion_info">سيتم تحويل الأسعار تلقائيًا إلى العملة المحددة باستخدام أسعار الصرف الحالية.</string>
+    <string name="loading_exchange_rates">جارٍ تحميل أسعار الصرف...</string>
+    <string name="currency_conversion_success">تمت عملية تحويل العملة بنجاح</string>
+    <string name="currency_conversion_error">خطأ أثناء التحويل. ستبقى الأسعار بالعملة الأصلية.</string>
+    <string name="select_currency">اختر عملة</string>
+    <string name="confirm">تأكيد</string>
 </resources>

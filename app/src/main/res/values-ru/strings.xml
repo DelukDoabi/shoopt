@@ -370,4 +370,15 @@
     <string name="continue_to_camera">Продолжить</string>
     <string name="product_add_tips">Для лучших результатов размещай продукт по центру кадра с видимыми ценниками.</string>
 
+    <string name="currency_selection_info">Выбранная валюта будет использоваться для отображения всех цен в приложении.</string>
+    <string name="currency">Валюта</string>
+    <string name="save">Сохранить</string>
+    <string name="currency_changed">Валюта изменена на %1$s</string>
+    <string name="other_settings">Другие настройки</string>
+    <string name="currency_conversion_info">Цены будут автоматически конвертироваться в выбранную валюту по текущим обменным курсам.</string>
+    <string name="loading_exchange_rates">Загрузка курсов валют...</string>
+    <string name="currency_conversion_success">Конвертация валюты успешно завершена</string>
+    <string name="currency_conversion_error">Ошибка при конвертации. Цены остаются в исходной валюте.</string>
+    <string name="select_currency">Выбрать валюту</string>
+    <string name="confirm">Подтвердить</string>
 </resources>

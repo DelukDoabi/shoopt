@@ -412,4 +412,16 @@
     <string name="continue_to_camera">Continuer</string>
     <string name="product_add_tips">Pour de meilleurs résultats d\'autocomplétion, centre le produit dans le cadre avec les étiquettes de prix visibles.</string>
 
+
+    <string name="currency_selection_info">La devise sélectionnée sera utilisée pour afficher tous les prix dans l'application.</string>
+    <string name="currency">Devise</string>
+    <string name="save">Enregistrer</string>
+    <string name="currency_changed">Devise changée en %1$s</string>
+    <string name="other_settings">Autres paramètres</string>
+    <string name="currency_conversion_info">Les prix seront automatiquement convertis dans la devise sélectionnée en utilisant les taux de change actuels.</string>
+    <string name="loading_exchange_rates">Chargement des taux de change...</string>
+    <string name="currency_conversion_success">Conversion de devise effectuée avec succès</string>
+    <string name="currency_conversion_error">Erreur lors de la conversion. Les prix restent dans leur devise d'origine.</string>
+    <string name="select_currency">Sélectionner une devise</string>
+    <string name="confirm">Confirmer</string>
 </resources>

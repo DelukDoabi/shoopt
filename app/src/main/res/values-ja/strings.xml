@@ -371,4 +371,15 @@
     <string name="continue_to_camera">続行</string>
     <string name="product_add_tips">最適な結果のために、商品をフレーム中央に配置し価格タグを見えるようにしてください。</string>
 
+    <string name="currency_selection_info">選択した通貨は、アプリ内のすべての価格表示に使用されます。</string>
+    <string name="currency">通貨</string>
+    <string name="save">保存</string>
+    <string name="currency_changed">通貨が%1$sに変更されました</string>
+    <string name="other_settings">その他の設定</string>
+    <string name="currency_conversion_info">価格は現在の為替レートを使用して、自動的に選択した通貨に変換されます。</string>
+    <string name="loading_exchange_rates">為替レートを読み込み中...</string>
+    <string name="currency_conversion_success">通貨の変換が正常に完了しました</string>
+    <string name="currency_conversion_error">変換中にエラーが発生しました。価格は元の通貨のままです。</string>
+    <string name="select_currency">通貨を選択</string>
+    <string name="confirm">確認</string>
 </resources>
