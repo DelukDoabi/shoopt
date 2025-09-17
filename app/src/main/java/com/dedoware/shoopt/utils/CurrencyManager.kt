@@ -3,19 +3,19 @@ package com.dedoware.shoopt.utils
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.dedoware.shoopt.R
+import org.json.JSONArray
 import java.text.NumberFormat
 import java.util.Currency
 import java.util.Locale
 
 /**
  * Gestionnaire moderne des devises pour l'application Shoopt
- * Permet de centraliser la gestion des devises, le formatage des prix
- * et la conversion entre devises
+ * Charge toutes les devises disponibles depuis currencies.json
  */
-class CurrencyManager private constructor(context: Context) {
+class CurrencyManager private constructor(private val context: Context) {
 
     companion object {
-        // Instance singleton
         @Volatile
         private var INSTANCE: CurrencyManager? = null
 
@@ -26,106 +26,154 @@ class CurrencyManager private constructor(context: Context) {
                 instance
             }
         }
-
-        // Devises supportées par l'application
-        val SUPPORTED_CURRENCIES = listOf(
-            CurrencyInfo("EUR", "Euro", "€", 1.0),
-            CurrencyInfo("USD", "US Dollar", "$", 1.08),
-            CurrencyInfo("GBP", "British Pound", "£", 0.85),
-            CurrencyInfo("JPY", "Japanese Yen", "¥", 160.0),
-            CurrencyInfo("CAD", "Canadian Dollar", "C$", 1.47),
-            CurrencyInfo("CHF", "Swiss Franc", "Fr", 0.97),
-            CurrencyInfo("AUD", "Australian Dollar", "A$", 1.65),
-            CurrencyInfo("CNY", "Chinese Yuan", "¥", 7.84),
-            CurrencyInfo("INR", "Indian Rupee", "₹", 90.23)
-        )
     }
 
-    // Preferences pour stocker les réglages de devise
     private val userPreferences = UserPreferences(context)
+    private val _availableCurrencies = MutableLiveData<List<CurrencyInfo>>()
+    val availableCurrencies: LiveData<List<CurrencyInfo>> = _availableCurrencies
 
-    // LiveData pour observer les changements de devise
     private val _currentCurrency = MutableLiveData<CurrencyInfo>()
     val currentCurrency: LiveData<CurrencyInfo> = _currentCurrency
 
     init {
-        // Initialisation avec la devise actuelle des préférences
-        updateCurrentCurrency(userPreferences.currency)
+        loadCurrenciesFromJson()
+        updateCurrentCurrency(userPreferences.currency ?: getDefaultCurrency())
     }
 
-    /**
-     * Change la devise active dans l'application
-     */
+    private fun loadCurrenciesFromJson() {
+        try {
+            val currencies = mutableListOf<CurrencyInfo>()
+            val inputStream = context.resources.openRawResource(R.raw.currencies)
+            val jsonString = inputStream.bufferedReader().use { it.readText() }
+            val jsonArray = JSONArray(jsonString)
+
+            for (i in 0 until jsonArray.length()) {
+                val jsonObject = jsonArray.getJSONObject(i)
+                val name = jsonObject.getString("name")
+                val code = jsonObject.getString("code")
+
+                // Extraire le symbole du nom (entre parenthèses)
+                val symbol = extractSymbolFromName(name, code)
+
+                currencies.add(CurrencyInfo(code, name, symbol))
+            }
+
+            _availableCurrencies.value = currencies.sortedBy { it.name }
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors du chargement des devises: ${e.message}")
+            CrashlyticsManager.logException(e)
+
+            // Fallback avec quelques devises de base
+            _availableCurrencies.value = listOf(
+                CurrencyInfo("EUR", "Euro (€)", "€"),
+                CurrencyInfo("USD", "US Dollar ($)", "$"),
+                CurrencyInfo("GBP", "British Pound (£)", "£")
+            )
+        }
+    }
+
+    private fun extractSymbolFromName(name: String, code: String): String {
+        // Extraire le symbole entre parenthèses dans le nom
+        val regex = "\\(([^)]+)\\)".toRegex()
+        val match = regex.find(name)
+        return match?.groupValues?.get(1) ?: code
+    }
+
+    private fun getDefaultCurrency(): String {
+        val country = Locale.getDefault().country
+        val defaultCurrencyByCountry = mapOf(
+            "FR" to "EUR", "BE" to "EUR", "DE" to "EUR", "IT" to "EUR", "ES" to "EUR",
+            "PT" to "EUR", "NL" to "EUR", "LU" to "EUR", "IE" to "EUR", "FI" to "EUR",
+            "AT" to "EUR", "GR" to "EUR", "US" to "USD", "GB" to "GBP", "CA" to "CAD",
+            "CH" to "CHF", "JP" to "JPY", "CN" to "CNY", "IN" to "INR", "BR" to "BRL",
+            "RU" to "RUB", "AU" to "AUD", "MX" to "MXN", "SE" to "SEK", "NO" to "NOK",
+            "DK" to "DKK", "PL" to "PLN", "TN" to "TND", "MA" to "MAD", "DZ" to "DZD",
+            "EG" to "EGP", "SA" to "SAR", "AE" to "AED", "QA" to "QAR", "KW" to "KWD",
+            "OM" to "OMR", "BH" to "BHD", "JO" to "JOD", "LB" to "LBP"
+        )
+        return defaultCurrencyByCountry[country] ?: "USD"
+    }
+
     fun setCurrency(currencyCode: String) {
-        if (SUPPORTED_CURRENCIES.any { it.code == currencyCode }) {
+        val currencies = _availableCurrencies.value ?: return
+        if (currencies.any { it.code == currencyCode }) {
             userPreferences.currency = currencyCode
             updateCurrentCurrency(currencyCode)
         }
     }
 
-    /**
-     * Met à jour la devise courante dans le LiveData
-     */
     private fun updateCurrentCurrency(currencyCode: String) {
-        val currency = SUPPORTED_CURRENCIES.find { it.code == currencyCode }
-            ?: SUPPORTED_CURRENCIES.first()
+        val currencies = _availableCurrencies.value ?: return
+        val currency = currencies.find { it.code == currencyCode }
+            ?: currencies.first()
         _currentCurrency.value = currency
     }
 
-    /**
-     * Formate un prix selon les conventions locales et la devise sélectionnée
-     */
     fun formatPrice(price: Double, currencyCode: String? = null): String {
         val currency = if (currencyCode != null) {
-            SUPPORTED_CURRENCIES.find { it.code == currencyCode }
+            _availableCurrencies.value?.find { it.code == currencyCode }
         } else {
             _currentCurrency.value
-        } ?: SUPPORTED_CURRENCIES.first()
+        } ?: return String.format("%.2f", price)
 
         return try {
-            // Utiliser la classe NumberFormat pour un formatage correct selon les conventions locales
             val currencyInstance = Currency.getInstance(currency.code)
             val numberFormat = NumberFormat.getCurrencyInstance(Locale.getDefault())
             numberFormat.currency = currencyInstance
             numberFormat.format(price)
         } catch (e: Exception) {
-            // Fallback simple en cas d'erreur
             String.format("%.2f %s", price, currency.symbol)
         }
     }
 
     /**
-     * Convertit un prix d'une devise à une autre
-     * @param amount Montant à convertir
-     * @param fromCurrency Code de la devise source
-     * @param toCurrency Code de la devise cible
-     * @return Montant converti
+     * Convertit un prix d'une devise source vers la devise actuelle
+     * Pour le moment, retourne le prix tel quel car nous n'avons pas de service de taux de change
+     * TODO: Intégrer un service de taux de change en temps réel
      */
-    fun convertCurrency(amount: Double, fromCurrency: String, toCurrency: String): Double {
-        val sourceCurrency = SUPPORTED_CURRENCIES.find { it.code == fromCurrency }
-            ?: SUPPORTED_CURRENCIES.first()
-        val targetCurrency = SUPPORTED_CURRENCIES.find { it.code == toCurrency }
-            ?: SUPPORTED_CURRENCIES.first()
+    fun convertToCurrentCurrency(price: Double, fromCurrency: String): Double {
+        val currentCurrencyCode = _currentCurrency.value?.code ?: "USD"
 
-        // Conversion via le taux de référence (ici l'Euro)
-        val amountInEur = amount / sourceCurrency.rateFromEur
-        return amountInEur * targetCurrency.rateFromEur
+        // Si c'est déjà la même devise, pas de conversion nécessaire
+        if (fromCurrency == currentCurrencyCode) {
+            return price
+        }
+
+        // Pour le moment, on retourne le prix tel quel
+        // Dans une future version, on pourrait ajouter un service de conversion
+        // en utilisant une API comme exchangerate-api.com ou fixer.io
+
+        try {
+            CrashlyticsManager.log("Conversion de devise demandée: $fromCurrency -> $currentCurrencyCode pour $price")
+
+            // Placeholder pour la conversion réelle
+            // return convertWithExchangeRate(price, fromCurrency, currentCurrencyCode)
+
+            return price
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la conversion de devise: ${e.message}")
+            CrashlyticsManager.logException(e)
+            return price
+        }
     }
 
     /**
-     * Convertit un prix vers la devise actuellement sélectionnée
+     * Obtient le code de la devise actuelle
      */
-    fun convertToCurrentCurrency(amount: Double, fromCurrency: String): Double {
-        return convertCurrency(amount, fromCurrency, _currentCurrency.value?.code ?: "EUR")
+    fun getCurrentCurrencyCode(): String {
+        return _currentCurrency.value?.code ?: "USD"
     }
 
     /**
-     * Classe représentant une devise supportée
+     * Obtient les informations de la devise actuelle
      */
+    fun getCurrentCurrencyInfo(): CurrencyInfo? {
+        return _currentCurrency.value
+    }
+
     data class CurrencyInfo(
         val code: String,
         val name: String,
-        val symbol: String,
-        val rateFromEur: Double // Taux de conversion par rapport à l'Euro (référence)
+        val symbol: String
     )
 }

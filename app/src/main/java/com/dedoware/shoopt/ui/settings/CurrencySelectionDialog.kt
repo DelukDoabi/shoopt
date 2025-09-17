@@ -3,26 +3,25 @@ package com.dedoware.shoopt.ui.settings
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.utils.CurrencyManager
-import com.dedoware.shoopt.utils.getCurrencyManager
+import kotlinx.coroutines.launch
 
 /**
  * Dialogue moderne de sélection de devise
- * Permet à l'utilisateur de choisir facilement sa devise préférée
+ * Permet à l'utilisateur de choisir parmi toutes les devises disponibles
  */
 class CurrencySelectionDialog : DialogFragment() {
 
     private lateinit var radioGroup: RadioGroup
     private var listener: OnCurrencySelectedListener? = null
     private lateinit var currentCurrency: String
+    private lateinit var currencyManager: CurrencyManager
 
     companion object {
         fun newInstance(currentCurrency: String): CurrencySelectionDialog {
@@ -38,6 +37,7 @@ class CurrencySelectionDialog : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         currentCurrency = arguments?.getString("currency") ?: "EUR"
+        currencyManager = CurrencyManager.getInstance(requireContext())
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -47,8 +47,8 @@ class CurrencySelectionDialog : DialogFragment() {
 
         radioGroup = view.findViewById(R.id.currency_radio_group)
 
-        // Remplir les options de devise dynamiquement
-        populateCurrencyOptions(view)
+        // Remplir les options de devise depuis le CurrencyManager
+        populateCurrencyOptions()
 
         return builder
             .setView(view)
@@ -65,17 +65,22 @@ class CurrencySelectionDialog : DialogFragment() {
             .create()
     }
 
-    private fun populateCurrencyOptions(view: View) {
-        val currencies = CurrencyManager.SUPPORTED_CURRENCIES
+    private fun populateCurrencyOptions() {
+        lifecycleScope.launch {
+            currencyManager.availableCurrencies.observe(this@CurrencySelectionDialog) { currencies ->
+                radioGroup.removeAllViews()
 
-        for (currency in currencies) {
-            val radioButton = RadioButton(context).apply {
-                id = View.generateViewId()
-                text = "${currency.code} (${currency.symbol}) - ${currency.name}"
-                tag = currency.code
-                isChecked = currency.code == currentCurrency
+                currencies.forEach { currency ->
+                    val radioButton = RadioButton(context).apply {
+                        id = currency.code.hashCode() // Utiliser le hashcode pour un ID unique
+                        text = "${currency.code} - ${currency.name}"
+                        tag = currency.code
+                        isChecked = currency.code == currentCurrency
+                        setPadding(16, 12, 16, 12)
+                    }
+                    radioGroup.addView(radioButton)
+                }
             }
-            radioGroup.addView(radioButton)
         }
     }
 

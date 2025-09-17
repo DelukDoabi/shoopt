@@ -3,34 +3,31 @@ package com.dedoware.shoopt.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.dedoware.shoopt.R
+import com.dedoware.shoopt.ui.settings.CurrencySelectionDialog
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
-import com.dedoware.shoopt.utils.OnboardingManager
+import com.dedoware.shoopt.utils.CurrencyManager
 import com.dedoware.shoopt.utils.UserPreferences
-import com.google.android.material.button.MaterialButton
-import org.json.JSONArray
-import java.io.InputStream
 
 class SettingsActivity : AppCompatActivity() {
 
     private lateinit var userPreferences: UserPreferences
+    private lateinit var currencyManager: CurrencyManager
 
     // UI Elements
     private lateinit var themeRadioGroup: RadioGroup
     private lateinit var themeLightRadio: RadioButton
     private lateinit var themeDarkRadio: RadioButton
     private lateinit var themeSystemRadio: RadioButton
-    private lateinit var currencySpinner: Spinner
+    private lateinit var currencyContainer: CardView
+    private lateinit var currencyValue: TextView
     private lateinit var saveButton: ImageButton
     private lateinit var backButton: ImageButton
     private lateinit var replayOnboardingCard: CardView
-
-    private lateinit var currencyList: List<Currency>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         try {
@@ -42,6 +39,7 @@ class SettingsActivity : AppCompatActivity() {
 
             try {
                 userPreferences = UserPreferences(this)
+                currencyManager = CurrencyManager.getInstance(this)
             } catch (e: Exception) {
                 // Analytics: suivre l'erreur d'initialisation des préférences
                 AnalyticsManager.logUserAction(
@@ -141,27 +139,26 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun initializeUiElements() {
         try {
-            themeRadioGroup = findViewById(R.id.theme_radio_group) ?: throw IllegalStateException("Missing theme_radio_group")
-            themeLightRadio = findViewById(R.id.theme_light) ?: throw IllegalStateException("Missing theme_light")
-            themeDarkRadio = findViewById(R.id.theme_dark) ?: throw IllegalStateException("Missing theme_dark")
-            themeSystemRadio = findViewById(R.id.theme_system) ?: throw IllegalStateException("Missing theme_system")
-            currencySpinner = findViewById(R.id.currency_spinner) ?: throw IllegalStateException("Missing currency_spinner")
-            saveButton = findViewById(R.id.save_settings_button) ?: throw IllegalStateException("Missing save_settings_button")
-            backButton = findViewById(R.id.back_IB) ?: throw IllegalStateException("Missing back_IB")
-            replayOnboardingCard = findViewById(R.id.replay_onboarding_card) ?: throw IllegalStateException("Missing replay_onboarding_card")
+            themeRadioGroup = findViewById(R.id.theme_radio_group)
+            themeLightRadio = findViewById(R.id.theme_light)
+            themeDarkRadio = findViewById(R.id.theme_dark)
+            themeSystemRadio = findViewById(R.id.theme_system)
+            currencyContainer = findViewById(R.id.currencyContainer)
+            currencyValue = findViewById(R.id.currencyValue)
+            saveButton = findViewById(R.id.save_settings_button)
+            backButton = findViewById(R.id.back_IB)
+            replayOnboardingCard = findViewById(R.id.replay_onboarding_card)
 
-            // Configuration du spinner de devises
-            currencyList = loadCurrenciesFromJson()
-            val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, currencyList.map { it.name })
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            currencySpinner.adapter = adapter
+            // Observer les changements de devise depuis le CurrencyManager
+            currencyManager.currentCurrency.observe(this) { currency ->
+                currencyValue.text = "${currency.code} - ${currency.name}"
+            }
 
-            // Analytics: suivre les options de devise disponibles
+            // Analytics: suivre les options disponibles
             AnalyticsManager.logUserAction(
                 action = "available_options",
                 category = "settings",
                 additionalParams = mapOf(
-                    "currency_count" to currencyList.size,
                     "theme_options" to 3 // light, dark, system
                 )
             )
@@ -193,61 +190,7 @@ class SettingsActivity : AppCompatActivity() {
             else -> themeSystemRadio.isChecked = true
         }
 
-        // Sélection de la devise actuelle
-        val selectedCurrencyCode = if (userPreferences.currency.isNullOrEmpty()) {
-            // Détection intelligente de la devise par défaut selon le pays
-            val country = java.util.Locale.getDefault().country
-            val defaultCurrencyByCountry = mapOf(
-                "FR" to "EUR",
-                "BE" to "EUR",
-                "DE" to "EUR",
-                "IT" to "EUR",
-                "ES" to "EUR",
-                "PT" to "EUR",
-                "NL" to "EUR",
-                "LU" to "EUR",
-                "IE" to "EUR",
-                "FI" to "EUR",
-                "AT" to "EUR",
-                "GR" to "EUR",
-                "US" to "USD",
-                "GB" to "GBP",
-                "CA" to "CAD",
-                "CH" to "CHF",
-                "JP" to "JPY",
-                "CN" to "CNY",
-                "IN" to "INR",
-                "BR" to "BRL",
-                "RU" to "RUB",
-                "AU" to "AUD",
-                "MX" to "MXN",
-                "SE" to "SEK",
-                "NO" to "NOK",
-                "DK" to "DKK",
-                "PL" to "PLN",
-                // Pays arabes principaux
-                "TN" to "TND", // Tunisie
-                "MA" to "MAD", // Maroc
-                "DZ" to "DZD", // Algérie
-                "EG" to "EGP", // Égypte
-                "SA" to "SAR", // Arabie Saoudite
-                "AE" to "AED", // Émirats Arabes Unis
-                "QA" to "QAR", // Qatar
-                "KW" to "KWD", // Koweït
-                "OM" to "OMR", // Oman
-                "BH" to "BHD", // Bahreïn
-                "JO" to "JOD", // Jordanie
-                "LB" to "LBP", // Liban
-                "IQ" to "IQD", // Irak
-                "SD" to "SDG", // Soudan
-                "YE" to "YER", // Yémen
-                "LY" to "LYD", // Libye
-                "SY" to "SYP", // Syrie
-            )
-            defaultCurrencyByCountry[country] ?: "USD"
-        } else userPreferences.currency
-        val currencyIndex = currencyList.indexOfFirst { it.code == selectedCurrencyCode }.let { if (it == -1) 0 else it }
-        currencySpinner.setSelection(currencyIndex)
+        // La devise est automatiquement mise à jour via l'observer du CurrencyManager
 
         // Analytics: suivre les préférences actuelles chargées
         AnalyticsManager.logUserAction(
@@ -308,6 +251,49 @@ class SettingsActivity : AppCompatActivity() {
             )
 
             finish()
+        }
+
+        // Container de devise - ouvre le dialogue de sélection
+        currencyContainer.setOnClickListener {
+            try {
+                // Analytics: suivre l'ouverture du dialogue de devise
+                AnalyticsManager.logUserAction(
+                    action = "open_currency_dialog",
+                    category = "settings",
+                    additionalParams = mapOf("current_currency" to userPreferences.currency)
+                )
+
+                val currentCurrency = userPreferences.currency ?: "EUR"
+                val dialog = CurrencySelectionDialog.newInstance(currentCurrency)
+                dialog.setOnCurrencySelectedListener(object : CurrencySelectionDialog.OnCurrencySelectedListener {
+                    override fun onCurrencySelected(currencyCode: String) {
+                        // Analytics: suivre la sélection de devise
+                        AnalyticsManager.logUserAction(
+                            action = "currency_selected",
+                            category = "settings",
+                            additionalParams = mapOf(
+                                "previous_currency" to userPreferences.currency,
+                                "new_currency" to currencyCode
+                            )
+                        )
+
+                        currencyManager.setCurrency(currencyCode)
+                    }
+                })
+                dialog.show(supportFragmentManager, "CurrencySelectionDialog")
+            } catch (e: Exception) {
+                // Analytics: suivre l'erreur d'ouverture du dialogue
+                AnalyticsManager.logUserAction(
+                    action = "currency_dialog_error",
+                    category = "settings",
+                    additionalParams = mapOf("error_type" to e.javaClass.simpleName)
+                )
+
+                CrashlyticsManager.log("Erreur lors de l'ouverture du dialogue de devise: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.logException(e)
+
+                Toast.makeText(this, "Erreur lors de l'ouverture de la sélection de devise", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // Bouton de replay de l'onboarding
@@ -376,29 +362,6 @@ class SettingsActivity : AppCompatActivity() {
                 )
             )
         }
-
-        // Suivi des changements de devise
-        currencySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (position >= 0) {
-                    val selectedCurrencyCode = currencyList[position].code
-
-                    // Analytics: suivre le changement de devise
-                    AnalyticsManager.logUserAction(
-                        action = "change_preference",
-                        category = "settings",
-                        additionalParams = mapOf(
-                            "preference_type" to "currency",
-                            "selected_value" to selectedCurrencyCode
-                        )
-                    )
-                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                // Ne rien faire
-            }
-        }
     }
 
     private fun savePreferences() {
@@ -416,13 +379,7 @@ class SettingsActivity : AppCompatActivity() {
             }
             userPreferences.themeMode = themeMode
 
-            // Sauvegarde de la devise
-            val currencyIndex = currencySpinner.selectedItemPosition
-            var selectedCurrency = "default"
-            if (currencyIndex != -1) {
-                selectedCurrency = currencyList[currencyIndex].code
-                userPreferences.currency = selectedCurrency
-            }
+            // La devise est automatiquement sauvegardée par le CurrencyManager
 
             // Analytics: suivre les préférences sauvegardées
             AnalyticsManager.logUserAction(
@@ -430,7 +387,7 @@ class SettingsActivity : AppCompatActivity() {
                 category = "settings",
                 additionalParams = mapOf(
                     "theme_mode" to themeModeString,
-                    "currency" to selectedCurrency
+                    "currency" to userPreferences.currency
                 )
             )
 
@@ -468,28 +425,6 @@ class SettingsActivity : AppCompatActivity() {
             throw e // On relance l'exception pour être capturée dans le listener
         }
     }
-
-    private fun loadCurrenciesFromJson(): List<Currency> {
-        val currencies = mutableListOf<Currency>()
-        try {
-            val inputStream: InputStream = resources.openRawResource(R.raw.currencies)
-            val jsonString = inputStream.bufferedReader().use { it.readText() }
-            val jsonArray = JSONArray(jsonString)
-
-            for (i in 0 until jsonArray.length()) {
-                val jsonObject = jsonArray.getJSONObject(i)
-                val name = jsonObject.getString("name")
-                val code = jsonObject.getString("code")
-                currencies.add(Currency(name, code))
-            }
-        } catch (e: Exception) {
-            CrashlyticsManager.log("Error loading currencies: ${e.message}")
-            CrashlyticsManager.logException(e)
-        }
-        return currencies
-    }
-
-    data class Currency(val name: String, val code: String)
 
     override fun onResume() {
         super.onResume()

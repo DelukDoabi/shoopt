@@ -55,7 +55,9 @@
     <string name="currency_selection_info">La devise sélectionnée sera utilisée pour afficher tous les prix dans l\'application.</string>
     <string name="currency">Devise</string>
     <string name="confirm">Confirmer</string>
+    <string name="save">Enregistrer</string>
     <string name="currency_changed">Devise changée en %1$s</string>
+    <string name="other_settings">Autres paramètres</string>
 
     <!-- User Guide Strings -->
     <string name="skip_guide">Skip</string>
