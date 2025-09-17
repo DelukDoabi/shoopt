@@ -51,13 +51,19 @@
     <string name="google_sign_in_successful">Google Sign-In Successful</string>
 
     <!-- Nouvelles chaînes pour la gestion des devises -->
-    <string name="select_currency">Sélectionnez votre devise</string>
     <string name="currency_selection_info">La devise sélectionnée sera utilisée pour afficher tous les prix dans l\'application.</string>
     <string name="currency">Devise</string>
-    <string name="confirm">Confirmer</string>
     <string name="save">Enregistrer</string>
     <string name="currency_changed">Devise changée en %1$s</string>
     <string name="other_settings">Autres paramètres</string>
+
+    <!-- Nouvelles chaînes pour la conversion de devises -->
+    <string name="currency_conversion_info">Les prix seront automatiquement convertis dans la devise sélectionnée en utilisant les taux de change actuels.</string>
+    <string name="loading_exchange_rates">Chargement des taux de change...</string>
+    <string name="currency_conversion_success">Conversion de devise effectuée avec succès</string>
+    <string name="currency_conversion_error">Erreur lors de la conversion. Les prix restent dans leur devise d\'origine.</string>
+    <string name="select_currency">Sélectionner une devise</string>
+    <string name="confirm">Confirm</string>
 
     <!-- User Guide Strings -->
     <string name="skip_guide">Skip</string>
@@ -346,7 +352,6 @@
 
     <string name="spotlight_list_fullscreen_title">Fullscreen view</string>
     <string name="spotlight_list_fullscreen_description">Open your organized product list in fullscreen for better visibility</string>
-
     <string name="spotlight_list_clear_title">Clear the list</string>
     <string name="spotlight_list_clear_description">Delete all products from your list at any time</string>
 

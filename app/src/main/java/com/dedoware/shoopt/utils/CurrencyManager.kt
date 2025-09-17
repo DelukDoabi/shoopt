@@ -4,6 +4,11 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.dedoware.shoopt.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import java.text.NumberFormat
 import java.util.Currency
@@ -12,6 +17,7 @@ import java.util.Locale
 /**
  * Gestionnaire moderne des devises pour l'application Shoopt
  * Charge toutes les devises disponibles depuis currencies.json
+ * et gère la conversion entre les différentes devises
  */
 class CurrencyManager private constructor(private val context: Context) {
 
@@ -29,15 +35,43 @@ class CurrencyManager private constructor(private val context: Context) {
     }
 
     private val userPreferences = UserPreferences(context)
+    private val exchangeRateService = ExchangeRateService.getInstance(context)
+    private val coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    
     private val _availableCurrencies = MutableLiveData<List<CurrencyInfo>>()
     val availableCurrencies: LiveData<List<CurrencyInfo>> = _availableCurrencies
 
     private val _currentCurrency = MutableLiveData<CurrencyInfo>()
     val currentCurrency: LiveData<CurrencyInfo> = _currentCurrency
+    
+    private val _conversionInProgress = MutableLiveData<Boolean>(false)
+    val conversionInProgress: LiveData<Boolean> = _conversionInProgress
+    
+    private val _conversionError = MutableLiveData<String?>(null)
+    val conversionError: LiveData<String?> = _conversionError
 
     init {
         loadCurrenciesFromJson()
         updateCurrentCurrency(userPreferences.currency ?: getDefaultCurrency())
+        // Préchargement des taux de change pour la devise actuelle
+        preloadExchangeRates()
+    }
+
+    // Fonction qui précharge les taux de change pour la devise actuelle
+    private fun preloadExchangeRates() {
+        val currentCurrencyCode = currentCurrency.value?.code ?: getDefaultCurrency()
+        coroutineScope.launch {
+            try {
+                exchangeRateService.refreshExchangeRates(currentCurrencyCode) { success ->
+                    if (!success) {
+                        CrashlyticsManager.log("Échec du préchargement des taux de change pour $currentCurrencyCode")
+                    }
+                }
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors du préchargement des taux de change: ${e.message}")
+                CrashlyticsManager.logException(e)
+            }
+        }
     }
 
     private fun loadCurrenciesFromJson() {
@@ -109,6 +143,69 @@ class CurrencyManager private constructor(private val context: Context) {
         _currentCurrency.value = currency
     }
 
+    /**
+     * Convertit un prix d'une devise source vers la devise actuelle
+     * Utilise le service de taux de change pour faire la conversion
+     */
+    fun convertToCurrentCurrency(price: Double, fromCurrency: String, callback: (Double, Boolean) -> Unit) {
+        val currentCurrencyCode = _currentCurrency.value?.code ?: "USD"
+
+        // Si c'est déjà la même devise, pas de conversion nécessaire
+        if (fromCurrency == currentCurrencyCode) {
+            callback(price, true)
+            return
+        }
+
+        _conversionInProgress.value = true
+        _conversionError.value = null
+
+        coroutineScope.launch {
+            try {
+                CrashlyticsManager.log("Conversion de devise demandée: $fromCurrency -> $currentCurrencyCode pour $price")
+                
+                val convertedPrice = exchangeRateService.convertAmount(price, fromCurrency, currentCurrencyCode)
+                
+                withContext(Dispatchers.Main) {
+                    _conversionInProgress.value = false
+                    callback(convertedPrice, true)
+                }
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de la conversion de devise: ${e.message}")
+                CrashlyticsManager.logException(e)
+                
+                withContext(Dispatchers.Main) {
+                    _conversionInProgress.value = false
+                    _conversionError.value = "Erreur de conversion: ${e.message}"
+                    callback(price, false) // Retourne le prix original en cas d'erreur
+                }
+            }
+        }
+    }
+
+    /**
+     * Version synchrone simplifiée pour les cas où le callback n'est pas nécessaire
+     * Retourne le prix original en cas d'erreur
+     */
+    suspend fun convertToCurrentCurrencySuspend(price: Double, fromCurrency: String): Double {
+        val currentCurrencyCode = _currentCurrency.value?.code ?: "USD"
+
+        // Si c'est déjà la même devise, pas de conversion nécessaire
+        if (fromCurrency == currentCurrencyCode) {
+            return price
+        }
+
+        return try {
+            exchangeRateService.convertAmount(price, fromCurrency, currentCurrencyCode)
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la conversion de devise: ${e.message}")
+            CrashlyticsManager.logException(e)
+            price // En cas d'erreur, retourne le prix original
+        }
+    }
+
+    /**
+     * Formate le prix avec la devise spécifiée ou la devise actuelle
+     */
     fun formatPrice(price: Double, currencyCode: String? = null): String {
         val currency = if (currencyCode != null) {
             _availableCurrencies.value?.find { it.code == currencyCode }
@@ -123,37 +220,6 @@ class CurrencyManager private constructor(private val context: Context) {
             numberFormat.format(price)
         } catch (e: Exception) {
             String.format("%.2f %s", price, currency.symbol)
-        }
-    }
-
-    /**
-     * Convertit un prix d'une devise source vers la devise actuelle
-     * Pour le moment, retourne le prix tel quel car nous n'avons pas de service de taux de change
-     * TODO: Intégrer un service de taux de change en temps réel
-     */
-    fun convertToCurrentCurrency(price: Double, fromCurrency: String): Double {
-        val currentCurrencyCode = _currentCurrency.value?.code ?: "USD"
-
-        // Si c'est déjà la même devise, pas de conversion nécessaire
-        if (fromCurrency == currentCurrencyCode) {
-            return price
-        }
-
-        // Pour le moment, on retourne le prix tel quel
-        // Dans une future version, on pourrait ajouter un service de conversion
-        // en utilisant une API comme exchangerate-api.com ou fixer.io
-
-        try {
-            CrashlyticsManager.log("Conversion de devise demandée: $fromCurrency -> $currentCurrencyCode pour $price")
-
-            // Placeholder pour la conversion réelle
-            // return convertWithExchangeRate(price, fromCurrency, currentCurrencyCode)
-
-            return price
-        } catch (e: Exception) {
-            CrashlyticsManager.log("Erreur lors de la conversion de devise: ${e.message}")
-            CrashlyticsManager.logException(e)
-            return price
         }
     }
 
