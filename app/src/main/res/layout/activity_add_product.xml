@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:focusableInTouchMode="true"
     tools:context=".activities.AddProductActivity">
 
     <!-- Background gradient - même fond que les autres écrans -->
@@ -14,24 +15,26 @@
         android:layout_height="match_parent"
         android:background="@drawable/login_gradient_background" />
 
-    <!-- Main responsive constraint layout with scroll capability for small screens -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/global_add_or_update_product_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:scrollbars="none"
+        android:scrollbars="vertical"
         android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:scrollbarStyle="insideOverlay">
+        android:fadeScrollbars="false"
+        android:paddingBottom="@dimen/margin_large"
+        android:fitsSystemWindows="true"
+        android:scrollbarStyle="outsideOverlay"
+        android:descendantFocusability="beforeDescendants"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <!-- Main responsive constraint layout with scroll capability for small screens -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/screen_padding"
-            android:paddingTop="@dimen/margin_small"
-            android:paddingBottom="@dimen/margin_medium"
-            android:minHeight="@dimen/input_min_height">
+            android:animateLayoutChanges="true"
+            android:padding="@dimen/screen_padding">
 
             <!-- Top Bar with back button - Responsive sizing -->
             <LinearLayout
@@ -377,12 +380,16 @@
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
-                    <!-- Shop selection - Compact sizing -->
+                    <!-- Shop selection - Focus management optimization -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/shop_layout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:nextFocusUp="@id/product_unit_price_ET"
+                        android:nextFocusDown="@id/save_product_IB"
                         app:boxStrokeColor="@color/main_palette_old_lavender_variant"
                         app:hintTextColor="@color/main_palette_old_lavender_variant"
                         app:startIconDrawable="@drawable/ic_shop"
@@ -390,6 +397,9 @@
                         app:hintAnimationEnabled="true"
                         app:expandedHintEnabled="true"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        android:animateLayoutChanges="true"
+                        app:endIconMode="dropdown_menu"
+                        app:endIconTint="@color/main_palette_old_lavender_variant"
                         app:layout_constraintTop_toBottomOf="@id/price_container"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent">
@@ -401,11 +411,20 @@
                             android:hint="@string/insert_product_shop"
                             android:inputType="text"
                             android:completionThreshold="1"
+                            android:imeOptions="actionDone"
                             android:minHeight="44dp"
                             android:textSize="@dimen/text_medium"
                             android:autoSizeTextType="uniform"
                             android:autoSizeMinTextSize="@dimen/button_text_min"
-                            android:autoSizeMaxTextSize="@dimen/button_text_max" />
+                            android:autoSizeMaxTextSize="@dimen/button_text_max"
+                            android:dropDownVerticalOffset="4dp"
+                            android:dropDownAnchor="@id/shop_layout"
+                            android:dropDownHeight="wrap_content"
+                            android:popupBackground="@color/main_palette_isabelline"
+                            android:focusedByDefault="false"
+                            android:selectAllOnFocus="true"
+                            android:paddingBottom="12dp" />
+
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <!-- Save button - Compact sizing -->

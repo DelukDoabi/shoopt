@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.BitmapFactory.Options
 import android.graphics.Matrix
+import android.graphics.Rect
 import android.location.Location
 import android.os.Bundle
 import android.os.Environment
@@ -36,6 +37,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.widget.NestedScrollView
 import androidx.exifinterface.media.ExifInterface
 import com.bumptech.glide.Glide
 import com.dedoware.shoopt.R
@@ -567,8 +569,25 @@ class AddProductActivity : AppCompatActivity() {
 
         updateShopList(adapter)
 
+        // Scroll automatique vers le champ shop
+        val scrollView = findViewById<NestedScrollView>(R.id.global_add_or_update_product_view)
+        productShopAutoCompleteTextView.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                scrollToShopField()
+            }
+        }
+
+        productShopAutoCompleteTextView.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) {
+                scrollToShopField()
+            }
+        })
+
         productShopAutoCompleteTextView.setOnClickListener {
             productShopAutoCompleteTextView.showDropDown()
+            scrollToShopField()
         }
     }
 
@@ -1133,6 +1152,59 @@ class AddProductActivity : AppCompatActivity() {
         productShopAutoCompleteTextView = findViewById(R.id.shop_autocomplete)
         scanBarcodeButton = findViewById(R.id.scan_barcode_IB)
 
+        // Configuration de l'AutoCompleteTextView pour le shop
+        productShopAutoCompleteTextView.apply {
+            setDropDownBackgroundResource(R.color.main_palette_isabelline)
+            dropDownVerticalOffset = resources.getDimensionPixelSize(R.dimen.dropdown_vertical_offset)
+            dropDownHeight = ViewGroup.LayoutParams.WRAP_CONTENT
+            threshold = 1
+
+            // Forcer le scroll après l'apparition du clavier
+            setOnTouchListener { _, event ->
+                when (event.action) {
+                    android.view.MotionEvent.ACTION_DOWN -> {
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            scrollToShopField()
+                        }, 300) // Délai pour laisser le clavier apparaître
+                    }
+                }
+                false
+            }
+
+            setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        scrollToShopField()
+                    }, 300) // Délai pour laisser le clavier apparaître
+                }
+            }
+
+            addTextChangedListener(object : android.text.TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                override fun afterTextChanged(s: android.text.Editable?) {
+                    scrollToShopField()
+                }
+            })
+        }
+
+        // Scroll automatique vers le champ shop
+        val scrollView = findViewById<NestedScrollView>(R.id.global_add_or_update_product_view)
+        productShopAutoCompleteTextView.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                scrollToShopField()
+            }
+        }
+
+        productShopAutoCompleteTextView.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) {
+                scrollToShopField()
+            }
+        })
+
+
         // Initialiser le switch d'autocomplétion avec vérification de sécurité
         val switchView = findViewById<SwitchMaterial>(R.id.autocompletion_switch)
         if (switchView != null) {
@@ -1605,5 +1677,37 @@ class AddProductActivity : AppCompatActivity() {
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+    }
+
+    private fun scrollToShopField() {
+        val scrollView = findViewById<NestedScrollView>(R.id.global_add_or_update_product_view)
+        val shopLayout = findViewById<com.google.android.material.textfield.TextInputLayout>(R.id.shop_layout)
+
+        shopLayout.post {
+            try {
+                val scrollViewRect = Rect()
+                val shopLayoutRect = Rect()
+
+                scrollView.getGlobalVisibleRect(scrollViewRect)
+                shopLayout.getGlobalVisibleRect(shopLayoutRect)
+
+                // Ajuster la position avec une marge plus importante pour le clavier
+                val keyboardHeight = resources.displayMetrics.heightPixels / 2  // Estimation de la hauteur du clavier
+                val targetScroll = (shopLayoutRect.top - scrollViewRect.top) +
+                        scrollView.scrollY -
+                        dpToPx(150)  // Marge augmentée
+
+                scrollView.smoothScrollTo(0, targetScroll.coerceAtLeast(0))
+
+                // Force le rafraîchissement du layout
+                scrollView.requestLayout()
+            } catch (e: Exception) {
+                Log.e("AddProductActivity", "Erreur lors du scroll: ${e.message}")
+            }
+        }
+    }
+
+    private fun dpToPx(dp: Int): Int {
+        return (dp * resources.displayMetrics.density).toInt()
     }
 }
