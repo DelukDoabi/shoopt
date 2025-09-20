@@ -19,6 +19,21 @@
 
     <color name="main_palette_isabelline">#F2EDEB</color>
 
+    <!-- Couleurs pour la félicitation du premier produit -->
+    <color name="primary_color">#2196F3</color>
+    <color name="primary_color_dark">#1976D2</color>
+    <color name="secondary_color">#FF9800</color>
+    <color name="text_secondary">#757575</color>
+
+    <!-- Nouvelles couleurs pour la célébration moderne -->
+    <color name="celebration_primary_text">#1A1A1A</color>
+    <color name="celebration_secondary_text">#666666</color>
+    <color name="celebration_accent">#4CAF50</color>
+    <color name="celebration_button_background">#2196F3</color>
+    <color name="celebration_button_ripple">#1976D2</color>
+    <color name="celebration_gold">#FFD700</color>
+    <color name="celebration_gold_dark">#FFA500</color>
+
     <color name="main_palette_rajah">#FFB05B</color>
     <color name="main_palette_rajah_variant">#F8A13F</color>
     <color name="main_palette_rajah_on">#F2EDEB</color>

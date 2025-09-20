@@ -50,6 +50,14 @@
     <string name="login_failed">Login Failed: %1$s</string>
     <string name="google_sign_in_successful">Google Sign-In Successful</string>
 
+    <!-- Félicitation moderne pour le premier produit -->
+    <string name="first_product_congrats_title">🎉 Bravo !</string>
+    <string name="first_product_congrats_subtitle">Premier produit ajouté</string>
+    <string name="first_product_congrats_message">Vous venez de franchir une étape importante ! Votre premier produit est maintenant enregistré et vous pouvez commencer à optimiser vos achats avec Shoopt.</string>
+    <string name="first_product_stats_message">Vous rejoignez des milliers d\'utilisateurs malins !</string>
+    <string name="continue_shopping">Continuer mes achats</string>
+    <string name="trophy_icon_description">Icône de trophée pour célébrer le premier produit ajouté</string>
+
     <!-- New strings for currency management -->
     <string name="currency_selection_info">The selected currency will be used to display all prices in the application.</string>
     <string name="currency">Currency</string>
@@ -376,7 +384,6 @@
 
     <string name="guide_update_list_title">Update your list</string>
     <string name="guide_update_list_desc">Create and edit your shopping list before going to the store.</string>
-
     <string name="guide_add_product_title">Add a product</string>
     <string name="guide_add_product_desc">Save new products and track their prices to save money.</string>
 
