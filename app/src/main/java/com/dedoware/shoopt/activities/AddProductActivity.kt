@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.BitmapFactory.Options
 import android.graphics.Matrix
+import android.graphics.Rect
 import android.location.Location
 import android.os.Bundle
 import android.os.Environment
@@ -36,6 +37,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.widget.NestedScrollView
 import androidx.exifinterface.media.ExifInterface
 import com.bumptech.glide.Glide
 import com.dedoware.shoopt.R
@@ -567,8 +569,25 @@ class AddProductActivity : AppCompatActivity() {
 
         updateShopList(adapter)
 
+        // Scroll automatique vers le champ shop
+        val scrollView = findViewById<NestedScrollView>(R.id.global_add_or_update_product_view)
+        productShopAutoCompleteTextView.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                scrollToShopField()
+            }
+        }
+
+        productShopAutoCompleteTextView.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) {
+                scrollToShopField()
+            }
+        })
+
         productShopAutoCompleteTextView.setOnClickListener {
             productShopAutoCompleteTextView.showDropDown()
+            scrollToShopField()
         }
     }
 
@@ -1133,6 +1152,34 @@ class AddProductActivity : AppCompatActivity() {
         productShopAutoCompleteTextView = findViewById(R.id.shop_autocomplete)
         scanBarcodeButton = findViewById(R.id.scan_barcode_IB)
 
+        // Configuration de l'AutoCompleteTextView pour le shop
+        productShopAutoCompleteTextView.setDropDownBackgroundResource(R.color.main_palette_isabelline)
+        productShopAutoCompleteTextView.dropDownVerticalOffset = resources.getDimensionPixelSize(R.dimen.dropdown_vertical_offset)
+        productShopAutoCompleteTextView.dropDownHeight = ViewGroup.LayoutParams.WRAP_CONTENT
+
+        // Forcer le dropdown à apparaître au-dessus du clavier
+        productShopAutoCompleteTextView.setOnClickListener {
+            productShopAutoCompleteTextView.showDropDown()
+            val dropDown = productShopAutoCompleteTextView.dropDownAnchor?.let { anchor ->
+                findViewById<View>(anchor)
+            }
+            dropDown?.post {
+                val location = IntArray(2)
+                dropDown.getLocationInWindow(location)
+                val dropDownHeight = productShopAutoCompleteTextView.dropDownHeight
+                if (location[1] + dropDownHeight > resources.displayMetrics.heightPixels) {
+                    productShopAutoCompleteTextView.dropDownVerticalOffset = -dropDownHeight
+                }
+            }
+        }
+
+        // Assurez-vous que le dropdown reste visible lors du scroll
+        productShopAutoCompleteTextView.setOnScrollChangeListener { _, _, _, _, _ ->
+            if (productShopAutoCompleteTextView.isPopupShowing) {
+                productShopAutoCompleteTextView.showDropDown()
+            }
+        }
+
         // Initialiser le switch d'autocomplétion avec vérification de sécurité
         val switchView = findViewById<SwitchMaterial>(R.id.autocompletion_switch)
         if (switchView != null) {
@@ -1605,5 +1652,36 @@ class AddProductActivity : AppCompatActivity() {
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+    }
+
+    private fun scrollToShopField() {
+        val scrollView = findViewById<NestedScrollView>(R.id.global_add_or_update_product_view)
+        val shopLayout = findViewById<com.google.android.material.textfield.TextInputLayout>(R.id.shop_layout)
+
+        // Attendre que le layout soit prêt
+        shopLayout.post {
+            try {
+                val scrollViewRect = Rect()
+                val shopLayoutRect = Rect()
+
+                scrollView.getGlobalVisibleRect(scrollViewRect)
+                shopLayout.getGlobalVisibleRect(shopLayoutRect)
+
+                // Calculer la position cible pour le scroll
+                val targetScroll = (shopLayoutRect.top - scrollViewRect.top) +
+                        scrollView.scrollY -
+                        dpToPx(100) // Marge supplémentaire pour le dropdown
+
+                // Scroll avec animation
+                scrollView.smoothScrollTo(0, targetScroll.coerceAtLeast(0))
+            } catch (e: Exception) {
+                // Gestion des erreurs silencieuse pour éviter les crashs
+                Log.e("AddProductActivity", "Erreur lors du scroll: ${e.message}")
+            }
+        }
+    }
+
+    private fun dpToPx(dp: Int): Int {
+        return (dp * resources.displayMetrics.density).toInt()
     }
 }

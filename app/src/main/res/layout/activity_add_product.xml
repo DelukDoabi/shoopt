@@ -14,17 +14,19 @@
         android:layout_height="match_parent"
         android:background="@drawable/login_gradient_background" />
 
-    <!-- Main responsive constraint layout with scroll capability for small screens -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/global_add_or_update_product_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:scrollbars="none"
+        android:scrollbars="vertical"
         android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:scrollbarStyle="insideOverlay">
+        android:fadeScrollbars="false"
+        android:paddingBottom="@dimen/margin_large"
+        android:scrollbarStyle="outsideOverlay"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <!-- Main responsive constraint layout with scroll capability for small screens -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -390,6 +392,9 @@
                         app:hintAnimationEnabled="true"
                         app:expandedHintEnabled="true"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        android:animateLayoutChanges="true"
+                        app:endIconMode="dropdown_menu"
+                        app:endIconTint="@color/main_palette_old_lavender_variant"
                         app:layout_constraintTop_toBottomOf="@id/price_container"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent">
@@ -405,7 +410,13 @@
                             android:textSize="@dimen/text_medium"
                             android:autoSizeTextType="uniform"
                             android:autoSizeMinTextSize="@dimen/button_text_min"
-                            android:autoSizeMaxTextSize="@dimen/button_text_max" />
+                            android:autoSizeMaxTextSize="@dimen/button_text_max"
+                            android:dropDownVerticalOffset="4dp"
+                            android:dropDownAnchor="@id/shop_layout"
+                            android:dropDownHeight="wrap_content"
+                            android:popupBackground="@color/main_palette_isabelline"
+                            android:windowSoftInputMode="adjustPan"
+                            android:paddingBottom="12dp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <!-- Save button - Compact sizing -->

@@ -92,7 +92,9 @@
         <activity
             android:name=".activities.AddProductActivity"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:theme="@style/Theme.Shoopt" />
         <activity
             android:name=".activities.ProductChoiceActivity"
             android:exported="false"
