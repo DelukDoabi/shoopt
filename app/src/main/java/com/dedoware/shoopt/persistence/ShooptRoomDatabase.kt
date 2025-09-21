@@ -20,16 +20,16 @@ import com.dedoware.shoopt.model.dao.ShoppingCartDao
 import com.dedoware.shoopt.model.dao.ShoppingListDao
 
 @Database(
-    version = 2, // Augmenter la version de la base de données car nous avons ajouté une nouvelle entité
+    version = 2,
     entities = [
         Product::class,
         Shop::class,
         ShoppingCartEntity::class,
         CartItemEntity::class,
         ShoppingList::class,
-        ExchangeRateEntity::class // Ajout de notre nouvelle entité
+        ExchangeRateEntity::class
     ],
-    exportSchema = false // Empêcher l'exportation du schéma pour la simplicité
+    exportSchema = false
 )
 abstract class ShooptRoomDatabase : RoomDatabase() {
     abstract fun productDao(): ProductDao
@@ -37,7 +37,7 @@ abstract class ShooptRoomDatabase : RoomDatabase() {
     abstract fun shoppingCartDao(): ShoppingCartDao
     abstract fun shoppingListDao(): ShoppingListDao
     abstract fun cartItemDao(): CartItemDao
-    abstract fun exchangeRateDao(): ExchangeRateDao // Ajout de notre nouveau DAO
+    abstract fun exchangeRateDao(): ExchangeRateDao
 
     companion object {
         @Volatile
@@ -50,8 +50,9 @@ abstract class ShooptRoomDatabase : RoomDatabase() {
                     ShooptRoomDatabase::class.java,
                     "shoopt_room_database"
                 )
-                    .fallbackToDestructiveMigration() // Utiliser cette option pour simplifier la migration
-                    .build()
+                .fallbackToDestructiveMigration()
+                .build()
+
                 INSTANCE = instance
                 instance
             }

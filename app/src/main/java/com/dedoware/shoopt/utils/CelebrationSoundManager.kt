@@ -77,6 +77,13 @@ class CelebrationSoundManager private constructor(context: Context) {
         }
     }
 
+    /**
+     * Joue le son de succès - alias pour playCelebrationSound
+     */
+    fun playSuccessSound() {
+        playCelebrationSound()
+    }
+
     private suspend fun playSystemSuccessSound() {
         // Séquence de sons de notification pour créer un effet de célébration
         val audioManager = appContext.getSystemService(Context.AUDIO_SERVICE) as? AudioManager

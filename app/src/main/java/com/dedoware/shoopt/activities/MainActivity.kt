@@ -106,6 +106,22 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+            val profileButton: MaterialButton = findViewById(R.id.profile_button)
+            profileButton.setOnClickListener {
+                try {
+                    startActivity(Intent(this, UserProfileActivity::class.java))
+                } catch (e: Exception) {
+                    // Capture des erreurs liées au lancement de l'activité UserProfile
+                    CrashlyticsManager.log("Erreur lors du lancement de UserProfileActivity: ${e.message ?: "Message non disponible"}")
+                    CrashlyticsManager.setCustomKey("error_location", "launch_activity")
+                    CrashlyticsManager.setCustomKey("target_activity", "UserProfileActivity")
+                    CrashlyticsManager.logException(e)
+
+                    // Afficher un message à l'utilisateur
+                    Toast.makeText(this, getString(R.string.profile_open_error), Toast.LENGTH_SHORT).show()
+                }
+            }
+
             // Configuration des cartes pour une meilleure expérience utilisateur
             setupFeatureCards()
 
@@ -341,6 +357,7 @@ class MainActivity : AppCompatActivity() {
             val analyseCard: MaterialCardView = findViewById(R.id.analyse_card)
             val settingsButton: MaterialButton = findViewById(R.id.settings_button)
             val logoutButton: MaterialButton = findViewById(R.id.logout_button)
+            val profileButton: MaterialButton = findViewById(R.id.profile_button)
 
             // Spotlight pour l'ajout de produit
             spotlightItems.add(

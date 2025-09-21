@@ -58,6 +58,10 @@ import com.dedoware.shoopt.utils.ShooptUtils
 import com.dedoware.shoopt.utils.UserPreferences
 import com.dedoware.shoopt.utils.FirstProductManager
 import com.dedoware.shoopt.ui.dialogs.FirstProductCongratulationDialog
+import com.dedoware.shoopt.gamification.manager.SimplifiedGamificationManager
+import com.dedoware.shoopt.gamification.ui.GamificationCelebrationView
+import com.dedoware.shoopt.gamification.data.DefaultAchievements
+import com.dedoware.shoopt.gamification.models.UserProfile
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.libraries.places.api.Places
@@ -113,6 +117,10 @@ class AddProductActivity : AppCompatActivity() {
         (application as ShooptApplication).database
     }
     private val useFirebase = false // This could be a config or user preference
+
+    // Variables pour le système de gamification - version simplifiée
+    private lateinit var gamificationManager: SimplifiedGamificationManager
+    private var gamificationCelebrationView: GamificationCelebrationView? = null
 
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -566,6 +574,18 @@ class AddProductActivity : AppCompatActivity() {
                 // Ignore si la détection du mode debug échoue
                 Log.w("AddProductActivity", "Could not setup debug test features", e)
             }
+
+            // Initialiser le manager de gamification simplifié
+            try {
+                gamificationManager = SimplifiedGamificationManager.getInstance(this)
+                Log.d("GAMIFICATION", "GamificationManager simplifié initialisé avec succès")
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de l'initialisation de GamificationManager: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "gamification_manager_init")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+            }
         } catch (e: Exception) {
             // Capture des erreurs globales dans onCreate
             CrashlyticsManager.log("Erreur globale dans onCreate d'AddProductActivity: ${e.message ?: "Message non disponible"}")
@@ -840,7 +860,7 @@ class AddProductActivity : AppCompatActivity() {
         }
     }
 
-    // Update the saveProduct function without collecting personal data
+    // Update the saveProduct function with simplified gamification integration
     private fun saveProduct(productPictureUrl: String, price: String, unitPrice: String) {
         val barcode = if (productBarcodeEditText.text.toString().isEmpty()) "0".toLong() else productBarcodeEditText.text.toString().toLong()
         val timestamp = System.currentTimeMillis()
@@ -853,6 +873,7 @@ class AddProductActivity : AppCompatActivity() {
                     // Vérifier si c'est le premier produit avant la sauvegarde
                     val firstProductManager = FirstProductManager.getInstance(this@AddProductActivity)
                     val isFirstProduct = firstProductManager.shouldShowCongratulation()
+                    val isNewProduct = !intent.hasExtra("productId")
 
                     // LOGS DE DEBUG pour diagnostiquer
                     Log.d("SHOOPT_FIRST_PRODUCT", "=== DEBUT VERIFICATION PREMIER PRODUIT ===")
@@ -907,16 +928,41 @@ class AddProductActivity : AppCompatActivity() {
                     // Afficher le message de succès standard
                     Toast.makeText(this@AddProductActivity, "Product saved with ID: $productId", Toast.LENGTH_SHORT).show()
 
-                    // IMPORTANT: Afficher la félicitation SEULEMENT pour les nouveaux produits (pas les mises à jour)
-                    if (isFirstProduct && !intent.hasExtra("productId")) {
-                        Log.d("SHOOPT_FIRST_PRODUCT", "=== AFFICHAGE DE LA FELICITATION ===")
-                        showFirstProductCongratulation()
-                        firstProductManager.markCongratulationShown()
+                    // === NOUVEAU SYSTÈME DE GAMIFICATION SIMPLIFIÉ ===
+                    if (isNewProduct) {
+                        try {
+                            val userId = getCurrentUserId()
 
-                        // Analytique pour la première félicitation
-                        AnalyticsManager.logCustomEvent("first_product_congratulation_shown", null)
-                    } else {
-                        Log.d("SHOOPT_FIRST_PRODUCT", "Félicitation non affichée - isFirstProduct: $isFirstProduct, hasProductId: ${intent.hasExtra("productId")}")
+                            if (isFirstProduct) {
+                                // Premier produit jamais ajouté
+                                gamificationManager.triggerEvent(userId, SimplifiedGamificationManager.EVENT_FIRST_PRODUCT_ADDED)
+
+                                // Afficher la célébration spéciale pour le premier produit
+                                showModernGamificationCelebration(userId, isFirstProduct = true)
+
+                                // Marquer les félicitations comme affichées
+                                firstProductManager.markCongratulationShown()
+
+                                // Analytique pour la première félicitation
+                                AnalyticsManager.logCustomEvent("first_product_congratulation_shown", null)
+
+                                Log.d("GAMIFICATION", "Premier produit ajouté - XP et achievement accordés")
+                            } else {
+                                // Produit standard
+                                gamificationManager.triggerEvent(userId, SimplifiedGamificationManager.EVENT_PRODUCT_ADDED)
+                                Log.d("GAMIFICATION", "Produit standard ajouté - XP accordé")
+                            }
+
+                        } catch (e: Exception) {
+                            CrashlyticsManager.log("Erreur dans le système de gamification: ${e.message}")
+                            CrashlyticsManager.logException(e)
+
+                            // Fallback vers l'ancien système si le nouveau échoue
+                            if (isFirstProduct) {
+                                showFirstProductCongratulation()
+                                firstProductManager.markCongratulationShown()
+                            }
+                        }
                     }
 
                     updateResultIntentForTrackShopping(Product(productId, barcode, timestamp, name, price.toDouble(), unitPrice.toDouble(), shop, productPictureUrl))
@@ -936,6 +982,70 @@ class AddProductActivity : AppCompatActivity() {
                 // Sans detailler quels champs exactement sont manquants
             }
             AnalyticsManager.logCustomEvent("product_save_validation_failed", params)
+        }
+    }
+
+    /**
+     * Obtient l'ID utilisateur actuel - à adapter selon votre système d'authentification
+     */
+    private fun getCurrentUserId(): String {
+        // TODO: Adapter selon votre système d'authentification
+        // Pour l'instant, utilise un ID basé sur l'appareil
+        return android.provider.Settings.Secure.getString(contentResolver, android.provider.Settings.Secure.ANDROID_ID) ?: "default_user"
+    }
+
+    /**
+     * Affiche la célébration moderne de gamification - version simplifiée
+     */
+    private suspend fun showModernGamificationCelebration(userId: String, isFirstProduct: Boolean = false) {
+        try {
+            val userProfile = gamificationManager.getOrCreateUserProfile(userId)
+            val xpProgressPercentage = gamificationManager.getUserXpProgressPercentage(userId)
+
+            Log.d("GAMIFICATION", "Affichage célébration - XP: ${userProfile.totalXp}, Pourcentage: $xpProgressPercentage%")
+
+            // Créer et ajouter la vue de célébration si elle n'existe pas
+            if (gamificationCelebrationView == null) {
+                gamificationCelebrationView = GamificationCelebrationView(this@AddProductActivity)
+                val rootLayout = findViewById<ViewGroup>(android.R.id.content)
+                rootLayout.addView(gamificationCelebrationView)
+            }
+
+            if (isFirstProduct) {
+                // Célébration spéciale pour le premier produit
+                gamificationCelebrationView?.showFirstProductCelebration(
+                    userProfile = userProfile,
+                    xpProgressPercentage = xpProgressPercentage
+                ) {
+                    // Callback quand la célébration est fermée
+                    gamificationCelebrationView?.let { view ->
+                        val rootLayout = findViewById<ViewGroup>(android.R.id.content)
+                        rootLayout.removeView(view)
+                        gamificationCelebrationView = null
+                    }
+                }
+            }
+
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de l'affichage de la célébration moderne: ${e.message}")
+            CrashlyticsManager.logException(e)
+
+            // Fallback vers l'ancien système
+            showFirstProductCongratulation()
+        }
+    }
+
+    /**
+     * Vérifie et affiche les nouveaux achievements débloqués
+     */
+    private suspend fun checkAndShowNewAchievements(userId: String) {
+        try {
+            // Cette logique sera implémentée dans le GamificationManager
+            // pour vérifier automatiquement les achievements lors des événements
+
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la vérification des achievements: ${e.message}")
+            CrashlyticsManager.logException(e)
         }
     }
 
