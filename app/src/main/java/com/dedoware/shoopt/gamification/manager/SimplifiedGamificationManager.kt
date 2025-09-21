@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import com.dedoware.shoopt.gamification.models.UserProfile
 import com.dedoware.shoopt.gamification.data.DefaultAchievements
+import com.dedoware.shoopt.gamification.models.Achievement
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -20,6 +21,14 @@ class SimplifiedGamificationManager private constructor(context: Context) {
     private val sharedPrefs: SharedPreferences = context.getSharedPreferences("gamification_prefs", Context.MODE_PRIVATE)
     private val gson = Gson()
 
+    // Nouvelle interface pour les callbacks d'achievements
+    interface AchievementUnlockedListener {
+        suspend fun onAchievementUnlocked(userId: String, achievement: Achievement)
+    }
+
+    // Liste des listeners pour les événements d'achievement
+    private val achievementListeners = mutableListOf<AchievementUnlockedListener>()
+
     companion object {
         const val EVENT_FIRST_PRODUCT_ADDED = "first_product_added"
         const val EVENT_PRODUCT_ADDED = "product_added"
@@ -32,6 +41,22 @@ class SimplifiedGamificationManager private constructor(context: Context) {
                 INSTANCE ?: SimplifiedGamificationManager(context.applicationContext).also { INSTANCE = it }
             }
         }
+    }
+
+    /**
+     * Ajoute un listener pour les événements d'achievement débloqué
+     */
+    fun addAchievementUnlockedListener(listener: AchievementUnlockedListener) {
+        if (!achievementListeners.contains(listener)) {
+            achievementListeners.add(listener)
+        }
+    }
+
+    /**
+     * Retire un listener pour les événements d'achievement débloqué
+     */
+    fun removeAchievementUnlockedListener(listener: AchievementUnlockedListener) {
+        achievementListeners.remove(listener)
     }
 
     /**
@@ -106,7 +131,19 @@ class SimplifiedGamificationManager private constructor(context: Context) {
                     achievementsCompleted = profile.achievementsCompleted + 1
                 )
                 saveUserProfile(userId, updatedProfile)
+
+                // Notifier les listeners de l'achievement débloqué
+                notifyAchievementUnlocked(userId, achievement)
             }
+        }
+    }
+
+    /**
+     * Notifie les listeners qu'un achievement a été débloqué
+     */
+    private suspend fun notifyAchievementUnlocked(userId: String, achievement: Achievement) {
+        for (listener in achievementListeners) {
+            listener.onAchievementUnlocked(userId, achievement)
         }
     }
 
@@ -190,6 +227,35 @@ class SimplifiedGamificationManager private constructor(context: Context) {
             } else {
                 0f
             }
+        }
+    }
+
+    /**
+     * Synchronise le nombre de produits dans le profil utilisateur avec le nombre réel
+     * de produits en base de données
+     */
+    suspend fun synchronizeProductCount(userId: String, actualProductCount: Int) {
+        val profile = getOrCreateUserProfile(userId)
+
+        // Ne pas réduire le nombre de produits si le compteur actuel est plus grand
+        // Cela évite de reprendre des récompenses déjà accordées en cas de suppression de produits
+        if (actualProductCount > profile.productsAdded) {
+            val oldCount = profile.productsAdded
+            val updatedProfile = profile.copy(
+                productsAdded = actualProductCount,
+                lastActivity = System.currentTimeMillis()
+            )
+
+            saveUserProfile(userId, updatedProfile)
+
+            // Vérifier si de nouveaux achievements sont débloqués suite à cette synchronisation
+            if (oldCount != actualProductCount) {
+                checkProductAchievements(userId, actualProductCount)
+            }
+
+            // Log de debug pour suivre la synchronisation
+            android.util.Log.d("SHOOPT_GAMIFICATION",
+                "Synchronisation des produits: $oldCount -> $actualProductCount produits")
         }
     }
 }

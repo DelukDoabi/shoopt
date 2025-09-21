@@ -85,6 +85,10 @@ class UserProfileFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 val userId = getCurrentUserId()
+
+                // Synchroniser le nombre de produits avec la base de données réelle
+                synchronizeProductCount(userId)
+
                 val userProfile = gamificationManager.getOrCreateUserProfile(userId)
                 val xpProgressPercentage = gamificationManager.getUserXpProgressPercentage(userId)
 
@@ -94,6 +98,44 @@ class UserProfileFragment : Fragment() {
             } catch (e: Exception) {
                 showError("Erreur lors du chargement du profil: ${e.message}")
             }
+        }
+    }
+
+    /**
+     * Synchronise le nombre de produits dans le système de gamification
+     * avec le nombre réel de produits en base de données
+     */
+    private suspend fun synchronizeProductCount(userId: String) {
+        try {
+            // Utiliser le même repository que celui utilisé dans l'application
+            val useFirebase = requireContext()
+                .getSharedPreferences("app_preferences", 0)
+                .getBoolean("use_firebase", false)
+
+            val productRepository: com.dedoware.shoopt.persistence.IProductRepository = if (useFirebase) {
+                com.dedoware.shoopt.persistence.FirebaseProductRepository()
+            } else {
+                // Récupérer la base de données depuis l'application
+                val database = (requireActivity().application as com.dedoware.shoopt.ShooptApplication).database
+                com.dedoware.shoopt.persistence.LocalProductRepository(
+                    database.productDao(),
+                    database.shopDao(),
+                    database.shoppingCartDao(),
+                    database.cartItemDao()
+                )
+            }
+
+            // Récupérer tous les produits et compter leur nombre
+            val products = productRepository.getAll()
+            val actualProductCount = products.size
+
+            // Log de debug pour voir le nombre réel de produits
+            android.util.Log.d("SHOOPT_GAMIFICATION", "Nombre réel de produits: $actualProductCount")
+
+            // Synchroniser avec le système de gamification
+            gamificationManager.synchronizeProductCount(userId, actualProductCount)
+        } catch (e: Exception) {
+            android.util.Log.e("SHOOPT_GAMIFICATION", "Erreur lors de la synchronisation des produits: ${e.message}", e)
         }
     }
 

@@ -19,6 +19,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.dedoware.shoopt.R
+import com.dedoware.shoopt.gamification.models.Achievement
 import com.dedoware.shoopt.ui.effects.CelebrationParticleView
 import com.dedoware.shoopt.utils.CelebrationSoundManager
 import com.dedoware.shoopt.utils.FirstProductManager
@@ -30,24 +31,27 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
- * Dialog moderne de félicitation pour le premier produit ajouté
+ * Dialog moderne de félicitation pour les achievements débloqués
  * Inclut des animations fluides, effets sonores, vibrations et design moderne
+ * Version généralisée à partir de FirstProductCongratulationDialog
  */
-class FirstProductCongratulationDialog(
+class AchievementCongratulationDialog(
     context: Context,
+    private val achievement: Achievement,
     private val onDismissCallback: (() -> Unit)? = null
 ) : Dialog(context, android.R.style.Theme_Translucent_NoTitleBar) {
 
     private lateinit var congratsCard: CardView
-    private lateinit var trophyIcon: ImageView
+    private lateinit var achievementIcon: ImageView
     private lateinit var shineEffect: ShineEffectView
     private lateinit var titleText: TextView
     private lateinit var subtitleText: TextView
     private lateinit var messageText: TextView
-    private lateinit var statsText: TextView
+    private lateinit var rewardText: TextView
     private lateinit var continueButton: MaterialButton
     private lateinit var celebrationParticles: CelebrationParticleView
 
+    // Pour les effets de célébration
     private val firstProductManager = FirstProductManager.getInstance(context)
     private val soundManager = CelebrationSoundManager.getInstance(context)
 
@@ -70,24 +74,24 @@ class FirstProductCongratulationDialog(
         setContentView(view)
 
         congratsCard = view.findViewById(R.id.congratsCard)
-        trophyIcon = view.findViewById(R.id.trophyIcon)
+        achievementIcon = view.findViewById(R.id.trophyIcon)
         shineEffect = view.findViewById(R.id.shineEffect)
         titleText = view.findViewById(R.id.titleText)
         subtitleText = view.findViewById(R.id.subtitleText)
         messageText = view.findViewById(R.id.messageText)
-        statsText = view.findViewById(R.id.statsText)
+        rewardText = view.findViewById(R.id.statsText)
         continueButton = view.findViewById(R.id.continueButton)
         celebrationParticles = view.findViewById(R.id.celebrationParticles)
 
-        // Configuration du contenu
-        titleText.text = context.getString(R.string.first_product_congrats_title)
-        subtitleText.text = context.getString(R.string.first_product_congrats_subtitle)
-        messageText.text = context.getString(R.string.first_product_congrats_message)
-        statsText.text = context.getString(R.string.first_product_stats_message)
+        // Configuration du contenu avec les données de l'achievement
+        titleText.text = context.getString(R.string.achievement_unlocked)
+        subtitleText.text = achievement.title
+        messageText.text = achievement.description
+        rewardText.text = context.getString(R.string.achievement_reward, achievement.xpReward)
         continueButton.text = context.getString(R.string.continue_shopping)
 
-        // Icône du trophée
-        trophyIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_trophy_gold))
+        // Icône de l'achievement
+        setAchievementIcon(achievement.icon)
     }
 
     private fun startCelebrationSequence() {
@@ -113,10 +117,10 @@ class FirstProductCongratulationDialog(
         congratsCard.scaleY = 0f
         congratsCard.alpha = 0f
 
-        // Animation du trophée
-        trophyIcon.scaleX = 0f
-        trophyIcon.scaleY = 0f
-        trophyIcon.rotation = -180f
+        // Animation de l'icône
+        achievementIcon.scaleX = 0f
+        achievementIcon.scaleY = 0f
+        achievementIcon.rotation = -180f
 
         // Animation des textes
         titleText.alpha = 0f
@@ -125,8 +129,8 @@ class FirstProductCongratulationDialog(
         subtitleText.translationY = 30f
         messageText.alpha = 0f
         messageText.translationY = 50f
-        statsText.alpha = 0f
-        statsText.translationY = 30f
+        rewardText.alpha = 0f
+        rewardText.translationY = 30f
         continueButton.alpha = 0f
         continueButton.translationY = 50f
 
@@ -146,13 +150,13 @@ class FirstProductCongratulationDialog(
             interpolator = OvershootInterpolator(1.5f)
         }
 
-        // Animation du trophée avec rotation et rebond
-        val trophyScaleX = ObjectAnimator.ofFloat(trophyIcon, "scaleX", 0f, 1.3f, 1f)
-        val trophyScaleY = ObjectAnimator.ofFloat(trophyIcon, "scaleY", 0f, 1.3f, 1f)
-        val trophyRotation = ObjectAnimator.ofFloat(trophyIcon, "rotation", -180f, 0f)
+        // Animation de l'icône avec rotation et rebond
+        val iconScaleX = ObjectAnimator.ofFloat(achievementIcon, "scaleX", 0f, 1.3f, 1f)
+        val iconScaleY = ObjectAnimator.ofFloat(achievementIcon, "scaleY", 0f, 1.3f, 1f)
+        val iconRotation = ObjectAnimator.ofFloat(achievementIcon, "rotation", -180f, 0f)
 
-        val trophyAnimatorSet = AnimatorSet().apply {
-            playTogether(trophyScaleX, trophyScaleY, trophyRotation)
+        val iconAnimatorSet = AnimatorSet().apply {
+            playTogether(iconScaleX, iconScaleY, iconRotation)
             duration = 1000
             startDelay = 400
             interpolator = BounceInterpolator()
@@ -162,22 +166,22 @@ class FirstProductCongratulationDialog(
         val titleAnimation = createTextAnimation(titleText, 700)
         val subtitleAnimation = createTextAnimation(subtitleText, 850)
         val messageAnimation = createTextAnimation(messageText, 1000)
-        val statsAnimation = createTextAnimation(statsText, 1150)
+        val rewardAnimation = createTextAnimation(rewardText, 1150)
         val buttonAnimation = createTextAnimation(continueButton, 1300)
 
         // Démarrage de toutes les animations
         cardAnimatorSet.start()
-        trophyAnimatorSet.start()
+        iconAnimatorSet.start()
         titleAnimation.start()
         subtitleAnimation.start()
         messageAnimation.start()
-        statsAnimation.start()
+        rewardAnimation.start()
         buttonAnimation.start()
 
-        // Animation de pulsation continue du trophée après l'entrée
+        // Animation de pulsation continue de l'icône après l'entrée
         CoroutineScope(Dispatchers.Main).launch {
             delay(1500)
-            startTrophyPulseAnimation()
+            startIconPulseAnimation()
             shineEffect.startAnimations()
         }
     }
@@ -196,9 +200,9 @@ class FirstProductCongratulationDialog(
         }
     }
 
-    private fun startTrophyPulseAnimation() {
-        val pulseAnimator = ObjectAnimator.ofFloat(trophyIcon, "scaleX", 1f, 1.15f, 1f)
-        val pulseAnimatorY = ObjectAnimator.ofFloat(trophyIcon, "scaleY", 1f, 1.15f, 1f)
+    private fun startIconPulseAnimation() {
+        val pulseAnimator = ObjectAnimator.ofFloat(achievementIcon, "scaleX", 1f, 1.15f, 1f)
+        val pulseAnimatorY = ObjectAnimator.ofFloat(achievementIcon, "scaleY", 1f, 1.15f, 1f)
 
         val pulseAnimatorSet = AnimatorSet().apply {
             playTogether(pulseAnimator, pulseAnimatorY)
@@ -229,9 +233,6 @@ class FirstProductCongratulationDialog(
         // Arrêter les effets visuels
         shineEffect.stopAnimations()
 
-        // Marquer la félicitation comme montrée
-        firstProductManager.markCongratulationShown()
-
         val scaleDownX = ObjectAnimator.ofFloat(congratsCard, "scaleX", 1f, 0.8f)
         val scaleDownY = ObjectAnimator.ofFloat(congratsCard, "scaleY", 1f, 0.8f)
         val fadeOut = ObjectAnimator.ofFloat(congratsCard, "alpha", 1f, 0f)
@@ -259,5 +260,27 @@ class FirstProductCongratulationDialog(
         shineEffect.stopAnimations()
         soundManager.release()
         super.dismiss()
+    }
+
+    /**
+     * Définit l'icône appropriée pour l'achievement
+     */
+    private fun setAchievementIcon(iconName: String) {
+        val iconRes = when (iconName) {
+            "ic_first_product" -> R.drawable.ic_add_circle
+            "ic_collection" -> R.drawable.ic_product
+            "ic_price_hunter" -> R.drawable.ic_price
+            "ic_expert" -> R.drawable.ic_star
+            "ic_master" -> R.drawable.ic_trophy_gold
+            "ic_legend" -> R.drawable.ic_stars
+            "ic_shopping_cart" -> R.drawable.ic_shopping_cart_confident
+            "ic_barcode" -> R.drawable.ic_barcode_scan
+            "ic_compare" -> R.drawable.ic_analytics
+            "ic_calendar" -> R.drawable.ic_trending_up
+            "ic_share" -> R.drawable.ic_person
+            else -> R.drawable.ic_celebration
+        }
+
+        achievementIcon.setImageResource(iconRes)
     }
 }

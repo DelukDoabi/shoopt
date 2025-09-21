@@ -32,6 +32,7 @@ import com.dedoware.shoopt.models.SpotlightShape
 import com.dedoware.shoopt.models.SpotlightItem
 import com.dedoware.shoopt.utils.SpotlightManager
 import com.dedoware.shoopt.utils.OnboardingManager
+import com.dedoware.shoopt.gamification.manager.AchievementCelebrationManager
 
 
 class MainActivity : AppCompatActivity() {
@@ -44,6 +45,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var analyseTextView: TextView
     private lateinit var userPreferences: UserPreferences
 
+    // Gestionnaire des célébrations d'achievements
+    private lateinit var achievementCelebrationManager: AchievementCelebrationManager
+
     private val useFirebase = false // Définition cohérente avec les autres activités
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +59,9 @@ class MainActivity : AppCompatActivity() {
             userPreferences.applyTheme()
 
             setContentView(R.layout.activity_main)
+
+            // Initialiser le gestionnaire de célébrations d'achievements
+            achievementCelebrationManager = AchievementCelebrationManager(this)
 
             setMainVariables()
 
@@ -208,6 +215,11 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         // Nettoyer les ressources de mise à jour
         UpdateManager.onDestroy()
+
+        // Libérer le gestionnaire de célébrations d'achievements
+        if (::achievementCelebrationManager.isInitialized) {
+            achievementCelebrationManager.release()
+        }
     }
 
     private fun setMainVariables() {

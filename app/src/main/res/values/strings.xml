@@ -55,7 +55,6 @@
     <string name="first_product_congrats_subtitle">Premier produit ajouté</string>
     <string name="first_product_congrats_message">Vous venez de franchir une étape importante ! Votre premier produit est maintenant enregistré et vous pouvez commencer à optimiser vos achats avec Shoopt.</string>
     <string name="first_product_stats_message">Vous rejoignez des milliers d\'utilisateurs malins !</string>
-    <string name="continue_shopping">Continuer mes achats</string>
     <string name="trophy_icon_description">Icône de trophée pour célébrer le premier produit ajouté</string>
 
     <!-- New strings for currency management -->
@@ -210,8 +209,6 @@
     <string name="shopping_sessions_count">%1$d sessions de shopping</string>
     <string name="your_achievements">Vos Achievements</string>
     <string name="achievement_locked">Non débloqué</string>
-    <string name="achievement_unlocked">Débloqué</string>
-
     <!-- Level titles -->
     <string name="level_beginner">Débutant</string>
     <string name="level_shopper">Acheteur</string>
@@ -419,5 +416,10 @@
     <string name="spotlight_track_stats_title">Session Stats</string>
     <string name="spotlight_track_total_description">See the total cost of items in your shopping cart</string>
     <string name="spotlight_track_total_title">Cart Total</string>
+
+    <!-- Achievement Congratulation Strings -->
+    <string name="achievement_unlocked">Achievement Unlocked!</string>
+    <string name="achievement_reward">+%1$d XP earned</string>
+    <string name="continue_shopping">Continue</string>
 
 </resources>
