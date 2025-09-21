@@ -257,6 +257,7 @@
     <string name="paste_successful">Content pasted successfully</string>
     <string name="photo_tips_message">Take clear photos for better recognition</string>
     <string name="photo_tips_title">Photo Tips</string>
+    <string name="photo_tips_icon_description">Photo tips icon</string>
     <string name="product_add_tips">Product Addition Tips</string>
     <string name="product_analysis">Product Analysis</string>
     <string name="product_check_error">Error checking product</string>
