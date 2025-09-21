@@ -186,7 +186,10 @@
             android:id="@+id/achievements_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="false" />
+            android:nestedScrollingEnabled="true"
+            android:clipToPadding="false"
+            android:paddingBottom="16dp"
+            android:overScrollMode="never" />
 
     </LinearLayout>
 
