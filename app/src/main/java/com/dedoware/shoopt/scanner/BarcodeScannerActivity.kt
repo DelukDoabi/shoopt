@@ -6,6 +6,7 @@ import android.animation.ValueAnimator
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.ImageButton
@@ -27,6 +28,11 @@ import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import com.dedoware.shoopt.gamification.manager.SimplifiedGamificationManager
+import com.dedoware.shoopt.gamification.manager.AchievementCelebrationManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class BarcodeScannerActivity : AppCompatActivity() {
     companion object {
@@ -51,6 +57,9 @@ class BarcodeScannerActivity : AppCompatActivity() {
     // Barcode scanner
     private lateinit var barcodeScanner: BarcodeScanner
 
+    // Gestionnaire de célébrations
+    private lateinit var achievementCelebrationManager: AchievementCelebrationManager
+
     // Demande de permission
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -73,6 +82,9 @@ class BarcodeScannerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_barcode_scanner)
+
+        // Initialiser le gestionnaire de célébrations pour cette activité
+        achievementCelebrationManager = AchievementCelebrationManager(this)
 
         // Initialiser les vues
         previewView = findViewById(R.id.previewView)
@@ -233,6 +245,21 @@ class BarcodeScannerActivity : AppCompatActivity() {
             }
             setResult(RESULT_OK, resultIntent)
 
+            // Notify gamification system about the scanned barcode so it can unlock achievements
+            try {
+                val userId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID) ?: "default_user"
+                CoroutineScope(Dispatchers.Main).launch {
+                    try {
+                        val simplified = SimplifiedGamificationManager.getInstance(this@BarcodeScannerActivity)
+                        simplified.triggerEvent(userId, SimplifiedGamificationManager.EVENT_BARCODE_SCANNED)
+                    } catch (e: Exception) {
+                        Log.w(TAG, "Failed to post barcode event to gamification: ${e.message}")
+                    }
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "Unable to post gamification event: ${e.message}")
+            }
+
             // Cancel any existing toasts first
             val toast = Toast.makeText(this, getString(R.string.barcode_detected), Toast.LENGTH_SHORT)
             toast.show()
@@ -261,6 +288,11 @@ class BarcodeScannerActivity : AppCompatActivity() {
         cameraExecutor.shutdown()
         if (::barcodeScanner.isInitialized) {
             barcodeScanner.close()
+        }
+
+        // Libérer le gestionnaire des célébrations
+        if (::achievementCelebrationManager.isInitialized) {
+            achievementCelebrationManager.release()
         }
     }
 

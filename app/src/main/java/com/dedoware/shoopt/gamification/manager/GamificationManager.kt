@@ -50,6 +50,7 @@ class GamificationManager(
     /**
      * Déclenche un événement et vérifie les achievements associés
      */
+    @Suppress("UNUSED_PARAMETER")
     suspend fun triggerEvent(userId: String, eventType: String, metadata: Map<String, Any> = emptyMap()) {
         when (eventType) {
             EVENT_FIRST_PRODUCT_ADDED -> handleFirstProductAdded(userId)
@@ -119,8 +120,17 @@ class GamificationManager(
             // Ajouter l'XP de l'achievement
             updateUserXpAndLevel(userId, achievement.xpReward)
 
-            // Déclencher la célébration
+            // Déclencher la célébration (analytics)
             triggerCelebration(userId, achievement)
+
+            // Notifier le SimplifiedGamificationManager pour afficher l'UI de célébration
+            try {
+                val simplified = SimplifiedGamificationManager.getInstance(context)
+                simplified.postAchievementUnlocked(userId, achievement)
+            } catch (e: Exception) {
+                // Si Simplified n'est pas disponible, on ignore silencieusement
+                android.util.Log.w("GamificationManager", "Unable to notify simplified manager: ${e.message}")
+            }
         }
     }
 
@@ -181,6 +191,7 @@ class GamificationManager(
 
     /**
      * Vérifie les achievements basés sur le nombre de produits
+     * Maintenant lancé en parallèle pour chaque achievement éligible
      */
     private suspend fun checkProductBasedAchievements(userId: String) {
         val profile = userProfileDao.getUserProfile(userId) ?: return
@@ -189,12 +200,20 @@ class GamificationManager(
         // Vérifier différents seuils
         val achievements = achievementDao.getAchievementsByCategory("PRODUCTS")
 
+        val toComplete = mutableListOf<Achievement>()
         achievements.forEach { achievement ->
             if (productCount >= achievement.requiredCount) {
                 val userAchievement = userAchievementDao.getUserAchievement(userId, achievement.id)
                 if (userAchievement == null || !userAchievement.isCompleted) {
-                    completeAchievement(userId, achievement)
+                    toComplete.add(achievement)
                 }
+            }
+        }
+
+        // Lancer les complétions en parallèle (fire-and-forget)
+        toComplete.forEach { achievement ->
+            CoroutineScope(Dispatchers.IO).launch {
+                completeAchievement(userId, achievement)
             }
         }
     }
@@ -270,13 +289,50 @@ class GamificationManager(
         )
         userProfileDao.updateUserProfile(updatedProfile)
         updateUserXpAndLevel(userId, 50)
+
+        // Vérifier les achievements de la catégorie SHOPPING
+        val shoppingAchievements = achievementDao.getAchievementsByCategory("SHOPPING")
+
+        val toComplete = mutableListOf<Achievement>()
+        shoppingAchievements.forEach { achievement ->
+            if (updatedProfile.shoppingSessions >= achievement.requiredCount) {
+                val userAchievement = userAchievementDao.getUserAchievement(userId, achievement.id)
+                if (userAchievement == null || !userAchievement.isCompleted) {
+                    toComplete.add(achievement)
+                }
+            }
+        }
+
+        toComplete.forEach { achievement ->
+            CoroutineScope(Dispatchers.IO).launch {
+                completeAchievement(userId, achievement)
+            }
+        }
     }
 
     private suspend fun handleBarcodeScanned(userId: String) {
         updateUserXpAndLevel(userId, 10)
+
+        // Vérifier et compléter l'achievement du premier scan
+        val barcodeAchievement = achievementDao.getAchievementById("first_barcode_scan")
+        if (barcodeAchievement != null) {
+            val userAchievement = userAchievementDao.getUserAchievement(userId, barcodeAchievement.id)
+            if (userAchievement == null || !userAchievement.isCompleted) {
+                completeAchievement(userId, barcodeAchievement)
+            }
+        }
     }
 
     private suspend fun handlePriceCompared(userId: String) {
         updateUserXpAndLevel(userId, 15)
+
+        // Vérifier et compléter l'achievement de comparaison de prix
+        val priceAchievement = achievementDao.getAchievementById("price_comparison")
+        if (priceAchievement != null) {
+            val userAchievement = userAchievementDao.getUserAchievement(userId, priceAchievement.id)
+            if (userAchievement == null || !userAchievement.isCompleted) {
+                completeAchievement(userId, priceAchievement)
+            }
+        }
     }
 }

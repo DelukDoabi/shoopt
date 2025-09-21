@@ -32,6 +32,8 @@ class SimplifiedGamificationManager private constructor(context: Context) {
     companion object {
         const val EVENT_FIRST_PRODUCT_ADDED = "first_product_added"
         const val EVENT_PRODUCT_ADDED = "product_added"
+        const val EVENT_BARCODE_SCANNED = "barcode_scanned"
+        const val EVENT_PRICE_COMPARED = "price_compared"
 
         @Volatile
         private var INSTANCE: SimplifiedGamificationManager? = null
@@ -66,6 +68,8 @@ class SimplifiedGamificationManager private constructor(context: Context) {
         when (eventType) {
             EVENT_FIRST_PRODUCT_ADDED -> handleFirstProductAdded(userId)
             EVENT_PRODUCT_ADDED -> handleProductAdded(userId)
+            EVENT_BARCODE_SCANNED -> handleBarcodeScanned(userId)
+            EVENT_PRICE_COMPARED -> handlePriceCompared(userId)
         }
 
         val params = Bundle().apply {
@@ -114,6 +118,54 @@ class SimplifiedGamificationManager private constructor(context: Context) {
     }
 
     /**
+     * Gère un scan de code-barres (débloque "first_barcode_scan")
+     */
+    private suspend fun handleBarcodeScanned(userId: String) {
+        val profile = getOrCreateUserProfile(userId)
+
+        // Ajouter l'XP pour le scan
+        val updatedProfile = profile.copy(
+            totalXp = profile.totalXp + 10,
+            lastActivity = System.currentTimeMillis()
+        )
+        saveUserProfile(userId, updatedProfile)
+
+        // Marquer l'achievement "first_barcode_scan" si non complété
+        if (!isAchievementCompleted(userId, "first_barcode_scan")) {
+            markAchievementCompleted(userId, "first_barcode_scan")
+
+            // Notifier les listeners avec l'objet achievement depuis la configuration par défaut
+            val achievement = DefaultAchievements.getDefaultAchievements().find { it.id == "first_barcode_scan" }
+            if (achievement != null) {
+                notifyAchievementUnlocked(userId, achievement)
+            }
+        }
+    }
+
+    /**
+     * Gère une comparaison de prix (débloque "price_comparison")
+     */
+    private suspend fun handlePriceCompared(userId: String) {
+        val profile = getOrCreateUserProfile(userId)
+
+        // Ajouter l'XP pour la comparaison
+        val updatedProfile = profile.copy(
+            totalXp = profile.totalXp + 15,
+            lastActivity = System.currentTimeMillis()
+        )
+        saveUserProfile(userId, updatedProfile)
+
+        if (!isAchievementCompleted(userId, "price_comparison")) {
+            markAchievementCompleted(userId, "price_comparison")
+
+            val achievement = DefaultAchievements.getDefaultAchievements().find { it.id == "price_comparison" }
+            if (achievement != null) {
+                notifyAchievementUnlocked(userId, achievement)
+            }
+        }
+    }
+
+    /**
      * Vérifie les achievements basés sur le nombre de produits
      */
     private suspend fun checkProductAchievements(userId: String, productCount: Int) {
@@ -148,6 +200,16 @@ class SimplifiedGamificationManager private constructor(context: Context) {
     }
 
     /**
+     * Méthode publique pour poster un achievement débloqué depuis d'autres gestionnaires
+     * Permet à `GamificationManager` (ou autre) d'annoncer qu'un achievement a été complété
+     * et déclencher ainsi les listeners enregistrés (ex: affichage de célébration).
+     */
+    suspend fun postAchievementUnlocked(userId: String, achievement: Achievement) {
+        // Simple délégation vers la méthode interne de notification
+        notifyAchievementUnlocked(userId, achievement)
+    }
+
+    /**
      * Obtient ou crée le profil utilisateur (méthode publique)
      */
     suspend fun getOrCreateUserProfile(userId: String): UserProfile {
@@ -156,7 +218,7 @@ class SimplifiedGamificationManager private constructor(context: Context) {
             if (profileJson != null) {
                 try {
                     gson.fromJson(profileJson, UserProfile::class.java)
-                } catch (e: Exception) {
+                } catch (_: Exception) {
                     UserProfile(userId = userId)
                 }
             } else {
@@ -206,7 +268,7 @@ class SimplifiedGamificationManager private constructor(context: Context) {
             try {
                 val type = object : TypeToken<Set<String>>() {}.type
                 gson.fromJson(achievementsJson, type) ?: emptySet()
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 emptySet()
             }
         } else {
@@ -249,9 +311,8 @@ class SimplifiedGamificationManager private constructor(context: Context) {
             saveUserProfile(userId, updatedProfile)
 
             // Vérifier si de nouveaux achievements sont débloqués suite à cette synchronisation
-            if (oldCount != actualProductCount) {
-                checkProductAchievements(userId, actualProductCount)
-            }
+            // (oldCount < actualProductCount est vrai ici)
+            checkProductAchievements(userId, actualProductCount)
 
             // Log de debug pour suivre la synchronisation
             android.util.Log.d("SHOOPT_GAMIFICATION",
