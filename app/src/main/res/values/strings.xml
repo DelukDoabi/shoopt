@@ -71,6 +71,7 @@
     <string name="currency_conversion_error">Error during conversion. Prices remain in their original currency.</string>
     <string name="select_currency">Select a currency</string>
     <string name="confirm">Confirm</string>
+    <string name="menu">Menu</string>
 
 
     <!-- User Guide Strings -->

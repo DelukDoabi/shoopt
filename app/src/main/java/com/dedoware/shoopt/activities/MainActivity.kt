@@ -91,42 +91,10 @@ class MainActivity : AppCompatActivity() {
                 CrashlyticsManager.logException(e)
             }
 
-            // Configuration des boutons MaterialButton au lieu de ImageButton pour settings et logout
-            val logoutButton: MaterialButton = findViewById(R.id.logout_button)
-            logoutButton.setOnClickListener {
-                displayLogoutConfirmation()
-            }
-
-            val settingsButton: MaterialButton = findViewById(R.id.settings_button)
-            settingsButton.setOnClickListener {
-                try {
-                    startActivity(Intent(this, SettingsActivity::class.java))
-                } catch (e: Exception) {
-                    // Capture des erreurs liées au lancement de l'activité Settings
-                    CrashlyticsManager.log("Erreur lors du lancement de SettingsActivity: ${e.message ?: "Message non disponible"}")
-                    CrashlyticsManager.setCustomKey("error_location", "launch_activity")
-                    CrashlyticsManager.setCustomKey("target_activity", "SettingsActivity")
-                    CrashlyticsManager.logException(e)
-
-                    // Afficher un message à l'utilisateur
-                    Toast.makeText(this, getString(R.string.settings_open_error), Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            val profileButton: MaterialButton = findViewById(R.id.profile_button)
-            profileButton.setOnClickListener {
-                try {
-                    startActivity(Intent(this, UserProfileActivity::class.java))
-                } catch (e: Exception) {
-                    // Capture des erreurs liées au lancement de l'activité UserProfile
-                    CrashlyticsManager.log("Erreur lors du lancement de UserProfileActivity: ${e.message ?: "Message non disponible"}")
-                    CrashlyticsManager.setCustomKey("error_location", "launch_activity")
-                    CrashlyticsManager.setCustomKey("target_activity", "UserProfileActivity")
-                    CrashlyticsManager.logException(e)
-
-                    // Afficher un message à l'utilisateur
-                    Toast.makeText(this, getString(R.string.profile_open_error), Toast.LENGTH_SHORT).show()
-                }
+            // Configuration du menu burger
+            val menuButton: MaterialButton = findViewById(R.id.menu_button)
+            menuButton.setOnClickListener { view ->
+                showPopupMenu(view)
             }
 
             // Configuration des cartes pour une meilleure expérience utilisateur
@@ -367,9 +335,7 @@ class MainActivity : AppCompatActivity() {
             val addProductCard: MaterialCardView = findViewById(R.id.add_product_card)
             val trackShoppingCard: MaterialCardView = findViewById(R.id.track_shopping_card)
             val analyseCard: MaterialCardView = findViewById(R.id.analyse_card)
-            val settingsButton: MaterialButton = findViewById(R.id.settings_button)
-            val logoutButton: MaterialButton = findViewById(R.id.logout_button)
-            val profileButton: MaterialButton = findViewById(R.id.profile_button)
+            val menuButton: MaterialButton = findViewById(R.id.menu_button)
 
             // Spotlight pour l'ajout de produit
             spotlightItems.add(
@@ -411,22 +377,12 @@ class MainActivity : AppCompatActivity() {
                 )
             )
 
-            // Spotlight pour les paramètres
+            // Spotlight pour le menu burger
             spotlightItems.add(
                 SpotlightItem(
-                    targetView = settingsButton,
-                    titleRes = R.string.spotlight_main_settings_title,
+                    targetView = menuButton,
+                    titleRes = R.string.menu,
                     descriptionRes = R.string.spotlight_main_settings_description,
-                    shape = SpotlightShape.CIRCLE
-                )
-            )
-
-            // Spotlight pour la déconnexion
-            spotlightItems.add(
-                SpotlightItem(
-                    targetView = logoutButton,
-                    titleRes = R.string.spotlight_main_logout_title,
-                    descriptionRes = R.string.spotlight_main_logout_description,
                     shape = SpotlightShape.CIRCLE
                 )
             )
@@ -636,6 +592,67 @@ class MainActivity : AppCompatActivity() {
 
                 Toast.makeText(this@MainActivity, getString(R.string.product_check_error), Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    /**
+     * Affiche un menu popup avec les options de profil, paramètres et déconnexion
+     * lorsque l'utilisateur clique sur le bouton burger
+     */
+    private fun showPopupMenu(view: View) {
+        try {
+            val popup = androidx.appcompat.widget.PopupMenu(this, view)
+            popup.menuInflater.inflate(R.menu.menu_main, popup.menu)
+
+            popup.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.menu_profile -> {
+                        try {
+                            startActivity(Intent(this, UserProfileActivity::class.java))
+                        } catch (e: Exception) {
+                            CrashlyticsManager.log("Erreur lors du lancement de UserProfileActivity: ${e.message ?: "Message non disponible"}")
+                            CrashlyticsManager.setCustomKey("error_location", "launch_activity")
+                            CrashlyticsManager.setCustomKey("target_activity", "UserProfileActivity")
+                            CrashlyticsManager.logException(e)
+
+                            Toast.makeText(this, getString(R.string.profile_open_error), Toast.LENGTH_SHORT).show()
+                        }
+                        true
+                    }
+                    R.id.menu_settings -> {
+                        try {
+                            startActivity(Intent(this, SettingsActivity::class.java))
+                        } catch (e: Exception) {
+                            CrashlyticsManager.log("Erreur lors du lancement de SettingsActivity: ${e.message ?: "Message non disponible"}")
+                            CrashlyticsManager.setCustomKey("error_location", "launch_activity")
+                            CrashlyticsManager.setCustomKey("target_activity", "SettingsActivity")
+                            CrashlyticsManager.logException(e)
+
+                            Toast.makeText(this, getString(R.string.settings_open_error), Toast.LENGTH_SHORT).show()
+                        }
+                        true
+                    }
+                    R.id.menu_logout -> {
+                        displayLogoutConfirmation()
+                        true
+                    }
+                    else -> false
+                }
+            }
+
+            popup.show()
+
+            // Analytics pour l'ouverture du menu
+            AnalyticsManager.logUserAction(
+                action = "open_menu_burger",
+                category = "navigation"
+            )
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de l'affichage du menu: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "show_popup_menu")
+            CrashlyticsManager.logException(e)
+
+            Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show()
         }
     }
 }
