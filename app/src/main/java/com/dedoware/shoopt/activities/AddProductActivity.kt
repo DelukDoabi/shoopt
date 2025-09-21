@@ -624,7 +624,6 @@ class AddProductActivity : AppCompatActivity() {
         updateShopList(adapter)
 
         // Scroll automatique vers le champ shop
-        val scrollView = findViewById<NestedScrollView>(R.id.global_add_or_update_product_view)
         productShopAutoCompleteTextView.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 scrollToShopField()
@@ -1378,6 +1377,43 @@ class AddProductActivity : AppCompatActivity() {
             })
         }
 
+        // Attach generic scroll behaviour to other input fields on this screen
+        fun attachScrollToField(editableView: View, parentLayoutId: Int) {
+            val parentLayout = findViewById<com.google.android.material.textfield.TextInputLayout>(parentLayoutId)
+
+            // Focus change -> scroll
+            editableView.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        scrollToView(parentLayout)
+                    }, 300)
+                }
+            }
+
+            // Touch -> scroll after keyboard appears
+            editableView.setOnTouchListener { _, event ->
+                if (event.action == android.view.MotionEvent.ACTION_DOWN) {
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        scrollToView(parentLayout)
+                    }, 300)
+                }
+                false
+            }
+        }
+
+        try {
+            // barcode field
+            attachScrollToField(productBarcodeEditText, R.id.barcode_layout)
+            // product name
+            attachScrollToField(productNameEditText, R.id.name_layout)
+            // product price
+            attachScrollToField(productPriceEditText, R.id.price_layout)
+            // product unit price
+            attachScrollToField(productUnitPriceEditText, R.id.unit_price_layout)
+        } catch (e: Exception) {
+            Log.w("AddProductActivity", "Impossible d'attacher le scroll aux champs: ${e.message}")
+        }
+
         // Initialiser le switch d'autocompletion avec verification de securite
         val switchView = findViewById<SwitchMaterial>(R.id.autocompletion_switch)
         if (switchView != null) {
@@ -1849,29 +1885,38 @@ class AddProductActivity : AppCompatActivity() {
     }
 
     private fun scrollToShopField() {
-        val scrollView = findViewById<NestedScrollView>(R.id.global_add_or_update_product_view)
+        // Delegate to generic view scroller for the shop layout
         val shopLayout = findViewById<com.google.android.material.textfield.TextInputLayout>(R.id.shop_layout)
+        scrollToView(shopLayout)
+    }
 
-        shopLayout.post {
+    /**
+     * Scroll generic helper: scroll the main NestedScrollView so that targetView is visible
+     * with an extra margin to account for the on-screen keyboard.
+     */
+    private fun scrollToView(targetView: View) {
+        val scrollView = findViewById<NestedScrollView>(R.id.global_add_or_update_product_view)
+
+        targetView.post {
             try {
                 val scrollViewRect = Rect()
-                val shopLayoutRect = Rect()
+                val targetRect = Rect()
 
                 scrollView.getGlobalVisibleRect(scrollViewRect)
-                shopLayout.getGlobalVisibleRect(shopLayoutRect)
+                targetView.getGlobalVisibleRect(targetRect)
 
-                // Ajuster la position avec une marge plus importante pour le clavier
-                val keyboardHeight = resources.displayMetrics.heightPixels / 2  // Estimation de la hauteur du clavier
-                val targetScroll = (shopLayoutRect.top - scrollViewRect.top) +
+                // Estimation de la hauteur du clavier et marge supplémentaire
+                val keyboardEstimate = resources.displayMetrics.heightPixels / 2
+                val marginPx = dpToPx(150)
+
+                val targetScroll = (targetRect.top - scrollViewRect.top) +
                         scrollView.scrollY -
-                        dpToPx(150)  // Marge augmentee
+                        marginPx
 
                 scrollView.smoothScrollTo(0, targetScroll.coerceAtLeast(0))
-
-                // Force le rafraîchissement du layout
                 scrollView.requestLayout()
             } catch (e: Exception) {
-                Log.e("AddProductActivity", "Erreur lors du scroll: ${e.message}")
+                Log.e("AddProductActivity", "Erreur lors du scroll dynamique: ${e.message}")
             }
         }
     }
