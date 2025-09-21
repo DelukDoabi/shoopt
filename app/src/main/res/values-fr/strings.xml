@@ -424,4 +424,9 @@
     <string name="currency_conversion_error">Erreur lors de la conversion. Les prix restent dans leur devise d\'origine.</string>
     <string name="select_currency">Sélectionner une devise</string>
     <string name="confirm">Confirmer</string>
+
+    <!-- Chaînes pour les félicitations d'achievement -->
+    <string name="achievement_unlocked">Défi Accompli !</string>
+    <string name="achievement_reward">+%1$d XP gagnés</string>
+    <string name="continue_shopping">Continuer</string>
 </resources>

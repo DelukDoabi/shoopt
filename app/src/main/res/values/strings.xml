@@ -50,6 +50,13 @@
     <string name="login_failed">Login Failed: %1$s</string>
     <string name="google_sign_in_successful">Google Sign-In Successful</string>
 
+    <!-- Félicitation moderne pour le premier produit -->
+    <string name="first_product_congrats_title">🎉 Bravo !</string>
+    <string name="first_product_congrats_subtitle">Premier produit ajouté</string>
+    <string name="first_product_congrats_message">Vous venez de franchir une étape importante ! Votre premier produit est maintenant enregistré et vous pouvez commencer à optimiser vos achats avec Shoopt.</string>
+    <string name="first_product_stats_message">Vous rejoignez des milliers d\'utilisateurs malins !</string>
+    <string name="trophy_icon_description">Icône de trophée pour célébrer le premier produit ajouté</string>
+
     <!-- New strings for currency management -->
     <string name="currency_selection_info">The selected currency will be used to display all prices in the application.</string>
     <string name="currency">Currency</string>
@@ -64,6 +71,7 @@
     <string name="currency_conversion_error">Error during conversion. Prices remain in their original currency.</string>
     <string name="select_currency">Select a currency</string>
     <string name="confirm">Confirm</string>
+    <string name="menu">Menu</string>
 
 
     <!-- User Guide Strings -->
@@ -192,283 +200,227 @@
     <string name="scan_successful">Scan successful</string>
     <string name="camera_permission_required">Camera permission is required to scan barcodes</string>
 
-    <!-- Error Messages -->
-    <string name="dialog_display_error">Error displaying dialog</string>
-    <string name="manual_entry_error">Error in manual entry</string>
-    <string name="product_screen_open_error">Error opening product screen</string>
-    <string name="shopping_list_open_error">Error opening shopping list</string>
-    <string name="unexpected_error">An unexpected error occurred</string>
+    <!-- User Profile and Gamification -->
+    <string name="user_profile">Mon Profil</string>
+    <string name="profile_open_error">Erreur lors de l\'ouverture du profil</string>
+    <string name="level_progress_format">%1$d%% vers le niveau suivant</string>
+    <string name="total_xp_format">%1$d XP au total</string>
+    <string name="achievements_count">%1$d achievements débloqués</string>
+    <string name="products_added_count">%1$d produits ajoutés</string>
+    <string name="shopping_sessions_count">%1$d sessions de shopping</string>
+    <string name="your_achievements">Vos Achievements</string>
+    <string name="achievement_locked">Non débloqué</string>
+    <!-- Level titles -->
+    <string name="level_beginner">Débutant</string>
+    <string name="level_shopper">Acheteur</string>
+    <string name="level_smart_shopper">Acheteur Malin</string>
+    <string name="level_shopping_expert">Expert Shopping</string>
+    <string name="level_shopping_master">Maître du Shopping</string>
+    <string name="level_shopping_legend">Légende du Shopping</string>
 
-    <!-- AI and Tips -->
-    <string name="ai_assistant_tips">💡 AI Assistant Tips: Use natural language to describe your products for better recognition</string>
-
-    <!-- Paste Functionality -->
-    <string name="paste_successful">✅ List pasted successfully!</string>
-    <string name="clipboard_empty">📋 Clipboard is empty</string>
-    <string name="paste_error">❌ Error pasting from clipboard</string>
-    <string name="error_adding_products">❌ Error adding products to list</string>
-    <string name="nothing_to_paste">📋 Nothing to paste</string>
-
-    <!-- Analyze Activity Screen -->
+    <!-- Missing strings for layouts and functionality -->
+    <string name="add_product_options_error">Error opening product options</string>
+    <string name="ai_assistant_tips">AI Assistant Tips</string>
+    <string name="ai_autocompletion">AI Autocompletion</string>
+    <string name="ai_autocompletion_enabled">AI autocompletion enabled</string>
+    <string name="analyse_open_error">Error opening analysis</string>
     <string name="analyse_products">Analyze Products</string>
-    <string name="search_your_products">Search Your Products</string>
-    <string name="search_by_name_shop_or_price">Search by name, shop, or price…</string>
-    <string name="total_products">Total Products</string>
-    <string name="avg_price">Avg. Price</string>
-    <string name="shops">Shops</string>
-    <string name="your_products">Your Products</string>
-    <string name="sort">Sort</string>
-    <string name="sort_and_filter_products">Sort and Filter Products</string>
-    <string name="product_analysis">Product Analysis</string>
-    <string name="no_products_found">No Products Found</string>
+    <string name="app_baseline">App Baseline</string>
+    <string name="app_loading_error">Error loading application</string>
+    <string name="autocompletion_disabled_message">Autocompletion is currently disabled</string>
+    <string name="autocompletion_toggle_description">Enable or disable automatic completion suggestions</string>
+    <string name="autocompletion_toggle_title">Autocompletion</string>
+    <string name="avg_price">Average Price</string>
+    <string name="barcode_processing_error">Error processing barcode</string>
+    <string name="clipboard_empty">Clipboard is empty</string>
+    <string name="continue_to_camera">Continue to Camera</string>
+    <string name="delete">Delete</string>
+    <string name="delete_product">Delete Product</string>
+    <string name="delete_product_confirm">Are you sure you want to delete this product?</string>
+    <string name="dialog_display_error">Error displaying dialog</string>
+    <string name="dont_show_again">Don\'t show again</string>
+    <string name="error_adding_products">Error adding products</string>
+    <string name="failed_to_delete_product">Failed to delete product</string>
+    <string name="finish">Finish</string>
+    <string name="logout_confirmation_message">Are you sure you want to logout?</string>
+    <string name="logout_confirmation_title">Logout Confirmation</string>
+    <string name="logout_error">Error during logout</string>
+    <string name="manual_entry">Manual Entry</string>
+    <string name="manual_entry_error">Error in manual entry</string>
+    <string name="maps_autocompletion">Maps Autocompletion</string>
+    <string name="maps_autocompletion_enabled">Maps autocompletion enabled</string>
+    <string name="no">No</string>
+    <string name="no_products_found">No products found</string>
     <string name="no_products_to_analyze">No products to analyze</string>
-    <string name="start_adding_products_to_see_analysis">Start adding products to see detailed analysis and insights</string>
+    <string name="nothing_to_paste">Nothing to paste</string>
+    <string name="paste_error">Error pasting content</string>
+    <string name="paste_successful">Content pasted successfully</string>
+    <string name="photo_tips_message">Take clear photos for better recognition</string>
+    <string name="photo_tips_title">Photo Tips</string>
+    <string name="product_add_tips">Product Addition Tips</string>
+    <string name="product_analysis">Product Analysis</string>
+    <string name="product_check_error">Error checking product</string>
+    <string name="product_deleted">Product deleted</string>
+    <string name="product_screen_open_error">Error opening product screen</string>
     <string name="quick_add">Quick Add</string>
     <string name="quick_add_product">Quick Add Product</string>
-
-    <!-- Onboarding Carousel -->
-    <string name="app_baseline">Save, compare, save money.</string>
-    <string name="onboarding_skip">Skip</string>
-    <string name="onboarding_next">Next</string>
-    <string name="onboarding_get_started">Get Started</string>
-
-    <!-- Onboarding Steps -->
-    <string name="onboarding_step1_title">📲 Scan or add your everyday products</string>
-    <string name="onboarding_step1_description">Quickly add products to your personal database by scanning barcodes or entering details manually</string>
-
-    <string name="onboarding_step2_title">🧠 Remember prices to better evaluate equivalent products and promos</string>
-    <string name="onboarding_step2_description">Build your price memory to spot real deals and compare similar products across different stores</string>
-
-    <string name="onboarding_step3_title">🛍️ Shop more confidently and save money</string>
-    <string name="onboarding_step3_description">Make informed decisions with your personalized product database and never miss a good deal again</string>
-
-    <!-- Settings - Onboarding -->
-    <string name="replay_onboarding">Replay Onboarding</string>
-    <string name="replay_onboarding_description">Review the app introduction again</string>
-    <string name="onboarding_replayed">Onboarding will start on next app launch</string>
-
-    <string name="spotlight_next">Next</string>
-    <string name="spotlight_skip">Skip</string>
-    <string name="spotlight_finish">Finish</string>
-    <string name="spotlight_got_it">Got it!</string>
-
-    <string name="spotlight_main_scan_title">Track your purchases</string>
-    <string name="spotlight_main_scan_description">While shopping, add the products you buy step by step to track your expenses in real time and check them before reaching the checkout</string>
-
-    <string name="spotlight_main_add_title">Add or edit a product</string>
-    <string name="spotlight_main_add_description">Here you can manually add or edit a product, or scan its barcode</string>
-
-    <string name="spotlight_main_list_title">Your shopping list</string>
-    <string name="spotlight_main_list_description">View and manage your shopping list here</string>
-
-    <string name="spotlight_main_settings_title">Settings</string>
-    <string name="spotlight_main_settings_description">Customize the app according to your preferences</string>
-
-    <string name="spotlight_main_logout_title">Logout</string>
-    <string name="spotlight_main_logout_description">Log out from the app at any time, as you wish</string>
-
-    <string name="spotlight_analyse_chart_title">Analyze your products</string>
-    <string name="spotlight_analyse_chart_description">Check and analyze your products at any time (you can also edit them as you like)</string>
-
-    <string name="spotlight_analyse_filter_title">Analysis filters</string>
-    <string name="spotlight_analyse_filter_description">Use these filters to analyze your data by period, store, or category</string>
-
-    <string name="spotlight_track_cart_title">Current cart</string>
-    <string name="spotlight_track_cart_description">Track the content of your cart and your total expenses in real time</string>
-
-    <string name="spotlight_track_total_title">Total purchases</string>
-    <string name="spotlight_track_total_description">Here is the total amount of your current shopping session</string>
-
-    <string name="spotlight_choice_scan_title">Scan a barcode</string>
-    <string name="spotlight_choice_scan_description">Use the camera to quickly scan a product’s barcode and automatically retrieve its details if already available</string>
-
-    <string name="spotlight_choice_manual_title">Manual entry</string>
-    <string name="spotlight_choice_manual_description">Or add a product by manually entering all its details (name, price, store, etc.)</string>
-
-    <string name="spotlight_add_photo_title">Product photo</string>
-    <string name="spotlight_add_photo_description">Take a picture of the product to make it easier to identify and benefit from automatic analysis</string>
-
-    <string name="spotlight_add_barcode_title">Barcode</string>
-    <string name="spotlight_add_barcode_description">Enter the product’s barcode for precise identification – it can also be filled automatically via barcode scanning</string>
-
-    <string name="spotlight_add_scan_button_title">Scan the barcode</string>
-    <string name="spotlight_add_scan_button_description">At any time, you can use this button to quickly scan or rescan the barcode with your camera</string>
-
-    <string name="spotlight_add_name_title">Product name</string>
-    <string name="spotlight_add_name_description">Product name – can be filled automatically through image analysis</string>
-
-    <string name="spotlight_add_price_title">Price</string>
-    <string name="spotlight_add_price_description">Purchase price of the product in the store – can also be filled automatically through image analysis</string>
-
-    <string name="spotlight_add_unit_price_title">Unit price</string>
-    <string name="spotlight_add_unit_price_description">Price per kilo, liter, or unit to compare products – can also be filled automatically through image analysis</string>
-
-    <string name="spotlight_add_shop_title">Store</string>
-    <string name="spotlight_add_shop_description">Store name – can be detected automatically based on your location</string>
-
-    <string name="spotlight_add_save_title">Save</string>
-    <string name="spotlight_add_save_description">Save the product in your personal database</string>
-
-    <!-- Spotlight System Strings for AnalyseActivity -->
-    <string name="spotlight_analyse_stats_title">Your product statistics</string>
-    <string name="spotlight_analyse_stats_description">View the total number of products in your personal database</string>
-
-    <string name="spotlight_analyse_search_title">Search your products</string>
-    <string name="spotlight_analyse_search_description">Use this search bar to quickly find a specific product</string>
-
-    <string name="spotlight_analyse_sort_title">Sort and filter</string>
-    <string name="spotlight_analyse_sort_description">Organize your products by name, price, store, or date added</string>
-
-    <string name="spotlight_analyse_add_title">Add a new product</string>
-    <string name="spotlight_analyse_add_description">Tap here to add a new product to your collection</string>
-
-    <string name="spotlight_analyse_list_title">Your product collection</string>
-    <string name="spotlight_analyse_list_description">View all your products. Tap to edit, long press for more options</string>
-
-    <!-- Spotlight System Strings for TrackShoppingActivity -->
-    <string name="spotlight_track_add_title">Add products to cart</string>
-    <string name="spotlight_track_add_description">Tap here to add products to your ongoing shopping session</string>
-
-    <string name="spotlight_track_stats_title">Track your ongoing shopping</string>
-    <string name="spotlight_track_stats_description">Track in real time the number of items and the total cost of your ongoing shopping</string>
-
-    <string name="spotlight_track_clear_title">Empty the cart</string>
-    <string name="spotlight_track_clear_description">Remove all items from your shopping cart</string>
-
-    <string name="spotlight_track_list_title">Your ongoing shopping</string>
-    <string name="spotlight_track_list_description">View your items. Swipe to remove a product</string>
-
-    <!-- Spotlight System Strings for UpdateShoppingListActivity -->
-    <string name="spotlight_list_input_title">Enter your shopping list</string>
-    <string name="spotlight_list_input_description">Type or paste your shopping list here. Separate items with commas or line breaks</string>
-
-    <string name="spotlight_list_convert_title">Convert to organized products</string>
-    <string name="spotlight_list_convert_description">Transform your shopping list into organized products</string>
-
-    <string name="spotlight_list_converted_title">Your organized products</string>
-    <string name="spotlight_list_converted_description">Here will appear the list of your organized products</string>
-
-    <string name="spotlight_list_count_title">Product counter</string>
-    <string name="spotlight_list_count_description">Total number of products in your organized list</string>
-
-    <string name="spotlight_list_fullscreen_title">Fullscreen view</string>
-    <string name="spotlight_list_fullscreen_description">Open your organized product list in fullscreen for better visibility</string>
-    <string name="spotlight_list_clear_title">Clear the list</string>
-    <string name="spotlight_list_clear_description">Delete all products from your list at any time</string>
-
-    <!-- User Guide Strings -->
+    <string name="scanner_launch_error">Error launching scanner</string>
+    <string name="search_by_name_shop_or_price">Search by name, shop, or price</string>
+    <string name="search_your_products">Search your products</string>
+    <string name="settings_open_error">Error opening settings</string>
+    <string name="shopping_list_open_error">Error opening shopping list</string>
+    <string name="shops">Shops</string>
     <string name="skip">Skip</string>
-    <string name="finish">Finish</string>
-
-    <!-- Product Choice Guide -->
-    <string name="guide_scan_barcode_title">Scan a barcode</string>
-    <string name="guide_scan_barcode_desc">Use this option to scan a product’s barcode and automatically retrieve its information.</string>
-
-    <string name="guide_manual_entry_title">Manual entry</string>
-    <string name="guide_manual_entry_desc">Choose this option when a product has no barcode or to manually edit the details.</string>
-
-    <string name="guide_back_title">Go back to previous screen</string>
-    <string name="guide_back_desc">Tap this button to return to the main screen at any time.</string>
-
-    <!-- Main Screen Guide -->
-    <string name="guide_main_screen_title">Welcome to Shoopt</string>
-    <string name="guide_main_screen_desc">Learn how to use the app to track your shopping and save money.</string>
-
-    <string name="guide_update_list_title">Update your list</string>
-    <string name="guide_update_list_desc">Create and edit your shopping list before going to the store.</string>
-
-    <string name="guide_add_product_title">Add a product</string>
-    <string name="guide_add_product_desc">Save new products and track their prices to save money.</string>
-
-    <!-- Replay Add Product Guide -->
-    <string name="replay_add_product_guide">Replay the first product guide</string>
-    <string name="replay_add_product_guide_description">You can review the interactive guide to learn how to add a product anytime.</string>
-
-    <!-- Error messages -->
-    <string name="app_loading_error">Error while loading the application</string>
-    <string name="settings_open_error">Unable to open settings</string>
-    <string name="add_product_options_error">Error while opening add options</string>
-    <string name="barcode_processing_error">Error while processing the barcode</string>
-    <string name="product_check_error">Error while checking the product</string>
-    <string name="scanner_launch_error">Error while launching the scanner</string>
-    <string name="analyse_open_error">Error while opening the analysis</string>
-    <string name="track_shopping_open_error">Error while opening shopping tracker</string>
-    <string name="logout_error">Error while logging out</string>
-
-    <!-- Confirmation dialogs -->
-    <string name="logout_confirmation_title">Logout confirmation</string>
-    <string name="logout_confirmation_message">Are you sure you want to log out?</string>
+    <string name="sort">Sort</string>
+    <string name="sort_and_filter_products">Sort and Filter Products</string>
+    <string name="sort_name_asc">Sort by Name (A-Z)</string>
+    <string name="sort_name_desc">Sort by Name (Z-A)</string>
+    <string name="sort_oldest_first">Sort by Oldest First</string>
+    <string name="sort_price_asc">Sort by Price (Low to High)</string>
+    <string name="sort_price_desc">Sort by Price (High to Low)</string>
+    <string name="sort_products">Sort Products</string>
+    <string name="sort_recent_first">Sort by Recent First</string>
+    <string name="sort_shop_asc">Sort by Shop (A-Z)</string>
+    <string name="start_adding_products_to_see_analysis">Start adding products to see analysis</string>
+    <string name="total_products">Total Products</string>
+    <string name="track_shopping_open_error">Error opening shopping tracker</string>
+    <string name="unexpected_error">Unexpected error occurred</string>
     <string name="yes">Yes</string>
-    <string name="no">No</string>
-    <string name="delete_product">Delete product</string>
-    <string name="delete_product_confirm">Are you sure you want to delete this product?</string>
-    <string name="delete">Delete</string>
-    <string name="product_deleted">Product %1$s deleted</string>
-    <string name="failed_to_delete_product">Failed to delete product</string>
+    <string name="your_products">Your Products</string>
 
-    <!-- Sort options -->
-    <string name="sort_products">Sort products</string>
-    <string name="sort_name_asc">Name (A-Z)</string>
-    <string name="sort_name_desc">Name (Z-A)</string>
-    <string name="sort_price_asc">Price (ascending)</string>
-    <string name="sort_price_desc">Price (descending)</string>
-    <string name="sort_shop_asc">Store (A-Z)</string>
-    <string name="sort_recent_first">Most recent first</string>
-    <string name="sort_oldest_first">Oldest first</string>
+    <!-- Onboarding strings -->
+    <string name="onboarding_get_started">Get Started</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_replayed">Onboarding replayed</string>
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_step1_description">Welcome to Shoopt! Let\'s help you optimize your shopping experience.</string>
+    <string name="onboarding_step1_title">Welcome to Shoopt</string>
+    <string name="onboarding_step2_description">Add products by scanning barcodes or entering details manually.</string>
+    <string name="onboarding_step2_title">Add Your Products</string>
+    <string name="onboarding_step3_description">Track your shopping and analyze your spending patterns.</string>
+    <string name="onboarding_step3_title">Track &amp; Analyze</string>
 
-    <!-- Manual entry option -->
-    <string name="manual_entry">Manual entry</string>
+    <!-- Replay and Guide strings -->
+    <string name="replay_add_product_guide">Replay Product Guide</string>
+    <string name="replay_add_product_guide_description">Show the product addition guide again</string>
+    <string name="replay_onboarding">Replay Onboarding</string>
+    <string name="replay_onboarding_description">Show the initial app introduction again</string>
 
-    <!-- Add First Product Guide -->
-    <string name="guide_first_product_welcome_title">Welcome to Shoopt!</string>
-    <string name="guide_first_product_welcome_desc">We will guide you through adding your first product to help you get familiar with the app.</string>
+    <!-- Guide strings -->
+    <string name="guide_add_product_button_desc">Tap here to add new products to your inventory</string>
+    <string name="guide_add_product_button_title">Add Product Button</string>
+    <string name="guide_add_product_desc">This is where you can add new products by scanning or manual entry</string>
+    <string name="guide_add_product_title">Add Products</string>
+    <string name="guide_analyze_button_desc">View detailed analysis of your products and spending</string>
+    <string name="guide_analyze_button_title">Analysis Button</string>
+    <string name="guide_back_desc">Use this button to go back to the previous screen</string>
+    <string name="guide_back_title">Back Navigation</string>
+    <string name="guide_barcode_filled_desc">The barcode field has been automatically filled from the scan</string>
+    <string name="guide_barcode_filled_title">Barcode Auto-filled</string>
+    <string name="guide_barcode_scan_desc">Position the barcode in the camera frame to scan it automatically</string>
+    <string name="guide_barcode_scan_title">Scan Barcode</string>
+    <string name="guide_completion_desc">You\'ve completed the setup! Start using Shoopt to optimize your shopping.</string>
+    <string name="guide_completion_title">All Set!</string>
+    <string name="guide_fields_autofilled_desc">Some fields have been automatically filled based on the barcode scan</string>
+    <string name="guide_fields_autofilled_title">Auto-filled Information</string>
+    <string name="guide_first_product_welcome_desc">Congratulations on adding your first product! Let\'s explore what you can do next.</string>
+    <string name="guide_first_product_welcome_title">First Product Added</string>
+    <string name="guide_main_screen_desc">This is your main dashboard where you can access all Shoopt features</string>
+    <string name="guide_main_screen_title">Main Dashboard</string>
+    <string name="guide_manual_entry_desc">Choose this option to enter product details manually without scanning</string>
+    <string name="guide_manual_entry_title">Manual Entry</string>
+    <string name="guide_photo_warning_desc">Taking a clear photo will help with product recognition and price comparison</string>
+    <string name="guide_photo_warning_title">Product Photo</string>
+    <string name="guide_product_added_desc">Your product has been successfully added to your inventory</string>
+    <string name="guide_product_added_title">Product Added</string>
+    <string name="guide_product_choice_desc">Choose how you want to add your product - by scanning or manual entry</string>
+    <string name="guide_product_choice_title">Product Entry Method</string>
+    <string name="guide_save_product_desc">Tap here to save your product with all the entered information</string>
+    <string name="guide_save_product_title">Save Product</string>
+    <string name="guide_scan_barcode_desc">Choose this option to quickly add products by scanning their barcodes</string>
+    <string name="guide_scan_barcode_title">Scan Barcode</string>
+    <string name="guide_take_photo_button_desc">Tap here to take a photo of your product for better identification</string>
+    <string name="guide_take_photo_button_title">Take Product Photo</string>
+    <string name="guide_update_list_desc">Manage your shopping lists and convert them to trackable products</string>
+    <string name="guide_update_list_title">Shopping Lists</string>
 
-    <string name="guide_add_product_button_title">Add a product</string>
-    <string name="guide_add_product_button_desc">Tap this button to start adding your first product to your personal database.</string>
+    <!-- Spotlight strings -->
+    <string name="spotlight_add_barcode_description">Scan or enter product barcodes for automatic information retrieval</string>
+    <string name="spotlight_add_barcode_title">Product Barcode</string>
+    <string name="spotlight_add_name_description">Enter the product name for easy identification</string>
+    <string name="spotlight_add_name_title">Product Name</string>
+    <string name="spotlight_add_photo_description">Take a photo to help identify and compare products</string>
+    <string name="spotlight_add_photo_title">Product Photo</string>
+    <string name="spotlight_add_price_description">Enter the total price you paid for this product</string>
+    <string name="spotlight_add_price_title">Product Price</string>
+    <string name="spotlight_add_save_description">Save your product with all the entered information</string>
+    <string name="spotlight_add_save_title">Save Product</string>
+    <string name="spotlight_add_scan_button_description">Quickly scan product barcodes with your camera</string>
+    <string name="spotlight_add_scan_button_title">Barcode Scanner</string>
+    <string name="spotlight_add_shop_description">Select or add the shop where you bought this product</string>
+    <string name="spotlight_add_shop_title">Shop Information</string>
+    <string name="spotlight_add_unit_price_description">Enter the price per unit (e.g., per kg, per liter)</string>
+    <string name="spotlight_add_unit_price_title">Unit Price</string>
+    <string name="spotlight_analyse_add_description">Quickly add new products to expand your analysis data</string>
+    <string name="spotlight_analyse_add_title">Add More Products</string>
+    <string name="spotlight_analyse_chart_description">Visual representation of your shopping patterns and spending</string>
+    <string name="spotlight_analyse_chart_title">Analysis Charts</string>
+    <string name="spotlight_analyse_filter_description">Filter products by shop, price range, or other criteria</string>
+    <string name="spotlight_analyse_filter_title">Filter Products</string>
+    <string name="spotlight_analyse_list_description">Browse through all your added products in detail</string>
+    <string name="spotlight_analyse_list_title">Product List</string>
+    <string name="spotlight_analyse_search_description">Search for specific products by name, shop, or price</string>
+    <string name="spotlight_analyse_search_title">Search Products</string>
+    <string name="spotlight_analyse_sort_description">Sort your products by different criteria like price or date</string>
+    <string name="spotlight_analyse_sort_title">Sort Options</string>
+    <string name="spotlight_analyse_stats_description">View statistics about your shopping habits and spending</string>
+    <string name="spotlight_analyse_stats_title">Shopping Statistics</string>
+    <string name="spotlight_choice_manual_description">Enter product details manually without using a barcode scanner</string>
+    <string name="spotlight_choice_manual_title">Manual Entry</string>
+    <string name="spotlight_choice_scan_description">Use your camera to scan product barcodes for quick entry</string>
+    <string name="spotlight_choice_scan_title">Barcode Scanning</string>
+    <string name="spotlight_finish">Finish Tour</string>
+    <string name="spotlight_got_it">Got it!</string>
+    <string name="spotlight_list_clear_description">Clear your entire shopping list to start fresh</string>
+    <string name="spotlight_list_clear_title">Clear List</string>
+    <string name="spotlight_list_convert_description">Convert your shopping list items into trackable products</string>
+    <string name="spotlight_list_convert_title">Convert to Products</string>
+    <string name="spotlight_list_converted_description">View products that have been converted from your shopping list</string>
+    <string name="spotlight_list_converted_title">Converted Products</string>
+    <string name="spotlight_list_count_description">See how many items are in your current shopping list</string>
+    <string name="spotlight_list_count_title">Item Counter</string>
+    <string name="spotlight_list_fullscreen_description">View your products in fullscreen mode for better browsing</string>
+    <string name="spotlight_list_fullscreen_title">Fullscreen View</string>
+    <string name="spotlight_list_input_description">Enter your shopping items here, separated by commas or new lines</string>
+    <string name="spotlight_list_input_title">Shopping List Input</string>
+    <string name="spotlight_main_add_description">Add new products by scanning barcodes or entering details manually</string>
+    <string name="spotlight_main_add_title">Add Products</string>
+    <string name="spotlight_main_list_description">Manage your shopping lists and convert them to trackable products</string>
+    <string name="spotlight_main_list_title">Shopping Lists</string>
+    <string name="spotlight_main_logout_description">Sign out of your account and return to the login screen</string>
+    <string name="spotlight_main_logout_title">Logout</string>
+    <string name="spotlight_main_scan_description">Track your shopping sessions and manage your cart</string>
+    <string name="spotlight_main_scan_title">Track Shopping</string>
+    <string name="spotlight_main_settings_description">Customize app preferences, themes, and other settings</string>
+    <string name="spotlight_main_settings_title">Settings</string>
+    <string name="spotlight_next">Next</string>
+    <string name="spotlight_skip">Skip Tour</string>
+    <string name="spotlight_track_add_description">Add new products to your shopping cart</string>
+    <string name="spotlight_track_add_title">Add to Cart</string>
+    <string name="spotlight_track_cart_description">View and manage items in your current shopping cart</string>
+    <string name="spotlight_track_cart_title">Shopping Cart</string>
+    <string name="spotlight_track_clear_description">Empty your shopping cart to start a new session</string>
+    <string name="spotlight_track_clear_title">Clear Cart</string>
+    <string name="spotlight_track_list_description">Browse through all items in your shopping cart</string>
+    <string name="spotlight_track_list_title">Cart Items</string>
+    <string name="spotlight_track_stats_description">View statistics about your current shopping session</string>
+    <string name="spotlight_track_stats_title">Session Stats</string>
+    <string name="spotlight_track_total_description">See the total cost of items in your shopping cart</string>
+    <string name="spotlight_track_total_title">Cart Total</string>
 
-    <string name="guide_product_choice_title">Choose a method</string>
-    <string name="guide_product_choice_desc">You can scan a barcode or manually enter the product details. Both methods are easy!</string>
+    <!-- Achievement Congratulation Strings -->
+    <string name="achievement_unlocked">Achievement Unlocked!</string>
+    <string name="achievement_reward">+%1$d XP earned</string>
+    <string name="continue_shopping">Continue</string>
 
-    <string name="guide_barcode_scan_title">Scan the barcode</string>
-    <string name="guide_barcode_scan_desc">Align the barcode within the frame to identify it automatically and save time.</string>
-
-    <string name="guide_barcode_filled_title">Barcode detected</string>
-    <string name="guide_barcode_filled_desc">The barcode has been automatically detected and added. Let’s continue with the product photo.</string>
-
-    <string name="guide_take_photo_button_title">Take a photo</string>
-    <string name="guide_take_photo_button_desc">Tap here to take a photo of the product. Make sure the price is clearly visible!</string>
-
-    <string name="guide_photo_warning_title">Photo tip</string>
-    <string name="guide_photo_warning_desc">For best results, take a clear photo where the price and product name are clearly visible.</string>
-
-    <string name="guide_fields_autofilled_title">Pre-filled fields</string>
-    <string name="guide_fields_autofilled_desc">Thanks to AI and your location, product information has been filled automatically. Please check it!</string>
-
-    <string name="guide_save_product_title">Save your product</string>
-    <string name="guide_save_product_desc">Tap this button to save your first product into your personal database.</string>
-
-    <string name="guide_product_added_title">Product successfully added!</string>
-    <string name="guide_product_added_desc">Your first product has been added to your personal database. You can add more in the same way.</string>
-
-    <string name="guide_analyze_button_title">Analyze your products</string>
-    <string name="guide_analyze_button_desc">On this screen, you will be able to view all your products, compare prices, and track expenses.</string>
-
-    <string name="guide_completion_title">Congratulations!</string>
-    <string name="guide_completion_desc">You have successfully added your first product. Keep enriching your database to get the most out of Shoopt!</string>
-
-    <!-- Photo Tips Dialog -->
-    <string name="photo_tips_title">Photo Tips</string>
-    <string name="photo_tips_message">For best autocompletion results:\n• Center the product in frame\n• Ensure price tags are visible\n• Good lighting improves accuracy\n• Hold camera steady</string>
-    <string name="dont_show_again">Don\'t show again</string>
-    <string name="continue_to_camera">Continue</string>
-    <string name="product_add_tips">For best autocompletion results, center the product in frame with price tags visible.</string>
-
-    <!-- Nouvelles chaînes pour l'autocomplétion -->
-    <string name="ai_autocompletion">AI Autocompletion</string>
-    <string name="ai_autocompletion_enabled">AI Autocompletion Enabled</string>
-    <string name="autocompletion_toggle_title">Enable AI Autocompletion</string>
-    <string name="autocompletion_toggle_description">Let AI help fill product details automatically</string>
-    <string name="autocompletion_disabled_message">Autocompletion is disabled</string>
-    <string name="maps_autocompletion">Maps Autocompletion</string>
-    <string name="maps_autocompletion_enabled">Maps Autocompletion Enabled</string>
 </resources>

@@ -55,6 +55,13 @@ import com.dedoware.shoopt.scanner.BarcodeScannerActivity
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.ShooptUtils
+import com.dedoware.shoopt.utils.UserPreferences
+import com.dedoware.shoopt.utils.FirstProductManager
+import com.dedoware.shoopt.ui.dialogs.FirstProductCongratulationDialog
+import com.dedoware.shoopt.gamification.manager.SimplifiedGamificationManager
+import com.dedoware.shoopt.gamification.ui.GamificationCelebrationView
+import com.dedoware.shoopt.gamification.data.DefaultAchievements
+import com.dedoware.shoopt.gamification.models.UserProfile
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.libraries.places.api.Places
@@ -87,7 +94,6 @@ import com.dedoware.shoopt.extensions.startSpotlightTour
 import com.dedoware.shoopt.extensions.createSpotlightItem
 import com.dedoware.shoopt.extensions.isSpotlightAvailable
 import com.dedoware.shoopt.models.SpotlightShape
-import com.dedoware.shoopt.utils.UserPreferences
 
 
 class AddProductActivity : AppCompatActivity() {
@@ -112,13 +118,17 @@ class AddProductActivity : AppCompatActivity() {
     }
     private val useFirebase = false // This could be a config or user preference
 
+    // Variables pour le système de gamification - version simplifiée
+    private lateinit var gamificationManager: SimplifiedGamificationManager
+    private var gamificationCelebrationView: GamificationCelebrationView? = null
+
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             try {
                 if (result.resultCode == Activity.RESULT_OK) {
                     displayProductPictureOnImageButton()
 
-                    // Vérifier si l'autocomplétion intelligente est activée
+                    // Verifier si l'autocompletion intelligente est activee
                     if (autocompletionSwitch.isChecked) {
                         val pictureUrl = intent.getStringExtra("pictureUrl") ?: ""
 
@@ -129,21 +139,21 @@ class AddProductActivity : AppCompatActivity() {
 
                                 val jobs = mutableListOf<kotlinx.coroutines.Deferred<Unit>>()
 
-                                // Lancer l'analyse AI seulement si activée
+                                // Lancer l'analyse AI seulement si activee
                                 if (UserPreferences.isAiAutocompletionEnabled(this@AddProductActivity)) {
                                     jobs.add(async {
                                         analyzeProductImageWithMessage(pictureUrl)
                                     })
                                 }
 
-                                // Lancer la localisation Maps seulement si activée
+                                // Lancer la localisation Maps seulement si activee
                                 if (UserPreferences.isMapsAutocompletionEnabled(this@AddProductActivity)) {
                                     jobs.add(async {
                                         fetchCurrentLocationAndFillShopNameWithMessage()
                                     })
                                 }
 
-                                // Attendre que toutes les tâches activées se terminent
+                                // Attendre que toutes les tâches activees se terminent
                                 try {
                                     jobs.forEach { it.await() }
                                 } catch (e: Exception) {
@@ -156,7 +166,7 @@ class AddProductActivity : AppCompatActivity() {
                                     hideLoadingOverlay()
                                 }
                             } catch (e: Exception) {
-                                CrashlyticsManager.log("Erreur lors de l'analyse de l'image ou de la récupération de l'emplacement: ${e.message ?: "Message non disponible"}")
+                                CrashlyticsManager.log("Erreur lors de l'analyse de l'image ou de la recuperation de l'emplacement: ${e.message ?: "Message non disponible"}")
                                 CrashlyticsManager.setCustomKey("error_location", "product_analysis")
                                 CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
                                 CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
@@ -166,7 +176,7 @@ class AddProductActivity : AppCompatActivity() {
                             }
                         }
                     } else {
-                        // Autocomplétion désactivée - afficher un message informatif discret
+                        // Autocompletion desactivee - afficher un message informatif discret
                         Toast.makeText(this, getString(R.string.autocompletion_disabled_message), Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -241,7 +251,7 @@ class AddProductActivity : AppCompatActivity() {
         try {
             setContentView(R.layout.activity_add_product)
 
-            // Enregistrer l'événement d'ouverture de l'écran AddProduct
+            // Enregistrer l'evenement d'ouverture de l'ecran AddProduct
             AnalyticsManager.logScreenView("AddProduct", "AddProductActivity")
 
             try {
@@ -293,7 +303,7 @@ class AddProductActivity : AppCompatActivity() {
             try {
                 retrieveProductDataFromIntent()
             } catch (e: Exception) {
-                CrashlyticsManager.log("Erreur lors de la récupération des données du produit depuis l'intent: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.log("Erreur lors de la recuperation des donnees du produit depuis l'intent: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "intent_data_retrieval")
                 CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
                 CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
@@ -303,7 +313,7 @@ class AddProductActivity : AppCompatActivity() {
             try {
                 retrieveMainData(savedInstanceState)
             } catch (e: Exception) {
-                CrashlyticsManager.log("Erreur lors de la récupération des données sauvegardées: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.log("Erreur lors de la recuperation des donnees sauvegardees: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "saved_instance_data_retrieval")
                 CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
                 CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
@@ -324,7 +334,7 @@ class AddProductActivity : AppCompatActivity() {
                 try {
                     setShopsData()
                 } catch (e: Exception) {
-                    CrashlyticsManager.log("Erreur lors de l'initialisation des données de magasins: ${e.message ?: "Message non disponible"}")
+                    CrashlyticsManager.log("Erreur lors de l'initialisation des donnees de magasins: ${e.message ?: "Message non disponible"}")
                     CrashlyticsManager.setCustomKey("error_location", "shops_data_init")
                     CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
                     CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
@@ -338,7 +348,7 @@ class AddProductActivity : AppCompatActivity() {
                     "temp_shoopt_product_picture.jpg"
                 )
             } catch (e: Exception) {
-                CrashlyticsManager.log("Erreur lors de la création du fichier image temporaire: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.log("Erreur lors de la creation du fichier image temporaire: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "temp_file_creation")
                 CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
                 CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
@@ -348,7 +358,7 @@ class AddProductActivity : AppCompatActivity() {
             try {
                 getScannedBarcode()
             } catch (e: Exception) {
-                CrashlyticsManager.log("Erreur lors de la récupération du code-barres scanné: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.log("Erreur lors de la recuperation du code-barres scanne: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "barcode_retrieval")
                 CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
                 CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
@@ -363,7 +373,7 @@ class AddProductActivity : AppCompatActivity() {
                 try {
                     launchCamera()
                 } catch (e: Exception) {
-                    CrashlyticsManager.log("Erreur lors du lancement de la caméra: ${e.message ?: "Message non disponible"}")
+                    CrashlyticsManager.log("Erreur lors du lancement de la camera: ${e.message ?: "Message non disponible"}")
                     CrashlyticsManager.setCustomKey("error_location", "camera_launch")
                     CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
                     CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
@@ -434,7 +444,7 @@ class AddProductActivity : AppCompatActivity() {
                                     }
                                 } else {
                                     Log.e("DEBUG", "MAPS_KEY is empty. Places API initialization skipped.")
-                                    CrashlyticsManager.log("MAPS_KEY vide, initialisation de Places API ignorée")
+                                    CrashlyticsManager.log("MAPS_KEY vide, initialisation de Places API ignoree")
                                     CrashlyticsManager.setCustomKey("error_location", "maps_key_empty")
                                 }
                             } else {
@@ -451,7 +461,7 @@ class AddProductActivity : AppCompatActivity() {
                     } else {
                         Log.e("DEBUG", "Remote Config fetch failed.", fetchTask.exception)
                         fetchTask.exception?.let {
-                            CrashlyticsManager.log("Échec de la récupération de Remote Config: ${it.message ?: "Message non disponible"}")
+                            CrashlyticsManager.log("Échec de la recuperation de Remote Config: ${it.message ?: "Message non disponible"}")
                             CrashlyticsManager.setCustomKey("error_location", "remote_config_fetch")
                             CrashlyticsManager.setCustomKey("exception_class", it.javaClass.name)
                             CrashlyticsManager.setCustomKey("exception_message", it.message ?: "Message non disponible")
@@ -468,7 +478,7 @@ class AddProductActivity : AppCompatActivity() {
                         try {
                             fetchCurrentLocationAndFillShopName()
                         } catch (e: Exception) {
-                            CrashlyticsManager.log("Erreur lors de la récupération de la localisation: ${e.message ?: "Message non disponible"}")
+                            CrashlyticsManager.log("Erreur lors de la recuperation de la localisation: ${e.message ?: "Message non disponible"}")
                             CrashlyticsManager.setCustomKey("error_location", "location_fetch")
                             CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
                             CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
@@ -528,10 +538,54 @@ class AddProductActivity : AppCompatActivity() {
                 CrashlyticsManager.logException(e)
             }
 
-            // --- Onboarding simplifié - plus de guide complexe ---
+            // --- Onboarding simplifie - plus de guide complexe ---
 
-            // Démarrer le système de spotlight si nécessaire
+            // Demarrer le système de spotlight si necessaire
             setupSpotlightTour()
+
+            // AJOUT TEMPORAIRE POUR TESTER LA FELICITATION
+            // À supprimer une fois que ça fonctionne !
+            try {
+                // Utiliser une approche alternative pour détecter le mode debug
+                val isDebugMode = (applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0
+
+                if (isDebugMode) {
+                    // Ajouter un bouton de test long-press sur le bouton de sauvegarde
+                    saveProductImageButton.setOnLongClickListener {
+                        try {
+                            Log.d("SHOOPT_FIRST_PRODUCT", "=== TEST FORCE DE LA FELICITATION ===")
+
+                            // Reset et affichage forcé
+                            com.dedoware.shoopt.utils.FirstProductTestHelper.resetFirstProductStatus(this)
+
+                            // Afficher immédiatement
+                            showFirstProductCongratulation()
+
+                            Toast.makeText(this, "Test félicitation forcé!", Toast.LENGTH_SHORT).show()
+                            true
+                        } catch (e: Exception) {
+                            Log.e("SHOOPT_FIRST_PRODUCT", "Erreur test félicitation", e)
+                            Toast.makeText(this, "Erreur test: ${e.message}", Toast.LENGTH_SHORT).show()
+                            false
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                // Ignore si la détection du mode debug échoue
+                Log.w("AddProductActivity", "Could not setup debug test features", e)
+            }
+
+            // Initialiser le manager de gamification simplifié
+            try {
+                gamificationManager = SimplifiedGamificationManager.getInstance(this)
+                Log.d("GAMIFICATION", "GamificationManager simplifié initialisé avec succès")
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de l'initialisation de GamificationManager: ${e.message ?: "Message non disponible"}")
+                CrashlyticsManager.setCustomKey("error_location", "gamification_manager_init")
+                CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
+                CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+                CrashlyticsManager.logException(e)
+            }
         } catch (e: Exception) {
             // Capture des erreurs globales dans onCreate
             CrashlyticsManager.log("Erreur globale dans onCreate d'AddProductActivity: ${e.message ?: "Message non disponible"}")
@@ -543,9 +597,9 @@ class AddProductActivity : AppCompatActivity() {
             Log.e("AddProductActivity", "Error in resultLauncher", e)
 
             // Affichage d'un message d'erreur à l'utilisateur
-            Toast.makeText(this, "Une erreur est survenue lors du démarrage de l'application. Veuillez réessayer.", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Une erreur est survenue lors du demarrage de l'application. Veuillez reessayer.", Toast.LENGTH_LONG).show()
 
-            // Fermer l'activité en cas d'erreur critique
+            // Fermer l'activite en cas d'erreur critique
             finish()
         }
     }
@@ -692,12 +746,12 @@ class AddProductActivity : AppCompatActivity() {
         if (isGranted) {
             launchCameraInternal()
         } else {
-            Toast.makeText(this, "Permission caméra refusée", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Permission camera refusee", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun launchCameraInternal() {
-        // Analytique pour le lancement de la caméra
+        // Analytique pour le lancement de la camera
         AnalyticsManager.logSelectContent("product_picture", "camera", "product_capture")
 
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -714,7 +768,7 @@ class AddProductActivity : AppCompatActivity() {
         AnalyticsManager.logSelectContent("barcode_scan", "scanner", "product_barcode")
 
         try {
-            // Utilisation de notre nouvelle implémentation basée sur ML Kit
+            // Utilisation de notre nouvelle implementation basee sur ML Kit
             val intent = Intent(this, BarcodeScannerActivity::class.java)
             barcodeScannerLauncher.launch(intent)
         } catch (e: Exception) {
@@ -731,7 +785,7 @@ class AddProductActivity : AppCompatActivity() {
             if (barcodeValue != null) {
                 productBarcodeEditText.setText(barcodeValue)
 
-                // Analytique pour le code-barres scanné
+                // Analytique pour le code-barres scanne
                 val params = Bundle().apply {
                     putString("barcode_length", barcodeValue.length.toString())
                 }
@@ -806,7 +860,7 @@ class AddProductActivity : AppCompatActivity() {
         }
     }
 
-    // Update the saveProduct function without collecting personal data
+    // Update the saveProduct function with simplified gamification integration
     private fun saveProduct(productPictureUrl: String, price: String, unitPrice: String) {
         val barcode = if (productBarcodeEditText.text.toString().isEmpty()) "0".toLong() else productBarcodeEditText.text.toString().toLong()
         val timestamp = System.currentTimeMillis()
@@ -816,8 +870,21 @@ class AddProductActivity : AppCompatActivity() {
         if (name.isNotEmpty() && price.isNotEmpty() && unitPrice.isNotEmpty() && shop.isNotEmpty()) {
             CoroutineScope(Dispatchers.Main).launch {
                 try {
+                    // Vérifier si c'est le premier produit avant la sauvegarde
+                    val firstProductManager = FirstProductManager.getInstance(this@AddProductActivity)
+                    val isFirstProduct = firstProductManager.shouldShowCongratulation()
+                    val isNewProduct = !intent.hasExtra("productId")
+
+                    // LOGS DE DEBUG pour diagnostiquer
+                    Log.d("SHOOPT_FIRST_PRODUCT", "=== DEBUT VERIFICATION PREMIER PRODUIT ===")
+                    Log.d("SHOOPT_FIRST_PRODUCT", "isFirstProductEver: ${firstProductManager.isFirstProductEver()}")
+                    Log.d("SHOOPT_FIRST_PRODUCT", "wasCongratulationShown: ${firstProductManager.wasCongratulationShown()}")
+                    Log.d("SHOOPT_FIRST_PRODUCT", "shouldShowCongratulation: $isFirstProduct")
+                    Log.d("SHOOPT_FIRST_PRODUCT", "Intent has productId: ${intent.hasExtra("productId")}")
+
                     val productId = withContext(Dispatchers.IO) {
                         if (intent.hasExtra("productId")) {
+                            // C'est une MISE À JOUR, pas un nouveau produit
                             val product = Product(retrievedProductId, barcode, timestamp, name, price.toDouble(), unitPrice.toDouble(), shop, productPictureUrl)
                             productRepository.update(product)
 
@@ -830,6 +897,7 @@ class AddProductActivity : AppCompatActivity() {
 
                             product.id
                         } else {
+                            // C'est un NOUVEAU produit
                             var repositoryProductId = productRepository.getUniqueId()
 
                             if (repositoryProductId == null) {
@@ -839,10 +907,17 @@ class AddProductActivity : AppCompatActivity() {
                             val product = Product(repositoryProductId, barcode, timestamp, name, price.toDouble(), unitPrice.toDouble(), shop, productPictureUrl)
                             val productIdInserted = productRepository.insert(product)
 
+                            // IMPORTANT: Marquer le premier produit comme ajouté SEULEMENT pour les nouveaux produits
+                            if (isFirstProduct) {
+                                Log.d("SHOOPT_FIRST_PRODUCT", "Marquage du premier produit comme ajouté")
+                                firstProductManager.markFirstProductAdded()
+                            }
+
                             // Analytique anonymisée pour l'ajout de produit
                             val params = Bundle().apply {
                                 putString("has_barcode", (barcode != 0L).toString())
                                 putBoolean("has_image", productPictureUrl.isNotEmpty())
+                                putBoolean("is_first_product", isFirstProduct)
                                 // Ne pas collecter les noms ou prix exacts
                             }
                             AnalyticsManager.logCustomEvent("product_created", params)
@@ -850,34 +925,150 @@ class AddProductActivity : AppCompatActivity() {
                         }
                     }
 
+                    // Afficher le message de succès standard
                     Toast.makeText(this@AddProductActivity, "Product saved with ID: $productId", Toast.LENGTH_SHORT).show()
 
-                    // Guide utilisateur supprimé pour simplifier l'onboarding
+                    // === NOUVEAU SYSTÈME DE GAMIFICATION SIMPLIFIÉ ===
+                    if (isNewProduct) {
+                        try {
+                            val userId = getCurrentUserId()
+
+                            if (isFirstProduct) {
+                                // Premier produit jamais ajouté
+                                gamificationManager.triggerEvent(userId, SimplifiedGamificationManager.EVENT_FIRST_PRODUCT_ADDED)
+
+                                // Afficher la célébration spéciale pour le premier produit
+                                showModernGamificationCelebration(userId, isFirstProduct = true)
+
+                                // Marquer les félicitations comme affichées
+                                firstProductManager.markCongratulationShown()
+
+                                // Analytique pour la première félicitation
+                                AnalyticsManager.logCustomEvent("first_product_congratulation_shown", null)
+
+                                Log.d("GAMIFICATION", "Premier produit ajouté - XP et achievement accordés")
+                            } else {
+                                // Produit standard
+                                gamificationManager.triggerEvent(userId, SimplifiedGamificationManager.EVENT_PRODUCT_ADDED)
+                                Log.d("GAMIFICATION", "Produit standard ajouté - XP accordé")
+                            }
+
+                        } catch (e: Exception) {
+                            CrashlyticsManager.log("Erreur dans le système de gamification: ${e.message}")
+                            CrashlyticsManager.logException(e)
+
+                            // Fallback vers l'ancien système si le nouveau échoue
+                            if (isFirstProduct) {
+                                showFirstProductCongratulation()
+                                firstProductManager.markCongratulationShown()
+                            }
+                        }
+                    }
 
                     updateResultIntentForTrackShopping(Product(productId, barcode, timestamp, name, price.toDouble(), unitPrice.toDouble(), shop, productPictureUrl))
 
                     finish()
                 } catch (e: Exception) {
                     Log.d("SHOOPT_TAG", "Error saving product.", e)
-                    Toast.makeText(this@AddProductActivity, "Error saving product: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
-
-                    // Analytique anonymisée pour les erreurs de sauvegarde
-                    val params = Bundle().apply {
-                        putString("error_type", e.javaClass.simpleName)
-                        // Sans les détails du message d'erreur qui pourrait contenir des infos sensibles
-                    }
-                    AnalyticsManager.logCustomEvent("product_save_error", params)
+                    Log.e("SHOOPT_FIRST_PRODUCT", "Erreur lors de la sauvegarde du produit", e)
                 }
             }
         } else {
             displayFailedStorage()
 
-            // Analytique anonymisée pour les champs manquants
+            // Analytique anonymisee pour les champs manquants
             val params = Bundle().apply {
                 putBoolean("missing_fields", true)
-                // Sans détailler quels champs exactement sont manquants
+                // Sans detailler quels champs exactement sont manquants
             }
             AnalyticsManager.logCustomEvent("product_save_validation_failed", params)
+        }
+    }
+
+    /**
+     * Obtient l'ID utilisateur actuel - à adapter selon votre système d'authentification
+     */
+    private fun getCurrentUserId(): String {
+        // TODO: Adapter selon votre système d'authentification
+        // Pour l'instant, utilise un ID basé sur l'appareil
+        return android.provider.Settings.Secure.getString(contentResolver, android.provider.Settings.Secure.ANDROID_ID) ?: "default_user"
+    }
+
+    /**
+     * Affiche la célébration moderne de gamification - version simplifiée
+     */
+    private suspend fun showModernGamificationCelebration(userId: String, isFirstProduct: Boolean = false) {
+        try {
+            val userProfile = gamificationManager.getOrCreateUserProfile(userId)
+            val xpProgressPercentage = gamificationManager.getUserXpProgressPercentage(userId)
+
+            Log.d("GAMIFICATION", "Affichage célébration - XP: ${userProfile.totalXp}, Pourcentage: $xpProgressPercentage%")
+
+            // Créer et ajouter la vue de célébration si elle n'existe pas
+            if (gamificationCelebrationView == null) {
+                gamificationCelebrationView = GamificationCelebrationView(this@AddProductActivity)
+                val rootLayout = findViewById<ViewGroup>(android.R.id.content)
+                rootLayout.addView(gamificationCelebrationView)
+            }
+
+            if (isFirstProduct) {
+                // Célébration spéciale pour le premier produit
+                gamificationCelebrationView?.showFirstProductCelebration(
+                    userProfile = userProfile,
+                    xpProgressPercentage = xpProgressPercentage
+                ) {
+                    // Callback quand la célébration est fermée
+                    gamificationCelebrationView?.let { view ->
+                        val rootLayout = findViewById<ViewGroup>(android.R.id.content)
+                        rootLayout.removeView(view)
+                        gamificationCelebrationView = null
+                    }
+                }
+            }
+
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de l'affichage de la célébration moderne: ${e.message}")
+            CrashlyticsManager.logException(e)
+
+            // Fallback vers l'ancien système
+            showFirstProductCongratulation()
+        }
+    }
+
+    /**
+     * Vérifie et affiche les nouveaux achievements débloqués
+     */
+    private suspend fun checkAndShowNewAchievements(userId: String) {
+        try {
+            // Cette logique sera implémentée dans le GamificationManager
+            // pour vérifier automatiquement les achievements lors des événements
+
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de la vérification des achievements: ${e.message}")
+            CrashlyticsManager.logException(e)
+        }
+    }
+
+    /**
+     * Affiche le dialog de felicitation moderne pour le premier produit ajoute
+     */
+    private fun showFirstProductCongratulation() {
+        try {
+            val congratulationDialog = FirstProductCongratulationDialog(this) {
+                // Callback appele quand le dialog est ferme
+                // On peut ici ajouter des actions supplementaires si necessaire
+                AnalyticsManager.logCustomEvent("first_product_congratulation_dismissed", null)
+            }
+
+            congratulationDialog.show()
+
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de l'affichage de la felicitation: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "show_first_product_congratulation")
+            CrashlyticsManager.logException(e)
+
+            // Fallback avec un toast simple en cas d'erreur
+            Toast.makeText(this, getString(R.string.first_product_congrats_title), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -886,10 +1077,9 @@ class AddProductActivity : AppCompatActivity() {
             addNewShop(productShop.trim())
     }
 
-    // Mise à jour de la méthode pour inclure l'analytique lors de l'analyse d'image
     private suspend fun analyzeProductImage(imageUrl: String) {
         try {
-            // Analytique pour le d��but de l'analyse d'image
+            // Analytique pour le debut de l'analyse d'image
             withContext(Dispatchers.Main) {
                 val params = Bundle().apply {
                     putString("image_source", if (imageUrl.isEmpty()) "camera" else "url")
@@ -928,7 +1118,7 @@ class AddProductActivity : AppCompatActivity() {
                 handleImageAnalysisResponse(response)
 
                 withContext(Dispatchers.Main) {
-                    // Analytique pour l'analyse réussie
+                    // Analytique pour l'analyse reussie
                     AnalyticsManager.logCustomEvent("image_analysis_success", null)
                 }
             } catch (e: Exception) {
@@ -1044,7 +1234,7 @@ class AddProductActivity : AppCompatActivity() {
             productNameEditText.setText(parsedDetails.getString("name"))
             productPriceEditText.setText(parsedDetails.getString("unit_price"))
             productUnitPriceEditText.setText(parsedDetails.getString("kilo_price"))
-            // Auto-remplissage des champs terminé - onboarding simplifié
+            // Auto-remplissage des champs termine - onboarding simplifie
         }
     }
 
@@ -1165,7 +1355,7 @@ class AddProductActivity : AppCompatActivity() {
                     android.view.MotionEvent.ACTION_DOWN -> {
                         Handler(Looper.getMainLooper()).postDelayed({
                             scrollToShopField()
-                        }, 300) // Délai pour laisser le clavier apparaître
+                        }, 300) // Delai pour laisser le clavier apparaître
                     }
                 }
                 false
@@ -1175,7 +1365,7 @@ class AddProductActivity : AppCompatActivity() {
                 if (hasFocus) {
                     Handler(Looper.getMainLooper()).postDelayed({
                         scrollToShopField()
-                    }, 300) // Délai pour laisser le clavier apparaître
+                    }, 300) // Delai pour laisser le clavier apparaître
                 }
             }
 
@@ -1188,37 +1378,20 @@ class AddProductActivity : AppCompatActivity() {
             })
         }
 
-        // Scroll automatique vers le champ shop
-        val scrollView = findViewById<NestedScrollView>(R.id.global_add_or_update_product_view)
-        productShopAutoCompleteTextView.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                scrollToShopField()
-            }
-        }
-
-        productShopAutoCompleteTextView.addTextChangedListener(object : android.text.TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: android.text.Editable?) {
-                scrollToShopField()
-            }
-        })
-
-
-        // Initialiser le switch d'autocomplétion avec vérification de sécurité
+        // Initialiser le switch d'autocompletion avec verification de securite
         val switchView = findViewById<SwitchMaterial>(R.id.autocompletion_switch)
         if (switchView != null) {
             autocompletionSwitch = switchView
-            // Configurer le switch d'autocomplétion
+            // Configurer le switch d'autocompletion
             setupAutocompletionSwitch()
         } else {
-            CrashlyticsManager.log("Switch d'autocomplétion non trouvé dans le layout")
+            CrashlyticsManager.log("Switch d'autocompletion non trouve dans le layout")
             CrashlyticsManager.setCustomKey("error_location", "autocompletion_switch_not_found")
         }
     }
 
     /**
-     * Met à jour le texte de statut de l'autocomplétion
+     * Met à jour le texte de statut de l'autocompletion
      */
     private fun updateAutocompletionStatusText() {
         try {
@@ -1242,40 +1415,40 @@ class AddProductActivity : AppCompatActivity() {
     }
 
     /**
-     * Configure le switch d'autocomplétion intelligente
+     * Configure le switch d'autocompletion intelligente
      */
     private fun setupAutocompletionSwitch() {
         try {
-            // Initialiser l'état du switch basé sur les préférences actuelles
+            // Initialiser l'etat du switch base sur les preferences actuelles
             val isAiEnabled = UserPreferences.isAiAutocompletionEnabled(this)
             val isMapsEnabled = UserPreferences.isMapsAutocompletionEnabled(this)
 
-            // Le switch est activé si au moins une des deux fonctionnalités est activée
+            // Le switch est active si au moins une des deux fonctionnalites est activee
             autocompletionSwitch.isChecked = isAiEnabled || isMapsEnabled
 
             // Mettre à jour le texte de statut et l'apparence initiale
             updateAutocompletionStatusText()
             updateAutocompletionCardAppearance(autocompletionSwitch.isChecked)
 
-            // Configurer le listener pour les changements d'état
+            // Configurer le listener pour les changements d'etat
             autocompletionSwitch.setOnCheckedChangeListener { _, isChecked ->
                 try {
-                    // Enregistrer l'analytique du changement de préférence
+                    // Enregistrer l'analytique du changement de preference
                     val params = Bundle().apply {
                         putBoolean("autocompletion_enabled", isChecked)
                     }
                     AnalyticsManager.logCustomEvent("autocompletion_toggle_changed", params)
 
                     if (isChecked) {
-                        // Activer les deux fonctionnalités quand le switch est activé
+                        // Activer les deux fonctionnalites quand le switch est active
                         UserPreferences.setAiAutocompletionEnabled(this, true)
                         UserPreferences.setMapsAutocompletionEnabled(this, true)
 
                         Toast.makeText(this, getString(R.string.ai_autocompletion) + " et " +
-                                     getString(R.string.maps_autocompletion) + " activées",
+                                     getString(R.string.maps_autocompletion) + " activees",
                                      Toast.LENGTH_SHORT).show()
                     } else {
-                        // Désactiver les deux fonctionnalités quand le switch est désactivé
+                        // Desactiver les deux fonctionnalites quand le switch est desactive
                         UserPreferences.setAiAutocompletionEnabled(this, false)
                         UserPreferences.setMapsAutocompletionEnabled(this, false)
 
@@ -1288,7 +1461,7 @@ class AddProductActivity : AppCompatActivity() {
                     updateAutocompletionCardAppearance(isChecked)
 
                 } catch (e: Exception) {
-                    CrashlyticsManager.log("Erreur lors du changement d'état du switch d'autocomplétion: ${e.message ?: "Message non disponible"}")
+                    CrashlyticsManager.log("Erreur lors du changement d'etat du switch d'autocompletion: ${e.message ?: "Message non disponible"}")
                     CrashlyticsManager.setCustomKey("error_location", "autocompletion_switch_change")
                     CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
                     CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
@@ -1297,7 +1470,7 @@ class AddProductActivity : AppCompatActivity() {
             }
 
         } catch (e: Exception) {
-            CrashlyticsManager.log("Erreur lors de la configuration du switch d'autocomplétion: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.log("Erreur lors de la configuration du switch d'autocompletion: ${e.message ?: "Message non disponible"}")
             CrashlyticsManager.setCustomKey("error_location", "autocompletion_switch_setup")
             CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
             CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
@@ -1306,7 +1479,7 @@ class AddProductActivity : AppCompatActivity() {
     }
 
     /**
-     * Met à jour l'apparence du card d'autocomplétion avec une animation fluide
+     * Met à jour l'apparence du card d'autocompletion avec une animation fluide
      */
     private fun updateAutocompletionCardAppearance(isEnabled: Boolean) {
         try {
@@ -1323,7 +1496,7 @@ class AddProductActivity : AppCompatActivity() {
             // Animation de transition fluide
             val animationDuration = 300L
 
-            // Couleurs pour les différents états
+            // Couleurs pour les differents etats
             val enabledCardColor = androidx.core.content.ContextCompat.getColor(this, R.color.main_palette_isabelline)
             val disabledCardColor = androidx.core.content.ContextCompat.getColor(this, R.color.main_palette_old_lavender)
             val enabledTextColor = androidx.core.content.ContextCompat.getColor(this, R.color.main_palette_old_lavender_variant)
@@ -1332,7 +1505,7 @@ class AddProductActivity : AppCompatActivity() {
             val disabledStrokeColor = androidx.core.content.ContextCompat.getColor(this, R.color.main_palette_old_lavender_variant)
 
             if (isEnabled) {
-                // État activé : couleurs normales
+                // État active : couleurs normales
                 autocompletionCard?.animate()
                     ?.alpha(1.0f)
                     ?.scaleX(1.0f)
@@ -1346,7 +1519,7 @@ class AddProductActivity : AppCompatActivity() {
                     }
                     ?.start()
             } else {
-                // État désactivé : couleurs atténuées avec effet visuel
+                // État desactive : couleurs attenuees avec effet visuel
                 autocompletionCard?.animate()
                     ?.alpha(0.7f)
                     ?.scaleX(0.98f)
@@ -1361,7 +1534,7 @@ class AddProductActivity : AppCompatActivity() {
                     ?.start()
             }
 
-            // Animation de l'icône si présente
+            // Animation de l'icône si presente
             iconView?.let { icon ->
                 val iconColor = if (isEnabled) enabledTextColor else disabledTextColor
                 icon.animate()
@@ -1442,10 +1615,6 @@ class AddProductActivity : AppCompatActivity() {
         return imageStorage.uploadImage(imageData, pathString)
     }
 
-    private suspend fun removeProductImage(imageUrl: String): Boolean {
-        return imageStorage.deleteImage(imageUrl)
-    }
-
     private fun checkLocationPermission(): Boolean {
         return ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
     }
@@ -1463,12 +1632,12 @@ class AddProductActivity : AppCompatActivity() {
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         if (isGranted && ::placesClient.isInitialized) {
-            // Relance la récupération de la localisation
+            // Relance la recuperation de la localisation
             CoroutineScope(Dispatchers.Main).launch {
                 fetchCurrentLocationAndFillShopName()
             }
         } else {
-            Toast.makeText(this, "Permission localisation refusée ou Places non initialisé", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Permission localisation refusee ou Places non initialise", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -1540,21 +1709,21 @@ class AddProductActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Guide utilisateur supprimé pour simplifier l'onboarding
+        // Guide utilisateur supprime pour simplifier l'onboarding
     }
 
     /**
-     * Configure et démarre le tour de spotlight pour guider l'utilisateur
-     * dans l'ajout d'un produit avec toutes les fonctionnalités disponibles
+     * Configure et demarre le tour de spotlight pour guider l'utilisateur
+     * dans l'ajout d'un produit avec toutes les fonctionnalites disponibles
      */
     private fun setupSpotlightTour() {
         try {
-            // Vérifier si le spotlight doit être affiché
+            // Verifier si le spotlight doit être affiche
             if (!isSpotlightAvailable()) {
                 return
             }
 
-            // Créer la liste des éléments à mettre en surbrillance
+            // Creer la liste des elements à mettre en surbrillance
             val spotlightItems = mutableListOf<com.dedoware.shoopt.models.SpotlightItem>()
 
             // Spotlight pour la photo du produit
@@ -1637,10 +1806,10 @@ class AddProductActivity : AppCompatActivity() {
                 )
             )
 
-            // Démarrer le tour de spotlight avec un léger délai pour que l'interface soit prête
+            // Demarrer le tour de spotlight avec un leger delai pour que l'interface soit prête
             window.decorView.post {
                 startSpotlightTour(spotlightItems) {
-                    // Callback appelé à la fin du tour
+                    // Callback appele à la fin du tour
                     AnalyticsManager.logUserAction(
                         "spotlight_tour_completed",
                         "onboarding",
@@ -1658,16 +1827,16 @@ class AddProductActivity : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        setIntent(intent) // Important: mettre à jour l'intent de l'activité
+        setIntent(intent) // Important: mettre à jour l'intent de l'activite
 
-        // Vérifier si on doit forcer un refresh des spotlights
+        // Verifier si on doit forcer un refresh des spotlights
         val forceRefresh = intent?.getBooleanExtra("force_spotlight_refresh", false) ?: false
         if (forceRefresh) {
             CrashlyticsManager.log("AddProductActivity onNewIntent: Force spotlight refresh requested")
 
-            // Vérifier si l'onboarding est complété et forcer les spotlights
+            // Verifier si l'onboarding est complete et forcer les spotlights
             if (UserPreferences.isOnboardingCompleted(this)) {
-                // Délai court pour laisser l'interface se stabiliser
+                // Delai court pour laisser l'interface se stabiliser
                 window.decorView.postDelayed({
                     setupSpotlightTour()
                 }, 500)
@@ -1695,7 +1864,7 @@ class AddProductActivity : AppCompatActivity() {
                 val keyboardHeight = resources.displayMetrics.heightPixels / 2  // Estimation de la hauteur du clavier
                 val targetScroll = (shopLayoutRect.top - scrollViewRect.top) +
                         scrollView.scrollY -
-                        dpToPx(150)  // Marge augmentée
+                        dpToPx(150)  // Marge augmentee
 
                 scrollView.smoothScrollTo(0, targetScroll.coerceAtLeast(0))
 

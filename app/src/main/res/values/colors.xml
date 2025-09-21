@@ -19,6 +19,21 @@
 
     <color name="main_palette_isabelline">#F2EDEB</color>
 
+    <!-- Couleurs pour la félicitation du premier produit -->
+    <color name="primary_color">#2196F3</color>
+    <color name="primary_color_dark">#1976D2</color>
+    <color name="secondary_color">#FF9800</color>
+    <color name="text_secondary">#757575</color>
+
+    <!-- Nouvelles couleurs pour la célébration moderne -->
+    <color name="celebration_primary_text">#1A1A1A</color>
+    <color name="celebration_secondary_text">#666666</color>
+    <color name="celebration_accent">#4CAF50</color>
+    <color name="celebration_button_background">#2196F3</color>
+    <color name="celebration_button_ripple">#1976D2</color>
+    <color name="celebration_gold">#FFD700</color>
+    <color name="celebration_gold_dark">#FFA500</color>
+
     <color name="main_palette_rajah">#FFB05B</color>
     <color name="main_palette_rajah_variant">#F8A13F</color>
     <color name="main_palette_rajah_on">#F2EDEB</color>
@@ -31,5 +46,27 @@
     <color name="back_button_stroke">#6E6268</color> <!-- Current gray stroke -->
     <color name="back_button_icon">#6E6268</color> <!-- Current gray icon -->
     <color name="back_button_ripple">#336E6268</color> <!-- Gray ripple -->
+
+    <!-- Nouvelles couleurs pour le système de gamification -->
+    <color name="accent_color">#03DAC5</color>
+    <color name="text_primary">#212121</color>
+    <color name="background_light">#FAFAFA</color>
+    <color name="progress_background">#E0E0E0</color>
+    <color name="success_color">#4CAF50</color>
+
+    <!-- Couleurs spécifiques gamification -->
+    <color name="gamification_gold">#FFD700</color>
+    <color name="gamification_silver">#C0C0C0</color>
+    <color name="gamification_bronze">#CD7F32</color>
+    <color name="xp_gradient_start">#FF6B6B</color>
+    <color name="xp_gradient_end">#4ECDC4</color>
+    <color name="achievement_unlocked">#FF9800</color>
+    <color name="achievement_locked">#BDBDBD</color>
+
+    <!-- Couleurs de niveau -->
+    <color name="level_novice">#9C27B0</color>
+    <color name="level_intermediate">#2196F3</color>
+    <color name="level_expert">#FF9800</color>
+    <color name="level_master">#F44336</color>
 
 </resources>
