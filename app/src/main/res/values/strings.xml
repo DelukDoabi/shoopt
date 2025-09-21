@@ -49,22 +49,11 @@
     <string name="login_successful">Login Successful</string>
     <string name="login_failed">Login Failed: %1$s</string>
     <string name="google_sign_in_successful">Google Sign-In Successful</string>
-
-    <!-- Félicitation moderne pour le premier produit -->
-    <string name="first_product_congrats_title">🎉 Bravo !</string>
-    <string name="first_product_congrats_subtitle">Premier produit ajouté</string>
-    <string name="first_product_congrats_message">Vous venez de franchir une étape importante ! Votre premier produit est maintenant enregistré et vous pouvez commencer à optimiser vos achats avec Shoopt.</string>
-    <string name="first_product_stats_message">Vous rejoignez des milliers d\'utilisateurs malins !</string>
-    <string name="trophy_icon_description">Icône de trophée pour célébrer le premier produit ajouté</string>
-
-    <!-- New strings for currency management -->
     <string name="currency_selection_info">The selected currency will be used to display all prices in the application.</string>
     <string name="currency">Currency</string>
     <string name="save">Save</string>
     <string name="currency_changed">Currency changed to %1$s</string>
     <string name="other_settings">Other settings</string>
-
-    <!-- New strings for currency conversion -->
     <string name="currency_conversion_info">Prices will be automatically converted into the selected currency using current exchange rates.</string>
     <string name="loading_exchange_rates">Loading exchange rates...</string>
     <string name="currency_conversion_success">Currency conversion completed successfully</string>
@@ -72,14 +61,10 @@
     <string name="select_currency">Select a currency</string>
     <string name="confirm">Confirm</string>
     <string name="menu">Menu</string>
-
-
-    <!-- User Guide Strings -->
     <string name="skip_guide">Skip</string>
     <string name="next">Next</string>
     <string name="got_it">Got it</string>
     <string name="tooltip_icon_description">Guide feature icon</string>
-    <!-- Update Shopping List Screen strings -->
     <string name="shopping_list_input_help">Enter products separated by commas, lines, or dashes</string>
     <string name="shopping_list_input_hint">Milk, Bread, 2 Apples, Cheese…</string>
     <string name="shopping_list_tips_title">💡 Quick Tips</string>
@@ -97,8 +82,6 @@
     <string name="clear">Clear</string>
     <string name="shopping_cart_emptied">Shopping cart has been emptied</string>
     <string name="products_added">%1$d products added to your list</string>
-
-    <!-- Fullscreen Products View -->
     <string name="close_fullscreen">Close Fullscreen</string>
     <string name="exit_fullscreen">Exit Fullscreen</string>
     <string name="expand_to_fullscreen">Expand to Fullscreen</string>
@@ -111,8 +94,6 @@
     <string name="select_all">Select All</string>
     <string name="clear_all">Clear All</string>
     <string name="product_count_zero">0</string>
-
-    <!-- Common UI strings -->
     <string name="email">Email</string>
     <string name="full_name">Full Name</string>
     <string name="confirm_password">Confirm Password</string>
@@ -129,26 +110,19 @@
     <string name="clear_cart">Clear Cart</string>
     <string name="empty_cart_message">Your cart is empty</string>
     <string name="empty_cart_subtitle">Add products to start shopping</string>
-
-    <!-- Product Choice Screen -->
     <string name="choose_product_entry_method">How would you like to add your product?</string>
     <string name="scan_barcode_description">Scan product barcode for quick entry with automatic information retrieval</string>
     <string name="manual_entry_description">Manually enter product details without using a barcode</string>
-    <!-- Activity Analysis Screen -->
     <string name="empty_products_image">Empty Products</string>
     <string name="no_products_yet">No products yet</string>
     <string name="add_your_first_product_message">Start building your shopping history by adding your first product</string>
     <string name="add_first_product">Add First Product</string>
-
-    <!-- Barcode Scanner Activity -->
     <string name="scan_barcode_instructions">Position the barcode in the center of the frame</string>
     <string name="close">Close</string>
     <string name="toggle_flash">Toggle Flash</string>
     <string name="close_scan">Close Scanner</string>
     <string name="scanning">Scanning your product…</string>
     <string name="toggle_torch">Toggle Flashlight</string>
-
-    <!-- Settings Activity -->
     <string name="theme_settings">Theme Settings</string>
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
@@ -156,11 +130,7 @@
     <string name="currency_settings">Currency Settings</string>
     <string name="save_settings">Save Settings</string>
     <string name="settings_saved">Your settings have been saved!</string>
-
-    <!-- Product Track Layout -->
     <string name="swipe_to_delete">Swipe to delete</string>
-
-    <!-- Update Dialog -->
     <string name="update_available">Update Available</string>
     <string name="update_description">A new version of Shoopt is here with cool features and improvements!</string>
     <string name="update_later">Later</string>
@@ -168,16 +138,12 @@
     <string name="update_required">Update Required</string>
     <string name="update_downloaded">Update Downloaded</string>
     <string name="install">Install</string>
-
-    <!-- Dialog and UI Elements -->
     <string name="add_product_options_title">Add Product</string>
     <string name="add_product_options_message">How would you like to add your product?</string>
     <string name="cancel">Cancel</string>
     <string name="send">Send</string>
     <string name="error">Error</string>
     <string name="welcome">Welcome!</string>
-
-    <!-- Authentication and User Management -->
     <string name="authentication_failed">Authentication failed</string>
     <string name="google_sign_in_failed">Google Sign-In failed</string>
     <string name="email_empty">Email cannot be empty</string>
@@ -185,40 +151,14 @@
     <string name="enter_email_to_reset">Enter your email to reset password</string>
     <string name="reset_password">Reset Password</string>
     <string name="password_reset_sent">Password reset email sent</string>
-
-    <!-- Product Management -->
     <string name="product_added_to_cart">Product added to cart</string>
     <string name="failed_to_add_product_to_cart">Failed to add product to cart</string>
-
-    <!-- Shopping Cart Management -->
     <string name="failed_to_empty_shopping_cart">Failed to empty shopping cart</string>
     <string name="failed_to_load_shopping_cart">Failed to load shopping cart</string>
     <string name="enter_items_here">Enter your shopping items here…</string>
-
-    <!-- Barcode and Scanner -->
     <string name="barcode_detected">Barcode detected</string>
     <string name="scan_successful">Scan successful</string>
     <string name="camera_permission_required">Camera permission is required to scan barcodes</string>
-
-    <!-- User Profile and Gamification -->
-    <string name="user_profile">Mon Profil</string>
-    <string name="profile_open_error">Erreur lors de l\'ouverture du profil</string>
-    <string name="level_progress_format">%1$d%% vers le niveau suivant</string>
-    <string name="total_xp_format">%1$d XP au total</string>
-    <string name="achievements_count">%1$d achievements débloqués</string>
-    <string name="products_added_count">%1$d produits ajoutés</string>
-    <string name="shopping_sessions_count">%1$d sessions de shopping</string>
-    <string name="your_achievements">Vos Achievements</string>
-    <string name="achievement_locked">Non débloqué</string>
-    <!-- Level titles -->
-    <string name="level_beginner">Débutant</string>
-    <string name="level_shopper">Acheteur</string>
-    <string name="level_smart_shopper">Acheteur Malin</string>
-    <string name="level_shopping_expert">Expert Shopping</string>
-    <string name="level_shopping_master">Maître du Shopping</string>
-    <string name="level_shopping_legend">Légende du Shopping</string>
-
-    <!-- Missing strings for layouts and functionality -->
     <string name="add_product_options_error">Error opening product options</string>
     <string name="ai_assistant_tips">AI Assistant Tips</string>
     <string name="ai_autocompletion">AI Autocompletion</string>
@@ -288,8 +228,6 @@
     <string name="unexpected_error">Unexpected error occurred</string>
     <string name="yes">Yes</string>
     <string name="your_products">Your Products</string>
-
-    <!-- Onboarding strings -->
     <string name="onboarding_get_started">Get Started</string>
     <string name="onboarding_next">Next</string>
     <string name="onboarding_replayed">Onboarding replayed</string>
@@ -300,14 +238,10 @@
     <string name="onboarding_step2_title">Add Your Products</string>
     <string name="onboarding_step3_description">Track your shopping and analyze your spending patterns.</string>
     <string name="onboarding_step3_title">Track &amp; Analyze</string>
-
-    <!-- Replay and Guide strings -->
     <string name="replay_add_product_guide">Replay Product Guide</string>
     <string name="replay_add_product_guide_description">Show the product addition guide again</string>
     <string name="replay_onboarding">Replay Onboarding</string>
     <string name="replay_onboarding_description">Show the initial app introduction again</string>
-
-    <!-- Guide strings -->
     <string name="guide_add_product_button_desc">Tap here to add new products to your inventory</string>
     <string name="guide_add_product_button_title">Add Product Button</string>
     <string name="guide_add_product_desc">This is where you can add new products by scanning or manual entry</string>
@@ -344,8 +278,6 @@
     <string name="guide_take_photo_button_title">Take Product Photo</string>
     <string name="guide_update_list_desc">Manage your shopping lists and convert them to trackable products</string>
     <string name="guide_update_list_title">Shopping Lists</string>
-
-    <!-- Spotlight strings -->
     <string name="spotlight_add_barcode_description">Scan or enter product barcodes for automatic information retrieval</string>
     <string name="spotlight_add_barcode_title">Product Barcode</string>
     <string name="spotlight_add_name_description">Enter the product name for easy identification</string>
@@ -418,47 +350,55 @@
     <string name="spotlight_track_stats_title">Session Stats</string>
     <string name="spotlight_track_total_description">See the total cost of items in your shopping cart</string>
     <string name="spotlight_track_total_title">Cart Total</string>
-
-    <!-- Achievement Congratulation Strings -->
     <string name="achievement_unlocked">Achievement Unlocked!</string>
     <string name="achievement_reward">+%1$d XP earned</string>
     <string name="continue_shopping">Continue</string>
-
-    <!-- Achievement strings (internationalized) -->
     <string name="achievement_first_product_title">First Step</string>
     <string name="achievement_first_product_description">Add your first product</string>
-
     <string name="achievement_products_5_title">Collector</string>
     <string name="achievement_products_5_description">Add 5 products</string>
-
     <string name="achievement_products_10_title">Price Hunter</string>
     <string name="achievement_products_10_description">Add 10 products</string>
-
     <string name="achievement_products_25_title">Shopping Expert</string>
     <string name="achievement_products_25_description">Add 25 products</string>
-
     <string name="achievement_products_50_title">Deal Master</string>
     <string name="achievement_products_50_description">Add 50 products</string>
-
     <string name="achievement_products_100_title">Shopping Legend</string>
     <string name="achievement_products_100_description">Add 100 products</string>
-
     <string name="achievement_first_shopping_session_title">First Shopping Session</string>
     <string name="achievement_first_shopping_session_description">Complete your first shopping session</string>
-
     <string name="achievement_shopping_sessions_5_title">Frequent Shopper</string>
     <string name="achievement_shopping_sessions_5_description">Complete 5 shopping sessions</string>
-
     <string name="achievement_first_barcode_scan_title">Barcode Novice</string>
     <string name="achievement_first_barcode_scan_description">Scan your first barcode</string>
-
     <string name="achievement_price_comparison_title">Price Comparer</string>
     <string name="achievement_price_comparison_description">Compare prices of multiple products</string>
-
     <string name="achievement_weekly_user_title">Regular User</string>
     <string name="achievement_weekly_user_description">Use the app 7 days in a row</string>
-
     <string name="achievement_first_share_title">Sharer</string>
     <string name="achievement_first_share_description">Share your first find</string>
-
+    <string name="first_product_congrats_title">🎉 Congrats!</string>
+    <string name="first_product_congrats_subtitle">First product added</string>
+    <string name="first_product_congrats_message">You’ve just reached an important milestone! Your first product is saved and you can now start optimizing your shopping with Shoopt.</string>
+    <string name="first_product_stats_message">You’re joining thousands of smart shoppers!</string>
+    <string name="trophy_icon_description">Trophy icon celebrating the first product added</string>
+    <string name="user_profile">Profile</string>
+    <string name="profile_open_error">Unable to open profile</string>
+    <string name="level_progress_format">Progress: %1$d/%2$d XP</string>
+    <string name="total_xp_format">Total XP: %1$d</string>
+    <string name="achievements_count">Achievements: %1$d</string>
+    <string name="products_added_count">Products added: %1$d</string>
+    <string name="shopping_sessions_count">Shopping sessions: %1$d</string>
+    <string name="your_achievements">Your achievements</string>
+    <string name="achievement_locked">Achievement locked</string>
+    <string name="level_1">Level 1 - Beginner</string>
+    <string name="level_2">Level 2 - Motivated shopper</string>
+    <string name="level_3">Level 3 - Savvy consumer</string>
+    <string name="level_4">Level 4 - Bargain hunter</string>
+    <string name="level_5">Level 5 - Smart strategist</string>
+    <string name="level_6">Level 6 - Savings expert</string>
+    <string name="level_7">Level 7 - Smart shopper</string>
+    <string name="level_8">Level 8 - Shopping master</string>
+    <string name="level_9">Level 9 - Shopping visionary</string>
+    <string name="level_10">Level 10 - Shoopt legend ✨</string>
 </resources>
