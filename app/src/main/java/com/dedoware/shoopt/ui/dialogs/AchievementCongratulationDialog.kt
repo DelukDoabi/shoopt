@@ -85,13 +85,27 @@ class AchievementCongratulationDialog(
 
         // Configuration du contenu avec les données de l'achievement
         titleText.text = context.getString(R.string.achievement_unlocked)
-        subtitleText.text = achievement.title
-        messageText.text = achievement.description
+        // Résolution des clés de ressources (si présentes) avec fallback
+        subtitleText.text = resolveStringResource(achievement.titleResKey, achievement.title)
+        messageText.text = resolveStringResource(achievement.descriptionResKey, achievement.description)
         rewardText.text = context.getString(R.string.achievement_reward, achievement.xpReward)
         continueButton.text = context.getString(R.string.continue_shopping)
 
         // Icône de l'achievement
         setAchievementIcon(achievement.icon)
+    }
+
+    /**
+     * Résout une clé de ressource string si elle est fournie. Retourne la valeur fallback sinon.
+     */
+    private fun resolveStringResource(resKey: String?, fallback: String): String {
+        if (!resKey.isNullOrEmpty()) {
+            val resId = context.resources.getIdentifier(resKey, "string", context.packageName)
+            if (resId != 0) {
+                return context.getString(resId)
+            }
+        }
+        return fallback
     }
 
     private fun startCelebrationSequence() {
@@ -249,10 +263,6 @@ class AchievementCongratulationDialog(
                 dismiss()
             }
         })
-    }
-
-    override fun onBackPressed() {
-        dismissWithAnimation()
     }
 
     override fun dismiss() {

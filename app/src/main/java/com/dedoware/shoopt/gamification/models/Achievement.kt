@@ -2,7 +2,6 @@ package com.dedoware.shoopt.gamification.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverter
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -16,6 +15,8 @@ data class Achievement(
     @SerializedName("title") val title: String,
     @SerializedName("description") val description: String,
     @SerializedName("icon") val icon: String, // Nom de l'icône ou URL
+    @SerializedName("title_res_key") val titleResKey: String? = null, // Nom de la ressource string pour le titre
+    @SerializedName("description_res_key") val descriptionResKey: String? = null, // Nom de la ressource string pour la description
     @SerializedName("category") val category: String, // Stocké comme String pour Room
     @SerializedName("xp_reward") val xpReward: Int,
     @SerializedName("required_count") val requiredCount: Int = 1, // Pour les achievements avec compteur
@@ -24,7 +25,8 @@ data class Achievement(
     @SerializedName("difficulty") val difficulty: String = "EASY", // Stocké comme String pour Room
     @SerializedName("is_active") val isActive: Boolean = true
 ) {
-    constructor() : this("", "", "", "", "GENERAL", 0)
+    // Updated empty constructor to match new parameter order (includes titleResKey/descriptionResKey)
+    constructor() : this("", "", "", "", null, null, "GENERAL", 0)
 
     // Helper methods pour convertir les enums
     fun getCategoryEnum(): AchievementCategory {

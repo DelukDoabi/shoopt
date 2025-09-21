@@ -424,4 +424,41 @@
     <string name="achievement_reward">+%1$d XP earned</string>
     <string name="continue_shopping">Continue</string>
 
+    <!-- Achievement strings (internationalized) -->
+    <string name="achievement_first_product_title">First Step</string>
+    <string name="achievement_first_product_description">Add your first product</string>
+
+    <string name="achievement_products_5_title">Collector</string>
+    <string name="achievement_products_5_description">Add 5 products</string>
+
+    <string name="achievement_products_10_title">Price Hunter</string>
+    <string name="achievement_products_10_description">Add 10 products</string>
+
+    <string name="achievement_products_25_title">Shopping Expert</string>
+    <string name="achievement_products_25_description">Add 25 products</string>
+
+    <string name="achievement_products_50_title">Deal Master</string>
+    <string name="achievement_products_50_description">Add 50 products</string>
+
+    <string name="achievement_products_100_title">Shopping Legend</string>
+    <string name="achievement_products_100_description">Add 100 products</string>
+
+    <string name="achievement_first_shopping_session_title">First Shopping Session</string>
+    <string name="achievement_first_shopping_session_description">Complete your first shopping session</string>
+
+    <string name="achievement_shopping_sessions_5_title">Frequent Shopper</string>
+    <string name="achievement_shopping_sessions_5_description">Complete 5 shopping sessions</string>
+
+    <string name="achievement_first_barcode_scan_title">Barcode Novice</string>
+    <string name="achievement_first_barcode_scan_description">Scan your first barcode</string>
+
+    <string name="achievement_price_comparison_title">Price Comparer</string>
+    <string name="achievement_price_comparison_description">Compare prices of multiple products</string>
+
+    <string name="achievement_weekly_user_title">Regular User</string>
+    <string name="achievement_weekly_user_description">Use the app 7 days in a row</string>
+
+    <string name="achievement_first_share_title">Sharer</string>
+    <string name="achievement_first_share_description">Share your first find</string>
+
 </resources>

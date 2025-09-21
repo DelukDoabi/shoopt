@@ -426,7 +426,44 @@
     <string name="confirm">Confirmer</string>
 
     <!-- Chaînes pour les félicitations d'achievement -->
-    <string name="achievement_unlocked">Défi Accompli !</string>
+    <string name="achievement_first_product_title">Premier Pas</string>
+    <string name="achievement_first_product_description">Ajoutez votre premier produit</string>
+
+    <string name="achievement_products_5_title">Collectionneur</string>
+    <string name="achievement_products_5_description">Ajoutez 5 produits</string>
+
+    <string name="achievement_products_10_title">Chasseur de Prix</string>
+    <string name="achievement_products_10_description">Ajoutez 10 produits</string>
+
+    <string name="achievement_products_25_title">Expert Shopping</string>
+    <string name="achievement_products_25_description">Ajoutez 25 produits</string>
+
+    <string name="achievement_products_50_title">Maître des Bonnes Affaires</string>
+    <string name="achievement_products_50_description">Ajoutez 50 produits</string>
+
+    <string name="achievement_products_100_title">Légende du Shopping</string>
+    <string name="achievement_products_100_description">Ajoutez 100 produits</string>
+
+    <string name="achievement_first_shopping_session_title">Premier Shopping</string>
+    <string name="achievement_first_shopping_session_description">Terminez votre première session de courses</string>
+
+    <string name="achievement_shopping_sessions_5_title">Habitué du Shopping</string>
+    <string name="achievement_shopping_sessions_5_description">Terminez 5 sessions de courses</string>
+
+    <string name="achievement_first_barcode_scan_title">Scanner Novice</string>
+    <string name="achievement_first_barcode_scan_description">Scannez votre premier code-barres</string>
+
+    <string name="achievement_price_comparison_title">Comparateur</string>
+    <string name="achievement_price_comparison_description">Comparez les prix de plusieurs produits</string>
+
+    <string name="achievement_weekly_user_title">Utilisateur Régulier</string>
+    <string name="achievement_weekly_user_description">Utilisez l\'app 7 jours consécutifs</string>
+
+    <string name="achievement_first_share_title">Partageur</string>
+    <string name="achievement_first_share_description">Partagez votre première trouvaille</string>
+
+    <!-- Strings pour la boîte de dialogue des achievements -->
+    <string name="achievement_unlocked">Succès débloqué !</string>
     <string name="achievement_reward">+%1$d XP gagnés</string>
     <string name="continue_shopping">Continuer</string>
 </resources>
