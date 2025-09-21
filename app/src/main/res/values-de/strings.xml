@@ -459,4 +459,9 @@
     <string name="spotlight_track_list_title">Warenkorbartikel</string>
     <string name="spotlight_track_stats_description">Sieh Statistiken zu deiner aktuellen Einkaufssession</string>
     <string name="spotlight_track_stats_title">Sitzungsstatistiken</string>
+    <string name="update_downloading">Update wird heruntergeladen…</string>
+    <string name="update_error">Update fehlgeschlagen. Bitte versuch es erneut.</string>
+    <string name="update_important_reminder">Dieses Update enthält wichtige Verbesserungen</string>
+    <string name="update_later_critical">Nicht jetzt</string>
+    <string name="retry">Erneut versuchen</string>
 </resources>

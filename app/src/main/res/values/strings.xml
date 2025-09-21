@@ -138,6 +138,11 @@
     <string name="update_required">Update Required</string>
     <string name="update_downloaded">Update Downloaded</string>
     <string name="install">Install</string>
+    <string name="update_downloading">Downloading update…</string>
+    <string name="update_error">Update failed. Please try again.</string>
+    <string name="update_important_reminder">This update contains important improvements</string>
+    <string name="update_later_critical">Not Now</string>
+    <string name="retry">Retry</string>
     <string name="add_product_options_title">Add Product</string>
     <string name="add_product_options_message">How would you like to add your product?</string>
     <string name="cancel">Cancel</string>

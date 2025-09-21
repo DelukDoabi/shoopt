@@ -463,4 +463,9 @@
     <string name="spotlight_track_list_title">카트 항목</string>
     <string name="spotlight_track_stats_description">현재 쇼핑 세션의 통계 보기</string>
     <string name="spotlight_track_stats_title">세션 통계</string>
+    <string name="update_downloading">업데이트 다운로드 중…</string>
+    <string name="update_error">업데이트 실패. 다시 시도해 주세요.</string>
+    <string name="update_important_reminder">이 업데이트에는 중요한 개선 사항이 포함되어 있습니다</string>
+    <string name="update_later_critical">나중에</string>
+    <string name="retry">다시 시도</string>
 </resources>

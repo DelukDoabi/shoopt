@@ -463,5 +463,10 @@
     <string name="spotlight_track_list_title">Produkty w koszyku</string>
     <string name="spotlight_track_stats_description">Zobacz statystyki bieżącej sesji zakupowej</string>
     <string name="spotlight_track_stats_title">Statystyki sesji</string>
+    <string name="update_downloading">Pobieranie aktualizacji…</string>
+    <string name="update_error">Aktualizacja nie powiodła się. Spróbuj ponownie.</string>
+    <string name="update_important_reminder">Ta aktualizacja zawiera ważne ulepszenia</string>
+    <string name="update_later_critical">Nie teraz</string>
+    <string name="retry">Spróbuj ponownie</string>
 
 </resources>

@@ -464,4 +464,9 @@
     <string name="spotlight_track_list_title">Товары в корзине</string>
     <string name="spotlight_track_stats_description">Смотри статистику текущей сессии покупок</string>
     <string name="spotlight_track_stats_title">Статистика сессии</string>
+    <string name="update_downloading">Загрузка обновления…</string>
+    <string name="update_error">Ошибка обновления. Пожалуйста, попробуй снова.</string>
+    <string name="update_important_reminder">Это обновление содержит важные улучшения</string>
+    <string name="update_later_critical">Не сейчас</string>
+    <string name="retry">Повторить</string>
 </resources>

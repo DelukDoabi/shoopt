@@ -457,4 +457,9 @@
     <string name="spotlight_track_list_title">Artículos del carrito</string>
     <string name="spotlight_track_stats_description">Consulta estadísticas sobre tu sesión de compras actual</string>
     <string name="spotlight_track_stats_title">Estadísticas de sesión</string>
+    <string name="update_downloading">Descargando actualización…</string>
+    <string name="update_error">Error en la actualización. Por favor, inténtalo de nuevo.</string>
+    <string name="update_important_reminder">Esta actualización contiene mejoras importantes</string>
+    <string name="update_later_critical">Ahora no</string>
+    <string name="retry">Reintentar</string>
 </resources>

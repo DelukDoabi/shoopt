@@ -492,4 +492,10 @@
     <string name="level_10">Niveau 10 - Légende de Shoopt ✨</string>
     <string name="menu">Menu</string>
     <string name="photo_tips_icon_description">Icône des conseils photo</string>
+    <string name="update_downloading">Téléchargement de la mise à jour…</string>
+    <string name="update_error">Échec de la mise à jour. Réessaye.</string>
+    <string name="update_important_reminder">Cette mise à jour contient des améliorations importantes</string>
+    <string name="update_later_critical">Pas maintenant</string>
+    <string name="retry">Réessayer</string>
+
 </resources>

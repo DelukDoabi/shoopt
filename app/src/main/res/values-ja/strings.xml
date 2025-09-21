@@ -465,4 +465,10 @@
     <string name="spotlight_track_list_title">カート内の商品</string>
     <string name="spotlight_track_stats_description">現在の購入セッションの統計を表示</string>
     <string name="spotlight_track_stats_title">セッション統計</string>
+    <string name="update_downloading">アップデートをダウンロード中…</string>
+    <string name="update_error">アップデートに失敗しました。もう一度お試しください。</string>
+    <string name="update_important_reminder">このアップデートには重要な改善が含まれています</string>
+    <string name="update_later_critical">今はしない</string>
+    <string name="retry">再試行</string>
+
 </resources>

@@ -463,4 +463,9 @@
     <string name="spotlight_track_list_title">购物车商品</string>
     <string name="spotlight_track_stats_description">查看当前购物会话的统计信息</string>
     <string name="spotlight_track_stats_title">会话统计</string>
+    <string name="update_downloading">正在下载更新…</string>
+    <string name="update_error">更新失败。请重试。</string>
+    <string name="update_important_reminder">此更新包含重要改进</string>
+    <string name="update_later_critical">稍后</string>
+    <string name="retry">重试</string>
 </resources>

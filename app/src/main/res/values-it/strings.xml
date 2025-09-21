@@ -465,4 +465,9 @@
     <string name="spotlight_track_list_title">Articoli nel carrello</string>
     <string name="spotlight_track_stats_description">Visualizza le statistiche della sessione di acquisto corrente</string>
     <string name="spotlight_track_stats_title">Statistiche sessione</string>
+    <string name="update_downloading">Download aggiornamento in corso…</string>
+    <string name="update_error">Aggiornamento non riuscito. Riprova.</string>
+    <string name="update_important_reminder">Questo aggiornamento contiene miglioramenti importanti</string>
+    <string name="update_later_critical">Non ora</string>
+    <string name="retry">Riprova</string>
 </resources>

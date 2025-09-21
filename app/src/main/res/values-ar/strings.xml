@@ -464,5 +464,10 @@
     <string name="spotlight_track_list_title">عناصر العربة</string>
     <string name="spotlight_track_stats_description">عرض إحصاءات جلسة التسوق الحالية</string>
     <string name="spotlight_track_stats_title">إحصاءات الجلسة</string>
+    <string name="update_downloading">جارٍ تنزيل التحديث…</string>
+    <string name="update_error">فشل التحديث. حاول مرة أخرى.</string>
+    <string name="update_important_reminder">يتضمن هذا التحديث تحسينات هامة</string>
+    <string name="update_later_critical">ليس الآن</string>
+    <string name="retry">إعادة المحاولة</string>
 
 </resources>
