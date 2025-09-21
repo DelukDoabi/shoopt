@@ -55,7 +55,7 @@
     <string name="currency_changed">Currency changed to %1$s</string>
     <string name="other_settings">Other settings</string>
     <string name="currency_conversion_info">Prices will be automatically converted into the selected currency using current exchange rates.</string>
-    <string name="loading_exchange_rates">Loading exchange rates...</string>
+    <string name="loading_exchange_rates">Loading exchange rates…</string>
     <string name="currency_conversion_success">Currency conversion completed successfully</string>
     <string name="currency_conversion_error">Error during conversion. Prices remain in their original currency.</string>
     <string name="select_currency">Select a currency</string>
@@ -86,7 +86,7 @@
     <string name="exit_fullscreen">Exit Fullscreen</string>
     <string name="expand_to_fullscreen">Expand to Fullscreen</string>
     <string name="expand_products_list">Expand Products List</string>
-    <string name="search_products">Search products...</string>
+    <string name="search_products">Search products…</string>
     <string name="filter_products">Filter Products</string>
     <string name="no_products_converted_fullscreen">No products converted yet</string>
     <string name="add_products_to_see_them_here_fullscreen">Add products to your list to see them here.\nUse the convert button to turn your shopping list into trackable products.</string>
