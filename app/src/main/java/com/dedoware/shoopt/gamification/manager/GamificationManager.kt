@@ -123,10 +123,10 @@ class GamificationManager(
             // Déclencher la célébration (analytics)
             triggerCelebration(userId, achievement)
 
-            // Notifier le SimplifiedGamificationManager pour afficher l'UI de célébration
+            // Notifier et synchroniser le manager simplifié pour mettre à jour le store local et l'UI
             try {
                 val simplified = SimplifiedGamificationManager.getInstance(context)
-                simplified.postAchievementUnlocked(userId, achievement)
+                simplified.markAchievementCompletedLocally(userId, achievement)
             } catch (e: Exception) {
                 // Si Simplified n'est pas disponible, on ignore silencieusement
                 android.util.Log.w("GamificationManager", "Unable to notify simplified manager: ${e.message}")

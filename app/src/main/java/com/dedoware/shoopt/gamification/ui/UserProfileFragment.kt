@@ -1,6 +1,7 @@
 package com.dedoware.shoopt.gamification.ui
 
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,9 @@ class UserProfileFragment : Fragment() {
     private lateinit var achievementsRecyclerView: RecyclerView
     private lateinit var achievementsAdapter: AchievementsAdapter
 
+    // listener pour rafraîchir le profil quand un achievement est débloqué
+    private var achievementListener: SimplifiedGamificationManager.AchievementUnlockedListener? = null
+
     // Views du header de profil
     private lateinit var userLevelText: TextView
     private lateinit var userLevelTitle: TextView
@@ -51,9 +55,34 @@ class UserProfileFragment : Fragment() {
         // Initialiser le manager de gamification
         gamificationManager = SimplifiedGamificationManager.getInstance(requireContext())
 
+        // Créer et enregistrer le listener pour mettre à jour le fragment à chaud
+        achievementListener = object : SimplifiedGamificationManager.AchievementUnlockedListener {
+            override suspend fun onAchievementUnlocked(userId: String, achievement: com.dedoware.shoopt.gamification.models.Achievement) {
+                // Si l'événement concerne l'utilisateur courant, recharger le profil sur le thread UI
+                if (userId == getCurrentUserId()) {
+                    lifecycleScope.launch {
+                        try {
+                            // Recharger le profil et la liste des achievements
+                            loadUserProfile()
+                        } catch (_: Exception) {
+                            // Ignorer les erreurs de refresh
+                        }
+                    }
+                }
+            }
+        }
+
+        gamificationManager.addAchievementUnlockedListener(achievementListener!!)
+
         initializeViews(view)
         setupRecyclerView()
         loadUserProfile()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Se désenregistrer du manager pour éviter les fuites
+        achievementListener?.let { gamificationManager.removeAchievementUnlockedListener(it) }
     }
 
     private fun initializeViews(view: View) {
@@ -183,8 +212,13 @@ class UserProfileFragment : Fragment() {
     }
 
     private fun getCurrentUserId(): String {
-        // Retourner l'ID utilisateur actuel - à adapter selon votre système d'auth
-        return "current_user_id" // Placeholder
+        // Utiliser le même identifiant que les autres activités (basé sur l'appareil si pas d'auth)
+        return try {
+            Settings.Secure.getString(requireContext().contentResolver, Settings.Secure.ANDROID_ID)
+                ?: "default_user"
+        } catch (e: Exception) {
+            "default_user"
+        }
     }
 
     private fun showError(message: String) {

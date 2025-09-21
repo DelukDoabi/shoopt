@@ -319,4 +319,33 @@ class SimplifiedGamificationManager private constructor(context: Context) {
                 "Synchronisation des produits: $oldCount -> $actualProductCount produits")
         }
     }
+
+    /**
+     * Méthode publique pour marquer un achievement comme complété dans le store local
+     * et notifier les listeners. Utile lorsque le gestionnaire central (avec DB) complète
+     * un achievement et doit synchroniser l'état local utilisé par l'UI.
+     */
+    suspend fun markAchievementCompletedLocally(userId: String, achievement: Achievement) {
+        // Log pour faciliter le debug
+        android.util.Log.d("SHOOPT_GAMIFICATION", "Marking achievement locally: ${achievement.id} for user $userId")
+
+        // Marquer dans le store local
+        markAchievementCompleted(userId, achievement.id)
+
+        // Mettre à jour le profil local si nécessaire (ajouter XP si défini)
+        try {
+            val profile = getOrCreateUserProfile(userId)
+            val updatedProfile = profile.copy(
+                totalXp = profile.totalXp + achievement.xpReward,
+                achievementsCompleted = profile.achievementsCompleted + 1,
+                lastActivity = System.currentTimeMillis()
+            )
+            saveUserProfile(userId, updatedProfile)
+        } catch (_: Exception) {
+            // Ne pas bloquer si la mise à jour du profil local échoue
+        }
+
+        // Notifier les listeners
+        notifyAchievementUnlocked(userId, achievement)
+    }
 }
