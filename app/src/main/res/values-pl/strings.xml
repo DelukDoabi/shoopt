@@ -481,5 +481,12 @@
     <string name="notification_saturday_reminders_enabled">Przypomnienia o sobotnich zakupach</string>
     <string name="notification_reminder_time">Czas przypomnienia</string>
     <string name="notification_reminder_time_format">%1$02d:%2$02d</string>
+    <string name="menu_settings">Ustawienia</string>
+    <string name="menu_admin_tests">🧪 Testy administratora</string>
+    <string name="admin_access_denied">Wymagany dostęp administratora</string>
+    <string name="admin_code_prompt">Kod administratora</string>
+    <string name="admin_code_hint">Wprowadź kod admina</string>
+    <string name="admin_mode_enabled">Tryb administratora włączony</string>
+    <string name="admin_invalid_code">Nieprawidłowy kod</string>
 
 </resources>

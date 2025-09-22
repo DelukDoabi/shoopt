@@ -480,4 +480,12 @@
     <string name="notification_saturday_reminders_enabled">Lembretes de compras de sábado</string>
     <string name="notification_reminder_time">Hora do lembrete</string>
     <string name="notification_reminder_time_format">%1$02d:%2$02d</string>
+    <string name="menu_settings">Configurações</string>
+    <string name="menu_admin_tests">🧪 Testes de Administrador</string>
+    <string name="admin_access_denied">Acesso de administrador necessário</string>
+    <string name="admin_code_prompt">Código de administrador</string>
+    <string name="admin_code_hint">Insira o código admin</string>
+    <string name="admin_mode_enabled">Modo administrador ativado</string>
+    <string name="admin_invalid_code">Código inválido</string>
+
 </resources>

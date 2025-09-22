@@ -507,7 +507,14 @@
     <string name="notification_custom_reminder_body">Vérifie tes listes de courses</string>
     <string name="notification_preferences_title">Préférences de notification</string>
     <string name="notification_global_enabled">Activer les notifications</string>
-    <string name="notification_saturday_reminders_enabled">Rappels de courses du samedi</string>
-    <string name="notification_reminder_time">Heure du rappel</string>
+    <string name="notification_saturday_reminders_enabled">Rappels du samedi</string>
+    <string name="notification_reminder_time">Heure de rappel</string>
     <string name="notification_reminder_time_format">%1$02d:%2$02d</string>
+    <string name="menu_settings">Paramètres</string>
+    <string name="menu_admin_tests">🧪 Tests Admin</string>
+    <string name="admin_access_denied">Accès administrateur requis</string>
+    <string name="admin_code_prompt">Code administrateur</string>
+    <string name="admin_code_hint">Entrez le code admin</string>
+    <string name="admin_mode_enabled">Mode administrateur activé</string>
+    <string name="admin_invalid_code">Code invalide</string>
 </resources>

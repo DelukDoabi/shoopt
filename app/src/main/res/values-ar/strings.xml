@@ -482,5 +482,12 @@
     <string name="notification_saturday_reminders_enabled">تذكيرات التسوق يوم السبت</string>
     <string name="notification_reminder_time">وقت التذكير</string>
     <string name="notification_reminder_time_format">%1$02d:%2$02d</string>
+    <string name="menu_settings">الإعدادات</string>
+    <string name="menu_admin_tests">🧪 اختبارات المسؤول</string>
+    <string name="admin_access_denied">يتطلب وصول المسؤول</string>
+    <string name="admin_code_prompt">رمز المسؤول</string>
+    <string name="admin_code_hint">أدخل رمز المسؤول</string>
+    <string name="admin_mode_enabled">تم تفعيل وضع المسؤول</string>
+    <string name="admin_invalid_code">رمز غير صالح</string>
 
 </resources>

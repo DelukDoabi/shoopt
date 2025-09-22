@@ -477,4 +477,12 @@
     <string name="notification_saturday_reminders_enabled">Samstags-Einkaufserinnerungen</string>
     <string name="notification_reminder_time">Erinnerungszeit</string>
     <string name="notification_reminder_time_format">%1$02d:%2$02d</string>
+    <string name="menu_settings">Einstellungen</string>
+    <string name="menu_admin_tests">🧪 Admin-Tests</string>
+    <string name="admin_access_denied">Administratorzugriff erforderlich</string>
+    <string name="admin_code_prompt">Administratorcode</string>
+    <string name="admin_code_hint">Admin-Code eingeben</string>
+    <string name="admin_mode_enabled">Administratormodus aktiviert</string>
+    <string name="admin_invalid_code">Ungültiger Code</string>
+
 </resources>

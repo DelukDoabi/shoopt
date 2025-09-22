@@ -483,4 +483,12 @@
     <string name="notification_saturday_reminders_enabled">Promemoria per la spesa del sabato</string>
     <string name="notification_reminder_time">Orario del promemoria</string>
     <string name="notification_reminder_time_format">%1$02d:%2$02d</string>
+    <string name="menu_settings">Impostazioni</string>
+    <string name="menu_admin_tests">🧪 Test Admin</string>
+    <string name="admin_access_denied">Accesso amministratore richiesto</string>
+    <string name="admin_code_prompt">Codice amministratore</string>
+    <string name="admin_code_hint">Inserisci il codice admin</string>
+    <string name="admin_mode_enabled">Modalità amministratore attivata</string>
+    <string name="admin_invalid_code">Codice non valido</string>
+
 </resources>

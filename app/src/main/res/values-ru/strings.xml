@@ -482,4 +482,12 @@
     <string name="notification_saturday_reminders_enabled">Субботние напоминания о покупках</string>
     <string name="notification_reminder_time">Время напоминания</string>
     <string name="notification_reminder_time_format">%1$02d:%2$02d</string>
+    <string name="menu_settings">Настройки</string>
+    <string name="menu_admin_tests">🧪 Тесты администратора</string>
+    <string name="admin_access_denied">Требуется доступ администратора</string>
+    <string name="admin_code_prompt">Код администратора</string>
+    <string name="admin_code_hint">Введите код администратора</string>
+    <string name="admin_mode_enabled">Режим администратора включен</string>
+    <string name="admin_invalid_code">Неверный код</string>
+
 </resources>

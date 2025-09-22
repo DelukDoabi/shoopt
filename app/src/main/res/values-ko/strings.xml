@@ -481,5 +481,12 @@
     <string name="notification_saturday_reminders_enabled">토요일 쇼핑 알림</string>
     <string name="notification_reminder_time">알림 시간</string>
     <string name="notification_reminder_time_format">%1$02d:%2$02d</string>
+    <string name="menu_settings">설정</string>
+    <string name="menu_admin_tests">🧪 관리자 테스트</string>
+    <string name="admin_access_denied">관리자 접근 필요</string>
+    <string name="admin_code_prompt">관리자 코드</string>
+    <string name="admin_code_hint">관리자 코드를 입력하세요</string>
+    <string name="admin_mode_enabled">관리자 모드 활성화됨</string>
+    <string name="admin_invalid_code">잘못된 코드</string>
 
 </resources>

@@ -481,5 +481,12 @@
     <string name="notification_saturday_reminders_enabled">周六购物提醒</string>
     <string name="notification_reminder_time">提醒时间</string>
     <string name="notification_reminder_time_format">%1$02d:%2$02d</string>
+    <string name="menu_settings">设置</string>
+    <string name="menu_admin_tests">🧪 管理员测试</string>
+    <string name="admin_access_denied">需要管理员权限</string>
+    <string name="admin_code_prompt">管理员代码</string>
+    <string name="admin_code_hint">输入管理员代码</string>
+    <string name="admin_mode_enabled">管理员模式已启用</string>
+    <string name="admin_invalid_code">无效的代码</string>
 
 </resources>
