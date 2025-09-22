@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:spacing="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🧪 Test des Notifications de Rappel Courses"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Section Tests Rapides -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="⚡ Tests Rapides"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btn_test_immediate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Test Immédiat (5 secondes)"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btn_test_direct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Test Direct (instantané)"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btn_test_with_conditions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Test avec Vérification des Conditions"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Section Gestion -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="⚙️ Gestion des Notifications"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btn_toggle_notifications"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Basculer Notifications ON/OFF"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btn_schedule_reminders"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Programmer les Rappels"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btn_cancel_reminders"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Annuler les Rappels"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btn_change_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Changer Heure (test +1 min)"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Section Test Complet -->
+        <Button
+            android:id="@+id/btn_complete_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🔬 Test Complet du Scénario"
+            android:backgroundTint="@android:color/holo_green_dark"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Section Statut -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📊 Statut Actuel"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/background_light"
+            android:padding="12dp"
+            android:fontFamily="monospace"
+            android:textSize="12sp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Section Résultats -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📝 Résultats des Tests"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/tv_test_results"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/background_light"
+            android:padding="12dp"
+            android:fontFamily="monospace"
+            android:textSize="12sp"
+            android:minHeight="100dp" />
+
+    </LinearLayout>
+
+</ScrollView>
