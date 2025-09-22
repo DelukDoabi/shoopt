@@ -18,7 +18,7 @@ class UserProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         // Initialiser et appliquer les préférences utilisateur
-        userPreferences = UserPreferences(this)
+        userPreferences = UserPreferences.getInstance(this)
         userPreferences.applyTheme()
 
         setContentView(R.layout.activity_user_profile)

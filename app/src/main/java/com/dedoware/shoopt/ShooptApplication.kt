@@ -7,6 +7,7 @@ import com.dedoware.shoopt.persistence.ShooptRoomDatabase
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.CurrencyManager
+import com.dedoware.shoopt.notifications.ShoppingReminderScheduler
 import com.google.firebase.FirebaseApp
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 
@@ -35,7 +36,16 @@ class ShooptApplication : Application() {
         // Initialisation du gestionnaire de devises
         currencyManager = CurrencyManager.getInstance(this)
 
+        // Initialisation du système de notifications de rappel
+        setupShoppingReminders()
+
         // Initialize other components here if necessary
+    }
+
+    private fun setupShoppingReminders() {
+        // Planifier les rappels de courses hebdomadaires (samedi 9h)
+        val reminderScheduler = ShoppingReminderScheduler.getInstance(this)
+        reminderScheduler.scheduleWeeklyReminders(this)
     }
 
     private fun setupCrashlytics() {

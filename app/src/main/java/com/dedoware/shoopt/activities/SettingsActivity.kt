@@ -38,7 +38,7 @@ class SettingsActivity : AppCompatActivity() {
             AnalyticsManager.logScreenView("settings_screen", "SettingsActivity")
 
             try {
-                userPreferences = UserPreferences(this)
+                userPreferences = UserPreferences.getInstance(this)
                 currencyManager = CurrencyManager.getInstance(this)
             } catch (e: Exception) {
                 // Analytics: suivre l'erreur d'initialisation des préférences

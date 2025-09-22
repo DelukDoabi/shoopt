@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 
         try {
             // Initialiser et appliquer les préférences utilisateur
-            userPreferences = UserPreferences(this)
+            userPreferences = UserPreferences.getInstance(this)
             userPreferences.applyTheme()
 
             setContentView(R.layout.activity_main)
@@ -100,14 +100,20 @@ class MainActivity : AppCompatActivity() {
             // Configuration des cartes pour une meilleure expérience utilisateur
             setupFeatureCards()
 
-            // Vérifier si l'onboarding introduction doit être démarré
-            if (!UserPreferences.isOnboardingCompleted(this)) {
-                OnboardingManager.checkAndStartOnboarding(this)
-                return // L'activité sera fermée par OnboardingManager
-            }
+            // Gérer l'ouverture depuis une notification de rappel
+            handleNotificationIntent()
 
-            // Si l'introduction est terminée, configurer les spotlights
-            setupSpotlightTour()
+            // Initialize and show spotlights after a brief delay
+            window.decorView.postDelayed({
+                // Vérifier si l'onboarding introduction doit être démarré
+                if (!UserPreferences.isOnboardingCompleted(this)) {
+                    OnboardingManager.checkAndStartOnboarding(this)
+                    return@postDelayed // L'activité sera fermée par OnboardingManager
+                }
+
+                // Si l'introduction est terminée, configurer les spotlights
+                setupSpotlightTour()
+            }, 500)
 
             // Vérification des mises à jour disponibles
             try {
@@ -653,6 +659,52 @@ class MainActivity : AppCompatActivity() {
             CrashlyticsManager.logException(e)
 
             Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * Gère l'intent reçu par l'activité, en particulier pour les ouvertures depuis des notifications
+     */
+    private fun handleNotificationIntent() {
+        try {
+            val openShoppingList = intent.getBooleanExtra("open_shopping_list", false)
+            val fromNotification = intent.getBooleanExtra("from_notification", false)
+
+            if (openShoppingList && fromNotification) {
+                // Analytics pour le clic sur la notification de rappel
+                AnalyticsManager.logUserAction(
+                    action = "notification_clicked",
+                    category = "shopping_reminder",
+                    mapOf(
+                        "day" to "saturday",
+                        "source" to "notification"
+                    )
+                )
+
+                // Ouvrir l'activité de liste de courses avec un délai pour laisser l'interface se charger
+                window.decorView.postDelayed({
+                    try {
+                        val shoppingListIntent = Intent(this, UpdateShoppingListActivity::class.java)
+                        shoppingListIntent.putExtra("from_notification", true)
+                        startActivity(shoppingListIntent)
+
+                        // Afficher un message de bienvenue
+                        Toast.makeText(
+                            this,
+                            "🛒 C'est l'heure de vos courses ! Vérifiez votre liste.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } catch (e: Exception) {
+                        CrashlyticsManager.log("Erreur lors de l'ouverture de la liste depuis notification: ${e.message}")
+                        CrashlyticsManager.logException(e)
+                        Toast.makeText(this, getString(R.string.shopping_list_open_error), Toast.LENGTH_SHORT).show()
+                    }
+                }, 1000)
+            }
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors du traitement de l'intent de notification: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "handle_notification_intent")
+            CrashlyticsManager.logException(e)
         }
     }
 }

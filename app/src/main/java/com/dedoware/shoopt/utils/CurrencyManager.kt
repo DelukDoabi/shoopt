@@ -34,7 +34,7 @@ class CurrencyManager private constructor(private val context: Context) {
         }
     }
 
-    private val userPreferences = UserPreferences(context)
+    private val userPreferences = UserPreferences.getInstance(context)
     private val exchangeRateService = ExchangeRateService.getInstance(context)
     private val coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     

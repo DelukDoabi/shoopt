@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 
-class UserPreferences(context: Context) {
+class UserPreferences private constructor(context: Context) {
     companion object {
         private const val PREFS_NAME = "user_preferences"
         private const val KEY_THEME = "theme_mode"
@@ -24,6 +24,11 @@ class UserPreferences(context: Context) {
         private const val KEY_PHOTO_TIP_ENABLED = "photo_tip_enabled"
         private const val KEY_QUICK_TIP_ENABLED = "quick_tip_enabled"
 
+        // Shopping reminder notifications
+        private const val KEY_SHOPPING_REMINDERS_ENABLED = "shopping_reminders_enabled"
+        private const val KEY_REMINDER_HOUR = "reminder_hour"
+        private const val KEY_REMINDER_DAY = "reminder_day" // 7 = Saturday
+
         const val THEME_LIGHT = 1
         const val THEME_DARK = 2
         const val THEME_SYSTEM = 0
@@ -31,6 +36,8 @@ class UserPreferences(context: Context) {
         // Valeurs par défaut
         const val DEFAULT_THEME = THEME_SYSTEM
         const val DEFAULT_CURRENCY = "EUR"
+        const val DEFAULT_REMINDER_HOUR = 9
+        const val DEFAULT_REMINDER_DAY = 7 // Saturday
 
         // Map des devises avec leurs symboles
         private val CURRENCY_SYMBOLS = mapOf(
@@ -42,6 +49,15 @@ class UserPreferences(context: Context) {
             "CHF" to "Fr",
             "AUD" to "A$"
         )
+
+        @Volatile
+        private var INSTANCE: UserPreferences? = null
+
+        fun getInstance(context: Context): UserPreferences {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: UserPreferences(context.applicationContext).also { INSTANCE = it }
+            }
+        }
 
         // Nouvelle méthode statique pour l'onboarding
         fun setOnboardingCompleted(context: Context, completed: Boolean) {
@@ -160,6 +176,37 @@ class UserPreferences(context: Context) {
             val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             prefs.edit().putBoolean(KEY_QUICK_TIP_ENABLED, enabled).apply()
         }
+
+        // Méthodes pour les notifications de rappel de shopping
+        fun areShoppingRemindersEnabled(context: Context): Boolean {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            return prefs.getBoolean(KEY_SHOPPING_REMINDERS_ENABLED, true) // Activé par défaut
+        }
+
+        fun setShoppingRemindersEnabled(context: Context, enabled: Boolean) {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            prefs.edit().putBoolean(KEY_SHOPPING_REMINDERS_ENABLED, enabled).apply()
+        }
+
+        fun getReminderHour(context: Context): Int {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            return prefs.getInt(KEY_REMINDER_HOUR, DEFAULT_REMINDER_HOUR)
+        }
+
+        fun setReminderHour(context: Context, hour: Int) {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            prefs.edit().putInt(KEY_REMINDER_HOUR, hour).apply()
+        }
+
+        fun getReminderDay(context: Context): Int {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            return prefs.getInt(KEY_REMINDER_DAY, DEFAULT_REMINDER_DAY)
+        }
+
+        fun setReminderDay(context: Context, day: Int) {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            prefs.edit().putInt(KEY_REMINDER_DAY, day).apply()
+        }
     }
 
     private val preferences: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -187,5 +234,14 @@ class UserPreferences(context: Context) {
 
     fun formatPrice(price: Double): String {
         return String.format("%.2f %s", price, getCurrencySymbol())
+    }
+
+    // Méthodes d'instance pour les notifications de rappel
+    fun areShoppingRemindersEnabled(): Boolean {
+        return preferences.getBoolean(KEY_SHOPPING_REMINDERS_ENABLED, true)
+    }
+
+    fun setShoppingRemindersEnabled(enabled: Boolean) {
+        preferences.edit().putBoolean(KEY_SHOPPING_REMINDERS_ENABLED, enabled).apply()
     }
 }

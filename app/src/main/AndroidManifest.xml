@@ -27,6 +27,15 @@
             android:name="firebase_crashlytics_collection_enabled"
             android:value="${crashlyticsCollectionEnabled}" />
 
+        <!-- Service Firebase Messaging pour les notifications -->
+        <service
+            android:name=".notifications.ShooptFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".scanner.BarcodeScannerActivity"
             android:exported="false"

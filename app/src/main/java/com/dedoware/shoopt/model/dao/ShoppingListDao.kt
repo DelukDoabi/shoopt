@@ -13,4 +13,10 @@ interface ShoppingListDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveShoppingList(shoppingList: ShoppingList): Long
+
+    @Query("SELECT COUNT(*) FROM shopping_lists")
+    suspend fun getShoppingListsCount(): Int
+
+    @Query("SELECT * FROM shopping_lists")
+    suspend fun getAllShoppingLists(): List<ShoppingList>
 }
