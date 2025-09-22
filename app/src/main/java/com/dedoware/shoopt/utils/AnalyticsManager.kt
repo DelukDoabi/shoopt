@@ -145,4 +145,16 @@ object AnalyticsManager {
     fun logEvent(name: String, params: Bundle?) {
         analytics.logEvent(name, params)
     }
+
+    /**
+     * Méthode trackEvent pour la compatibilité avec le système de notifications
+     */
+    fun trackEvent(eventName: String, parameters: Map<String, String>? = null) {
+        val params = Bundle().apply {
+            parameters?.forEach { (key, value) ->
+                putString(key, value)
+            }
+        }
+        analytics.logEvent(eventName, params)
+    }
 }

@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import android.widget.EditText
 import androidx.activity.result.ActivityResult
 import androidx.appcompat.app.AppCompatActivity
 import com.dedoware.shoopt.R
@@ -33,7 +34,8 @@ import com.dedoware.shoopt.models.SpotlightItem
 import com.dedoware.shoopt.utils.SpotlightManager
 import com.dedoware.shoopt.utils.OnboardingManager
 import com.dedoware.shoopt.gamification.manager.AchievementCelebrationManager
-
+import com.dedoware.shoopt.admin.AdminManager
+import com.dedoware.shoopt.testing.NotificationTester
 
 class MainActivity : AppCompatActivity() {
     private lateinit var updateShoppingListImageButton: ImageButton
@@ -48,6 +50,9 @@ class MainActivity : AppCompatActivity() {
     // Gestionnaire des célébrations d'achievements
     private lateinit var achievementCelebrationManager: AchievementCelebrationManager
 
+    // Gestionnaire d'administration
+    private lateinit var adminManager: AdminManager
+
     private val useFirebase = false // Définition cohérente avec les autres activités
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,13 +60,16 @@ class MainActivity : AppCompatActivity() {
 
         try {
             // Initialiser et appliquer les préférences utilisateur
-            userPreferences = UserPreferences(this)
+            userPreferences = UserPreferences.getInstance(this)
             userPreferences.applyTheme()
 
             setContentView(R.layout.activity_main)
 
             // Initialiser le gestionnaire de célébrations d'achievements
             achievementCelebrationManager = AchievementCelebrationManager(this)
+
+            // Initialiser le gestionnaire d'administration
+            adminManager = AdminManager.getInstance(this)
 
             setMainVariables()
 
@@ -100,14 +108,20 @@ class MainActivity : AppCompatActivity() {
             // Configuration des cartes pour une meilleure expérience utilisateur
             setupFeatureCards()
 
-            // Vérifier si l'onboarding introduction doit être démarré
-            if (!UserPreferences.isOnboardingCompleted(this)) {
-                OnboardingManager.checkAndStartOnboarding(this)
-                return // L'activité sera fermée par OnboardingManager
-            }
+            // Gérer l'ouverture depuis une notification de rappel
+            handleNotificationIntent()
 
-            // Si l'introduction est terminée, configurer les spotlights
-            setupSpotlightTour()
+            // Initialize and show spotlights after a brief delay
+            window.decorView.postDelayed({
+                // Vérifier si l'onboarding introduction doit être démarré
+                if (!UserPreferences.isOnboardingCompleted(this)) {
+                    OnboardingManager.checkAndStartOnboarding(this)
+                    return@postDelayed // L'activité sera fermée par OnboardingManager
+                }
+
+                // Si l'introduction est terminée, configurer les spotlights
+                setupSpotlightTour()
+            }, 500)
 
             // Vérification des mises à jour disponibles
             try {
@@ -604,6 +618,17 @@ class MainActivity : AppCompatActivity() {
             val popup = androidx.appcompat.widget.PopupMenu(this, view)
             popup.menuInflater.inflate(R.menu.menu_main, popup.menu)
 
+            // Vérifier si l'utilisateur est admin et afficher l'option admin si nécessaire
+            CoroutineScope(Dispatchers.Main).launch {
+                try {
+                    val isAdmin = adminManager.isCurrentUserAdmin()
+                    popup.menu.findItem(R.id.menu_admin_tests).isVisible = isAdmin
+                } catch (e: Exception) {
+                    // En cas d'erreur, masquer l'option admin
+                    popup.menu.findItem(R.id.menu_admin_tests).isVisible = false
+                }
+            }
+
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.menu_profile -> {
@@ -632,6 +657,10 @@ class MainActivity : AppCompatActivity() {
                         }
                         true
                     }
+                    R.id.menu_admin_tests -> {
+                        handleAdminTestsAccess()
+                        true
+                    }
                     R.id.menu_logout -> {
                         displayLogoutConfirmation()
                         true
@@ -653,6 +682,246 @@ class MainActivity : AppCompatActivity() {
             CrashlyticsManager.logException(e)
 
             Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * Gère l'accès aux tests admin avec vérification des privilèges
+     */
+    private fun handleAdminTestsAccess() {
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val isAdmin = adminManager.isCurrentUserAdmin()
+                if (isAdmin) {
+                    // Accès autorisé - afficher le dialogue de test
+                    showNotificationTestDialog()
+
+                    // Analytics pour l'accès admin
+                    AnalyticsManager.trackEvent("admin_tests_accessed", mapOf(
+                        "user_email" to (FirebaseAuth.getInstance().currentUser?.email ?: "unknown"),
+                        "access_granted" to "true"
+                    ))
+                } else {
+                    // Accès refusé - proposer d'entrer le code admin (développement uniquement)
+                    if (isDebugMode()) {
+                        showAdminCodeDialog()
+                    } else {
+                        Toast.makeText(this@MainActivity, getString(R.string.admin_access_denied), Toast.LENGTH_SHORT).show()
+
+                        AnalyticsManager.trackEvent("admin_tests_accessed", mapOf(
+                            "user_email" to (FirebaseAuth.getInstance().currentUser?.email ?: "unknown"),
+                            "access_granted" to "false"
+                        ))
+                    }
+                }
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors de la vérification admin: ${e.message}")
+                CrashlyticsManager.logException(e)
+                Toast.makeText(this@MainActivity, getString(R.string.admin_access_denied), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    /**
+     * Affiche un dialogue pour entrer le code admin (mode développement uniquement)
+     */
+    private fun showAdminCodeDialog() {
+        val input = EditText(this)
+        input.hint = getString(R.string.admin_code_hint)
+
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.admin_code_prompt))
+            .setView(input)
+            .setPositiveButton(getString(R.string.confirm)) { _, _ ->
+                val code = input.text.toString()
+                if (adminManager.enterAdminCode(code)) {
+                    Toast.makeText(this, getString(R.string.admin_mode_enabled), Toast.LENGTH_SHORT).show()
+                    showNotificationTestDialog()
+                } else {
+                    Toast.makeText(this, getString(R.string.admin_invalid_code), Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton(getString(R.string.cancel), null)
+            .show()
+    }
+
+    /**
+     * Affiche le dialogue de test des notifications avec toutes les options
+     */
+    private fun showNotificationTestDialog() {
+        val options = arrayOf(
+            "🧪 Test Immédiat (5s)",
+            "⚡ Test Instantané",
+            "🔍 Test avec Conditions",
+            "📊 Voir Statut",
+            "⚙️ Programmer Rappels",
+            "❌ Annuler Rappels"
+        )
+
+        AlertDialog.Builder(this)
+            .setTitle("🧪 Tests Admin - Notifications")
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> {
+                        // Test immédiat (5 secondes)
+                        NotificationTester.testImmediateNotification(this)
+                        Toast.makeText(this, "📱 Notification de test dans 5 secondes !", Toast.LENGTH_SHORT).show()
+                    }
+                    1 -> {
+                        // Test instantané
+                        NotificationTester.testNotificationDisplay(this)
+                        Toast.makeText(this, "📱 Notification affichée !", Toast.LENGTH_SHORT).show()
+                    }
+                    2 -> {
+                        // Test avec conditions
+                        CoroutineScope(Dispatchers.Main).launch {
+                            testWithConditionsAndShowResult()
+                        }
+                    }
+                    3 -> {
+                        // Voir statut
+                        showNotificationStatus()
+                    }
+                    4 -> {
+                        // Programmer rappels
+                        val scheduler = com.dedoware.shoopt.notifications.ShoppingReminderScheduler.getInstance(this)
+                        scheduler.scheduleWeeklyReminders(this)
+                        Toast.makeText(this, "✅ Rappels programmés !", Toast.LENGTH_SHORT).show()
+                    }
+                    5 -> {
+                        // Annuler rappels
+                        val scheduler = com.dedoware.shoopt.notifications.ShoppingReminderScheduler.getInstance(this)
+                        scheduler.cancelWeeklyReminders(this)
+                        Toast.makeText(this, "❌ Rappels annulés !", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            .setNegativeButton("Fermer", null)
+            .show()
+    }
+
+    /**
+     * Teste les notifications avec vérification des conditions et affiche le résultat
+     */
+    private suspend fun testWithConditionsAndShowResult() {
+        try {
+            val database = (application as ShooptApplication).database
+            val listsCount = database.shoppingListDao().getShoppingListsCount()
+            val prefsManager = com.dedoware.shoopt.notifications.NotificationPreferencesManager.getInstance(this)
+
+            val message = buildString {
+                appendLine("🧪 TEST AVEC CONDITIONS")
+                appendLine("====================")
+                appendLine("Listes existantes: $listsCount")
+                appendLine("Notifications activées: ${prefsManager.areNotificationsEnabled()}")
+                appendLine("Rappels samedi activés: ${prefsManager.areSaturdayRemindersEnabled()}")
+
+                if (listsCount > 0 && prefsManager.shouldSendNotifications()) {
+                    appendLine("\n✅ TOUTES LES CONDITIONS REMPLIES")
+                    appendLine("→ Envoi de la notification de test...")
+                    NotificationTester.testImmediateNotification(this@MainActivity)
+                } else {
+                    appendLine("\n❌ CONDITIONS NON REMPLIES")
+                    if (listsCount == 0) appendLine("→ Aucune liste de courses trouvée")
+                    if (!prefsManager.areNotificationsEnabled()) appendLine("→ Notifications désactivées")
+                    if (!prefsManager.areSaturdayRemindersEnabled()) appendLine("→ Rappels samedi désactivés")
+                }
+            }
+
+            AlertDialog.Builder(this)
+                .setTitle("📋 Résultat du Test")
+                .setMessage(message)
+                .setPositiveButton("OK", null)
+                .show()
+
+        } catch (e: Exception) {
+            Toast.makeText(this, "Erreur lors du test: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * Affiche le statut actuel des notifications
+     */
+    private fun showNotificationStatus() {
+        try {
+            val scheduler = com.dedoware.shoopt.notifications.ShoppingReminderScheduler.getInstance(this)
+            val prefsManager = com.dedoware.shoopt.notifications.NotificationPreferencesManager.getInstance(this)
+            val reminderInfo = scheduler.getNextReminderInfo(this)
+
+            val status = buildString {
+                appendLine("📱 STATUT ACTUEL")
+                appendLine("===============")
+                appendLine("Notifications: ${if (prefsManager.areNotificationsEnabled()) "✅ Activées" else "❌ Désactivées"}")
+                appendLine("Rappels samedi: ${if (prefsManager.areSaturdayRemindersEnabled()) "✅ Activés" else "❌ Désactivés"}")
+                appendLine("Heure de rappel: ${prefsManager.getReminderTimeFormatted()}")
+                appendLine("Programmé: ${if (reminderInfo["is_scheduled"] as Boolean) "✅ Oui" else "❌ Non"}")
+                appendLine("Prochaine exécution: ${reminderInfo["next_execution"]}")
+                appendLine("Jours restants: ${reminderInfo["days_until"]}")
+            }
+
+            AlertDialog.Builder(this)
+                .setTitle("📊 Statut des Notifications")
+                .setMessage(status)
+                .setPositiveButton("OK", null)
+                .show()
+
+        } catch (e: Exception) {
+            Toast.makeText(this, "Erreur lors de la récupération du statut: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * Vérifie si l'app est en mode debug
+     */
+    private fun isDebugMode(): Boolean {
+        return try {
+            val buildConfig = Class.forName("${packageName}.BuildConfig")
+            val debugField = buildConfig.getField("DEBUG")
+            debugField.getBoolean(null)
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    /**
+     * Gère l'intent reçu par l'activité, en particulier pour les ouvertures depuis des notifications
+     */
+    private fun handleNotificationIntent() {
+        try {
+            val navigateTo = intent.getStringExtra("navigate_to")
+            val notificationSource = intent.getStringExtra("notification_source")
+
+            if (navigateTo == "shopping_list") {
+                // Analytics pour le clic sur la notification de rappel
+                AnalyticsManager.trackEvent("notification_clicked", mapOf(
+                    "source" to (notificationSource ?: "unknown"),
+                    "action" to "open_shopping_list"
+                ))
+
+                // Ouvrir l'activité de liste de courses avec un délai pour laisser l'interface se charger
+                window.decorView.postDelayed({
+                    try {
+                        val shoppingListIntent = Intent(this, UpdateShoppingListActivity::class.java)
+                        shoppingListIntent.putExtra("from_notification", true)
+                        startActivity(shoppingListIntent)
+
+                        // Afficher un message de bienvenue
+                        Toast.makeText(
+                            this,
+                            "🛒 C'est l'heure de vos courses ! Vérifiez votre liste.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } catch (e: Exception) {
+                        CrashlyticsManager.log("Erreur lors de l'ouverture de la liste depuis notification: ${e.message}")
+                        CrashlyticsManager.logException(e)
+                        Toast.makeText(this, getString(R.string.shopping_list_open_error), Toast.LENGTH_SHORT).show()
+                    }
+                }, 1000)
+            }
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors du traitement de l'intent de notification: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "handle_notification_intent")
+            CrashlyticsManager.logException(e)
         }
     }
 }

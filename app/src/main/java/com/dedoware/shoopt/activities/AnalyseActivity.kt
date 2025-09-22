@@ -120,7 +120,7 @@ class AnalyseActivity : AppCompatActivity() {
 
             // Initialiser les préférences utilisateur
             try {
-                userPreferences = UserPreferences(this)
+                userPreferences = UserPreferences.getInstance(this)
             } catch (e: Exception) {
                 CrashlyticsManager.log("Erreur lors de l'initialisation des préférences utilisateur: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "user_preferences_init")

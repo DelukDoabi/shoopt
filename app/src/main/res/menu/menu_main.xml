@@ -1,16 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item
         android:id="@+id/menu_profile"
-        android:title="@string/user_profile"
-        android:icon="@drawable/ic_person" />
+        android:icon="@android:drawable/ic_menu_myplaces"
+        android:title="@string/user_profile" />
+
     <item
         android:id="@+id/menu_settings"
-        android:title="@string/settings"
-        android:icon="@drawable/ic_settings" />
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="@string/menu_settings" />
+
+    <!-- Option admin (visible uniquement pour les administrateurs) -->
+    <item
+        android:id="@+id/menu_admin_tests"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:title="🧪 Tests Admin"
+        android:visible="false" />
+
     <item
         android:id="@+id/menu_logout"
-        android:title="@string/logout"
-        android:icon="@drawable/ic_logout" />
-</menu>
+        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        android:title="@string/logout" />
 
+</menu>

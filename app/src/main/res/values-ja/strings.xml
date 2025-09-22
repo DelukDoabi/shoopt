@@ -470,5 +470,25 @@
     <string name="update_important_reminder">このアップデートには重要な改善が含まれています</string>
     <string name="update_later_critical">今はしない</string>
     <string name="retry">再試行</string>
+    <string name="notification_shopping_reminder_title">🛒 あなたのShooptリストは買い物の準備ができています！</string>
+    <string name="notification_shopping_reminder_body">買い物に行く前にリストを確認してください</string>
+    <string name="notification_shopping_reminder_big_text">🛒 あなたのShooptリストは買い物の準備ができています！\n\n土曜日の買い物で何も忘れないようにしましょう。</string>
+    <string name="notification_action_view_list">マイリストを見る</string>
+    <string name="notification_channel_shopping_reminders">買い物リマインダー</string>
+    <string name="notification_channel_shopping_reminders_description">毎週の買い物リスト通知</string>
+    <string name="notification_custom_reminder_title">Shooptリマインダー</string>
+    <string name="notification_custom_reminder_body">買い物リストを確認してください</string>
+    <string name="notification_preferences_title">通知設定</string>
+    <string name="notification_global_enabled">通知を有効にする</string>
+    <string name="notification_saturday_reminders_enabled">土曜日の買い物リマインダー</string>
+    <string name="notification_reminder_time">リマインド時間</string>
+    <string name="notification_reminder_time_format">%1$02d:%2$02d</string>
+    <string name="menu_settings">設定</string>
+    <string name="menu_admin_tests">🧪 管理者テスト</string>
+    <string name="admin_access_denied">管理者アクセスが必要です</string>
+    <string name="admin_code_prompt">管理者コード</string>
+    <string name="admin_code_hint">管理者コードを入力</string>
+    <string name="admin_mode_enabled">管理者モード有効</string>
+    <string name="admin_invalid_code">無効なコード</string>
 
 </resources>

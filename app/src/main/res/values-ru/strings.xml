@@ -469,4 +469,25 @@
     <string name="update_important_reminder">Это обновление содержит важные улучшения</string>
     <string name="update_later_critical">Не сейчас</string>
     <string name="retry">Повторить</string>
+    <string name="notification_shopping_reminder_title">🛒 Ваш список Shoopt готов к покупкам!</string>
+    <string name="notification_shopping_reminder_body">Проверьте свой список перед походом в магазин</string>
+    <string name="notification_shopping_reminder_big_text">🛒 Ваш список Shoopt готов к покупкам!\n\nНе забудьте ничего для ваших субботних покупок.</string>
+    <string name="notification_action_view_list">Посмотреть мой список</string>
+    <string name="notification_channel_shopping_reminders">Напоминания о покупках</string>
+    <string name="notification_channel_shopping_reminders_description">Еженедельные уведомления о списке покупок</string>
+    <string name="notification_custom_reminder_title">Напоминание Shoopt</string>
+    <string name="notification_custom_reminder_body">Проверьте свои списки покупок</string>
+    <string name="notification_preferences_title">Настройки уведомлений</string>
+    <string name="notification_global_enabled">Включить уведомления</string>
+    <string name="notification_saturday_reminders_enabled">Субботние напоминания о покупках</string>
+    <string name="notification_reminder_time">Время напоминания</string>
+    <string name="notification_reminder_time_format">%1$02d:%2$02d</string>
+    <string name="menu_settings">Настройки</string>
+    <string name="menu_admin_tests">🧪 Тесты администратора</string>
+    <string name="admin_access_denied">Требуется доступ администратора</string>
+    <string name="admin_code_prompt">Код администратора</string>
+    <string name="admin_code_hint">Введите код администратора</string>
+    <string name="admin_mode_enabled">Режим администратора включен</string>
+    <string name="admin_invalid_code">Неверный код</string>
+
 </resources>

@@ -462,4 +462,25 @@
     <string name="update_important_reminder">Esta actualización contiene mejoras importantes</string>
     <string name="update_later_critical">Ahora no</string>
     <string name="retry">Reintentar</string>
+    <string name="notification_shopping_reminder_title">🛒 ¡Tu lista Shoopt está lista para las compras!</string>
+    <string name="notification_shopping_reminder_body">Revisa tu lista antes de ir de compras</string>
+    <string name="notification_shopping_reminder_big_text">🛒 ¡Tu lista Shoopt está lista para las compras!\n\nNo olvides nada para tus compras del sábado.</string>
+    <string name="notification_action_view_list">Ver mi lista</string>
+    <string name="notification_channel_shopping_reminders">Recordatorios de compras</string>
+    <string name="notification_channel_shopping_reminders_description">Notificaciones semanales de recordatorio de lista de compras</string>
+    <string name="notification_custom_reminder_title">Recordatorio Shoopt</string>
+    <string name="notification_custom_reminder_body">Revisa tus listas de compras</string>
+    <string name="notification_preferences_title">Preferencias de notificación</string>
+    <string name="notification_global_enabled">Habilitar notificaciones</string>
+    <string name="notification_saturday_reminders_enabled">Recordatorios de compras del sábado</string>
+    <string name="notification_reminder_time">Hora del recordatorio</string>
+    <string name="notification_reminder_time_format">%1$02d:%2$02d</string>
+    <string name="menu_settings">Configuración</string>
+    <string name="menu_admin_tests">🧪 Pruebas de administrador</string>
+    <string name="admin_access_denied">Acceso de administrador requerido</string>
+    <string name="admin_code_prompt">Código de administrador</string>
+    <string name="admin_code_hint">Introduce el código de administrador</string>
+    <string name="admin_mode_enabled">Modo administrador activado</string>
+    <string name="admin_invalid_code">Código no válido</string>
+
 </resources>

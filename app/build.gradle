@@ -95,11 +95,15 @@ dependencies {
     implementation 'com.google.firebase:firebase-config-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ndk'
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+
+    // WorkManager pour les notifications programmées
+    implementation 'androidx.work:work-runtime-ktx:2.9.0'
 
     implementation 'com.github.bumptech.glide:glide:4.14.2'
     implementation 'androidx.room:room-common:2.6.1'
     implementation 'androidx.room:room-ktx:2.6.1'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
+    kapt 'com.github.bumptech.glide:compiler:4.14.2'
 
 
     implementation 'com.google.code.gson:gson:2.10.1'
