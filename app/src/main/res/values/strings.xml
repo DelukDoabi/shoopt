@@ -68,7 +68,7 @@
     <string name="shopping_list_input_help">Enter products separated by commas, lines, or dashes</string>
     <string name="shopping_list_input_hint">Milk, Bread, 2 Apples, Cheese…</string>
     <string name="shopping_list_tips_title">💡 Quick Tips</string>
-    <string name="shopping_list_tips_content">• Use commas, lines, or dashes to separate items\n• Add quantities like "2 Apples" or "3 Bananas"\n• Paste lists from other apps\n• Swipe items to remove them</string>
+    <string name="shopping_list_tips_content">• Use commas, line breaks, periods, dashes, etc. to separate items\n• Add quantities like "2 apples" or "3 bananas"\n• Paste lists from other applications\n</string>
     <string name="product_list">Product List</string>
     <string name="converted_products_list">Converted Products</string>
     <string name="empty_list">Empty List</string>

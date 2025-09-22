@@ -145,7 +145,7 @@
     <string name="shopping_list_input_help">输入产品，用逗号、换行或短横线分隔</string>
     <string name="shopping_list_input_hint">牛奶，面包，2个苹果，奶酪…</string>
     <string name="shopping_list_tips_title">💡 快速提示</string>
-    <string name="shopping_list_tips_content">• 用逗号、换行或短横线分隔项目\n• 添加数量，如“2个苹果”或“3根香蕉”\n• 从其他应用粘贴清单\n• 向左滑动项目以删除</string>
+    <string name="shopping_list_tips_content">• 使用逗号、换行、句号、破折号等分隔项目\n• 添加数量，如 "2 个苹果" 或 "3 根香蕉"\n• 从其他应用粘贴列表\n</string>
     <string name="product_list">产品列表</string>
     <string name="converted_products_list">已转换产品</string>
     <string name="empty_list">空列表</string>

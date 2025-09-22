@@ -216,7 +216,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
             convertToProductTrackButton.setOnClickListener {
                 try {
                     val products = mainShoppingListEditText.text.toString()
-                        .split(Regex("[,.\\-;:|/]+"))
+                        .split(Regex("[,.\\-;:|/\\n\\r]+"))
                         .map { it.trim() }
                         .filter { it.isNotEmpty() }
 

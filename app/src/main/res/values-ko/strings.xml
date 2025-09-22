@@ -145,7 +145,7 @@
     <string name="shopping_list_input_help">제품을 쉼표, 줄, 또는 대시로 구분하여 입력하세요</string>
     <string name="shopping_list_input_hint">우유, 빵, 사과 2개, 치즈…</string>
     <string name="shopping_list_tips_title">💡 빠른 팁</string>
-    <string name="shopping_list_tips_content">• 항목을 구분하려면 쉼표, 줄, 또는 대시를 사용하세요\n• "사과 2개" 또는 "바나나 3개"와 같이 수량을 추가하세요\n• 다른 앱에서 목록을 붙여넣으세요\n• 항목을 삭제하려면 스와이프하세요</string>
+    <string name="shopping_list_tips_content">• 쉼표, 줄 바꿈, 마침표, 대시 등을 사용하여 항목을 구분하세요\n• "사과 2개" 또는 "바나나 3개"와 같이 수량을 추가하세요\n• 다른 앱에서 목록을 붙여넣으세요\n</string>
     <string name="product_list">제품 목록</string>
     <string name="converted_products_list">변환된 제품</string>
     <string name="empty_list">빈 목록</string>

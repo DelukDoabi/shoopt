@@ -145,7 +145,7 @@
     <string name="shopping_list_input_help">Wprowadź produkty oddzielone przecinkami, liniami lub myślnikami</string>
     <string name="shopping_list_input_hint">Mleko, chleb, 2 jabłka, ser…</string>
     <string name="shopping_list_tips_title">💡 Szybkie wskazówki</string>
-    <string name="shopping_list_tips_content">• Użyj przecinków, linii lub myślników do oddzielenia pozycji\n• Dodaj ilości, np. "2 jabłka" lub "3 banany"\n• Wklej listy z innych aplikacji\n• Przesuń pozycje, aby je usunąć</string>
+    <string name="shopping_list_tips_content">• Używaj przecinków, nowych linii, kropek, myślników itp., aby oddzielić produkty\n• Dodaj ilości, takie jak "2 jabłka" lub "3 banany"\n• Wklejaj listy z innych aplikacji\n</string>
     <string name="product_list">Lista produktów</string>
     <string name="converted_products_list">Przekonwertowane produkty</string>
     <string name="empty_list">Pusta lista</string>

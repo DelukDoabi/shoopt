@@ -145,7 +145,7 @@
     <string name="shopping_list_input_help">Scrivi i prodotti separati da virgole, righe o trattini</string>
     <string name="shopping_list_input_hint">Latte, pane, 2 mele, formaggio…</string>
     <string name="shopping_list_tips_title">💡 Suggerimenti rapidi</string>
-    <string name="shopping_list_tips_content">• Usa virgole, righe o trattini per separare gli articoli\n• Aggiungi quantità come "2 mele" o "3 banane"\n• Incolla liste da altre app\n• Fai scorrere gli articoli per rimuoverli</string>
+    <string name="shopping_list_tips_content">• Usa virgole, interruzioni di riga, punti, trattini, ecc. per separare gli articoli\n• Aggiungi quantità come "2 mele" o "3 banane"\n• Incolla liste da altre applicazioni\n</string>
     <string name="product_list">Lista prodotti</string>
     <string name="converted_products_list">Prodotti convertiti</string>
     <string name="empty_list">Lista vuota</string>

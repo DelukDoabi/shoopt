@@ -145,7 +145,7 @@
     <string name="shopping_list_input_help">商品はカンマ、改行、またはダッシュで区切って入力してね</string>
     <string name="shopping_list_input_hint">牛乳、パン、りんご2個、チーズ…</string>
     <string name="shopping_list_tips_title">💡 クイックヒント</string>
-    <string name="shopping_list_tips_content">• カンマ、改行、またはダッシュで項目を区切ろう\n• 「りんご2個」や「バナナ3本」のように数量も追加できるよ\n• 他のアプリからリストを貼り付けよう\n• 削除したいときは項目をスワイプしてね</string>
+    <string name="shopping_list_tips_content">• カンマ、改行、ピリオド、ダッシュなどを使って商品を区切ります\n• 「りんご2個」や「バナナ3本」のように数量を追加します\n• 他のアプリからリストを貼り付けます\n</string>
     <string name="product_list">商品リスト</string>
     <string name="converted_products_list">変換済み商品</string>
     <string name="empty_list">空のリスト</string>

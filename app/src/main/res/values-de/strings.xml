@@ -145,7 +145,7 @@
     <string name="shopping_list_input_help">Trenne Produkte mit Kommas, Zeilen oder Bindestrichen</string>
     <string name="shopping_list_input_hint">Milch, Brot, 2 Äpfel, Käse…</string>
     <string name="shopping_list_tips_title">💡 Kurze Tipps</string>
-    <string name="shopping_list_tips_content">• Nutze Kommas, Zeilen oder Bindestriche, um Artikel zu trennen\n• Mengen wie "2 Äpfel" oder "3 Bananen" hinzufügen\n• Listen aus anderen Apps einfügen\n• Wische Artikel zum Entfernen</string>
+    <string name="shopping_list_tips_content">• Verwende Kommas, Zeilenumbrüche, Punkte, Bindestriche usw., um Artikel zu trennen\n• Füge Mengen hinzu wie "2 Äpfel" oder "3 Bananen"\n• Füge Listen aus anderen Anwendungen ein\n</string>
     <string name="product_list">Produktliste</string>
     <string name="converted_products_list">Konvertierte Produkte</string>
     <string name="empty_list">Leere Liste</string>

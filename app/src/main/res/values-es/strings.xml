@@ -145,7 +145,7 @@
     <string name="shopping_list_input_help">Escribe los productos separados por comas, líneas o guiones</string>
     <string name="shopping_list_input_hint">Leche, pan, 2 manzanas, queso…</string>
     <string name="shopping_list_tips_title">💡 Consejos rápidos</string>
-    <string name="shopping_list_tips_content">• Usa comas, líneas o guiones para separar los artículos\n• Añade cantidades como "2 manzanas" o "3 plátanos"\n• Pega listas de otras apps\n• Desliza los artículos para eliminarlos</string>
+    <string name="shopping_list_tips_content">• Usa comas, saltos de línea, puntos, guiones, etc. para separar los artículos\n• Añade cantidades como "2 manzanas" o "3 plátanos"\n• Pega listas de otras aplicaciones\n</string>
     <string name="product_list">Lista de productos</string>
     <string name="converted_products_list">Productos convertidos</string>
     <string name="empty_list">Lista vacía</string>

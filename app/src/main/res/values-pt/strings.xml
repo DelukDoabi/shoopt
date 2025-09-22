@@ -145,7 +145,7 @@
     <string name="shopping_list_input_help">Insira produtos separados por vírgulas, linhas ou traços</string>
     <string name="shopping_list_input_hint">Leite, pão, 2 maçãs, queijo…</string>
     <string name="shopping_list_tips_title">💡 Dicas rápidas</string>
-    <string name="shopping_list_tips_content">• Use vírgulas, linhas ou traços para separar itens\n• Adicione quantidades como "2 maçãs" ou "3 bananas"\n• Cole listas de outros aplicativos\n• Deslize itens para removê-los</string>
+    <string name="shopping_list_tips_content">• Usa vírgulas, quebras de linha, pontos, traços, etc. para separar os itens\n• Adiciona quantidades como "2 maçãs" ou "3 bananas"\n• Cola listas de outras aplicações\n</string>
     <string name="product_list">Lista de produtos</string>
     <string name="converted_products_list">Produtos convertidos</string>
     <string name="empty_list">Lista vazia</string>
