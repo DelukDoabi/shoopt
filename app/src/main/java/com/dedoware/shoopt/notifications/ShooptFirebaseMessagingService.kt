@@ -5,7 +5,6 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.activities.MainActivity
@@ -29,17 +28,23 @@ class ShooptFirebaseMessagingService : FirebaseMessagingService() {
         super.onMessageReceived(remoteMessage)
 
         // Traiter les notifications de rappel de courses
-        if (remoteMessage.data["type"] == "shopping_reminder") {
-            showShoppingReminderNotification(
-                title = remoteMessage.data["title"] ?: "🛒 Votre liste Shoopt est prête !",
-                body = remoteMessage.data["body"] ?: "Vérifiez votre liste pour vos courses du samedi"
-            )
+        when (remoteMessage.data["type"]) {
+            "shopping_reminder" -> {
+                showShoppingReminderNotification(
+                    title = remoteMessage.data["title"] ?: getString(R.string.notification_shopping_reminder_title),
+                    body = remoteMessage.data["body"] ?: getString(R.string.notification_shopping_reminder_body)
+                )
 
-            // Analytics pour tracking
-            AnalyticsManager.trackEvent("notification_received", mapOf(
-                "type" to "shopping_reminder",
-                "day" to "saturday"
-            ))
+                // Analytics pour tracking des notifications reçues
+                AnalyticsManager.trackEvent("notification_received", mapOf(
+                    "type" to "shopping_reminder",
+                    "day" to "saturday",
+                    "source" to "fcm"
+                ))
+            }
+            "custom_reminder" -> {
+                showCustomReminderNotification(remoteMessage)
+            }
         }
     }
 
@@ -47,29 +52,79 @@ class ShooptFirebaseMessagingService : FirebaseMessagingService() {
         super.onNewToken(token)
         // Envoyer le token au serveur pour l'envoi de notifications ciblées
         sendTokenToServer(token)
+
+        // Analytics pour tracking des nouveaux tokens
+        AnalyticsManager.trackEvent("fcm_token_refreshed", mapOf(
+            "token_length" to token.length.toString()
+        ))
     }
 
     private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "Rappels de courses"
-            val descriptionText = "Notifications de rappel pour vos listes de courses"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
-                description = descriptionText
-                enableVibration(true)
-                setShowBadge(true)
-            }
-
-            val notificationManager: NotificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
+        val name = getString(R.string.notification_channel_shopping_reminders)
+        val descriptionText = getString(R.string.notification_channel_shopping_reminders_description)
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+            description = descriptionText
+            enableVibration(true)
+            setShowBadge(true)
+            enableLights(true)
         }
+
+        val notificationManager: NotificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
     }
 
     private fun showShoppingReminderNotification(title: String, body: String) {
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            putExtra("open_shopping_list", true)
+            // Navigation directe vers l'écran Liste de courses comme spécifié dans la user story
+            putExtra("navigate_to", "shopping_list")
+            putExtra("notification_source", "saturday_reminder_fcm")
+        }
+
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(
+            this, 0, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_shopping_cart_notification)
+            .setContentTitle(title)
+            .setContentText(body)
+            .setStyle(NotificationCompat.BigTextStyle()
+                .bigText(getString(R.string.notification_shopping_reminder_big_text)))
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+            .addAction(
+                R.drawable.ic_list,
+                getString(R.string.notification_action_view_list),
+                createViewListPendingIntent()
+            )
+
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.notify(NOTIFICATION_ID, builder.build())
+
+        // Analytics pour tracking des notifications affichées via FCM
+        AnalyticsManager.trackEvent("notification_displayed", mapOf(
+            "type" to "shopping_reminder",
+            "day" to "saturday",
+            "source" to "fcm",
+            "title_length" to title.length.toString(),
+            "body_length" to body.length.toString()
+        ))
+    }
+
+    private fun showCustomReminderNotification(remoteMessage: RemoteMessage) {
+        val title = remoteMessage.data["title"] ?: getString(R.string.notification_custom_reminder_title)
+        val body = remoteMessage.data["body"] ?: getString(R.string.notification_custom_reminder_body)
+        val actionText = remoteMessage.data["action_text"] ?: getString(R.string.notification_action_view_list)
+
+        val intent = Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            putExtra("navigate_to", remoteMessage.data["navigate_to"] ?: "shopping_list")
+            putExtra("notification_source", "custom_reminder_fcm")
         }
 
         val pendingIntent: PendingIntent = PendingIntent.getActivity(
@@ -87,22 +142,38 @@ class ShooptFirebaseMessagingService : FirebaseMessagingService() {
             .setAutoCancel(true)
             .addAction(
                 R.drawable.ic_list,
-                "Voir ma liste",
+                actionText,
                 pendingIntent
             )
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(NOTIFICATION_ID, builder.build())
 
-        // Analytics pour tracking des clics
         AnalyticsManager.trackEvent("notification_displayed", mapOf(
-            "type" to "shopping_reminder",
-            "day" to "saturday"
+            "type" to "custom_reminder",
+            "source" to "fcm"
         ))
     }
 
+    private fun createViewListPendingIntent(): PendingIntent {
+        val intent = Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            putExtra("navigate_to", "shopping_list")
+            putExtra("notification_source", "saturday_reminder_action")
+        }
+
+        return PendingIntent.getActivity(
+            this, 1, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+    }
+
     private fun sendTokenToServer(token: String) {
-        // Ici vous pouvez envoyer le token à votre serveur
+        // TODO: Implémenter l'envoi du token à votre serveur backend
         // pour l'envoi de notifications ciblées
+        // Exemple : ApiService.sendFCMToken(token)
+        AnalyticsManager.trackEvent("fcm_token_ready", mapOf(
+            "token_generated" to "true"
+        ))
     }
 }

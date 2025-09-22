@@ -468,4 +468,18 @@
     <string name="update_important_reminder">이 업데이트에는 중요한 개선 사항이 포함되어 있습니다</string>
     <string name="update_later_critical">나중에</string>
     <string name="retry">다시 시도</string>
+    <string name="notification_shopping_reminder_title">🛒 Shoopt 목록이 쇼핑할 준비가 되었습니다!</string>
+    <string name="notification_shopping_reminder_body">쇼핑을 가기 전에 목록을 확인하세요</string>
+    <string name="notification_shopping_reminder_big_text">🛒 Shoopt 목록이 쇼핑할 준비가 되었습니다!\n\n토요일 쇼핑을 위해 아무것도 잊지 마세요.</string>
+    <string name="notification_action_view_list">내 목록 보기</string>
+    <string name="notification_channel_shopping_reminders">쇼핑 알림</string>
+    <string name="notification_channel_shopping_reminders_description">주간 쇼핑 목록 알림</string>
+    <string name="notification_custom_reminder_title">Shoopt 알림</string>
+    <string name="notification_custom_reminder_body">쇼핑 목록을 확인하세요</string>
+    <string name="notification_preferences_title">알림 설정</string>
+    <string name="notification_global_enabled">알림 활성화</string>
+    <string name="notification_saturday_reminders_enabled">토요일 쇼핑 알림</string>
+    <string name="notification_reminder_time">알림 시간</string>
+    <string name="notification_reminder_time_format">%1$02d:%2$02d</string>
+
 </resources>

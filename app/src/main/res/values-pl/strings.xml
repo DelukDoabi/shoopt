@@ -468,5 +468,18 @@
     <string name="update_important_reminder">Ta aktualizacja zawiera ważne ulepszenia</string>
     <string name="update_later_critical">Nie teraz</string>
     <string name="retry">Spróbuj ponownie</string>
+    <string name="notification_shopping_reminder_title">🛒 Twoja lista Shoopt jest gotowa na zakupy!</string>
+    <string name="notification_shopping_reminder_body">Sprawdź swoją listę przed zakupami</string>
+    <string name="notification_shopping_reminder_big_text">🛒 Twoja lista Shoopt jest gotowa na zakupy!\n\nNie zapomnij niczego na sobotnie zakupy.</string>
+    <string name="notification_action_view_list">Zobacz moją listę</string>
+    <string name="notification_channel_shopping_reminders">Przypomnienia zakupowe</string>
+    <string name="notification_channel_shopping_reminders_description">Cotygodniowe powiadomienia o liście zakupów</string>
+    <string name="notification_custom_reminder_title">Przypomnienie Shoopt</string>
+    <string name="notification_custom_reminder_body">Sprawdź swoje listy zakupów</string>
+    <string name="notification_preferences_title">Ustawienia powiadomień</string>
+    <string name="notification_global_enabled">Włącz powiadomienia</string>
+    <string name="notification_saturday_reminders_enabled">Przypomnienia o sobotnich zakupach</string>
+    <string name="notification_reminder_time">Czas przypomnienia</string>
+    <string name="notification_reminder_time_format">%1$02d:%2$02d</string>
 
 </resources>

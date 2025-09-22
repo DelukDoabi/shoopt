@@ -406,4 +406,17 @@
     <string name="level_8">Level 8 - Shopping master</string>
     <string name="level_9">Level 9 - Shopping visionary</string>
     <string name="level_10">Level 10 - Shoopt legend ✨</string>
+    <string name="notification_shopping_reminder_title">🛒 Your Shoopt list is ready for shopping!</string>
+    <string name="notification_shopping_reminder_body">Check your list before you go shopping</string>
+    <string name="notification_shopping_reminder_big_text">🛒 Your Shoopt list is ready for shopping!\n\nDon\'t forget anything for your Saturday purchases.</string>
+    <string name="notification_action_view_list">View my list</string>
+    <string name="notification_channel_shopping_reminders">Shopping reminders</string>
+    <string name="notification_channel_shopping_reminders_description">Weekly shopping list reminder notifications</string>
+    <string name="notification_custom_reminder_title">Shoopt reminder</string>
+    <string name="notification_custom_reminder_body">Check your shopping lists</string>
+    <string name="notification_preferences_title">Notification Preferences</string>
+    <string name="notification_global_enabled">Enable notifications</string>
+    <string name="notification_saturday_reminders_enabled">Saturday shopping reminders</string>
+    <string name="notification_reminder_time">Reminder time</string>
+    <string name="notification_reminder_time_format">%1$02d:%2$02d</string>
 </resources>

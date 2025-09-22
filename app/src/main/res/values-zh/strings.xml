@@ -468,4 +468,18 @@
     <string name="update_important_reminder">此更新包含重要改进</string>
     <string name="update_later_critical">稍后</string>
     <string name="retry">重试</string>
+    <string name="notification_shopping_reminder_title">🛒 你的Shoopt清单已准备好购物！</string>
+    <string name="notification_shopping_reminder_body">去购物前请检查你的清单</string>
+    <string name="notification_shopping_reminder_big_text">🛒 你的Shoopt清单已准备好购物！\n\n别忘了你周六的采购。</string>
+    <string name="notification_action_view_list">查看我的清单</string>
+    <string name="notification_channel_shopping_reminders">购物提醒</string>
+    <string name="notification_channel_shopping_reminders_description">每周购物清单提醒通知</string>
+    <string name="notification_custom_reminder_title">Shoopt提醒</string>
+    <string name="notification_custom_reminder_body">检查你的购物清单</string>
+    <string name="notification_preferences_title">通知设置</string>
+    <string name="notification_global_enabled">启用通知</string>
+    <string name="notification_saturday_reminders_enabled">周六购物提醒</string>
+    <string name="notification_reminder_time">提醒时间</string>
+    <string name="notification_reminder_time_format">%1$02d:%2$02d</string>
+
 </resources>
