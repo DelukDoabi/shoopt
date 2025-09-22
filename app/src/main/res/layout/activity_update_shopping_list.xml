@@ -201,60 +201,6 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Tips Card with responsive sizing -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/tips_card"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_medium"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="#1A000000"
-                app:strokeColor="@color/main_palette_old_lavender_variant"
-                app:strokeWidth="1dp"
-                android:alpha="0.9"
-                app:layout_constraintWidth_percent="@dimen/card_width_percent"
-                app:layout_constraintTop_toBottomOf="@id/input_card"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <LinearLayout
-                    android:id="@+id/quick_tips_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/margin_medium">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/shopping_list_tips_title"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_small"
-                        android:textStyle="bold"
-                        app:drawableStartCompat="@drawable/ic_tip"
-                        android:drawablePadding="8dp"
-                        app:drawableTint="@color/main_palette_old_lavender_variant"
-                        android:gravity="start|center_vertical"
-                        android:layout_marginBottom="@dimen/margin_small"
-                        android:autoSizeTextType="uniform"
-                        android:autoSizeMinTextSize="12sp"
-                        android:autoSizeMaxTextSize="16sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/shopping_list_tips_content"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_small"
-                        android:alpha="0.9"
-                        android:lineSpacingExtra="2dp"
-                        android:autoSizeTextType="uniform"
-                        android:autoSizeMinTextSize="10sp"
-                        android:autoSizeMaxTextSize="14sp" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
             <!-- Products List Card with responsive sizing -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/products_list_card"
@@ -268,7 +214,7 @@
                 app:strokeWidth="1dp"
                 app:strokeColor="@color/main_palette_old_lavender_variant"
                 app:layout_constraintWidth_percent="@dimen/card_width_percent"
-                app:layout_constraintTop_toBottomOf="@id/tips_card"
+                app:layout_constraintTop_toBottomOf="@id/input_card"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

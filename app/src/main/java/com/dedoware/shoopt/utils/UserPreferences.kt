@@ -22,6 +22,7 @@ class UserPreferences(context: Context) {
         private const val KEY_AI_AUTOCOMPLETION_ENABLED = "ai_autocompletion_enabled"
         private const val KEY_MAPS_AUTOCOMPLETION_ENABLED = "maps_autocompletion_enabled"
         private const val KEY_PHOTO_TIP_ENABLED = "photo_tip_enabled"
+        private const val KEY_QUICK_TIP_ENABLED = "quick_tip_enabled"
 
         const val THEME_LIGHT = 1
         const val THEME_DARK = 2
@@ -147,6 +148,17 @@ class UserPreferences(context: Context) {
         fun setPhotoTipsEnabled(context: Context, enabled: Boolean) {
             val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             prefs.edit().putBoolean(KEY_PHOTO_TIP_ENABLED, enabled).apply()
+        }
+
+        // Méthodes pour les quick tips (conseils de la liste de courses)
+        fun shouldShowQuickTips(context: Context): Boolean {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            return prefs.getBoolean(KEY_QUICK_TIP_ENABLED, true) // Activé par défaut
+        }
+
+        fun setQuickTipsEnabled(context: Context, enabled: Boolean) {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            prefs.edit().putBoolean(KEY_QUICK_TIP_ENABLED, enabled).apply()
         }
     }
 

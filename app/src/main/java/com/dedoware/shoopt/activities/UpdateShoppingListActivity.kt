@@ -10,10 +10,12 @@ import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
 import android.widget.TextView
+import android.widget.CheckBox
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -143,6 +145,20 @@ class UpdateShoppingListActivity : AppCompatActivity() {
 
                 // Setup fullscreen zoom functionality
                 setupFullscreenZoomFunctionality()
+
+                // Show quick tips dialog on focus if enabled (reuse dialog_photo_tips layout)
+                mainShoppingListEditText.setOnFocusChangeListener { _, hasFocus ->
+                    if (hasFocus) {
+                        try {
+                            if (UserPreferences.shouldShowQuickTips(this)) {
+                                showQuickTipsDialog()
+                            }
+                        } catch (e: Exception) {
+                            CrashlyticsManager.log("Erreur lors de l'affichage des quick tips: ${e.message ?: "Message non disponible"}")
+                            CrashlyticsManager.logException(e)
+                        }
+                    }
+                }
             } catch (e: Exception) {
                 CrashlyticsManager.log("Erreur lors de l'initialisation des composants d'interface: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "ui_components_init")
@@ -319,6 +335,40 @@ class UpdateShoppingListActivity : AppCompatActivity() {
 
             Toast.makeText(this, getString(R.string.app_loading_error), Toast.LENGTH_SHORT).show()
             finish()
+        }
+    }
+
+    private fun showQuickTipsDialog() {
+        try {
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_photo_tips, null)
+            // Update title/message to correspond to quick tips
+            val titleView = dialogView.findViewById<TextView>(R.id.photo_tips_title)
+            val messageView = dialogView.findViewById<TextView>(R.id.photo_tips_message)
+            titleView?.setText(R.string.shopping_list_tips_title)
+            messageView?.setText(R.string.shopping_list_tips_content)
+
+            val dialog = AlertDialog.Builder(this)
+                .setView(dialogView)
+                .setCancelable(false)
+                .create()
+
+            dialog.window?.setBackgroundDrawableResource(R.drawable.rounded_dialog_background)
+
+            val continueButton = dialogView.findViewById<MaterialButton>(R.id.continue_button)
+            val dontShowAgainCheckbox = dialogView.findViewById<CheckBox>(R.id.dont_show_again_checkbox)
+
+            continueButton.setOnClickListener {
+                if (dontShowAgainCheckbox?.isChecked == true) {
+                    UserPreferences.setQuickTipsEnabled(this, false)
+                }
+                dialog.dismiss()
+            }
+
+            dialog.show()
+            AnalyticsManager.logCustomEvent("quick_tips_dialog_shown", null)
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de l'affichage du quick tips dialog: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.logException(e)
         }
     }
 
