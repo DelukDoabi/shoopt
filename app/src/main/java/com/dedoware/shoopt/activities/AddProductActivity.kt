@@ -87,6 +87,7 @@ import java.io.File
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.UUID
+import java.util.Locale
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 // Imports pour le système de spotlight
@@ -1173,6 +1174,9 @@ class AddProductActivity : AppCompatActivity() {
     }
 
     private fun createImageAnalysisPayload(base64Image: String): String {
+        // Obtenir la langue actuelle de l'utilisateur (nom lisible, ex: "Français", "English")
+        val userLanguage = Locale.getDefault().displayLanguage
+
         return  """
                     {
                         "messages": [
@@ -1181,7 +1185,7 @@ class AddProductActivity : AppCompatActivity() {
                                 "content": [
                                     {
                                         "type": "text",
-                                        "text": "Identify this product, its unit price, and its price per kilo in this image. Respond in JSON format with only 3 fields: name, unit_price, and kilo_price."
+                                        "text": "Identify this product, its unit price, and its price per kilo in this image. Respond in JSON format with only 3 fields: name, unit_price, and kilo_price. Please reply in $userLanguage."
                                     },
                                     {
                                         "type": "image_url",
