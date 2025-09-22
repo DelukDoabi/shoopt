@@ -71,7 +71,7 @@
     <string name="main_shopping_list">Liste d\'achats principale</string>
     <string name="secondary_shopping_list">Liste d\'achats secondaire</string>
     <string name="title_activity_track_shopping">TrackShoppingActivity</string>
-    <string name="convert_to_product_track">Convertir en Product Track</string>
+    <string name="convert_to_product_track">Convertir En Produits Organisés</string>
     <string name="products_added">%1$d produits ajoutés</string>
     <string name="enter_items_here">Entrez les articles ici</string>
     <string name="swipe_to_delete">Supprimer</string>

@@ -49,7 +49,7 @@
     <string name="failed_to_empty_shopping_cart">فشل مسح السلة</string>
     <string name="delete_product">حذف المنتج</string>
     <string name="delete_product_confirm">هل أنت متأكد أنك تريد حذف هذا المنتج؟</string>
-    <string name="convert_to_product_track">تحويل إلى تتبع المنتج</string>
+    <string name="convert_to_product_track">تحويل إلى منتجات منظمة</string>
     <string name="delete">حذف</string>
     <string name="product_deleted">تم حذف المنتج %1$s</string>
     <string name="failed_to_delete_product">فشل حذف المنتج</string>

@@ -72,7 +72,7 @@
     <string name="main_shopping_list">メイン買い物リスト</string>
     <string name="secondary_shopping_list">サブ買い物リスト</string>
     <string name="title_activity_track_shopping">買い物追跡アクティビティ</string>
-    <string name="convert_to_product_track">Product Trackに変換</string>
+    <string name="convert_to_product_track">整理された商品に変換</string>
     <string name="products_added">%1$d 件の商品が追加されました</string>
     <string name="enter_items_here">ここにアイテムを入力してください</string>
     <string name="swipe_to_delete">削除</string>
