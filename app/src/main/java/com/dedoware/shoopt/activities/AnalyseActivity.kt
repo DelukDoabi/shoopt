@@ -271,32 +271,38 @@ class AnalyseActivity : AppCompatActivity() {
             productCountBadge.text = count.toString()
             totalProductsCount.text = count.toString()
 
-            if (productList.isNotEmpty()) {
-                // Calculate average price
-                val validPrices = productList.mapNotNull { it.price }.filter { it > 0.0 }
-                val avgPrice = if (validPrices.isNotEmpty()) validPrices.average() else 0.0
-                val formatter = DecimalFormat("#.##")
-                averagePrice.text = "${formatter.format(avgPrice)}€"
-
-                // Calculate unique shops count
-                val uniqueShops = productList.mapNotNull { it.shop }
-                    .filter { it.isNotBlank() && it != "Unknown Shop" }
-                    .distinct()
-                    .size
-                uniqueShopsCount.text = uniqueShops.toString()
-            } else {
+            // Gérer la visibilité de stats_card selon l'état de la liste
+            if (productList.isEmpty()) {
+                statsContainer.visibility = View.GONE
+                emptyStateContainer.visibility = View.VISIBLE
+                // Réinitialiser les valeurs à zéro
                 averagePrice.text = "0.00€"
                 uniqueShopsCount.text = "0"
+                return
             }
+
+            // Si la liste n'est pas vide, afficher stats_card
+            statsContainer.visibility = View.VISIBLE
+            emptyStateContainer.visibility = View.GONE
+
+            // Calculate average price
+            val validPrices = productList.mapNotNull { it.price }.filter { it > 0.0 }
+            val avgPrice = if (validPrices.isNotEmpty()) validPrices.average() else 0.0
+            val formatter = DecimalFormat("#.##")
+            averagePrice.text = "${formatter.format(avgPrice)}€"
+
+            // Calculate unique shops count
+            val uniqueShops = productList.mapNotNull { it.shop }
+                .filter { it.isNotBlank() && it != "Unknown Shop" }
+                .distinct()
+                .size
+            uniqueShopsCount.text = uniqueShops.toString()
 
             // Log analytics for stats
             val analyticsBundle = Bundle().apply {
                 putInt("total_products", count)
-                putDouble("average_price", if (productList.isNotEmpty())
-                    productList.mapNotNull { it.price }.filter { it > 0.0 }.average() else 0.0)
-                putInt("unique_shops", productList.mapNotNull { it.shop }
-                    .filter { it.isNotBlank() && it != "Unknown Shop" }
-                    .distinct().size)
+                putDouble("average_price", avgPrice)
+                putInt("unique_shops", uniqueShops)
             }
             AnalyticsManager.logCustomEvent("analyze_stats_viewed", analyticsBundle)
         } catch (e: Exception) {
@@ -337,6 +343,8 @@ class AnalyseActivity : AppCompatActivity() {
             else -> products
         }
         setupAdapter(sortedProducts)
+        // Mettre à jour les statistiques avec la liste triée
+        updateStatsDisplay(sortedProducts)
     }
 
     private fun addSearch() {
@@ -365,6 +373,8 @@ class AnalyseActivity : AppCompatActivity() {
                     }
                 }
                 setupAdapter(filteredProducts)
+                // Mettre à jour les statistiques avec la liste filtrée
+                updateStatsDisplay(filteredProducts)
                 return true
             }
         })
@@ -375,6 +385,8 @@ class AnalyseActivity : AppCompatActivity() {
         }
         searchView.setOnCloseListener {
             setupAdapter(products)
+            // Restaurer les statistiques avec la liste complète
+            updateStatsDisplay(products)
             false
         }
     }
