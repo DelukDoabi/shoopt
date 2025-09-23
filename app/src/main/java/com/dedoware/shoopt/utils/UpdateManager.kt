@@ -27,6 +27,27 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import java.util.concurrent.TimeUnit
 
 /**
+ * Interface pour les callbacks de mise à jour
+ */
+interface UpdateCallback {
+    /**
+     * Appelé lorsqu'aucune mise à jour n'est disponible ou que la vérification est terminée
+     */
+    fun onUpdateCheckComplete()
+
+    /**
+     * Appelé lorsqu'une mise à jour est disponible et affichée à l'utilisateur
+     */
+    fun onUpdateAvailable()
+
+    /**
+     * Appelé lorsqu'une mise à jour a été acceptée, différée ou refusée
+     * @param updateAccepted true si l'utilisateur a accepté la mise à jour
+     */
+    fun onUpdateProcessed(updateAccepted: Boolean)
+}
+
+/**
  * Gestionnaire de mises à jour de l'application.
  * Cette classe utilise l'API In-App Update de Google Play pour vérifier et installer les mises à jour.
  */
@@ -49,6 +70,7 @@ object UpdateManager : DefaultLifecycleObserver {
     private var currentActivity: AppCompatActivity? = null
     private var updateInfo: AppUpdateInfo? = null
     private var mainHandler: Handler? = null
+    private var currentUpdateCallback: UpdateCallback? = null
 
     /**
      * Initialise le gestionnaire de mises à jour avec une activité.
@@ -75,10 +97,14 @@ object UpdateManager : DefaultLifecycleObserver {
      * Vérifie si une mise à jour est disponible et la propose à l'utilisateur
      * selon son importance et son ancienneté.
      */
-    fun checkForUpdate(activity: AppCompatActivity, rootView: View? = null, forceCheck: Boolean = false) {
+    fun checkForUpdate(activity: AppCompatActivity, rootView: View? = null, forceCheck: Boolean = false, callback: UpdateCallback? = null) {
         if (activity.isFinishing || activity.isDestroyed) {
+            callback?.onUpdateCheckComplete()
             return
         }
+
+        // Enregistrement du callback
+        currentUpdateCallback = callback
 
         // Mise à jour de l'activité courante
         currentActivity = activity
@@ -91,6 +117,7 @@ object UpdateManager : DefaultLifecycleObserver {
         // Si la dernière vérification est récente et qu'on ne force pas la vérification, on vérifie les mises à jour différées
         if (!forceCheck && currentTime - lastCheckTime < UPDATE_CHECK_INTERVAL) {
             checkForPostponedUpdates(activity, rootView)
+            callback?.onUpdateCheckComplete()
             return
         }
 
@@ -126,20 +153,28 @@ object UpdateManager : DefaultLifecycleObserver {
                         if (appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
                             // Mise à jour flexible (non bloquante)
                             showUpdateDialog(activity, appUpdateInfo, AppUpdateType.FLEXIBLE, rootView)
+                            callback?.onUpdateAvailable()
+                            return@addOnSuccessListener
                         } else if (appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
                             // Mise à jour immédiate (bloquante)
                             showUpdateDialog(activity, appUpdateInfo, AppUpdateType.IMMEDIATE, rootView)
+                            callback?.onUpdateAvailable()
+                            return@addOnSuccessListener
                         }
                     }
                 }
+                // Aucune mise à jour disponible ou mise à jour différée
+                callback?.onUpdateCheckComplete()
             }.addOnFailureListener { e ->
                 CrashlyticsManager.log("Erreur lors de la vérification des mises à jour: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.logException(e)
+                callback?.onUpdateCheckComplete()
             }
         } catch (e: Exception) {
             CrashlyticsManager.log("Exception lors de la vérification des mises à jour: ${e.message ?: "Message non disponible"}")
             CrashlyticsManager.setCustomKey("update_check_error", e.javaClass.name)
             CrashlyticsManager.logException(e)
+            callback?.onUpdateCheckComplete()
         }
     }
 
@@ -201,6 +236,7 @@ object UpdateManager : DefaultLifecycleObserver {
                 } else {
                     initiateImmediateUpdate(activity, appUpdateInfo)
                 }
+                currentUpdateCallback?.onUpdateProcessed(true)
                 // Ne pas fermer le dialogue immédiatement, attendre la confirmation du lancement de la mise à jour
             }
 
@@ -208,6 +244,7 @@ object UpdateManager : DefaultLifecycleObserver {
                 laterButton.setOnClickListener {
                     postponeUpdate(activity, appUpdateInfo)
                     updateDialog?.dismiss()
+                    currentUpdateCallback?.onUpdateProcessed(false)
                 }
             } else {
                 // Pour les mises à jour immédiates, permettre de reporter mais avertir que c'est important
@@ -215,6 +252,7 @@ object UpdateManager : DefaultLifecycleObserver {
                 laterButton.setOnClickListener {
                     postponeUpdate(activity, appUpdateInfo)
                     updateDialog?.dismiss()
+                    currentUpdateCallback?.onUpdateProcessed(false)
 
                     // Afficher un Snackbar pour rappeler à l'utilisateur l'importance de la mise à jour
                     showImportantUpdateSnackbar(activity, rootView)
@@ -223,6 +261,7 @@ object UpdateManager : DefaultLifecycleObserver {
         } catch (e: Exception) {
             CrashlyticsManager.log("Erreur lors de l'affichage du dialogue de mise à jour: ${e.message ?: "Message non disponible"}")
             CrashlyticsManager.logException(e)
+            currentUpdateCallback?.onUpdateCheckComplete()
         }
     }
 
@@ -529,6 +568,7 @@ object UpdateManager : DefaultLifecycleObserver {
         dismissUpdateDialog()
         dismissSnackbar()
         mainHandler = null
+        currentUpdateCallback = null
     }
 
     /**
