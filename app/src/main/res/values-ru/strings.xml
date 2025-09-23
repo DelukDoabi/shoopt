@@ -71,7 +71,7 @@
     <string name="main_shopping_list">Основной список покупок</string>
     <string name="secondary_shopping_list">Второстепенный список покупок</string>
     <string name="title_activity_track_shopping">Активность отслеживания покупок</string>
-    <string name="app_name">Шупт</string>
+    <string name="app_name">Shoopt</string>
     <string name="convert_to_product_track">Преобразовать В Организованные Продукты</string>
     <string name="products_added">%1$d товаров добавлено</string>
     <string name="enter_items_here">Введите элементы здесь</string>
