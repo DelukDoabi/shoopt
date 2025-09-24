@@ -1,40 +1,59 @@
 package com.dedoware.shoopt.utils
 
+import android.content.Context
 import android.os.Bundle
+import com.dedoware.shoopt.analytics.AnalyticsService
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 
 /**
- * Gestionnaire pour Firebase Analytics qui offre des méthodes utilitaires
- * pour enregistrer des événements utilisateur et suivre le comportement dans l'application.
+ * Façade pour l'analytics. Délègue vers `AnalyticsService` (recommandé) si initialisée
+ * via `initialize(context, isDebug)`. Reste rétro-compatible : si la façade n'est pas
+ * initialisée avec un context, le comportement legacy (utilisation directe de
+ * Firebase.analytics) est conservé.
  */
 object AnalyticsManager {
     private val analytics: FirebaseAnalytics by lazy {
         Firebase.analytics
     }
 
+    // Référence optionnelle au service centralisé (doit être initialisée au démarrage de l'app)
+    @Volatile
+    private var analyticsService: AnalyticsService? = null
+
     /**
-     * Initialise le gestionnaire d'analytics.
-     * @param isDebug Indique si l'application est en mode debug, ce qui peut désactiver certaines fonctionnalités
+     * Initialise le gestionnaire pour le mode debug (rétrocompatible).
+     * Préserve le comportement précédent si aucune initialisation avec Context n'est faite.
      */
     fun initialize(isDebug: Boolean) {
-        // Initialisation spécifique pour le mode debug
+        // Comportement rétrocompatible : active/désactive la collecte globale
+        setAnalyticsCollectionEnabled(!isDebug)
+    }
+
+    /**
+     * Initialisation recommandée : doit être appelée depuis l'Application (ou équivalent)
+     * pour centraliser le tracking via `AnalyticsService` et respecter les préférences.
+     *
+     * Important : ne PAS écraser la préférence utilisateur sur l'initialisation. Si
+     * `isDebug` est true on désactive la collecte globalement pour éviter d'envoyer des
+     * données depuis les builds de debug.
+     */
+    fun initialize(context: Context, isDebug: Boolean = false) {
+        analyticsService = AnalyticsService.getInstance(context.applicationContext)
+        // Si on est en debug, explicitement désactiver la collecte. Sinon laisser
+        // AnalyticsService charger la préférence utilisateur (opt-in/opt-out).
         if (isDebug) {
-            // En mode debug, on peut vouloir désactiver l'envoi de données
-            setAnalyticsCollectionEnabled(false)
-        } else {
-            // En production, on active par défaut
-            setAnalyticsCollectionEnabled(true)
+            analyticsService?.setAnalyticsCollectionEnabled(false)
         }
     }
 
     /**
      * Active ou désactive la collecte des données analytiques.
-     * Utile pour respecter les préférences de confidentialité de l'utilisateur.
+     * Délègue au service centralisé si disponible, sinon utilise Firebase directement.
      */
     fun setAnalyticsCollectionEnabled(enabled: Boolean) {
-        analytics.setAnalyticsCollectionEnabled(enabled)
+        analyticsService?.setAnalyticsCollectionEnabled(enabled) ?: analytics.setAnalyticsCollectionEnabled(enabled)
     }
 
     /**
@@ -42,72 +61,118 @@ object AnalyticsManager {
      * Ne doit PAS contenir de données personnelles identifiables.
      */
     fun setUserId(userId: String) {
-        // Assurez-vous d'utiliser un ID anonymisé ou haché pour respecter la vie privée
-        analytics.setUserId(userId)
+        analyticsService?.setUserId(userId) ?: analytics.setUserId(userId)
+    }
+
+    /**
+     * Efface l'ID utilisateur dans Firebase (utile pour logout).
+     */
+    fun clearUserId() {
+        analyticsService?.setUserId(null) ?: analytics.setUserId(null)
     }
 
     /**
      * Enregistre un événement de navigation d'écran.
      */
     fun logScreenView(screenName: String, screenClass: String) {
-        val params = Bundle().apply {
-            putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
-            putString(FirebaseAnalytics.Param.SCREEN_CLASS, screenClass)
+        analyticsService?.trackScreenView(screenName, screenClass) ?: run {
+            val params = Bundle().apply {
+                putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
+                putString(FirebaseAnalytics.Param.SCREEN_CLASS, screenClass)
+            }
+            analytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, params)
         }
-        analytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, params)
     }
 
     /**
      * Enregistre un événement d'action utilisateur.
      */
     fun logUserAction(action: String, category: String, additionalParams: Map<String, Any>? = null) {
-        val params = Bundle().apply {
-            putString("action", action)
-            putString("category", category)
-            additionalParams?.forEach { (key, value) ->
-                when (value) {
-                    is String -> putString(key, value)
-                    is Int -> putInt(key, value)
-                    is Long -> putLong(key, value)
-                    is Double -> putDouble(key, value)
-                    is Float -> putFloat(key, value)
-                    is Boolean -> putBoolean(key, value)
+        analyticsService?.let { svc ->
+            // Pas d'équivalent métier dans le service, on envoie en tant qu'événement personnalisé
+            val params = Bundle().apply {
+                putString("action", action)
+                putString("category", category)
+                additionalParams?.forEach { (key, value) ->
+                    when (value) {
+                        is String -> putString(key, value)
+                        is Int -> putInt(key, value)
+                        is Long -> putLong(key, value)
+                        is Double -> putDouble(key, value)
+                        is Float -> putFloat(key, value)
+                        is Boolean -> putBoolean(key, value)
+                    }
                 }
             }
+            svc.logEvent("user_action", params)
+        } ?: run {
+            val params = Bundle().apply {
+                putString("action", action)
+                putString("category", category)
+                additionalParams?.forEach { (key, value) ->
+                    when (value) {
+                        is String -> putString(key, value)
+                        is Int -> putInt(key, value)
+                        is Long -> putLong(key, value)
+                        is Double -> putDouble(key, value)
+                        is Float -> putFloat(key, value)
+                        is Boolean -> putBoolean(key, value)
+                    }
+                }
+            }
+            analytics.logEvent("user_action", params)
         }
-        analytics.logEvent("user_action", params)
     }
 
     /**
      * Enregistre un événement lié à l'inscription ou connexion.
      */
     fun logAuthEvent(method: String, success: Boolean) {
-        val params = Bundle().apply {
-            putString(FirebaseAnalytics.Param.METHOD, method)
-            putBoolean("success", success)
+        analyticsService?.let { svc ->
+            val params = Bundle().apply {
+                putString(FirebaseAnalytics.Param.METHOD, method)
+                putBoolean("success", success)
+            }
+            svc.logEvent(FirebaseAnalytics.Event.SIGN_UP, params)
+        } ?: run {
+            val params = Bundle().apply {
+                putString(FirebaseAnalytics.Param.METHOD, method)
+                putBoolean("success", success)
+            }
+            analytics.logEvent(FirebaseAnalytics.Event.SIGN_UP, params)
         }
-        analytics.logEvent(FirebaseAnalytics.Event.SIGN_UP, params)
     }
 
     /**
      * Enregistre une interaction avec une fonctionnalité de l'application.
      */
     fun logFeatureUsage(featureName: String, action: String) {
-        val params = Bundle().apply {
-            putString("feature_name", featureName)
-            putString("action", action)
+        analyticsService?.let { svc ->
+            val params = Bundle().apply {
+                putString("feature_name", featureName)
+                putString("action", action)
+            }
+            svc.logEvent("feature_usage", params)
+        } ?: run {
+            val params = Bundle().apply {
+                putString("feature_name", featureName)
+                putString("action", action)
+            }
+            analytics.logEvent("feature_usage", params)
         }
-        analytics.logEvent("feature_usage", params)
     }
 
     /**
      * Enregistre un événement de performance.
      */
     fun logPerformanceEvent(eventName: String, durationMs: Long) {
-        val params = Bundle().apply {
-            putLong("duration_ms", durationMs)
+        analyticsService?.let { svc ->
+            val params = Bundle().apply { putLong("duration_ms", durationMs) }
+            svc.logEvent(eventName, params)
+        } ?: run {
+            val params = Bundle().apply { putLong("duration_ms", durationMs) }
+            analytics.logEvent(eventName, params)
         }
-        analytics.logEvent(eventName, params)
     }
 
     /**
@@ -115,35 +180,42 @@ object AnalyticsManager {
      * Ne pas utiliser pour des informations personnelles identifiables.
      */
     fun setUserProperty(name: String, value: String) {
-        analytics.setUserProperty(name, value)
+        analyticsService?.setUserProperty(name, value) ?: analytics.setUserProperty(name, value)
     }
 
     /**
      * Enregistre un événement personnalisé.
      */
     fun logCustomEvent(eventName: String, params: Bundle?) {
-        analytics.logEvent(eventName, params)
+        analyticsService?.logEvent(eventName, params) ?: analytics.logEvent(eventName, params)
     }
 
     /**
      * Enregistre une sélection de contenu par l'utilisateur.
      */
     fun logSelectContent(contentType: String, itemId: String, itemName: String? = null) {
-        val params = Bundle().apply {
-            putString(FirebaseAnalytics.Param.CONTENT_TYPE, contentType)
-            putString(FirebaseAnalytics.Param.ITEM_ID, itemId)
-            if (itemName != null) {
-                putString(FirebaseAnalytics.Param.ITEM_NAME, itemName)
+        analyticsService?.let { svc ->
+            val params = Bundle().apply {
+                putString(FirebaseAnalytics.Param.CONTENT_TYPE, contentType)
+                putString(FirebaseAnalytics.Param.ITEM_ID, itemId)
+                itemName?.let { putString(FirebaseAnalytics.Param.ITEM_NAME, it) }
             }
+            svc.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, params)
+        } ?: run {
+            val params = Bundle().apply {
+                putString(FirebaseAnalytics.Param.CONTENT_TYPE, contentType)
+                putString(FirebaseAnalytics.Param.ITEM_ID, itemId)
+                itemName?.let { putString(FirebaseAnalytics.Param.ITEM_NAME, it) }
+            }
+            analytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, params)
         }
-        analytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, params)
     }
 
     /**
      * Enregistre un événement générique.
      */
     fun logEvent(name: String, params: Bundle?) {
-        analytics.logEvent(name, params)
+        analyticsService?.logEvent(name, params) ?: analytics.logEvent(name, params)
     }
 
     /**
@@ -155,6 +227,6 @@ object AnalyticsManager {
                 putString(key, value)
             }
         }
-        analytics.logEvent(eventName, params)
+        analyticsService?.logEvent(eventName, params) ?: analytics.logEvent(eventName, params)
     }
 }

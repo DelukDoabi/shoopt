@@ -1,7 +1,8 @@
 package com.dedoware.shoopt
 
 import android.app.Application
-import com.dedoware.shoopt.analytics.AnalyticsService
+import android.content.pm.ApplicationInfo
+import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
 import com.dedoware.shoopt.utils.CurrencyManager
 
@@ -20,7 +21,11 @@ class ShooptApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        // Initialiser le service d'analytics
-        AnalyticsService.getInstance(applicationContext)
+        // Détecter si l'app est en mode debug (au runtime) sans dépendre de BuildConfig
+        val isDebug = (applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
+
+        // Initialiser le gestionnaire d'analytics via la façade ; cela initialise
+        // AnalyticsService sous-jacent et respecte les préférences utilisateur.
+        AnalyticsManager.initialize(applicationContext, isDebug = isDebug)
     }
 }

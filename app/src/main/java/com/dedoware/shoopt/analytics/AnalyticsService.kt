@@ -64,6 +64,7 @@ class AnalyticsService private constructor(private val context: Context) {
         const val EVENT_SETTINGS_LANGUAGE = "settings_language"
         const val EVENT_SETTINGS_NOTIFICATIONS = "settings_notifications"
         const val EVENT_SETTINGS_ANALYTICS_OPT_OUT = "settings_analytics_opt_out"
+        const val EVENT_SETTINGS_ANALYTICS_OPT_IN = "settings_analytics_opt_in"
 
         // Notifications
         const val EVENT_NOTIFICATION_RECEIVED = "notification_received"
@@ -100,9 +101,9 @@ class AnalyticsService private constructor(private val context: Context) {
         UserPreferences.setAnalyticsEnabled(context, true)
         setAnalyticsCollectionEnabled(true)
 
-        // Tracker l'événement de changement de préférence
-        logEvent(EVENT_SETTINGS_ANALYTICS_OPT_OUT, Bundle().apply {
-            putBoolean(PARAM_ENABLED, false)
+        // Tracker l'événement de changement de préférence (opt-in)
+        logEvent(EVENT_SETTINGS_ANALYTICS_OPT_IN, Bundle().apply {
+            putBoolean(PARAM_ENABLED, true)
         })
     }
 
@@ -110,6 +111,11 @@ class AnalyticsService private constructor(private val context: Context) {
      * Désactive le tracking des données analytics
      */
     fun disableTracking() {
+        // Log l'événement d'opt-out avant de couper la collecte afin qu'il soit envoyé
+        firebaseAnalytics.logEvent(EVENT_SETTINGS_ANALYTICS_OPT_OUT, Bundle().apply {
+            putBoolean(PARAM_ENABLED, false)
+        })
+
         isTrackingEnabled = false
         UserPreferences.setAnalyticsEnabled(context, false)
         setAnalyticsCollectionEnabled(false)
@@ -125,7 +131,7 @@ class AnalyticsService private constructor(private val context: Context) {
     /**
      * Active ou désactive la collecte de données Firebase Analytics
      */
-    private fun setAnalyticsCollectionEnabled(enabled: Boolean) {
+    fun setAnalyticsCollectionEnabled(enabled: Boolean) {
         firebaseAnalytics.setAnalyticsCollectionEnabled(enabled)
     }
 
@@ -307,6 +313,7 @@ class AnalyticsService private constructor(private val context: Context) {
             putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
             putString(FirebaseAnalytics.Param.SCREEN_CLASS, screenClass)
         }
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, params)
+        // Utiliser logEvent pour respecter la préférence de tracking
+        logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, params)
     }
 }
