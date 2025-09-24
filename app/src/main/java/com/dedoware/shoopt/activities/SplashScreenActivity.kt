@@ -7,6 +7,7 @@ import android.view.WindowManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
+import androidx.constraintlayout.motion.widget.MotionLayout
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.analytics.AnalyticsConsentDialogFragment
 import com.dedoware.shoopt.analytics.AnalyticsService
@@ -26,6 +27,7 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback, AnalyticsConse
 
     private var updateCheckComplete = false
     private var minSplashDurationComplete = false
+    private var splashAnimationComplete = false
     private var updateDialogShowing = false // Variable pour suivre si le dialogue de mise à jour est visible
     private var analyticsConsentHandled = false // Variable pour suivre si le consentement analytics a été traité
     private val MIN_SPLASH_DURATION_MS = 1500L // Durée minimum du splash screen en millisecondes
@@ -57,6 +59,34 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback, AnalyticsConse
 
             // Vérification des mises à jour disponibles avec callback
             checkForUpdates()
+
+            // Attacher un listener à la MotionLayout pour savoir quand l'animation est terminée
+            try {
+                val motionLayout = findViewById<MotionLayout>(R.id.splash_motion_layout)
+                motionLayout.setTransitionListener(object : MotionLayout.TransitionListener {
+                    override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {
+                        // pas d'action
+                    }
+
+                    override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {
+                        // pas d'action
+                    }
+
+                    override fun onTransitionCompleted(p0: MotionLayout?, currentId: Int) {
+                        // Marquer que l'animation du splash est terminée et tenter la navigation
+                        splashAnimationComplete = true
+                        tryToNavigateNext()
+                    }
+
+                    override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {
+                        // pas d'action
+                    }
+                })
+            } catch (e: Exception) {
+                // Si le MotionLayout n'existe pas ou que la lecture échoue, on considère l'animation comme terminée
+                CrashlyticsManager.log("Impossible d'attacher le listener MotionLayout: ${e.message ?: "Message non disponible"}")
+                splashAnimationComplete = true
+            }
 
             // Lancer le minuteur pour la durée minimale du splash screen
             Executors.newSingleThreadScheduledExecutor().schedule({
@@ -132,8 +162,9 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback, AnalyticsConse
         // 1. La vérification de mise à jour est terminée
         // 2. Aucun dialogue de mise à jour n'est actuellement affiché
         // 3. La durée minimale du splash screen est écoulée
-        // 4. L'activité est toujours active
-        if (updateCheckComplete && !updateDialogShowing && minSplashDurationComplete && !isFinishing && !isDestroyed) {
+        // 4. L'animation du splash est terminée
+        // 5. L'activité est toujours active
+        if (updateCheckComplete && !updateDialogShowing && minSplashDurationComplete && splashAnimationComplete && !isFinishing && !isDestroyed) {
             redirectToMainScreen()
         } else {
             // Log pour le débogage
@@ -143,6 +174,8 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback, AnalyticsConse
                 CrashlyticsManager.log("Navigation retardée: dialogue de mise à jour affiché")
             } else if (!minSplashDurationComplete) {
                 CrashlyticsManager.log("Navigation retardée: durée minimale du splash screen non atteinte")
+            } else if (!splashAnimationComplete) {
+                CrashlyticsManager.log("Navigation retardée: animation du splash non terminée")
             } else {
                 CrashlyticsManager.log("Navigation retardée: activité en cours de fermeture")
             }
