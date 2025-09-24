@@ -445,6 +445,13 @@ class AnalyseActivity : AppCompatActivity() {
                             productRepository.deleteProduct(product)
                         }
                         if (isDeleted) {
+                            // Tracker la suppression de produit
+                            try {
+                                ShooptApplication.instance.analyticsService.trackProductDelete(product.id, product.name)
+                            } catch (e: Exception) {
+                                CrashlyticsManager.log("Erreur lors du tracking de la suppression de produit: ${e.message}")
+                            }
+
                             // Message de confirmation - utiliser la ressource localisée
                             val deletedMsg = getString(R.string.product_deleted).replace("%1\$s", product.name)
                             Toast.makeText(

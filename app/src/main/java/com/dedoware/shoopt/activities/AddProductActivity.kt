@@ -123,6 +123,9 @@ class AddProductActivity : AppCompatActivity() {
     private lateinit var gamificationManager: SimplifiedGamificationManager
     private var gamificationCelebrationView: GamificationCelebrationView? = null
 
+    // Flag pour savoir si le code-barres a été scanné dans cette session
+    private var wasScannedBarcode: Boolean = false
+
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             try {
@@ -794,6 +797,9 @@ class AddProductActivity : AppCompatActivity() {
             if (barcodeValue != null) {
                 productBarcodeEditText.setText(barcodeValue)
 
+                // Marquer que le code-barres provient du scanner pour tracker correctement l'ajout
+                wasScannedBarcode = true
+
                 // Analytique pour le code-barres scanne
                 val params = Bundle().apply {
                     putString("barcode_length", barcodeValue.length.toString())
@@ -897,10 +903,16 @@ class AddProductActivity : AppCompatActivity() {
                             val product = Product(retrievedProductId, barcode, timestamp, name, price.toDouble(), unitPrice.toDouble(), shop, productPictureUrl)
                             productRepository.update(product)
 
-                            // Analytique anonymisée pour la mise à jour de produit
+                            // Appel de tracking pour modification de produit (anonymisé: nom vide)
+                            try {
+                                AnalyticsService.getInstance(ShooptApplication.instance).trackProductModify(product.id, product.name)
+                            } catch (e: Exception) {
+                                CrashlyticsManager.log("Erreur lors du tracking de la modification de produit: ${e.message}")
+                            }
+
+                            // Analytique anonymisée pour la mise à jour de produit (ancien log conservé)
                             val params = Bundle().apply {
                                 putString("has_barcode", (barcode != 0L).toString())
-                                // Ne pas collecter le nom du produit ou autres données personnelles
                             }
                             AnalyticsService.getInstance(ShooptApplication.instance).logEvent("product_updated", params)
 
@@ -922,7 +934,18 @@ class AddProductActivity : AppCompatActivity() {
                                 firstProductManager.markFirstProductAdded()
                             }
 
-                            // Analytique anonymisée pour l'ajout de produit
+                            // Tracking : différencier ajout manuel vs ajout via scan
+                            try {
+                                if (wasScannedBarcode) {
+                                    AnalyticsService.getInstance(ShooptApplication.instance).trackProductAddScan(productIdInserted, product.name)
+                                } else {
+                                    AnalyticsService.getInstance(ShooptApplication.instance).trackProductAddManual(productIdInserted, product.name)
+                                }
+                            } catch (e: Exception) {
+                                CrashlyticsManager.log("Erreur lors du tracking de l'ajout de produit: ${e.message}")
+                            }
+
+                            // Analytique anonymisée pour l'ajout de produit (ancien log conservé)
                             val params = Bundle().apply {
                                 putString("has_barcode", (barcode != 0L).toString())
                                 putBoolean("has_image", productPictureUrl.isNotEmpty())
@@ -933,6 +956,9 @@ class AddProductActivity : AppCompatActivity() {
                             productIdInserted
                         }
                     }
+
+                    // Reset du flag après sauvegarde
+                    wasScannedBarcode = false
 
                     // Afficher le message de succès standard
                     Toast.makeText(this@AddProductActivity, "Product saved with ID: $productId", Toast.LENGTH_SHORT).show()
