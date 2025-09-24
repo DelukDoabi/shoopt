@@ -6,7 +6,10 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentTransaction
 import com.dedoware.shoopt.R
+import com.dedoware.shoopt.analytics.AnalyticsConsentDialogFragment
+import com.dedoware.shoopt.analytics.AnalyticsService
 import com.dedoware.shoopt.notifications.NotificationPermissionManager
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
@@ -19,13 +22,15 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 
-class SplashScreenActivity : AppCompatActivity(), UpdateCallback {
+class SplashScreenActivity : AppCompatActivity(), UpdateCallback, AnalyticsConsentDialogFragment.ConsentListener {
 
     private var updateCheckComplete = false
     private var minSplashDurationComplete = false
     private var updateDialogShowing = false // Variable pour suivre si le dialogue de mise à jour est visible
+    private var analyticsConsentHandled = false // Variable pour suivre si le consentement analytics a été traité
     private val MIN_SPLASH_DURATION_MS = 1500L // Durée minimum du splash screen en millisecondes
     private lateinit var notificationPermissionManager: NotificationPermissionManager
+    private lateinit var analyticsService: AnalyticsService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         try {
@@ -224,12 +229,13 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback {
                 CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
             }
 
-            // Transition directe sans délai supplémentaire car nous avons déjà attendu
-            // que l'utilisateur prenne une décision concernant la mise à jour
-            val intent = Intent(this, targetActivity)
-            startActivity(intent)
-            overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
-            finish()
+            // Vérification et affichage du dialogue de consentement analytics si nécessaire
+            if (!analyticsConsentHandled) {
+                showAnalyticsConsentDialog()
+            } else {
+                // Si le consentement a déjà été géré, on peut directement démarrer l'activité cible
+                startTargetActivity(targetActivity)
+            }
         } catch (e: Exception) {
             // Capture des erreurs lors de la redirection
             CrashlyticsManager.log("Erreur lors de la redirection vers l'écran principal: ${e.message ?: "Message non disponible"}")
@@ -239,6 +245,32 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback {
             // Tentative de récupération en fermant simplement l'activité
             finish()
         }
+    }
+
+    private fun showAnalyticsConsentDialog() {
+        try {
+            // Afficher le dialogue de consentement analytics
+            val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+            val dialogFragment = AnalyticsConsentDialogFragment.newInstance()
+            dialogFragment.setTargetFragment(null, 0) // Pas de cible spécifique
+            dialogFragment.show(transaction, "analytics_consent_dialog")
+
+            // Mettre à jour l'état du consentement analytics
+            analyticsConsentHandled = true
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de l'affichage du dialogue de consentement analytics: ${e.message ?: "Message non disponible"}")
+            // En cas d'erreur, on continue quand même
+            // (le consentement sera peut-être redemandé plus tard)
+        }
+    }
+
+    private fun startTargetActivity(targetActivity: Class<*>) {
+        // Transition directe sans délai supplémentaire car nous avons déjà attendu
+        // que l'utilisateur prenne une décision concernant la mise à jour
+        val intent = Intent(this, targetActivity)
+        startActivity(intent)
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+        finish()
     }
 
     private fun navigateToNextScreen() {
@@ -287,5 +319,42 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback {
             updateCheckComplete = true
             tryToNavigateNext()
         }
+    }
+
+    // Gestion des résultats du dialogue de consentement analytics
+    override fun onConsentGiven() {
+        // L'utilisateur a donné son consentement pour le suivi analytics
+        CrashlyticsManager.log("Consentement analytics accordé par l'utilisateur")
+
+        // On détermine l'activité cible et on lance la navigation
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val isOnboardingCompleted = UserPreferences.isOnboardingCompleted(this)
+
+        val targetActivity = when {
+            !isOnboardingCompleted -> OnboardingActivity::class.java
+            currentUser != null -> MainActivity::class.java
+            else -> LoginActivity::class.java
+        }
+
+        // Lancer la navigation vers l'écran cible
+        startTargetActivity(targetActivity)
+    }
+
+    override fun onConsentDenied() {
+        // L'utilisateur a refusé le consentement pour le suivi analytics
+        CrashlyticsManager.log("Consentement analytics refusé par l'utilisateur")
+
+        // On détermine l'activité cible et on lance la navigation
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val isOnboardingCompleted = UserPreferences.isOnboardingCompleted(this)
+
+        val targetActivity = when {
+            !isOnboardingCompleted -> OnboardingActivity::class.java
+            currentUser != null -> MainActivity::class.java
+            else -> LoginActivity::class.java
+        }
+
+        // Lancer la navigation vers l'écran cible
+        startTargetActivity(targetActivity)
     }
 }

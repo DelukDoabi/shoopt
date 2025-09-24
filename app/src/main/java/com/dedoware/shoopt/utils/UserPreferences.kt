@@ -13,6 +13,7 @@ class UserPreferences private constructor(context: Context) {
         private const val KEY_ONBOARDING_VERSION = "onboarding_version"
         private const val CURRENT_ONBOARDING_VERSION = 1 // Incrémenter quand l'onboarding change
         private const val KEY_FIRST_LAUNCH = "is_first_launch"
+        private const val KEY_ANALYTICS_ENABLED = "analytics_enabled" // Nouvelle clé pour le consentement analytics
 
         // Spotlight system constants
         private const val KEY_SPOTLIGHT_PREFIX = "spotlight_seen_"
@@ -230,6 +231,17 @@ class UserPreferences private constructor(context: Context) {
         fun setReminderDay(context: Context, day: Int) {
             val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             prefs.edit().putInt(KEY_REMINDER_DAY, day).apply()
+        }
+
+        // Méthodes pour le consentement analytics
+        fun isAnalyticsEnabled(context: Context): Boolean {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            return prefs.getBoolean(KEY_ANALYTICS_ENABLED, false) // Désactivé par défaut
+        }
+
+        fun setAnalyticsEnabled(context: Context, enabled: Boolean) {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            prefs.edit().putBoolean(KEY_ANALYTICS_ENABLED, enabled).apply()
         }
     }
 

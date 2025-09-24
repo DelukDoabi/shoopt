@@ -5,8 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
 import com.dedoware.shoopt.R
+import com.dedoware.shoopt.analytics.AnalyticsService
 import com.dedoware.shoopt.ui.settings.CurrencySelectionDialog
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
@@ -17,6 +19,12 @@ class SettingsActivity : AppCompatActivity() {
 
     private lateinit var userPreferences: UserPreferences
     private lateinit var currencyManager: CurrencyManager
+    private lateinit var analyticsService: AnalyticsService
+
+    // Propriété d'extension pour faciliter l'accès à l'état du consentement analytics
+    private var UserPreferences.isAnalyticsEnabled: Boolean
+        get() = UserPreferences.isAnalyticsEnabled(this@SettingsActivity)
+        set(value) = UserPreferences.setAnalyticsEnabled(this@SettingsActivity, value)
 
     // UI Elements
     private lateinit var themeRadioGroup: RadioGroup
@@ -28,6 +36,7 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var saveButton: ImageButton
     private lateinit var backButton: ImageButton
     private lateinit var replayOnboardingCard: CardView
+    private lateinit var analyticsSwitch: SwitchCompat
 
     override fun onCreate(savedInstanceState: Bundle?) {
         try {
@@ -40,6 +49,7 @@ class SettingsActivity : AppCompatActivity() {
             try {
                 userPreferences = UserPreferences.getInstance(this)
                 currencyManager = CurrencyManager.getInstance(this)
+                analyticsService = AnalyticsService.getInstance(this)
             } catch (e: Exception) {
                 // Analytics: suivre l'erreur d'initialisation des préférences
                 AnalyticsManager.logUserAction(
@@ -148,11 +158,15 @@ class SettingsActivity : AppCompatActivity() {
             saveButton = findViewById(R.id.save_settings_button)
             backButton = findViewById(R.id.back_IB)
             replayOnboardingCard = findViewById(R.id.replay_onboarding_card)
+            analyticsSwitch = findViewById(R.id.analytics_switch)
 
             // Observer les changements de devise depuis le CurrencyManager
             currencyManager.currentCurrency.observe(this) { currency ->
                 currencyValue.text = "${currency.code} - ${currency.name}"
             }
+
+            // Initialiser l'état du switch d'analytics
+            analyticsSwitch.isChecked = userPreferences.isAnalyticsEnabled
 
             // Analytics: suivre les options disponibles
             AnalyticsManager.logUserAction(
@@ -359,6 +373,30 @@ class SettingsActivity : AppCompatActivity() {
                 additionalParams = mapOf(
                     "preference_type" to "theme",
                     "selected_value" to selectedTheme
+                )
+            )
+        }
+
+        // Listener pour le switch d'analytics
+        analyticsSwitch.setOnCheckedChangeListener { _, isChecked ->
+            userPreferences.isAnalyticsEnabled = isChecked
+            if (isChecked) {
+                // Activer le suivi analytics
+                analyticsService.enableTracking()
+                Toast.makeText(this, "Suivi analytics activé", Toast.LENGTH_SHORT).show()
+            } else {
+                // Désactiver le suivi analytics
+                analyticsService.disableTracking()
+                Toast.makeText(this, "Suivi analytics désactivé", Toast.LENGTH_SHORT).show()
+            }
+
+            // Analytics: suivre le changement de préférence de consentement
+            AnalyticsManager.logUserAction(
+                action = "change_consent",
+                category = "settings",
+                additionalParams = mapOf(
+                    "consent_type" to "analytics",
+                    "granted" to isChecked.toString()
                 )
             )
         }
