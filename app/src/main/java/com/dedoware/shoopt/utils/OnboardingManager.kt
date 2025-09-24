@@ -41,13 +41,6 @@ object OnboardingManager {
      * Démarre l'onboarding d'introduction
      */
     private fun startIntroductionOnboarding(activity: Activity) {
-        val params = android.os.Bundle().apply {
-            putString("action", "onboarding_introduction_started")
-            putString("category", "onboarding")
-            putString("from_activity", activity.javaClass.simpleName)
-        }
-        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", params)
-
         val intent = Intent(activity, OnboardingActivity::class.java)
         activity.startActivity(intent)
 
