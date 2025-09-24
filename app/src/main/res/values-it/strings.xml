@@ -499,9 +499,8 @@
     <string name="notifications_permission_required">Le notifiche sono necessarie per ricevere i promemoria della spesa.</string>
     <string name="notifications_enabled_message">Perfetto! Ora riceverai i promemoria della spesa.</string>
     <string name="consent_dialog_title">Migliora la tua esperienza su Shoopt</string>
-    <string name="consent_dialog_message">Raccogliamo dati anonimi sul tuo utilizzo dell’app per migliorare Shoopt. Questo ci aiuta a capire quali funzioni usi di più e a individuare eventuali problemi. Puoi cambiare questa scelta in qualsiasi momento nelle impostazioni.</string>
-    <string name="consent_dialog_accept">Accetta</string>
-    <string name="consent_dialog_decline">Rifiuta</string>
     <string name="settings_analytics_title">Raccolta dati di utilizzo</string>
     <string name="settings_analytics_summary">Consenti a Shoopt di raccogliere dati anonimi sul tuo utilizzo dell’app</string>
+    <string name="consent_dialog_message_informative">Le statistiche sono abilitate per impostazione predefinita per aiutarci a migliorare Shoopt. Se preferisci non condividere dati di utilizzo anonimi, puoi disattivare questa opzione in qualsiasi momento dalle impostazioni.</string>
+    <string name="consent_dialog_understood">Ho capito</string>
 </resources>

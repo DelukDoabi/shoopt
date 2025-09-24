@@ -526,9 +526,8 @@
     <string name="notifications_permission_required">Les notifications sont nécessaires pour recevoir tes rappels de courses.</string>
     <string name="notifications_enabled_message">Super ! Tu recevras maintenant tes rappels de courses.</string>
     <string name="consent_dialog_title">Améliore ton expérience Shoopt</string>
-    <string name="consent_dialog_message">On collecte des données anonymes sur ton utilisation de l’appli pour améliorer Shoopt. Ça nous aide à comprendre les fonctionnalités que tu utilises le plus et à repérer les soucis éventuels. Tu peux changer ce choix à tout moment dans les paramètres.</string>
-    <string name="consent_dialog_accept">Accepter</string>
-    <string name="consent_dialog_decline">Refuser</string>
     <string name="settings_analytics_title">Collecte de données d’utilisation</string>
     <string name="settings_analytics_summary">Autorise Shoopt à collecter des données anonymes sur ton utilisation de l’appli</string>
+    <string name="consent_dialog_message_informative">Les statistiques sont activées par défaut pour nous aider à améliorer Shoopt. Si tu préfères ne pas partager de données anonymes, tu peux désactiver cette option à tout moment dans les paramètres.</string>
+    <string name="consent_dialog_understood">J’ai compris</string>
 </resources>

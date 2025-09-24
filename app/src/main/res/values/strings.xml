@@ -435,9 +435,8 @@
     <string name="notifications_permission_required">Notifications are required to get your shopping reminders.</string>
     <string name="notifications_enabled_message">Great! You’ll now get reminders for your shopping.</string>
     <string name="consent_dialog_title">Improve your Shoopt experience</string>
-    <string name="consent_dialog_message">We collect anonymous data about how you use the app to improve Shoopt. This helps us understand which features you use most and spot potential issues. You can change this choice anytime in the settings.</string>
-    <string name="consent_dialog_accept">Accept</string>
-    <string name="consent_dialog_decline">Decline</string>
+    <string name="consent_dialog_message_informative">Analytics are enabled by default to help improve Shoopt. If you prefer not to share anonymous usage data, you can disable analytics anytime from Settings.</string>
+    <string name="consent_dialog_understood">Understood</string>
     <string name="settings_analytics_title">Usage data collection</string>
     <string name="settings_analytics_summary">Allow Shoopt to collect anonymous data about how you use the app</string>
 </resources>

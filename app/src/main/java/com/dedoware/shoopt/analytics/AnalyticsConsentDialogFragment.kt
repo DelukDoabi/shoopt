@@ -1,20 +1,18 @@
 package com.dedoware.shoopt.analytics
 
-import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.utils.UserPreferences
+import com.dedoware.shoopt.utils.CrashlyticsManager
 
 /**
- * Fragment de dialogue pour demander le consentement utilisateur
- * concernant la collecte des données d'analytics conformément au RGPD.
+ * Fragment de dialogue informatif concernant l'analytics (activé par défaut).
  */
 class AnalyticsConsentDialogFragment : DialogFragment() {
 
@@ -24,18 +22,20 @@ class AnalyticsConsentDialogFragment : DialogFragment() {
     }
 
     private var consentListener: ConsentListener? = null
-    private lateinit var consentTracker: ConsentTracker
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // Empêcher la fermeture par un tap en dehors ou par le bouton back pour forcer la confirmation
+        isCancelable = false
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is ConsentListener) {
             consentListener = context
         } else {
-            throw RuntimeException("$context doit implémenter ConsentListener")
+            // Ne plus forcer l'implémentation mais garder la compatibilité
         }
-
-        // Initialisation du tracker de consentement
-        consentTracker = ConsentTracker.getInstance(context)
     }
 
     override fun onCreateView(
@@ -49,31 +49,24 @@ class AnalyticsConsentDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<Button>(R.id.btn_accept).setOnClickListener {
-            // Activer l'analytics dans les préférences utilisateur
-            UserPreferences.setAnalyticsEnabled(requireContext(), true)
-            // Activer explicitement le tracking dans le service Analytics
-            AnalyticsService.getInstance(requireContext()).enableTracking()
+        // Bouton de confirmation (l'utilisateur indique qu'il a compris)
+        view.findViewById<Button>(R.id.btn_confirm).setOnClickListener {
+            CrashlyticsManager.log("AnalyticsConsentDialog: btn_confirm clicked")
+            // Marquer que nous avons demandé le consentement afin de ne pas le redemander
+            try {
+                UserPreferences.setAnalyticsConsentRequested(requireContext(), true)
+                CrashlyticsManager.log("AnalyticsConsentDialog: setAnalyticsConsentRequested=true")
+            } catch (e: Exception) {
+                CrashlyticsManager.log("AnalyticsConsentDialog: error setting consent requested: ${e.message ?: "null"}")
+            }
 
-            // Suivre l'acceptation du consentement
-            consentTracker.trackConsentAccepted()
+            // Le résultat est publié ci-dessous; l'activité l'écoute via setFragmentResultListener
 
-            // Notifier l'activité parente
-            consentListener?.onConsentGiven()
-            dismiss()
-        }
+            // Publier un résultat afin que l'activité puisse l'écouter de manière robuste
+            val result = Bundle().apply { putBoolean("confirmed", true) }
+            parentFragmentManager.setFragmentResult("analytics_consent", result)
+            CrashlyticsManager.log("AnalyticsConsentDialog: fragment result published")
 
-        view.findViewById<Button>(R.id.btn_decline).setOnClickListener {
-            // Désactiver l'analytics dans les préférences utilisateur
-            UserPreferences.setAnalyticsEnabled(requireContext(), false)
-            // Désactiver explicitement le tracking dans le service Analytics
-            AnalyticsService.getInstance(requireContext()).disableTracking()
-
-            // Suivre le refus du consentement
-            consentTracker.trackConsentDeclined()
-
-            // Notifier l'activité parente
-            consentListener?.onConsentDenied()
             dismiss()
         }
     }
@@ -90,7 +83,7 @@ class AnalyticsConsentDialogFragment : DialogFragment() {
         const val TAG = "AnalyticsConsentDialog"
 
         /**
-         * Crée une nouvelle instance du fragment de dialogue de consentement.
+         * Crée une nouvelle instance du fragment de dialogue informatif.
          */
         fun newInstance(): AnalyticsConsentDialogFragment {
             return AnalyticsConsentDialogFragment()

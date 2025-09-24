@@ -89,8 +89,11 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback, AnalyticsConse
 
             // Lancer le minuteur pour la durée minimale du splash screen
             Executors.newSingleThreadScheduledExecutor().schedule({
-                minSplashDurationComplete = true
-                tryToNavigateNext()
+                // Exécuter la mise à jour d'état et la tentative de navigation sur le thread UI
+                runOnUiThread {
+                    minSplashDurationComplete = true
+                    tryToNavigateNext()
+                }
             }, MIN_SPLASH_DURATION_MS, TimeUnit.MILLISECONDS)
         } catch (e: Exception) {
             // Capture des erreurs globales dans onCreate
@@ -283,14 +286,46 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback, AnalyticsConse
 
     private fun showAnalyticsConsentDialog() {
         try {
-            // Afficher le dialogue de consentement analytics
-            val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+            // Afficher le dialogue de consentement analytics (utiliser l'API avec FragmentManager pour plus de robustesse)
             val dialogFragment = AnalyticsConsentDialogFragment.newInstance()
-            dialogFragment.setTargetFragment(null, 0) // Pas de cible spécifique
-            dialogFragment.show(transaction, "analytics_consent_dialog")
 
-            // Mettre à jour l'état du consentement analytics
-            analyticsConsentHandled = true
+            CrashlyticsManager.log("Splash: registering fragment result listener for analytics_consent")
+             // Enregistrer un listener sur le résultat du fragment afin d'être certain de recevoir
+             // la confirmation même si l'interface n'a pas été liée correctement
+            supportFragmentManager.setFragmentResultListener("analytics_consent", this) { _, bundle ->
+                val confirmed = bundle.getBoolean("confirmed", false)
+                CrashlyticsManager.log("Splash: fragment result listener invoked, confirmed=$confirmed, updateCheckComplete=$updateCheckComplete, minSplashDurationComplete=$minSplashDurationComplete, splashAnimationComplete=$splashAnimationComplete, analyticsConsentHandled=$analyticsConsentHandled")
+
+                // Toujours exécuter la suite sur le thread UI
+                runOnUiThread {
+                    try {
+                        // Retirer le listener pour éviter des répétitions
+                        try {
+                            supportFragmentManager.clearFragmentResultListener("analytics_consent")
+                        } catch (ignore: Exception) {
+                        }
+
+                        if (confirmed && !isFinishing && !isDestroyed) {
+                            CrashlyticsManager.log("Splash: handling analytics consent result on UI thread")
+                            onConsentGiven()
+                        } else {
+                            CrashlyticsManager.log("Splash: cannot handle consent result - activity finishing or destroyed (isFinishing=$isFinishing, isDestroyed=$isDestroyed)")
+                        }
+                    } catch (e: Exception) {
+                        CrashlyticsManager.log("Splash: error while handling fragment result: ${e.message ?: "null"}")
+                    }
+                }
+            }
+
+            try {
+                dialogFragment.show(supportFragmentManager, "analytics_consent_dialog")
+                CrashlyticsManager.log("Splash: analytics consent dialog shown")
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Splash: failed to show analytics dialog: ${e.message ?: "null"}")
+            }
+
+             // Mettre à jour l'état du consentement analytics
+             analyticsConsentHandled = true
         } catch (e: Exception) {
             CrashlyticsManager.log("Erreur lors de l'affichage du dialogue de consentement analytics: ${e.message ?: "Message non disponible"}")
             // En cas d'erreur, on continue quand même
@@ -299,12 +334,20 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback, AnalyticsConse
     }
 
     private fun startTargetActivity(targetActivity: Class<*>) {
-        // Transition directe sans délai supplémentaire car nous avons déjà attendu
-        // que l'utilisateur prenne une décision concernant la mise à jour
-        val intent = Intent(this, targetActivity)
-        startActivity(intent)
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
-        finish()
+        try {
+            // Transition directe sans délai supplémentaire car nous avons déjà attendu
+            // que l'utilisateur prenne une décision concernant la mise à jour
+            val intent = Intent(this, targetActivity)
+            startActivity(intent)
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+            finish()
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Splash: failed to start target activity ${targetActivity.simpleName}: ${e.message ?: "null"}")
+            // En dernier recours, on termine l'activité
+            try {
+                finish()
+            } catch (ignore: Exception) {}
+        }
     }
 
     private fun navigateToNextScreen() {
