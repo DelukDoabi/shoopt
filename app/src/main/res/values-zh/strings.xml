@@ -496,4 +496,10 @@
     <string name="notifications_disabled_message">通知已关闭。你将不会收到购物提醒。</string>
     <string name="notifications_permission_required">需要开启通知才能收到购物提醒。</string>
     <string name="notifications_enabled_message">太棒了！你现在会收到购物提醒。</string>
+    <string name="consent_dialog_title">提升你的 Shoopt 体验</string>
+    <string name="consent_dialog_message">我们会收集你使用应用的匿名数据，用来改进 Shoopt。这样能帮助我们了解你最常用的功能，并发现潜在问题。你可以随时在设置中修改这个选择。</string>
+    <string name="consent_dialog_accept">同意</string>
+    <string name="consent_dialog_decline">拒绝</string>
+    <string name="settings_analytics_title">使用数据收集</string>
+    <string name="settings_analytics_summary">允许 Shoopt 收集你使用应用的匿名数据</string>
 </resources>

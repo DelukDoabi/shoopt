@@ -496,4 +496,10 @@
     <string name="notifications_disabled_message">Powiadomienia są wyłączone. Nie dostaniesz przypomnień o zakupach.</string>
     <string name="notifications_permission_required">Powiadomienia są potrzebne, aby otrzymywać przypomnienia o zakupach.</string>
     <string name="notifications_enabled_message">Świetnie! Teraz będziesz dostawać przypomnienia o zakupach.</string>
+    <string name="consent_dialog_title">Ulepsz swoje doświadczenie z Shoopt</string>
+    <string name="consent_dialog_message">Zbieramy anonimowe dane o tym, jak korzystasz z aplikacji, aby ulepszyć Shoopt. Dzięki temu wiemy, które funkcje są najczęściej używane i możemy szybciej wykryć problemy. Możesz zmienić tę decyzję w każdej chwili w ustawieniach.</string>
+    <string name="consent_dialog_accept">Akceptuj</string>
+    <string name="consent_dialog_decline">Odrzuć</string>
+    <string name="settings_analytics_title">Zbieranie danych o użyciu</string>
+    <string name="settings_analytics_summary">Pozwól Shoopt zbierać anonimowe dane o tym, jak korzystasz z aplikacji</string>
 </resources>

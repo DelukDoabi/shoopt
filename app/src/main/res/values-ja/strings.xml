@@ -498,4 +498,10 @@
     <string name="notifications_disabled_message">通知はオフになっています。買い物リマインダーは届きません。</string>
     <string name="notifications_permission_required">買い物リマインダーを受け取るには通知が必要です。</string>
     <string name="notifications_enabled_message">いいね！これから買い物リマインダーが届きます。</string>
+    <string name="consent_dialog_title">Shoopt体験をもっと良くしよう</string>
+    <string name="consent_dialog_message">アプリをどう使っているかの匿名データを集めて、Shooptを改善しています。よく使う機能や問題点を把握するのに役立ちます。この設定はいつでも変更できます。</string>
+    <string name="consent_dialog_accept">同意する</string>
+    <string name="consent_dialog_decline">拒否する</string>
+    <string name="settings_analytics_title">利用データ収集</string>
+    <string name="settings_analytics_summary">Shooptにアプリの利用状況に関する匿名データの収集を許可する</string>
 </resources>

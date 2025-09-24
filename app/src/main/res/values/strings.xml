@@ -434,14 +434,10 @@
     <string name="notifications_disabled_message">Notifications are turned off. You won’t get shopping reminders.</string>
     <string name="notifications_permission_required">Notifications are required to get your shopping reminders.</string>
     <string name="notifications_enabled_message">Great! You’ll now get reminders for your shopping.</string>
-
-    <!-- Chaînes pour le dialogue de consentement Analytics -->
-    <string name="consent_dialog_title">Améliorer votre expérience Shoopt</string>
-    <string name="consent_dialog_message">Nous collectons des données anonymes sur votre utilisation de l\'application pour améliorer Shoopt. Ces données nous aident à comprendre quelles fonctionnalités sont les plus utilisées et à identifier les problèmes potentiels. Vous pouvez modifier ce choix à tout moment dans les paramètres.</string>
-    <string name="consent_dialog_accept">Accepter</string>
-    <string name="consent_dialog_decline">Refuser</string>
-
-    <!-- Chaînes pour les paramètres Analytics -->
-    <string name="settings_analytics_title">Collecte de données d\'utilisation</string>
-    <string name="settings_analytics_summary">Autoriser Shoopt à collecter des données anonymes sur votre utilisation de l\'application</string>
+    <string name="consent_dialog_title">Improve your Shoopt experience</string>
+    <string name="consent_dialog_message">We collect anonymous data about how you use the app to improve Shoopt. This helps us understand which features you use most and spot potential issues. You can change this choice anytime in the settings.</string>
+    <string name="consent_dialog_accept">Accept</string>
+    <string name="consent_dialog_decline">Decline</string>
+    <string name="settings_analytics_title">Usage data collection</string>
+    <string name="settings_analytics_summary">Allow Shoopt to collect anonymous data about how you use the app</string>
 </resources>
