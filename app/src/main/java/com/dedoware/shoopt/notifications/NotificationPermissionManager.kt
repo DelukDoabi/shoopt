@@ -26,6 +26,7 @@ class NotificationPermissionManager private constructor(private val context: Con
     companion object {
         private const val PERMISSION_REQUEST_CODE = 123
         private const val PREF_DONT_ASK_NOTIFICATIONS = "pref_dont_ask_notifications"
+        private const val PREF_RETURNING_FROM_NOTIFICATION_SETTINGS = "pref_returning_from_notification_settings"
 
         @Volatile
         private var INSTANCE: NotificationPermissionManager? = null
@@ -120,6 +121,10 @@ class NotificationPermissionManager private constructor(private val context: Con
     private fun openNotificationSettings(activity: Activity) {
         val intent = Intent()
 
+        // Avant d'ouvrir les paramètres externes, on place un flag pour indiquer
+        // que l'on revient possiblement depuis les paramètres système.
+        UserPreferences.setBooleanPreference(context, PREF_RETURNING_FROM_NOTIFICATION_SETTINGS, true)
+
         // Sur Android 8.0 (API 26) et supérieur, redirige vers les paramètres du canal de notification
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             intent.action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
@@ -137,6 +142,13 @@ class NotificationPermissionManager private constructor(private val context: Con
      * Vérifie l'état des notifications après que l'utilisateur revient des paramètres
      */
     fun checkNotificationStatusAfterSettings(activity: Activity) {
+        // Ne rien faire si on n'attend pas un retour depuis les paramètres
+        val returning = UserPreferences.getBooleanPreference(context, PREF_RETURNING_FROM_NOTIFICATION_SETTINGS, false)
+        if (!returning) return
+
+        // Effacer le flag maintenant que nous traitons le retour
+        UserPreferences.setBooleanPreference(context, PREF_RETURNING_FROM_NOTIFICATION_SETTINGS, false)
+
         if (notificationManager.areNotificationsEnabled()) {
             // Les notifications sont désormais activées
             Toast.makeText(
