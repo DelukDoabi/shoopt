@@ -800,14 +800,33 @@ class AddProductActivity : AppCompatActivity() {
                 // Marquer que le code-barres provient du scanner pour tracker correctement l'ajout
                 wasScannedBarcode = true
 
-                // Analytique pour le code-barres scanne
+                // Analytics pour le code-barres scanne
                 val params = Bundle().apply {
                     putString("barcode_length", barcodeValue.length.toString())
                 }
                 AnalyticsService.getInstance(ShooptApplication.instance).logEvent("barcode_scanned", params)
+
+                // Tracker le succès du scan
+                try {
+                    AnalyticsService.getInstance(ShooptApplication.instance).trackScanSuccess("barcode")
+                } catch (e: Exception) {
+                    CrashlyticsManager.log("Erreur lors du tracking du succès du scan: ${e.message}")
+                }
+            } else {
+                // Pas de valeur retournée -> considérer comme échec
+                try {
+                    AnalyticsService.getInstance(ShooptApplication.instance).trackScanFailed("barcode", "no_value_returned")
+                } catch (e: Exception) {
+                    CrashlyticsManager.log("Erreur lors du tracking de l'échec du scan (pas de valeur): ${e.message}")
+                }
             }
         } else if (result.resultCode == Activity.RESULT_CANCELED) {
             Toast.makeText(this, getString(R.string.cancelled), Toast.LENGTH_LONG).show()
+            try {
+                AnalyticsService.getInstance(ShooptApplication.instance).trackScanFailed("barcode", "user_cancelled")
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors du tracking de l'annulation du scan: ${e.message}")
+            }
         }
     }
 

@@ -286,12 +286,8 @@ class TrackShoppingActivity : AppCompatActivity() {
                         if (product != null) {
                             // Analytics pour le scan réussi d'un code-barres existant
                             try {
-                                val params = Bundle().apply {
-                                    putString("action", "barcode_scan_success")
-                                    putString("category", "shopping_cart")
-                                    putString("product_found", true.toString())
-                                }
-                                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", params)
+                                // Remplacement : utiliser le tracker centralisé
+                                AnalyticsService.getInstance(ShooptApplication.instance).trackScanSuccess("barcode")
                             } catch (e: Exception) {
                                 CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
                             }
@@ -332,12 +328,7 @@ class TrackShoppingActivity : AppCompatActivity() {
                         } else {
                             // Analytics pour le scan d'un produit non trouvé
                             try {
-                                val params = Bundle().apply {
-                                    putString("action", "barcode_scan_success")
-                                    putString("category", "shopping_cart")
-                                    putString("product_found", false.toString())
-                                }
-                                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", params)
+                                AnalyticsService.getInstance(ShooptApplication.instance).trackScanSuccess("barcode")
                             } catch (e: Exception) {
                                 CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
                             }
@@ -361,12 +352,7 @@ class TrackShoppingActivity : AppCompatActivity() {
                     } catch (e: Exception) {
                         // Analytics pour l'erreur de scan
                         try {
-                            val params = Bundle().apply {
-                                putString("action", "barcode_scan_error")
-                                putString("category", "shopping_cart")
-                                putString("error_message", (e.message ?: "Message non disponible"))
-                            }
-                            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", params)
+                            AnalyticsService.getInstance(ShooptApplication.instance).trackScanFailed("barcode", (e.message ?: "Message non disponible"))
                         } catch (ex: Exception) {
                             CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${ex.message ?: "Message non disponible"}")
                         }
@@ -384,11 +370,7 @@ class TrackShoppingActivity : AppCompatActivity() {
             } else if (result.resultCode == Activity.RESULT_CANCELED) {
                 // Analytics pour l'annulation du scan
                 try {
-                    val params = Bundle().apply {
-                        putString("action", "barcode_scan_cancelled")
-                        putString("category", "shopping_cart")
-                    }
-                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", params)
+                    AnalyticsService.getInstance(ShooptApplication.instance).trackScanFailed("barcode", "user_cancelled")
                 } catch (e: Exception) {
                     CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
                 }

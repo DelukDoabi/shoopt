@@ -33,6 +33,8 @@ import com.dedoware.shoopt.gamification.manager.AchievementCelebrationManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import com.dedoware.shoopt.analytics.AnalyticsService
+import com.dedoware.shoopt.ShooptApplication
 
 class BarcodeScannerActivity : AppCompatActivity() {
     companion object {
@@ -126,6 +128,12 @@ class BarcodeScannerActivity : AppCompatActivity() {
     private fun setupButtons() {
         closeButton.setOnClickListener {
             setResult(RESULT_CANCELED)
+            // Tracké comme échec si l'utilisateur annule
+            try {
+                AnalyticsService.getInstance(ShooptApplication.instance).trackScanFailed("barcode", "user_cancelled")
+            } catch (e: Exception) {
+                Log.w(TAG, "Failed to track scan cancellation: ${e.message}")
+            }
             finish()
         }
 
@@ -240,6 +248,13 @@ class BarcodeScannerActivity : AppCompatActivity() {
                 barcodeScanner.close()
             }
 
+            // Tracker le succès du scan
+            try {
+                AnalyticsService.getInstance(ShooptApplication.instance).trackScanSuccess("barcode")
+            } catch (e: Exception) {
+                Log.w(TAG, "Failed to track scan success: ${e.message}")
+            }
+
             val resultIntent = Intent().apply {
                 putExtra(BARCODE_RESULT, barcodeValue)
             }
@@ -313,8 +328,13 @@ class BarcodeScannerActivity : AppCompatActivity() {
                             onBarcodesDetected(barcodes)
                         }
                     }
-                    .addOnFailureListener {
-                        Log.e(TAG, "Barcode scanning failed", it)
+                    .addOnFailureListener { ex ->
+                        Log.e(TAG, "Barcode scanning failed", ex)
+                        try {
+                            AnalyticsService.getInstance(ShooptApplication.instance).trackScanFailed("barcode", ex.message ?: "scan_processing_error")
+                        } catch (e: Exception) {
+                            Log.w(TAG, "Failed to track scan failure: ${e.message}")
+                        }
                     }
                     .addOnCompleteListener {
                         imageProxy.close()

@@ -124,12 +124,12 @@ class ProductChoiceActivity : AppCompatActivity() {
             val barcode = result.data?.getStringExtra(com.dedoware.shoopt.scanner.BarcodeScannerActivity.BARCODE_RESULT)
             if (barcode != null) {
                 try {
-                    // Analytics pour le scan réussi
-                    val successParams = Bundle().apply {
-                        putString("action", "barcode_scan_success")
-                        putString("category", "product_management")
+                    // Tracker le succès du scan
+                    try {
+                        AnalyticsService.getInstance(ShooptApplication.instance).trackScanSuccess("barcode")
+                    } catch (e: Exception) {
+                        CrashlyticsManager.log("Erreur lors du tracking scan success: ${e.message}")
                     }
-                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", successParams)
 
                     // Vérifier le produit dans la base de données
                     val intent = Intent(this, AddProductActivity::class.java).apply {
@@ -149,6 +149,18 @@ class ProductChoiceActivity : AppCompatActivity() {
 
                     showErrorToast(R.string.product_check_error)
                 }
+            } else {
+                try {
+                    AnalyticsService.getInstance(ShooptApplication.instance).trackScanFailed("barcode", "no_value_returned")
+                } catch (e: Exception) {
+                    CrashlyticsManager.log("Erreur lors du tracking de l'échec du scan (pas de valeur): ${e.message}")
+                }
+            }
+        } else if (result.resultCode == RESULT_CANCELED) {
+            try {
+                AnalyticsService.getInstance(ShooptApplication.instance).trackScanFailed("barcode", "user_cancelled")
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors du tracking de l'annulation du scan: ${e.message}")
             }
         }
     }

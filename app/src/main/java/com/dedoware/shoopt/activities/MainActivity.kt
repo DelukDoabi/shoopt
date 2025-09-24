@@ -507,6 +507,13 @@ class MainActivity : AppCompatActivity() {
             val barcodeValue = result.data?.getStringExtra(com.dedoware.shoopt.scanner.BarcodeScannerActivity.BARCODE_RESULT)
             if (barcodeValue != null) {
                 try {
+                    // Tracker le succès du scan
+                    try {
+                        AnalyticsService.getInstance(ShooptApplication.instance).trackScanSuccess("barcode")
+                    } catch (e: Exception) {
+                        CrashlyticsManager.log("Erreur lors du tracking scan success: ${e.message}")
+                    }
+
                     // Vérifier si le produit existe déjà avant de lancer l'activité
                     checkProductExistenceAndNavigate(barcodeValue)
 
@@ -523,8 +530,19 @@ class MainActivity : AppCompatActivity() {
 
                     Toast.makeText(this, getString(R.string.barcode_processing_error), Toast.LENGTH_SHORT).show()
                 }
+            } else {
+                try {
+                    AnalyticsService.getInstance(ShooptApplication.instance).trackScanFailed("barcode", "no_value_returned")
+                } catch (e: Exception) {
+                    CrashlyticsManager.log("Erreur lors du tracking de l'échec du scan (pas de valeur): ${e.message}")
+                }
             }
         } else if (result.resultCode == RESULT_CANCELED) {
+            try {
+                AnalyticsService.getInstance(ShooptApplication.instance).trackScanFailed("barcode", "user_cancelled")
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors du tracking de l'annulation du scan: ${e.message}")
+            }
             Toast.makeText(this, getString(R.string.cancelled), Toast.LENGTH_LONG).show()
         }
     }
