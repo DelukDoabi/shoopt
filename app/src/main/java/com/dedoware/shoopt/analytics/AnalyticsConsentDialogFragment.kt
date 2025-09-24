@@ -24,6 +24,7 @@ class AnalyticsConsentDialogFragment : DialogFragment() {
     }
 
     private var consentListener: ConsentListener? = null
+    private lateinit var consentTracker: ConsentTracker
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -32,6 +33,9 @@ class AnalyticsConsentDialogFragment : DialogFragment() {
         } else {
             throw RuntimeException("$context doit implémenter ConsentListener")
         }
+
+        // Initialisation du tracker de consentement
+        consentTracker = ConsentTracker.getInstance(context)
     }
 
     override fun onCreateView(
@@ -50,6 +54,10 @@ class AnalyticsConsentDialogFragment : DialogFragment() {
             UserPreferences.setAnalyticsEnabled(requireContext(), true)
             // Activer explicitement le tracking dans le service Analytics
             AnalyticsService.getInstance(requireContext()).enableTracking()
+
+            // Suivre l'acceptation du consentement
+            consentTracker.trackConsentAccepted()
+
             // Notifier l'activité parente
             consentListener?.onConsentGiven()
             dismiss()
@@ -60,6 +68,10 @@ class AnalyticsConsentDialogFragment : DialogFragment() {
             UserPreferences.setAnalyticsEnabled(requireContext(), false)
             // Désactiver explicitement le tracking dans le service Analytics
             AnalyticsService.getInstance(requireContext()).disableTracking()
+
+            // Suivre le refus du consentement
+            consentTracker.trackConsentDeclined()
+
             // Notifier l'activité parente
             consentListener?.onConsentDenied()
             dismiss()
