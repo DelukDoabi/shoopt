@@ -1,5 +1,6 @@
 package com.dedoware.shoopt.notifications
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager as AndroidNotificationManager
 import android.app.PendingIntent
@@ -11,6 +12,7 @@ import com.dedoware.shoopt.activities.MainActivity
 import com.dedoware.shoopt.ShooptApplication
 import com.dedoware.shoopt.analytics.AnalyticsService
 
+@SuppressLint("StaticFieldLeak")
 class NotificationManager private constructor(private val context: Context) {
 
     companion object {
@@ -88,7 +90,14 @@ class NotificationManager private constructor(private val context: Context) {
             putString("day", "saturday")
             putString("message_type", "saturday_9am")
         }
-        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_displayed", bundle)
+
+        // Utiliser la méthode dédiée pour tracker la réception/affichage
+        try {
+            AnalyticsService.getInstance(ShooptApplication.instance).trackNotificationReceived("shopping_reminder")
+        } catch (_: Exception) {
+            // Fallback: log brut si le track dédié échoue
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_displayed", bundle)
+        }
     }
 
     /**
@@ -129,7 +138,12 @@ class NotificationManager private constructor(private val context: Context) {
             putString("type", "custom_reminder")
             putString("title", title)
         }
-        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_displayed", bundle)
+
+        try {
+            AnalyticsService.getInstance(ShooptApplication.instance).trackNotificationReceived("custom_reminder")
+        } catch (_: Exception) {
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_displayed", bundle)
+        }
     }
 
     /**

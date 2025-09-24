@@ -375,14 +375,19 @@ class SettingsActivity : AppCompatActivity() {
                 else -> "system"
             }
 
-            // Analytics: suivre le changement de thème
-            val themeChangeParams = Bundle().apply {
-                putString("action", "change_preference")
-                putString("category", "settings")
-                putString("preference_type", "theme")
-                putString("selected_value", selectedTheme)
+            // Analytics: suivre le changement de thème via la méthode dédiée
+            try {
+                val isDark = selectedTheme == "dark"
+                AnalyticsService.getInstance(ShooptApplication.instance).trackDarkModeToggle(isDark)
+            } catch (e: Exception) {
+                val themeChangeParams = Bundle().apply {
+                    putString("action", "change_preference")
+                    putString("category", "settings")
+                    putString("preference_type", "theme")
+                    putString("selected_value", selectedTheme)
+                }
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", themeChangeParams)
             }
-            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", themeChangeParams)
         }
 
         // Listener pour le switch d'analytics
@@ -434,6 +439,14 @@ class SettingsActivity : AppCompatActivity() {
                 putString("currency", userPreferences.currency)
             }
             AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", saveParams)
+
+            // Track language change (current system language) in a dedicated method
+            try {
+                val language = java.util.Locale.getDefault().language
+                AnalyticsService.getInstance(ShooptApplication.instance).trackLanguageChange(language)
+            } catch (e: Exception) {
+                // Fallback: nothing to do, language tracking is non-critical
+            }
 
             // Application immédiate du thème
             try {

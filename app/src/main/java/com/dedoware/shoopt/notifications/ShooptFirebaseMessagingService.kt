@@ -42,7 +42,13 @@ class ShooptFirebaseMessagingService : FirebaseMessagingService() {
                     putString("day", "saturday")
                     putString("source", "fcm")
                 }
-                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_received", params)
+                // Utiliser la méthode dédiée du service
+                try {
+                    AnalyticsService.getInstance(ShooptApplication.instance).trackNotificationReceived("shopping_reminder")
+                } catch (e: Exception) {
+                    // Fallback: log raw event si tracking indisponible
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_received", params)
+                }
             }
             "custom_reminder" -> {
                 showCustomReminderNotification(remoteMessage)
@@ -117,7 +123,12 @@ class ShooptFirebaseMessagingService : FirebaseMessagingService() {
             putString("title_length", title.length.toString())
             putString("body_length", body.length.toString())
         }
-        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_displayed", params)
+        // Utiliser la méthode dédiée si existante (envoi d'un événement plus riche)
+        try {
+            AnalyticsService.getInstance(ShooptApplication.instance).trackNotificationReceived("shopping_reminder")
+        } catch (e: Exception) {
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_displayed", params)
+        }
     }
 
     private fun showCustomReminderNotification(remoteMessage: RemoteMessage) {
@@ -157,7 +168,11 @@ class ShooptFirebaseMessagingService : FirebaseMessagingService() {
             putString("type", "custom_reminder")
             putString("source", "fcm")
         }
-        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_displayed", params)
+        try {
+            AnalyticsService.getInstance(ShooptApplication.instance).trackNotificationReceived("custom_reminder")
+        } catch (e: Exception) {
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_displayed", params)
+        }
     }
 
     private fun createViewListPendingIntent(): PendingIntent {
@@ -180,6 +195,7 @@ class ShooptFirebaseMessagingService : FirebaseMessagingService() {
         val params = android.os.Bundle().apply {
             putString("token_generated", "true")
         }
+        // Pas de méthode dédiée pour le token; on conserve le logEvent
         AnalyticsService.getInstance(ShooptApplication.instance).logEvent("fcm_token_ready", params)
     }
 }

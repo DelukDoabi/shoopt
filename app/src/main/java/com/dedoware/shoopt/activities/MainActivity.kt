@@ -959,7 +959,11 @@ class MainActivity : AppCompatActivity() {
                     putString("source", notificationSource ?: "unknown")
                     putString("action", "open_shopping_list")
                 }
-                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_clicked", notificationClickedParams)
+                try {
+                    AnalyticsService.getInstance(ShooptApplication.instance).trackNotificationClicked(notificationSource ?: "unknown")
+                } catch (e: Exception) {
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_clicked", notificationClickedParams)
+                }
 
                 // Ouvrir l'activité de liste de courses avec un délai pour laisser l'interface se charger
                 window.decorView.postDelayed({

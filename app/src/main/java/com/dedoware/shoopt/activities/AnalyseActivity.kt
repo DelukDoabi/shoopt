@@ -128,6 +128,8 @@ class AnalyseActivity : AppCompatActivity() {
             // Enregistrement de l'écran dans Analytics
             try {
                 AnalyticsService.getInstance(ShooptApplication.instance).trackScreenView("Analyze", "AnalyseActivity")
+                // Utiliser la méthode dédiée pour l'ouverture d'analyse
+                AnalyticsService.getInstance(ShooptApplication.instance).trackAnalysisOpen()
             } catch (e: Exception) {
                 CrashlyticsManager.log("Erreur lors de l'enregistrement de l'écran dans Analytics: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "analytics_screen_log")
