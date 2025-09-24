@@ -3,7 +3,6 @@ package com.dedoware.shoopt.utils
 import android.app.Activity
 import android.content.Context
 import android.content.IntentSender
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,9 +10,12 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.dedoware.shoopt.R
+import com.dedoware.shoopt.ShooptApplication
+import com.dedoware.shoopt.analytics.AnalyticsService
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateInfo
@@ -126,16 +128,16 @@ object UpdateManager : DefaultLifecycleObserver {
                 appUpdateManager = AppUpdateManagerFactory.create(activity)
             }
 
-            // Enregistre le moment de la vérification
-            sharedPrefs.edit().putLong(KEY_LAST_UPDATE_CHECK, currentTime).apply()
+            // Enregistre le moment de la vérification (utiliser l'extension KTX pour SharedPreferences)
+            sharedPrefs.edit { putLong(KEY_LAST_UPDATE_CHECK, currentTime) }
 
             val appUpdateInfoTask = appUpdateManager!!.appUpdateInfo
 
             appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
                 val bundle = Bundle()
                 bundle.putString("update_availability", appUpdateInfo.updateAvailability().toString())
-                bundle.putString("available_version_code", (appUpdateInfo.availableVersionCode() ?: -1).toString())
-                AnalyticsManager.logEvent("update_check", bundle)
+                bundle.putString("available_version_code", appUpdateInfo.availableVersionCode().toString())
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("update_check", bundle)
 
                 // Stocke l'info pour une utilisation ultérieure
                 updateInfo = appUpdateInfo
@@ -192,7 +194,7 @@ object UpdateManager : DefaultLifecycleObserver {
             // Si le délai de report est écoulé, on vérifie à nouveau les mises à jour
             if (currentTime - postponedTimestamp > POSTPONE_INTERVAL) {
                 // Réinitialiser l'état différé
-                sharedPrefs.edit().putBoolean(KEY_POSTPONED_UPDATE, false).apply()
+                sharedPrefs.edit { putBoolean(KEY_POSTPONED_UPDATE, false) }
                 // Forcer une vérification de mise à jour
                 checkForUpdate(activity, rootView, true)
             }
@@ -270,17 +272,16 @@ object UpdateManager : DefaultLifecycleObserver {
      */
     private fun postponeUpdate(activity: AppCompatActivity, appUpdateInfo: AppUpdateInfo) {
         val sharedPrefs = activity.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        sharedPrefs.edit().apply {
+        sharedPrefs.edit {
             putBoolean(KEY_POSTPONED_UPDATE, true)
-            putInt(KEY_POSTPONED_VERSION, appUpdateInfo.availableVersionCode() ?: -1)
+            putInt(KEY_POSTPONED_VERSION, appUpdateInfo.availableVersionCode())
             putLong(KEY_POSTPONED_TIMESTAMP, System.currentTimeMillis())
-            apply()
         }
 
         val bundle = Bundle()
-        bundle.putString("version_code", (appUpdateInfo.availableVersionCode() ?: -1).toString())
+        bundle.putString("version_code", appUpdateInfo.availableVersionCode().toString())
         bundle.putString("update_type", if (appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) "immediate" else "flexible")
-        AnalyticsManager.logEvent("update_postponed", bundle)
+        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("update_postponed", bundle)
     }
 
     /**
@@ -312,9 +313,9 @@ object UpdateManager : DefaultLifecycleObserver {
     private fun initiateImmediateUpdate(activity: AppCompatActivity, appUpdateInfo: AppUpdateInfo) {
         try {
             val bundle = Bundle()
-            bundle.putString("version_code", (appUpdateInfo.availableVersionCode() ?: -1).toString())
+            bundle.putString("version_code", appUpdateInfo.availableVersionCode().toString())
             bundle.putString("staleness_days", (appUpdateInfo.clientVersionStalenessDays() ?: -1).toString())
-            AnalyticsManager.logEvent("update_immediate_initiated", bundle)
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("update_immediate_initiated", bundle)
 
             // Ferme le dialogue après confirmation que la mise à jour va démarrer
             updateDialog?.dismiss()
@@ -341,9 +342,9 @@ object UpdateManager : DefaultLifecycleObserver {
     private fun initiateFlexibleUpdate(activity: AppCompatActivity, appUpdateInfo: AppUpdateInfo, rootView: View?) {
         try {
             val bundle = Bundle()
-            bundle.putString("version_code", (appUpdateInfo.availableVersionCode() ?: -1).toString())
+            bundle.putString("version_code", appUpdateInfo.availableVersionCode().toString())
             bundle.putString("staleness_days", (appUpdateInfo.clientVersionStalenessDays() ?: -1).toString())
-            AnalyticsManager.logEvent("update_flexible_initiated", bundle)
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("update_flexible_initiated", bundle)
 
             // Configurer le listener pour suivre l'état d'installation
             setupInstallStateListener(activity, rootView)
@@ -392,7 +393,7 @@ object UpdateManager : DefaultLifecycleObserver {
                             if (progress % 20 == 0) { // Loguer tous les 20%
                                 val progressBundle = Bundle()
                                 progressBundle.putInt("progress", progress)
-                                AnalyticsManager.logEvent("update_download_progress", progressBundle)
+                                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("update_download_progress", progressBundle)
                             }
                         }
                     }
@@ -400,26 +401,29 @@ object UpdateManager : DefaultLifecycleObserver {
                         // La mise à jour a été téléchargée, informer l'utilisateur
                         dismissSnackbar() // Fermer le snackbar précédent s'il existe
                         popupSnackbarForCompleteUpdate(activity, rootView)
-                        AnalyticsManager.logEvent("update_downloaded", Bundle())
+                        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("update_downloaded", Bundle())
                     }
                     InstallStatus.INSTALLED -> {
-                        AnalyticsManager.logEvent("update_installed", Bundle())
+                        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("update_installed", Bundle())
                         dismissSnackbar()
                         removeInstallStateUpdateListener()
                     }
                     InstallStatus.FAILED -> {
                         val errorBundle = Bundle()
                         errorBundle.putString("error_code", state.installErrorCode().toString())
-                        AnalyticsManager.logEvent("update_failed", errorBundle)
+                        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("update_failed", errorBundle)
 
                         dismissSnackbar()
                         showUpdateErrorSnackbar(activity)
                         removeInstallStateUpdateListener()
                     }
                     InstallStatus.CANCELED -> {
-                        AnalyticsManager.logEvent("update_canceled", Bundle())
+                        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("update_canceled", Bundle())
                         dismissSnackbar()
                         removeInstallStateUpdateListener()
+                    }
+                    else -> {
+                        // Autres états (INSTALLING, PENDING, REQUIRES_UI_INTENT, UNKNOWN) : pas d'action spécifique
                     }
                 }
             }
@@ -489,7 +493,7 @@ object UpdateManager : DefaultLifecycleObserver {
             ).apply {
                 setAction(activity.getString(R.string.install)) {
                     appUpdateManager?.completeUpdate()
-                    AnalyticsManager.logEvent("update_install_clicked", Bundle())
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("update_install_clicked", Bundle())
                 }
                 show()
             }
@@ -581,7 +585,9 @@ object UpdateManager : DefaultLifecycleObserver {
             }
             updateDialog = null
         } catch (e: Exception) {
-            // Ignore les exceptions lors de la fermeture du dialogue
+            // Logger l'exception pour traçabilité (éviter d'ignorer silencieusement)
+            CrashlyticsManager.log("Erreur lors de la fermeture du dialogue de mise à jour: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.logException(e)
         }
     }
 
@@ -595,7 +601,9 @@ object UpdateManager : DefaultLifecycleObserver {
                 installStateUpdatedListener = null
             }
         } catch (e: Exception) {
-            // Ignore les exceptions lors de la suppression du listener
+            // Logger l'exception pour traçabilité
+            CrashlyticsManager.log("Erreur lors de la suppression du listener d'état d'installation: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.logException(e)
         }
     }
 }

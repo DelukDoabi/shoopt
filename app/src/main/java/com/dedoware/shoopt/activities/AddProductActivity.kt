@@ -42,6 +42,7 @@ import androidx.exifinterface.media.ExifInterface
 import com.bumptech.glide.Glide
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.ShooptApplication
+import com.dedoware.shoopt.analytics.AnalyticsService
 import com.dedoware.shoopt.model.Product
 import com.dedoware.shoopt.model.Shop
 import com.dedoware.shoopt.persistence.FirebaseImageStorage
@@ -52,7 +53,6 @@ import com.dedoware.shoopt.persistence.LocalImageStorage
 import com.dedoware.shoopt.persistence.LocalProductRepository
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
 import com.dedoware.shoopt.scanner.BarcodeScannerActivity
-import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.ShooptUtils
 import com.dedoware.shoopt.utils.UserPreferences
@@ -253,7 +253,7 @@ class AddProductActivity : AppCompatActivity() {
             setContentView(R.layout.activity_add_product)
 
             // Enregistrer l'evenement d'ouverture de l'ecran AddProduct
-            AnalyticsManager.logScreenView("AddProduct", "AddProductActivity")
+            AnalyticsService.getInstance(ShooptApplication.instance).trackScreenView("AddProduct", "AddProductActivity")
 
             try {
                 productRepository = if (useFirebase) {
@@ -731,7 +731,7 @@ class AddProductActivity : AppCompatActivity() {
             dialog.show()
 
             // Optional: Track analytics for dialog shown
-            AnalyticsManager.logCustomEvent("photo_tips_dialog_shown", null)
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("photo_tips_dialog_shown", null)
         } catch (e: Exception) {
             // Fallback to camera launch if dialog fails
             CrashlyticsManager.log("Error showing photo tips dialog: ${e.message ?: "Unknown error"}")
@@ -752,7 +752,12 @@ class AddProductActivity : AppCompatActivity() {
 
     private fun launchCameraInternal() {
         // Analytique pour le lancement de la camera
-        AnalyticsManager.logSelectContent("product_picture", "camera", "product_capture")
+        val selectParams1 = android.os.Bundle().apply {
+            putString(com.google.firebase.analytics.FirebaseAnalytics.Param.CONTENT_TYPE, "product_picture")
+            putString(com.google.firebase.analytics.FirebaseAnalytics.Param.ITEM_ID, "camera")
+            putString(com.google.firebase.analytics.FirebaseAnalytics.Param.ITEM_NAME, "product_capture")
+        }
+        AnalyticsService.getInstance(ShooptApplication.instance).logEvent(com.google.firebase.analytics.FirebaseAnalytics.Event.SELECT_CONTENT, selectParams1)
 
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         val productPictureUri =
@@ -765,8 +770,12 @@ class AddProductActivity : AppCompatActivity() {
 
     private fun launchBarcodeScanner() {
         // Analytique pour le scan de code-barres
-        AnalyticsManager.logSelectContent("barcode_scan", "scanner", "product_barcode")
-
+        val selectParams2 = android.os.Bundle().apply {
+            putString(com.google.firebase.analytics.FirebaseAnalytics.Param.CONTENT_TYPE, "barcode_scan")
+            putString(com.google.firebase.analytics.FirebaseAnalytics.Param.ITEM_ID, "scanner")
+            putString(com.google.firebase.analytics.FirebaseAnalytics.Param.ITEM_NAME, "product_barcode")
+        }
+        AnalyticsService.getInstance(ShooptApplication.instance).logEvent(com.google.firebase.analytics.FirebaseAnalytics.Event.SELECT_CONTENT, selectParams2)
         try {
             // Utilisation de notre nouvelle implementation basee sur ML Kit
             val intent = Intent(this, BarcodeScannerActivity::class.java)
@@ -789,7 +798,7 @@ class AddProductActivity : AppCompatActivity() {
                 val params = Bundle().apply {
                     putString("barcode_length", barcodeValue.length.toString())
                 }
-                AnalyticsManager.logCustomEvent("barcode_scanned", params)
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("barcode_scanned", params)
             }
         } else if (result.resultCode == Activity.RESULT_CANCELED) {
             Toast.makeText(this, getString(R.string.cancelled), Toast.LENGTH_LONG).show()
@@ -893,7 +902,7 @@ class AddProductActivity : AppCompatActivity() {
                                 putString("has_barcode", (barcode != 0L).toString())
                                 // Ne pas collecter le nom du produit ou autres données personnelles
                             }
-                            AnalyticsManager.logCustomEvent("product_updated", params)
+                            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("product_updated", params)
 
                             product.id
                         } else {
@@ -920,7 +929,7 @@ class AddProductActivity : AppCompatActivity() {
                                 putBoolean("is_first_product", isFirstProduct)
                                 // Ne pas collecter les noms ou prix exacts
                             }
-                            AnalyticsManager.logCustomEvent("product_created", params)
+                            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("product_created", params)
                             productIdInserted
                         }
                     }
@@ -944,7 +953,7 @@ class AddProductActivity : AppCompatActivity() {
                                 firstProductManager.markCongratulationShown()
 
                                 // Analytique pour la première félicitation
-                                AnalyticsManager.logCustomEvent("first_product_congratulation_shown", null)
+                                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("first_product_congratulation_shown", null)
 
                                 Log.d("GAMIFICATION", "Premier produit ajouté - XP et achievement accordés")
                             } else {
@@ -981,7 +990,7 @@ class AddProductActivity : AppCompatActivity() {
                 putBoolean("missing_fields", true)
                 // Sans detailler quels champs exactement sont manquants
             }
-            AnalyticsManager.logCustomEvent("product_save_validation_failed", params)
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("product_save_validation_failed", params)
         }
     }
 
@@ -1057,7 +1066,7 @@ class AddProductActivity : AppCompatActivity() {
             val congratulationDialog = FirstProductCongratulationDialog(this) {
                 // Callback appele quand le dialog est ferme
                 // On peut ici ajouter des actions supplementaires si necessaire
-                AnalyticsManager.logCustomEvent("first_product_congratulation_dismissed", null)
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("first_product_congratulation_dismissed", null)
             }
 
             congratulationDialog.show()
@@ -1084,7 +1093,7 @@ class AddProductActivity : AppCompatActivity() {
                 val params = Bundle().apply {
                     putString("image_source", if (imageUrl.isEmpty()) "camera" else "url")
                 }
-                AnalyticsManager.logCustomEvent("image_analysis_started", params)
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("image_analysis_started", params)
             }
 
             val apiKey = fetchHuggingFaceApiKey() ?: run {
@@ -1094,7 +1103,7 @@ class AddProductActivity : AppCompatActivity() {
 
                 withContext(Dispatchers.Main) {
                     // Analytique pour l'erreur d'API key
-                    AnalyticsManager.logCustomEvent("image_analysis_api_key_missing", null)
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("image_analysis_api_key_missing", null)
                 }
                 return
             }
@@ -1106,7 +1115,7 @@ class AddProductActivity : AppCompatActivity() {
 
                 withContext(Dispatchers.Main) {
                     // Analytique pour l'erreur d'encodage
-                    AnalyticsManager.logCustomEvent("image_analysis_encoding_failed", null)
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("image_analysis_encoding_failed", null)
                 }
                 return
             }
@@ -1119,7 +1128,7 @@ class AddProductActivity : AppCompatActivity() {
 
                 withContext(Dispatchers.Main) {
                     // Analytique pour l'analyse reussie
-                    AnalyticsManager.logCustomEvent("image_analysis_success", null)
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("image_analysis_success", null)
                 }
             } catch (e: Exception) {
                 CrashlyticsManager.log("Erreur lors de l'analyse de l'image: ${e.message ?: "Message non disponible"}")
@@ -1136,7 +1145,7 @@ class AddProductActivity : AppCompatActivity() {
                         putString("error_message", e.message ?: "Unknown error")
                         putString("error_type", e.javaClass.simpleName)
                     }
-                    AnalyticsManager.logCustomEvent("image_analysis_api_error", params)
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("image_analysis_api_error", params)
                 }
             }
         } catch (e: Exception) {
@@ -1155,7 +1164,7 @@ class AddProductActivity : AppCompatActivity() {
                     putString("error_message", e.message ?: "Unknown error")
                     putString("error_type", e.javaClass.simpleName)
                 }
-                AnalyticsManager.logCustomEvent("image_analysis_general_error", params)
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("image_analysis_general_error", params)
             }
         }
     }
@@ -1477,7 +1486,7 @@ class AddProductActivity : AppCompatActivity() {
                     val params = Bundle().apply {
                         putBoolean("autocompletion_enabled", isChecked)
                     }
-                    AnalyticsManager.logCustomEvent("autocompletion_toggle_changed", params)
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("autocompletion_toggle_changed", params)
 
                     if (isChecked) {
                         // Activer les deux fonctionnalites quand le switch est active
@@ -1850,11 +1859,12 @@ class AddProductActivity : AppCompatActivity() {
             window.decorView.post {
                 startSpotlightTour(spotlightItems) {
                     // Callback appele à la fin du tour
-                    AnalyticsManager.logUserAction(
-                        "spotlight_tour_completed",
-                        "onboarding",
-                        mapOf("screen" to "AddProductActivity")
-                    )
+                    val spParams = Bundle().apply {
+                        putString("action", "spotlight_tour_completed")
+                        putString("category", "onboarding")
+                        putString("screen", "AddProductActivity")
+                    }
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", spParams)
                 }
             }
 

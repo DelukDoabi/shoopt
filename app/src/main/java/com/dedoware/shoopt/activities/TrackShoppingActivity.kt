@@ -25,9 +25,10 @@ import com.dedoware.shoopt.persistence.FirebaseProductRepository
 import com.dedoware.shoopt.persistence.LocalProductRepository
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
 import com.dedoware.shoopt.scanner.BarcodeScannerActivity
-import com.dedoware.shoopt.utils.AnalyticsManager
+import com.dedoware.shoopt.analytics.AnalyticsService
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.google.android.material.button.MaterialButton
+import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -61,7 +62,7 @@ class TrackShoppingActivity : AppCompatActivity() {
 
             // Enregistrement de l'écran de suivi des achats dans Analytics
             try {
-                AnalyticsManager.logScreenView("TrackShopping", "TrackShoppingActivity")
+                AnalyticsService.getInstance(ShooptApplication.instance).trackScreenView("TrackShopping", "TrackShoppingActivity")
             } catch (e: Exception) {
                 CrashlyticsManager.log("Erreur lors de l'enregistrement de l'écran dans Analytics: ${e.message ?: "Message non disponible"}")
             }
@@ -164,7 +165,12 @@ class TrackShoppingActivity : AppCompatActivity() {
                 try {
                     // Analytique pour le choix du scan de code-barres
                     try {
-                        AnalyticsManager.logSelectContent("product_input_method", "button", "barcode_scan")
+                        val params = Bundle().apply {
+                            putString(FirebaseAnalytics.Param.CONTENT_TYPE, "product_input_method")
+                            putString(FirebaseAnalytics.Param.ITEM_ID, "button")
+                            putString(FirebaseAnalytics.Param.ITEM_NAME, "barcode_scan")
+                        }
+                        AnalyticsService.getInstance(ShooptApplication.instance).logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, params)
                     } catch (e: Exception) {
                         CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
                     }
@@ -186,7 +192,12 @@ class TrackShoppingActivity : AppCompatActivity() {
                 try {
                     // Analytique pour le choix de l'ajout manuel
                     try {
-                        AnalyticsManager.logSelectContent("product_input_method", "button", "manual_input")
+                        val params = Bundle().apply {
+                            putString(FirebaseAnalytics.Param.CONTENT_TYPE, "product_input_method")
+                            putString(FirebaseAnalytics.Param.ITEM_ID, "button")
+                            putString(FirebaseAnalytics.Param.ITEM_NAME, "manual_input")
+                        }
+                        AnalyticsService.getInstance(ShooptApplication.instance).logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, params)
                     } catch (e: Exception) {
                         CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
                     }
@@ -229,14 +240,13 @@ class TrackShoppingActivity : AppCompatActivity() {
                         if (success) {
                             // Analytics pour l'ajout réussi d'un produit au panier (méthode manuelle)
                             try {
-                                AnalyticsManager.logUserAction(
-                                    "add_product_to_cart",
-                                    "shopping_cart",
-                                    mapOf(
-                                        "method" to "manual_input",
-                                        "success" to true
-                                    )
-                                )
+                                val params = Bundle().apply {
+                                    putString("action", "add_product_to_cart")
+                                    putString("category", "shopping_cart")
+                                    putString("method", "manual_input")
+                                    putString("success", true.toString())
+                                }
+                                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", params)
                             } catch (e: Exception) {
                                 CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
                             }
@@ -246,14 +256,13 @@ class TrackShoppingActivity : AppCompatActivity() {
                         } else {
                             // Analytics pour l'échec d'ajout d'un produit au panier
                             try {
-                                AnalyticsManager.logUserAction(
-                                    "add_product_to_cart",
-                                    "shopping_cart",
-                                    mapOf(
-                                        "method" to "manual_input",
-                                        "success" to false
-                                    )
-                                )
+                                val params = Bundle().apply {
+                                    putString("action", "add_product_to_cart")
+                                    putString("category", "shopping_cart")
+                                    putString("method", "manual_input")
+                                    putString("success", false.toString())
+                                }
+                                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", params)
                             } catch (e: Exception) {
                                 CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
                             }
@@ -277,13 +286,12 @@ class TrackShoppingActivity : AppCompatActivity() {
                         if (product != null) {
                             // Analytics pour le scan réussi d'un code-barres existant
                             try {
-                                AnalyticsManager.logUserAction(
-                                    "barcode_scan_success",
-                                    "shopping_cart",
-                                    mapOf(
-                                        "product_found" to true
-                                    )
-                                )
+                                val params = Bundle().apply {
+                                    putString("action", "barcode_scan_success")
+                                    putString("category", "shopping_cart")
+                                    putString("product_found", true.toString())
+                                }
+                                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", params)
                             } catch (e: Exception) {
                                 CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
                             }
@@ -292,14 +300,13 @@ class TrackShoppingActivity : AppCompatActivity() {
                             if (success) {
                                 // Analytics pour l'ajout réussi d'un produit au panier via scan
                                 try {
-                                    AnalyticsManager.logUserAction(
-                                        "add_product_to_cart",
-                                        "shopping_cart",
-                                        mapOf(
-                                            "method" to "barcode_scan",
-                                            "success" to true
-                                        )
-                                    )
+                                    val params = Bundle().apply {
+                                        putString("action", "add_product_to_cart")
+                                        putString("category", "shopping_cart")
+                                        putString("method", "barcode_scan")
+                                        putString("success", true.toString())
+                                    }
+                                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", params)
                                 } catch (e: Exception) {
                                     CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
                                 }
@@ -309,14 +316,13 @@ class TrackShoppingActivity : AppCompatActivity() {
                             } else {
                                 // Analytics pour l'échec d'ajout d'un produit au panier via scan
                                 try {
-                                    AnalyticsManager.logUserAction(
-                                        "add_product_to_cart",
-                                        "shopping_cart",
-                                        mapOf(
-                                            "method" to "barcode_scan",
-                                            "success" to false
-                                        )
-                                    )
+                                    val params = Bundle().apply {
+                                        putString("action", "add_product_to_cart")
+                                        putString("category", "shopping_cart")
+                                        putString("method", "barcode_scan")
+                                        putString("success", false.toString())
+                                    }
+                                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", params)
                                 } catch (e: Exception) {
                                     CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
                                 }
@@ -326,13 +332,12 @@ class TrackShoppingActivity : AppCompatActivity() {
                         } else {
                             // Analytics pour le scan d'un produit non trouvé
                             try {
-                                AnalyticsManager.logUserAction(
-                                    "barcode_scan_success",
-                                    "shopping_cart",
-                                    mapOf(
-                                        "product_found" to false
-                                    )
-                                )
+                                val params = Bundle().apply {
+                                    putString("action", "barcode_scan_success")
+                                    putString("category", "shopping_cart")
+                                    putString("product_found", false.toString())
+                                }
+                                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", params)
                             } catch (e: Exception) {
                                 CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
                             }
@@ -356,13 +361,12 @@ class TrackShoppingActivity : AppCompatActivity() {
                     } catch (e: Exception) {
                         // Analytics pour l'erreur de scan
                         try {
-                            AnalyticsManager.logUserAction(
-                                "barcode_scan_error",
-                                "shopping_cart",
-                                mapOf(
-                                    "error_message" to (e.message ?: "Message non disponible")
-                                )
-                            )
+                            val params = Bundle().apply {
+                                putString("action", "barcode_scan_error")
+                                putString("category", "shopping_cart")
+                                putString("error_message", (e.message ?: "Message non disponible"))
+                            }
+                            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", params)
                         } catch (ex: Exception) {
                             CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${ex.message ?: "Message non disponible"}")
                         }
@@ -380,11 +384,11 @@ class TrackShoppingActivity : AppCompatActivity() {
             } else if (result.resultCode == Activity.RESULT_CANCELED) {
                 // Analytics pour l'annulation du scan
                 try {
-                    AnalyticsManager.logUserAction(
-                        "barcode_scan_cancelled",
-                        "shopping_cart",
-                        null
-                    )
+                    val params = Bundle().apply {
+                        putString("action", "barcode_scan_cancelled")
+                        putString("category", "shopping_cart")
+                    }
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", params)
                 } catch (e: Exception) {
                     CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
                 }
@@ -496,21 +500,21 @@ class TrackShoppingActivity : AppCompatActivity() {
 
                                         // Analytics pour la suppression réussie d'un produit du panier
                                         try {
-                                            AnalyticsManager.logUserAction(
-                                                "remove_product_from_cart",
-                                                "shopping_cart",
-                                                mapOf(
-                                                    "quantity" to deletedItem.quantity,
-                                                    "remaining_products" to updatedProducts.size,
-                                                    "success" to true
-                                                )
-                                            )
+                                            val params = Bundle().apply {
+                                                putString("action", "remove_product_from_cart")
+                                                putString("category", "shopping_cart")
+                                                putString("quantity", deletedItem.quantity.toString())
+                                                putString("remaining_products", updatedProducts.size.toString())
+                                                putString("success", true.toString())
+                                            }
+                                            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", params)
                                         } catch (e: Exception) {
                                             CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
                                         }
 
                                         // Afficher un message de confirmation
-                                        showToast(getString(R.string.product_deleted, deletedItem.product.name))
+                                        val deletedMsg = getString(R.string.product_deleted).replace("%1\$s", deletedItem.product.name)
+                                        showToast(deletedMsg)
                                     }
                                 } catch (e: Exception) {
                                     CrashlyticsManager.log("Erreur lors de la suppression du produit du panier: ${e.message ?: "Message non disponible"}")
@@ -578,13 +582,12 @@ class TrackShoppingActivity : AppCompatActivity() {
                         if (success) {
                             // Analytics pour le vidage réussi du panier
                             try {
-                                AnalyticsManager.logUserAction(
-                                    "clear_shopping_cart",
-                                    "shopping_cart",
-                                    mapOf(
-                                        "success" to true
-                                    )
-                                )
+                                val params = Bundle().apply {
+                                    putString("action", "clear_shopping_cart")
+                                    putString("category", "shopping_cart")
+                                    putString("success", true.toString())
+                                }
+                                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", params)
                             } catch (e: Exception) {
                                 CrashlyticsManager.log("Erreur lors de l'enregistrement de l'���vénement Analytics: ${e.message ?: "Message non disponible"}")
                             }
@@ -669,11 +672,12 @@ class TrackShoppingActivity : AppCompatActivity() {
             window.decorView.post {
                 startSpotlightTour(spotlightItems) {
                     // Callback appelé à la fin du tour
-                    AnalyticsManager.logUserAction(
-                        "spotlight_tour_completed",
-                        "onboarding",
-                        mapOf("screen" to "TrackShoppingActivity")
-                    )
+                    val params = Bundle().apply {
+                        putString("action", "spotlight_tour_completed")
+                        putString("category", "onboarding")
+                        putString("screen", "TrackShoppingActivity")
+                    }
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", params)
                 }
             }
 

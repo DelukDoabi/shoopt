@@ -206,7 +206,7 @@
     <string name="product_add_tips">Product Addition Tips</string>
     <string name="product_analysis">Product Analysis</string>
     <string name="product_check_error">Error checking product</string>
-    <string name="product_deleted">Product deleted</string>
+    <string name="product_deleted">Product %1$s deleted</string>
     <string name="product_screen_open_error">Error opening product screen</string>
     <string name="quick_add">Quick Add</string>
     <string name="quick_add_product">Quick Add Product</string>

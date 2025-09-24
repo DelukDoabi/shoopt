@@ -8,7 +8,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dedoware.shoopt.R
-import com.dedoware.shoopt.utils.AnalyticsManager
+import com.dedoware.shoopt.analytics.AnalyticsService
+import com.dedoware.shoopt.ShooptApplication
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
@@ -24,7 +25,7 @@ class RegisterActivity : AppCompatActivity() {
             setContentView(R.layout.activity_register)
 
             // Suivi de la vue d'écran pour l'analyse
-            AnalyticsManager.logScreenView("register_screen", "RegisterActivity")
+            AnalyticsService.getInstance(ShooptApplication.instance).trackScreenView("register_screen", "RegisterActivity")
 
             try {
                 mAuth = FirebaseAuth.getInstance()
@@ -52,11 +53,12 @@ class RegisterActivity : AppCompatActivity() {
             // Ajout d'un click listener pour rediriger vers l'écran de connexion
             loginLink.setOnClickListener {
                 // Suivre le clic sur le lien de connexion
-                AnalyticsManager.logUserAction(
-                    action = "click",
-                    category = "navigation",
-                    additionalParams = mapOf("button" to "login_link")
-                )
+                val params = Bundle().apply {
+                    putString("action", "click")
+                    putString("category", "navigation")
+                    putString("button", "login_link")
+                }
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", params)
 
                 // Redirection vers LoginActivity
                 val intent = Intent(this, LoginActivity::class.java)
@@ -67,11 +69,12 @@ class RegisterActivity : AppCompatActivity() {
             registerButton.setOnClickListener {
                 try {
                     // Suivre le clic sur le bouton d'inscription
-                    AnalyticsManager.logUserAction(
-                        action = "click",
-                        category = "registration",
-                        additionalParams = mapOf("button" to "register_button")
-                    )
+                    val clickParams = Bundle().apply {
+                        putString("action", "click")
+                        putString("category", "registration")
+                        putString("button", "register_button")
+                    }
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", clickParams)
 
                     val fullName = fullNameEditText.text.toString().trim()
                     val email = emailEditText.text.toString().trim()
@@ -81,17 +84,16 @@ class RegisterActivity : AppCompatActivity() {
                     // Validation des champs
                     if (fullName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                         // Suivre les tentatives d'inscription avec champs manquants
-                        AnalyticsManager.logUserAction(
-                            action = "validation_error",
-                            category = "registration",
-                            additionalParams = mapOf(
-                                "error_type" to "empty_fields",
-                                "has_name" to (fullName.isNotEmpty()),
-                                "has_email" to (email.isNotEmpty()),
-                                "has_password" to (password.isNotEmpty()),
-                                "has_confirm_password" to (confirmPassword.isNotEmpty())
-                            )
-                        )
+                        val valParams = Bundle().apply {
+                            putString("action", "validation_error")
+                            putString("category", "registration")
+                            putString("error_type", "empty_fields")
+                            putBoolean("has_name", fullName.isNotEmpty())
+                            putBoolean("has_email", email.isNotEmpty())
+                            putBoolean("has_password", password.isNotEmpty())
+                            putBoolean("has_confirm_password", confirmPassword.isNotEmpty())
+                        }
+                        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", valParams)
 
                         Toast.makeText(this, getString(R.string.please_fill_all_fields), Toast.LENGTH_SHORT)
                             .show()
@@ -123,18 +125,10 @@ class RegisterActivity : AppCompatActivity() {
                                     ?.addOnCompleteListener { profileTask ->
                                         if (profileTask.isSuccessful) {
                                             // Profil mis à jour avec succès
-                                            AnalyticsManager.logUserAction(
-                                                action = "profile_update",
-                                                category = "registration",
-                                                additionalParams = mapOf("success" to true)
-                                            )
+                                            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", Bundle().apply { putString("action","profile_update"); putString("category","registration"); putBoolean("success", true) })
                                         } else {
                                             // Échec de la mise à jour du profil
-                                            AnalyticsManager.logUserAction(
-                                                action = "profile_update",
-                                                category = "registration",
-                                                additionalParams = mapOf("success" to false)
-                                            )
+                                            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", Bundle().apply { putString("action","profile_update"); putString("category","registration"); putBoolean("success", false) })
 
                                             profileTask.exception?.let {
                                                 CrashlyticsManager.log("Échec de mise à jour du profil: ${it.message ?: "Message non disponible"}")
@@ -144,23 +138,17 @@ class RegisterActivity : AppCompatActivity() {
                                     }
 
                                 // Suivre les inscriptions réussies
-                                AnalyticsManager.logAuthEvent(
-                                    method = "email",
-                                    success = true
-                                )
+                                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("sign_up", Bundle().apply { putString("method","email"); putBoolean("success", true) })
 
                                 // Suivre la performance
-                                AnalyticsManager.logPerformanceEvent(
-                                    "registration_performance",
-                                    duration
-                                )
+                                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("registration_performance", Bundle().apply { putLong("duration_ms", duration) })
 
                                 // Suivre les nouveaux utilisateurs
                                 task.result.user?.let { user ->
                                     // Utiliser uniquement l'identifiant anonymisé et non l'email pour confidentialité
-                                    AnalyticsManager.setUserId(user.uid)
-                                    AnalyticsManager.setUserProperty("user_account_type", "email")
-                                    AnalyticsManager.setUserProperty("account_creation_date", System.currentTimeMillis().toString())
+                                    AnalyticsService.getInstance(ShooptApplication.instance).setUserId(user.uid)
+                                    AnalyticsService.getInstance(ShooptApplication.instance).setUserProperty("user_account_type", "email")
+                                    AnalyticsService.getInstance(ShooptApplication.instance).setUserProperty("account_creation_date", System.currentTimeMillis().toString())
                                 }
 
                                 Toast.makeText(
@@ -171,10 +159,7 @@ class RegisterActivity : AppCompatActivity() {
                                 finish() // Return to login screen
                             } else {
                                 // Suivre les inscriptions échouées (sans inclure d'informations personnelles)
-                                AnalyticsManager.logAuthEvent(
-                                    method = "email",
-                                    success = false
-                                )
+                                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("sign_up", Bundle().apply { putString("method","email"); putBoolean("success", false) })
 
                                 // Suivre les erreurs typiques (sans données personnelles)
                                 task.exception?.let {
@@ -186,11 +171,7 @@ class RegisterActivity : AppCompatActivity() {
                                         else -> "other_auth_error"
                                     }
 
-                                    AnalyticsManager.logUserAction(
-                                        action = "registration_error",
-                                        category = "authentication",
-                                        additionalParams = mapOf("error_type" to errorType)
-                                    )
+                                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", Bundle().apply { putString("action","registration_error"); putString("category","authentication"); putString("error_type", errorType) })
 
                                     // Code Crashlytics existant
                                     CrashlyticsManager.log("Échec de l'inscription: ${it.message ?: "Message non disponible"}")
@@ -210,11 +191,7 @@ class RegisterActivity : AppCompatActivity() {
                         }
                 } catch (e: Exception) {
                     // Suivre les erreurs techniques
-                    AnalyticsManager.logUserAction(
-                        action = "technical_error",
-                        category = "registration",
-                        additionalParams = mapOf("error_type" to e.javaClass.simpleName)
-                    )
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", Bundle().apply { putString("action","technical_error"); putString("category","registration"); putString("error_type", e.javaClass.simpleName) })
 
                     // Capture des erreurs lors de l'inscription (code Crashlytics existant)
                     CrashlyticsManager.log("Erreur lors du traitement de l'inscription: ${e.message ?: "Message non disponible"}")
@@ -228,11 +205,7 @@ class RegisterActivity : AppCompatActivity() {
             }
         } catch (e: Exception) {
             // Suivre les erreurs critiques de l'application
-            AnalyticsManager.logUserAction(
-                action = "critical_error",
-                category = "app_initialization",
-                additionalParams = mapOf("activity" to "RegisterActivity")
-            )
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", Bundle().apply { putString("action","critical_error"); putString("category","app_initialization"); putString("activity","RegisterActivity") })
 
             // Capture des erreurs globales dans onCreate (code Crashlytics existant)
             CrashlyticsManager.log("Erreur globale dans RegisterActivity.onCreate: ${e.message ?: "Message non disponible"}")
@@ -248,6 +221,6 @@ class RegisterActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         // Suivre le temps passé sur l'écran d'inscription
-        AnalyticsManager.logScreenView("register_screen", "RegisterActivity")
+        AnalyticsService.getInstance(ShooptApplication.instance).trackScreenView("register_screen", "RegisterActivity")
     }
 }

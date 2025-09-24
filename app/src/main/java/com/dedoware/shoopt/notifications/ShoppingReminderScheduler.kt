@@ -2,7 +2,8 @@ package com.dedoware.shoopt.notifications
 
 import android.content.Context
 import androidx.work.*
-import com.dedoware.shoopt.utils.AnalyticsManager
+import com.dedoware.shoopt.ShooptApplication
+import com.dedoware.shoopt.analytics.AnalyticsService
 import java.time.DayOfWeek
 import java.time.LocalDateTime
 import java.time.temporal.TemporalAdjusters
@@ -89,13 +90,14 @@ class ShoppingReminderScheduler private constructor() {
         )
 
         // Analytics pour tracking de la programmation
-        AnalyticsManager.trackEvent("reminder_scheduled", mapOf(
-            "day" to "saturday",
-            "hour" to reminderHour.toString(),
-            "minute" to reminderMinute.toString(),
-            "delay_minutes" to delayInMinutes.toString(),
-            "next_execution" to targetDateTime.toString()
-        ))
+        val params = android.os.Bundle().apply {
+            putString("day", "saturday")
+            putString("hour", reminderHour.toString())
+            putString("minute", reminderMinute.toString())
+            putString("delay_minutes", delayInMinutes.toString())
+            putString("next_execution", targetDateTime.toString())
+        }
+        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("reminder_scheduled", params)
     }
 
     /**
@@ -108,9 +110,10 @@ class ShoppingReminderScheduler private constructor() {
         workManager.cancelAllWorkByTag("shopping_reminder")
         workManager.cancelAllWorkByTag("initial_shopping_reminder")
 
-        AnalyticsManager.trackEvent("reminder_cancelled", mapOf(
-            "day" to "saturday"
-        ))
+        val params = android.os.Bundle().apply {
+            putString("day", "saturday")
+        }
+        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("reminder_cancelled", params)
     }
 
     /**
@@ -141,9 +144,10 @@ class ShoppingReminderScheduler private constructor() {
 
         workManager.enqueue(testWork)
 
-        AnalyticsManager.trackEvent("test_reminder_scheduled", mapOf(
-            "delay_seconds" to "5"
-        ))
+        val params = android.os.Bundle().apply {
+            putString("delay_seconds", "5")
+        }
+        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("test_reminder_scheduled", params)
     }
 
     /**
@@ -159,10 +163,11 @@ class ShoppingReminderScheduler private constructor() {
         // Reprogrammer avec la nouvelle heure
         scheduleWeeklyReminders(context)
 
-        AnalyticsManager.trackEvent("reminder_time_updated", mapOf(
-            "new_hour" to hour.toString(),
-            "new_minute" to minute.toString()
-        ))
+        val params = android.os.Bundle().apply {
+            putString("new_hour", hour.toString())
+            putString("new_minute", minute.toString())
+        }
+        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("reminder_time_updated", params)
     }
 
     /**
@@ -180,9 +185,10 @@ class ShoppingReminderScheduler private constructor() {
             cancelWeeklyReminders(context)
         }
 
-        AnalyticsManager.trackEvent("reminders_toggled", mapOf(
-            "enabled" to enabled.toString()
-        ))
+        val params = android.os.Bundle().apply {
+            putString("enabled", enabled.toString())
+        }
+        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("reminders_toggled", params)
     }
 
     /**

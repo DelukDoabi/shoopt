@@ -13,7 +13,8 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
 import com.dedoware.shoopt.R
-import com.dedoware.shoopt.utils.AnalyticsManager
+import com.dedoware.shoopt.ShooptApplication
+import com.dedoware.shoopt.analytics.AnalyticsService
 import com.dedoware.shoopt.utils.UserPreferences
 
 /**
@@ -79,29 +80,32 @@ class NotificationPermissionManager private constructor(private val context: Con
             openNotificationSettings(activity)
 
             // Analytique pour suivre l'acceptation de l'utilisateur
-            AnalyticsManager.trackEvent("notification_permission_accepted", mapOf(
-                "source" to "dialog",
-                "app_version" to getAppVersion(context)
-            ))
+            val bundle = android.os.Bundle().apply {
+                putString("source", "dialog")
+                putString("app_version", getAppVersion(context))
+            }
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_permission_accepted", bundle)
 
             dialog.dismiss()
         }
 
         btnDecline.setOnClickListener {
             // Analytique pour suivre le refus de l'utilisateur
-            AnalyticsManager.trackEvent("notification_permission_declined", mapOf(
-                "source" to "dialog",
-                "app_version" to getAppVersion(context)
-            ))
+            val declineBundle = android.os.Bundle().apply {
+                putString("source", "dialog")
+                putString("app_version", getAppVersion(context))
+            }
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_permission_declined", declineBundle)
 
             // Sauvegarde du choix "ne plus demander" si coché
             if (dontAskCheckbox.isChecked) {
                 UserPreferences.setBooleanPreference(context, PREF_DONT_ASK_NOTIFICATIONS, true)
 
                 // Analytique pour suivre le choix de ne plus voir la demande
-                AnalyticsManager.trackEvent("notification_permission_dont_ask", mapOf(
-                    "app_version" to getAppVersion(context)
-                ))
+                val dontAskBundle = android.os.Bundle().apply {
+                    putString("app_version", getAppVersion(context))
+                }
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_permission_dont_ask", dontAskBundle)
             }
 
             dialog.dismiss()
@@ -142,10 +146,11 @@ class NotificationPermissionManager private constructor(private val context: Con
             ).show()
 
             // Analytique pour suivre l'activation réussie des notifications
-            AnalyticsManager.trackEvent("notification_permission_enabled", mapOf(
-                "source" to "settings",
-                "app_version" to getAppVersion(context)
-            ))
+            val bundle = android.os.Bundle().apply {
+                putString("source", "settings")
+                putString("app_version", getAppVersion(context))
+            }
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_permission_enabled", bundle)
         } else {
             // Les notifications sont toujours désactivées
             Toast.makeText(
@@ -155,10 +160,11 @@ class NotificationPermissionManager private constructor(private val context: Con
             ).show()
 
             // Analytique pour suivre que les notifications restent désactivées
-            AnalyticsManager.trackEvent("notification_permission_still_disabled", mapOf(
-                "source" to "settings",
-                "app_version" to getAppVersion(context)
-            ))
+            val bundle = android.os.Bundle().apply {
+                putString("source", "settings")
+                putString("app_version", getAppVersion(context))
+            }
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_permission_still_disabled", bundle)
         }
     }
 

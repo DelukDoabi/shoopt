@@ -8,7 +8,8 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.activities.MainActivity
-import com.dedoware.shoopt.utils.AnalyticsManager
+import com.dedoware.shoopt.ShooptApplication
+import com.dedoware.shoopt.analytics.AnalyticsService
 
 class NotificationManager private constructor(private val context: Context) {
 
@@ -82,11 +83,12 @@ class NotificationManager private constructor(private val context: Context) {
         notificationManager.notify(NOTIFICATION_ID, notification)
 
         // Analytics pour tracking des notifications affichées
-        AnalyticsManager.trackEvent("notification_displayed", mapOf(
-            "type" to "shopping_reminder",
-            "day" to "saturday",
-            "message_type" to "saturday_9am"
-        ))
+        val bundle = android.os.Bundle().apply {
+            putString("type", "shopping_reminder")
+            putString("day", "saturday")
+            putString("message_type", "saturday_9am")
+        }
+        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_displayed", bundle)
     }
 
     /**
@@ -123,10 +125,11 @@ class NotificationManager private constructor(private val context: Context) {
 
         notificationManager.notify(NOTIFICATION_ID, notification)
 
-        AnalyticsManager.trackEvent("notification_displayed", mapOf(
-            "type" to "custom_reminder",
-            "title" to title
-        ))
+        val bundle = android.os.Bundle().apply {
+            putString("type", "custom_reminder")
+            putString("title", title)
+        }
+        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_displayed", bundle)
     }
 
     /**

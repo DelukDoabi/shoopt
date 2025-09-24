@@ -11,8 +11,8 @@ import androidx.constraintlayout.motion.widget.MotionLayout
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.analytics.AnalyticsConsentDialogFragment
 import com.dedoware.shoopt.analytics.AnalyticsService
+import com.dedoware.shoopt.ShooptApplication
 import com.dedoware.shoopt.notifications.NotificationPermissionManager
-import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.UpdateCallback
 import com.dedoware.shoopt.utils.UpdateManager
@@ -32,7 +32,6 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback, AnalyticsConse
     private var analyticsConsentHandled = false // Variable pour suivre si le consentement analytics a été traité
     private val MIN_SPLASH_DURATION_MS = 1500L // Durée minimum du splash screen en millisecondes
     private lateinit var notificationPermissionManager: NotificationPermissionManager
-    private lateinit var analyticsService: AnalyticsService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         try {
@@ -45,7 +44,7 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback, AnalyticsConse
 
             // Enregistrement de la vue de l'écran de démarrage dans Analytics
             try {
-                AnalyticsManager.logScreenView("SplashScreen", "SplashScreenActivity")
+                AnalyticsService.getInstance(ShooptApplication.instance).trackScreenView("SplashScreen", "SplashScreenActivity")
             } catch (e: Exception) {
                 CrashlyticsManager.log("Erreur lors de l'enregistrement de l'écran dans Analytics: ${e.message ?: "Message non disponible"}")
             }
@@ -141,11 +140,10 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback, AnalyticsConse
 
         // Enregistrer l'action dans Analytics
         try {
-            AnalyticsManager.logUserAction(
-                "update_decision",
-                "update",
-                mapOf("update_accepted" to updateAccepted.toString())
-            )
+            val updateDecisionBundle = android.os.Bundle().apply {
+                putString("update_accepted", updateAccepted.toString())
+            }
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("update_decision", updateDecisionBundle)
         } catch (e: Exception) {
             CrashlyticsManager.log("Erreur lors de l'enregistrement de la décision de mise à jour: ${e.message ?: "Message non disponible"}")
         }
@@ -249,15 +247,14 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback, AnalyticsConse
 
             // Analytics pour le statut de connexion au démarrage
             try {
-                AnalyticsManager.logUserAction(
-                    "app_start",
-                    "session",
-                    mapOf(
-                        "user_status" to if (currentUser != null) "logged_in" else "not_logged_in",
-                        "onboarding_completed" to isOnboardingCompleted.toString(),
-                        "target_screen" to targetActivity.simpleName
-                    )
-                )
+                val appStartParams = Bundle().apply {
+                    putString("action", "app_start")
+                    putString("category", "session")
+                    putString("user_status", if (currentUser != null) "logged_in" else "not_logged_in")
+                    putString("onboarding_completed", isOnboardingCompleted.toString())
+                    putString("target_screen", targetActivity.simpleName)
+                }
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", appStartParams)
             } catch (e: Exception) {
                 CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
             }
@@ -318,7 +315,6 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback, AnalyticsConse
             startActivity(Intent(this, MainActivity::class.java))
         } else {
             // L'utilisateur n'est pas connecté, on le redirige vers le LoginActivity
-            val preferences = UserPreferences.getInstance(this)
             if (UserPreferences.isFirstLaunch(this)) {
                 // Si c'est la première utilisation, on redirige vers l'onboarding
                 startActivity(Intent(this, OnboardingActivity::class.java))
@@ -344,11 +340,11 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback, AnalyticsConse
                     CrashlyticsManager.log("La mise à jour in-app a échoué.")
                     val bundle = Bundle()
                     bundle.putString("reason", "update_flow_failed")
-                    AnalyticsManager.logEvent("update_failed", bundle)
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("update_failed", bundle)
                 }
                 InstallStatus.CANCELED -> {
                     // L'utilisateur a annulé la mise à jour
-                    AnalyticsManager.logEvent("update_canceled", Bundle())
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("update_canceled", Bundle())
                 }
             }
 

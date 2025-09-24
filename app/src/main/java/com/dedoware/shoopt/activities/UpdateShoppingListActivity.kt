@@ -11,6 +11,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.LayoutInflater
+import android.annotation.SuppressLint
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -25,6 +26,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.ShooptApplication
+import com.dedoware.shoopt.utils.CrashlyticsManager
+import com.dedoware.shoopt.utils.UserPreferences
 import com.dedoware.shoopt.model.CartItem
 import com.dedoware.shoopt.model.Product
 import com.dedoware.shoopt.model.ProductTrackAdapter
@@ -32,9 +35,6 @@ import com.dedoware.shoopt.persistence.IShoppingListRepository
 import com.dedoware.shoopt.persistence.FirebaseShoppingListRepository
 import com.dedoware.shoopt.persistence.LocalShoppingListRepository
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
-import com.dedoware.shoopt.utils.AnalyticsManager
-import com.dedoware.shoopt.utils.CrashlyticsManager
-import com.dedoware.shoopt.utils.UserPreferences
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
@@ -97,11 +97,11 @@ class UpdateShoppingListActivity : AppCompatActivity() {
             setupFullscreenActivityLauncher()
 
             // Enregistrer la vue d'écran dans Analytics
-            AnalyticsManager.logScreenView("UpdateShoppingList", this::class.java.simpleName)
+            ShooptApplication.instance.analyticsService.trackScreenView("UpdateShoppingList", this::class.java.simpleName)
 
             // Initialiser le suivi analytique
             sessionStartTime = System.currentTimeMillis()
-            AnalyticsManager.logEvent("shopping_list_activity_open", null)
+            ShooptApplication.instance.analyticsService.logEvent("shopping_list_activity_open", null)
 
             try {
                 shoppingListRepository = if (useFirebase) {
@@ -192,7 +192,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                                 putInt("position", position)
                                 putInt("items_restants", shoppingItemList.size)
                             }
-                            AnalyticsManager.logEvent("shopping_item_deleted", params)
+                            ShooptApplication.instance.analyticsService.logEvent("shopping_item_deleted", params)
                         } catch (e: Exception) {
                             CrashlyticsManager.log("Erreur lors du swipe pour suppression: ${e.message ?: "Message non disponible"}")
                             CrashlyticsManager.setCustomKey("error_location", "swipe_item_removal")
@@ -242,7 +242,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
 
                         // Suivi de la conversion de la liste
                         conversionCount++
-                        AnalyticsManager.logEvent("shopping_list_converted", null)
+                        ShooptApplication.instance.analyticsService.logEvent("shopping_list_converted", null)
                     }
                 } catch (e: Exception) {
                     CrashlyticsManager.log("Erreur lors de la conversion de la liste: ${e.message ?: "Message non disponible"}")
@@ -365,7 +365,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
             }
 
             dialog.show()
-            AnalyticsManager.logCustomEvent("quick_tips_dialog_shown", null)
+            ShooptApplication.instance.analyticsService.logEvent("quick_tips_dialog_shown", null)
         } catch (e: Exception) {
             CrashlyticsManager.log("Erreur lors de l'affichage du quick tips dialog: ${e.message ?: "Message non disponible"}")
             CrashlyticsManager.logException(e)
@@ -377,7 +377,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
         val showDialogParams = Bundle().apply {
             putInt("items_count", shoppingItemList.size)
         }
-        AnalyticsManager.logEvent("empty_list_dialog_shown", showDialogParams)
+        ShooptApplication.instance.analyticsService.logEvent("empty_list_dialog_shown", showDialogParams)
 
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.clear_shopping_cart))
@@ -387,16 +387,17 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                 val confirmParams = Bundle().apply {
                     putInt("items_removed", shoppingItemList.size)
                 }
-                AnalyticsManager.logEvent("empty_list_confirmed", confirmParams)
+                ShooptApplication.instance.analyticsService.logEvent("empty_list_confirmed", confirmParams)
                 onConfirm()
             }
             .setNegativeButton(android.R.string.cancel) { _, _ ->
                 // Analyser l'annulation du vidage
-                AnalyticsManager.logEvent("empty_list_cancelled", null)
+                ShooptApplication.instance.analyticsService.logEvent("empty_list_cancelled", null)
             }
             .show()
     }
 
+    @SuppressLint("MissingPermission")
     private fun setupPasteFunctionality() {
         pasteFab.setOnClickListener {
             try {
@@ -425,7 +426,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                             putInt("current_text_length", currentText.length)
                             putBoolean("had_existing_text", currentText.isNotEmpty())
                         }
-                        AnalyticsManager.logEvent("shopping_list_pasted", pasteParams)
+                        ShooptApplication.instance.analyticsService.logEvent("shopping_list_pasted", pasteParams)
 
                         Toast.makeText(this, getString(R.string.paste_successful), Toast.LENGTH_SHORT).show()
 
@@ -483,7 +484,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                 val zoomParams = Bundle().apply {
                     putInt("items_count", shoppingItemList.size)
                 }
-                AnalyticsManager.logEvent("products_fullscreen_opened", zoomParams)
+                ShooptApplication.instance.analyticsService.logEvent("products_fullscreen_opened", zoomParams)
             } catch (e: Exception) {
                 CrashlyticsManager.log("Erreur lors de l'ouverture du mode plein écran: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "fullscreen_zoom")
@@ -527,7 +528,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                             val syncParams = Bundle().apply {
                                 putInt("updated_items_count", shoppingItemList.size)
                             }
-                            AnalyticsManager.logEvent("products_fullscreen_sync_success", syncParams)
+                            ShooptApplication.instance.analyticsService.logEvent("products_fullscreen_sync_success", syncParams)
                         }
                     } catch (e: Exception) {
                         CrashlyticsManager.log("Erreur lors de la synchronisation des produits depuis le mode plein écran: ${e.message ?: "Message non disponible"}")
@@ -694,7 +695,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                 putInt("text_edit_count", textEditCount)
                 putInt("conversion_count", conversionCount)
             }
-            AnalyticsManager.logEvent("shopping_list_session", sessionParams)
+            ShooptApplication.instance.analyticsService.logEvent("shopping_list_session", sessionParams)
         } catch (e: Exception) {
             CrashlyticsManager.log("Erreur lors de la pause de l'activité: ${e.message ?: "Message non disponible"}")
             CrashlyticsManager.setCustomKey("error_location", "on_pause_activity")
@@ -722,7 +723,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
             val resumeParams = Bundle().apply {
                 putInt("items_loaded", shoppingItemList.size)
             }
-            AnalyticsManager.logEvent("shopping_list_resumed", resumeParams)
+            ShooptApplication.instance.analyticsService.logEvent("shopping_list_resumed", resumeParams)
         } catch (e: Exception) {
             CrashlyticsManager.log("Erreur lors de la reprise de l'activité: ${e.message ?: "Message non disponible"}")
             CrashlyticsManager.setCustomKey("error_location", "on_resume_activity")
@@ -847,11 +848,12 @@ class UpdateShoppingListActivity : AppCompatActivity() {
             window.decorView.post {
                 startSpotlightTour(spotlightItems) {
                     // Callback appelé à la fin du tour
-                    AnalyticsManager.logUserAction(
-                        "spotlight_tour_completed",
-                        "onboarding",
-                        mapOf("screen" to "UpdateShoppingListActivity")
-                    )
+                    val params = Bundle().apply {
+                        putString("action", "spotlight_tour_completed")
+                        putString("category", "onboarding")
+                        putString("screen", "UpdateShoppingListActivity")
+                    }
+                    ShooptApplication.instance.analyticsService.logEvent("user_action", params)
                 }
             }
 
@@ -861,6 +863,7 @@ class UpdateShoppingListActivity : AppCompatActivity() {
             CrashlyticsManager.logException(e)
         }
     }
+
     override fun onDestroy() {
         try {
             super.onDestroy()

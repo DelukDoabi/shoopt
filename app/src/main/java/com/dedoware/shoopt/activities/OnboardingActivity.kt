@@ -11,7 +11,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.adapters.OnboardingAdapter
 import com.dedoware.shoopt.models.OnboardingItem
-import com.dedoware.shoopt.utils.AnalyticsManager
+import com.dedoware.shoopt.analytics.AnalyticsService
+import com.dedoware.shoopt.ShooptApplication
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.UserPreferences
 import com.google.android.material.button.MaterialButton
@@ -51,7 +52,7 @@ class OnboardingActivity : AppCompatActivity() {
 
         try {
             // Analytics pour l'ouverture de l'onboarding
-            AnalyticsManager.logScreenView("Onboarding", "OnboardingActivity")
+            AnalyticsService.getInstance(ShooptApplication.instance).trackScreenView("Onboarding", "OnboardingActivity")
 
             initViews()
             setupViewPager()
@@ -88,11 +89,12 @@ class OnboardingActivity : AppCompatActivity() {
                 updatePageIndicators(position)
 
                 // Analytics pour le changement de page
-                AnalyticsManager.logUserAction(
-                    "onboarding_page_view",
-                    "navigation",
-                    mapOf("page_index" to position.toString())
-                )
+                val pageParams = Bundle().apply {
+                    putString("action", "onboarding_page_view")
+                    putString("category", "navigation")
+                    putString("page_index", position.toString())
+                }
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", pageParams)
             }
         })
     }
@@ -132,7 +134,7 @@ class OnboardingActivity : AppCompatActivity() {
 
     private fun setupClickListeners() {
         skipButton.setOnClickListener {
-            AnalyticsManager.logUserAction("onboarding_skip", "button_click", null)
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", Bundle().apply { putString("action","onboarding_skip"); putString("category","button_click") })
             finishOnboarding()
         }
 
@@ -140,16 +142,12 @@ class OnboardingActivity : AppCompatActivity() {
             val currentItem = viewPager.currentItem
             if (currentItem < onboardingItems.size - 1) {
                 viewPager.currentItem = currentItem + 1
-                AnalyticsManager.logUserAction(
-                    "onboarding_next",
-                    "button_click",
-                    mapOf("from_page" to currentItem.toString())
-                )
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", Bundle().apply { putString("action","onboarding_next"); putString("category","button_click"); putString("from_page", currentItem.toString()) })
             }
         }
 
         getStartedButton.setOnClickListener {
-            AnalyticsManager.logUserAction("onboarding_complete", "button_click", null)
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", Bundle().apply { putString("action","onboarding_complete"); putString("category","button_click") })
             finishOnboarding()
         }
     }
@@ -174,7 +172,7 @@ class OnboardingActivity : AppCompatActivity() {
             UserPreferences.setOnboardingCompleted(this, true)
 
             // Analytics pour la fin de l'onboarding
-            AnalyticsManager.logUserAction("onboarding_introduction_finished", "completion", null)
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", Bundle().apply { putString("action","onboarding_introduction_finished"); putString("category","completion") })
 
             // Vérifier si c'est un replay depuis les paramètres
             val isReplay = intent.getBooleanExtra("is_replay", false)

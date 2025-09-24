@@ -24,7 +24,7 @@ import com.dedoware.shoopt.persistence.IProductRepository
 import com.dedoware.shoopt.persistence.FirebaseProductRepository
 import com.dedoware.shoopt.persistence.LocalProductRepository
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
-import com.dedoware.shoopt.utils.AnalyticsManager
+import com.dedoware.shoopt.analytics.AnalyticsService
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.UserPreferences
 import com.dedoware.shoopt.utils.getCurrencyManager
@@ -87,7 +87,7 @@ class AnalyseActivity : AppCompatActivity() {
                     val params = Bundle().apply {
                         putString("barcode_length", barcodeValue.length.toString())
                     }
-                    AnalyticsManager.logCustomEvent("barcode_scanned", params)
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("barcode_scanned", params)
                 } catch (e: Exception) {
                     CrashlyticsManager.log("Erreur lors du traitement du code-barres: ${e.message ?: "Message non disponible"}")
                     CrashlyticsManager.setCustomKey("error_location", "barcode_processing")
@@ -109,7 +109,7 @@ class AnalyseActivity : AppCompatActivity() {
 
             // Enregistrement de l'écran dans Analytics
             try {
-                AnalyticsManager.logScreenView("Analyze", "AnalyseActivity")
+                AnalyticsService.getInstance(ShooptApplication.instance).trackScreenView("Analyze", "AnalyseActivity")
             } catch (e: Exception) {
                 CrashlyticsManager.log("Erreur lors de l'enregistrement de l'écran dans Analytics: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "analytics_screen_log")
@@ -304,7 +304,7 @@ class AnalyseActivity : AppCompatActivity() {
                 putDouble("average_price", avgPrice)
                 putInt("unique_shops", uniqueShops)
             }
-            AnalyticsManager.logCustomEvent("analyze_stats_viewed", analyticsBundle)
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("analyze_stats_viewed", analyticsBundle)
         } catch (e: Exception) {
             CrashlyticsManager.log("Erreur lors de la mise à jour des statistiques: ${e.message}")
             CrashlyticsManager.logException(e)
@@ -356,7 +356,7 @@ class AnalyseActivity : AppCompatActivity() {
                         putBoolean("search_performed", true)
                         putInt("search_length", query.length)
                     }
-                    AnalyticsManager.logCustomEvent("product_search", params)
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("product_search", params)
                 }
                 return false
             }
@@ -445,9 +445,11 @@ class AnalyseActivity : AppCompatActivity() {
                             productRepository.deleteProduct(product)
                         }
                         if (isDeleted) {
+                            // Message de confirmation - utiliser la ressource localisée
+                            val deletedMsg = getString(R.string.product_deleted).replace("%1\$s", product.name)
                             Toast.makeText(
                                 this@AnalyseActivity,
-                                getString(R.string.product_deleted, product.name),
+                                deletedMsg,
                                 Toast.LENGTH_SHORT
                             ).show()
                             loadProducts()
@@ -500,7 +502,14 @@ class AnalyseActivity : AppCompatActivity() {
     private fun showAddProductOptions() {
         try {
             // Analytics pour le passage à l'écran d'ajout de produit
-            AnalyticsManager.logSelectContent("navigation", "button", "add_update_product")
+            // Remplacer l'ancien AnalyticsManager par AnalyticsService
+            val selectContentParams = Bundle().apply {
+                putString(com.google.firebase.analytics.FirebaseAnalytics.Param.CONTENT_TYPE, "navigation")
+                putString(com.google.firebase.analytics.FirebaseAnalytics.Param.ITEM_ID, "button")
+                putString(com.google.firebase.analytics.FirebaseAnalytics.Param.ITEM_NAME, "add_update_product")
+            }
+            AnalyticsService.getInstance(ShooptApplication.instance)
+                .logEvent(com.google.firebase.analytics.FirebaseAnalytics.Event.SELECT_CONTENT, selectContentParams)
 
             // Lancer la nouvelle activité de choix de produit avec animation en utilisant le nom complet de la classe
             val intent = Intent(this, com.dedoware.shoopt.activities.ProductChoiceActivity::class.java)
@@ -535,7 +544,7 @@ class AnalyseActivity : AppCompatActivity() {
                         putString("source", "barcode_scan")
                         putString("product_found", "true")
                     }
-                    AnalyticsManager.logCustomEvent("existing_product_loaded", existingProductParams)
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("existing_product_loaded", existingProductParams)
                 } else {
                     // Si le produit n'existe pas, créer un nouveau produit avec le code-barres
                     // Using the proper constructor instead of trying to assign to val properties
@@ -556,7 +565,7 @@ class AnalyseActivity : AppCompatActivity() {
                         putString("source", "barcode_scan")
                         putString("product_found", "false")
                     }
-                    AnalyticsManager.logCustomEvent("new_product_created", newProductParams)
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("new_product_created", newProductParams)
                 }
             } catch (e: Exception) {
                 CrashlyticsManager.log("Erreur lors de la vérification du produit: ${e.message ?: "Message non disponible"}")
@@ -639,11 +648,12 @@ class AnalyseActivity : AppCompatActivity() {
             window.decorView.post {
                 startSpotlightTour(spotlightItems) {
                     // Callback appelé à la fin du tour
-                    AnalyticsManager.logUserAction(
-                        "spotlight_tour_completed",
-                        "onboarding",
-                        mapOf("screen" to "AnalyseActivity")
-                    )
+                    val spParams = Bundle().apply {
+                        putString("action", "spotlight_tour_completed")
+                        putString("category", "onboarding")
+                        putString("screen", "AnalyseActivity")
+                    }
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", spParams)
                 }
             }
 

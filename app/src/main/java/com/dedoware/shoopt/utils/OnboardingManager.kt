@@ -2,7 +2,9 @@ package com.dedoware.shoopt.utils
 
 import android.app.Activity
 import android.content.Intent
+import com.dedoware.shoopt.ShooptApplication
 import com.dedoware.shoopt.activities.OnboardingActivity
+import com.dedoware.shoopt.analytics.AnalyticsService
 
 /**
  * Gestionnaire simplifié pour l'expérience d'onboarding globale
@@ -39,11 +41,12 @@ object OnboardingManager {
      * Démarre l'onboarding d'introduction
      */
     private fun startIntroductionOnboarding(activity: Activity) {
-        AnalyticsManager.logUserAction(
-            "onboarding_introduction_started",
-            "onboarding",
-            mapOf("from_activity" to activity.javaClass.simpleName)
-        )
+        val params = android.os.Bundle().apply {
+            putString("action", "onboarding_introduction_started")
+            putString("category", "onboarding")
+            putString("from_activity", activity.javaClass.simpleName)
+        }
+        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", params)
 
         val intent = Intent(activity, OnboardingActivity::class.java)
         activity.startActivity(intent)
@@ -61,10 +64,10 @@ object OnboardingManager {
         UserPreferences.setOnboardingCompleted(activity, false)
         UserPreferences.resetAllSpotlights(activity)
 
-        AnalyticsManager.logUserAction(
-            "onboarding_reset",
-            "onboarding",
-            null
-        )
+        val params = android.os.Bundle().apply {
+            putString("action", "onboarding_reset")
+            putString("category", "onboarding")
+        }
+        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", params)
     }
 }

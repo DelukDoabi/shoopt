@@ -2,7 +2,8 @@ package com.dedoware.shoopt.admin
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.dedoware.shoopt.utils.AnalyticsManager
+import com.dedoware.shoopt.ShooptApplication
+import com.dedoware.shoopt.analytics.AnalyticsService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
@@ -182,9 +183,10 @@ class AdminManager private constructor(private val context: Context) {
             .putBoolean(KEY_IS_ADMIN_LOCALLY, false)
             .apply()
 
-        AnalyticsManager.trackEvent("admin_privileges_revoked", mapOf(
-            "method" to "local_revoke"
-        ))
+        val bundle = android.os.Bundle().apply {
+            putString("method", "local_revoke")
+        }
+        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("admin_privileges_revoked", bundle)
     }
 
     /**
@@ -192,7 +194,7 @@ class AdminManager private constructor(private val context: Context) {
      */
     private fun isDebugMode(): Boolean {
         return try {
-            val buildConfig = Class.forName("${context.packageName}.BuildConfig")
+            val buildConfig = Class.forName("${'$'}{context.packageName}.BuildConfig")
             val debugField = buildConfig.getField("DEBUG")
             debugField.getBoolean(null)
         } catch (e: Exception) {
@@ -204,11 +206,12 @@ class AdminManager private constructor(private val context: Context) {
      * Track l'accès admin pour analytics
      */
     private fun trackAdminAccess(method: String) {
-        AnalyticsManager.trackEvent("admin_access_granted", mapOf(
-            "method" to method,
-            "user_email" to (auth.currentUser?.email ?: "unknown"),
-            "timestamp" to System.currentTimeMillis().toString()
-        ))
+        val bundle = android.os.Bundle().apply {
+            putString("method", method)
+            putString("user_email", auth.currentUser?.email ?: "unknown")
+            putString("timestamp", System.currentTimeMillis().toString())
+        }
+        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("admin_access_granted", bundle)
     }
 
     /**

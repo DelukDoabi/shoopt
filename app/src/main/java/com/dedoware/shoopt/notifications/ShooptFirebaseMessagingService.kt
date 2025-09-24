@@ -8,7 +8,8 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.activities.MainActivity
-import com.dedoware.shoopt.utils.AnalyticsManager
+import com.dedoware.shoopt.ShooptApplication
+import com.dedoware.shoopt.analytics.AnalyticsService
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
@@ -36,11 +37,12 @@ class ShooptFirebaseMessagingService : FirebaseMessagingService() {
                 )
 
                 // Analytics pour tracking des notifications reçues
-                AnalyticsManager.trackEvent("notification_received", mapOf(
-                    "type" to "shopping_reminder",
-                    "day" to "saturday",
-                    "source" to "fcm"
-                ))
+                val params = android.os.Bundle().apply {
+                    putString("type", "shopping_reminder")
+                    putString("day", "saturday")
+                    putString("source", "fcm")
+                }
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_received", params)
             }
             "custom_reminder" -> {
                 showCustomReminderNotification(remoteMessage)
@@ -54,9 +56,10 @@ class ShooptFirebaseMessagingService : FirebaseMessagingService() {
         sendTokenToServer(token)
 
         // Analytics pour tracking des nouveaux tokens
-        AnalyticsManager.trackEvent("fcm_token_refreshed", mapOf(
-            "token_length" to token.length.toString()
-        ))
+        val params = android.os.Bundle().apply {
+            putString("token_length", token.length.toString())
+        }
+        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("fcm_token_refreshed", params)
     }
 
     private fun createNotificationChannel() {
@@ -107,13 +110,14 @@ class ShooptFirebaseMessagingService : FirebaseMessagingService() {
         notificationManager.notify(NOTIFICATION_ID, builder.build())
 
         // Analytics pour tracking des notifications affichées via FCM
-        AnalyticsManager.trackEvent("notification_displayed", mapOf(
-            "type" to "shopping_reminder",
-            "day" to "saturday",
-            "source" to "fcm",
-            "title_length" to title.length.toString(),
-            "body_length" to body.length.toString()
-        ))
+        val params = android.os.Bundle().apply {
+            putString("type", "shopping_reminder")
+            putString("day", "saturday")
+            putString("source", "fcm")
+            putString("title_length", title.length.toString())
+            putString("body_length", body.length.toString())
+        }
+        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_displayed", params)
     }
 
     private fun showCustomReminderNotification(remoteMessage: RemoteMessage) {
@@ -149,10 +153,11 @@ class ShooptFirebaseMessagingService : FirebaseMessagingService() {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(NOTIFICATION_ID, builder.build())
 
-        AnalyticsManager.trackEvent("notification_displayed", mapOf(
-            "type" to "custom_reminder",
-            "source" to "fcm"
-        ))
+        val params = android.os.Bundle().apply {
+            putString("type", "custom_reminder")
+            putString("source", "fcm")
+        }
+        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_displayed", params)
     }
 
     private fun createViewListPendingIntent(): PendingIntent {
@@ -172,8 +177,9 @@ class ShooptFirebaseMessagingService : FirebaseMessagingService() {
         // TODO: Implémenter l'envoi du token à votre serveur backend
         // pour l'envoi de notifications ciblées
         // Exemple : ApiService.sendFCMToken(token)
-        AnalyticsManager.trackEvent("fcm_token_ready", mapOf(
-            "token_generated" to "true"
-        ))
+        val params = android.os.Bundle().apply {
+            putString("token_generated", "true")
+        }
+        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("fcm_token_ready", params)
     }
 }
