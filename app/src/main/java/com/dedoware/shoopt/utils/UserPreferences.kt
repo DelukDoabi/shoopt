@@ -234,14 +234,43 @@ class UserPreferences private constructor(context: Context) {
         }
 
         // Méthodes pour le consentement analytics
-        fun isAnalyticsEnabled(context: Context): Boolean {
+        private const val KEY_ANALYTICS_CONSENT_REQUESTED = "analytics_consent_requested"
+
+        /**
+         * Vérifie si le consentement analytics a déjà été demandé à l'utilisateur
+         */
+        fun isAnalyticsConsentRequested(context: Context): Boolean {
             val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            return prefs.getBoolean(KEY_ANALYTICS_ENABLED, false) // Désactivé par défaut
+            return prefs.getBoolean(KEY_ANALYTICS_CONSENT_REQUESTED, false)
         }
 
+        /**
+         * Marque le consentement analytics comme ayant été demandé
+         */
+        fun setAnalyticsConsentRequested(context: Context, requested: Boolean) {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            prefs.edit().putBoolean(KEY_ANALYTICS_CONSENT_REQUESTED, requested).apply()
+        }
+
+        /**
+         * Vérifie si l'utilisateur a donné son consentement pour les analytics
+         */
+        fun isAnalyticsEnabled(context: Context): Boolean {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            return prefs.getBoolean(KEY_ANALYTICS_ENABLED, false)
+        }
+
+        /**
+         * Définit si l'utilisateur a donné son consentement pour les analytics
+         */
         fun setAnalyticsEnabled(context: Context, enabled: Boolean) {
             val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             prefs.edit().putBoolean(KEY_ANALYTICS_ENABLED, enabled).apply()
+
+            // Marquer également le consentement comme ayant été demandé
+            if (enabled || !enabled) {
+                setAnalyticsConsentRequested(context, true)
+            }
         }
     }
 

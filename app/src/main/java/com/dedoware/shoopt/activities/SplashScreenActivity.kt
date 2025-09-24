@@ -229,8 +229,12 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback, AnalyticsConse
                 CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
             }
 
+            // Vérifier si le consentement analytics a déjà été demandé lors d'un précédent lancement
+            // et si on a déjà la réponse de l'utilisateur dans les préférences stockées
+            val hasConsentBeenRequested = UserPreferences.isAnalyticsConsentRequested(this)
+
             // Vérification et affichage du dialogue de consentement analytics si nécessaire
-            if (!analyticsConsentHandled) {
+            if (!hasConsentBeenRequested && !analyticsConsentHandled) {
                 showAnalyticsConsentDialog()
             } else {
                 // Si le consentement a déjà été géré, on peut directement démarrer l'activité cible
