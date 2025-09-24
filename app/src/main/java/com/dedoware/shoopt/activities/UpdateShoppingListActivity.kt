@@ -88,6 +88,9 @@ class UpdateShoppingListActivity : AppCompatActivity() {
 
     private val useFirebase = false // This could be a config or user preference
 
+    // Track created/open lists to avoid double-counting
+    private val createdLists = mutableSetOf<String>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         try {
             super.onCreate(savedInstanceState)
@@ -388,7 +391,23 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                     putInt("items_removed", shoppingItemList.size)
                 }
                 ShooptApplication.instance.analyticsService.logEvent("empty_list_confirmed", confirmParams)
-                onConfirm()
+
+                // Si on confirme, déclencher le callback qui vide la liste
+                try {
+                    onConfirm()
+
+                    // Track deletion of the underlying stored list (mainShoppingList)
+                    try {
+                        val dbRefKey = "mainShoppingList"
+                        if (createdLists.remove(dbRefKey)) {
+                            ShooptApplication.instance.analyticsService.trackListDelete(dbRefKey)
+                        }
+                    } catch (e: Exception) {
+                        CrashlyticsManager.log("Erreur lors du tracking de la suppression de la liste après confirmation: ${e.message}")
+                    }
+                } catch (e: Exception) {
+                    // existing error handling occurs where onConfirm is executed
+                }
             }
             .setNegativeButton(android.R.string.cancel) { _, _ ->
                 // Analyser l'annulation du vidage
@@ -657,6 +676,17 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                 val selectionEnd = shoppingListEditText.selectionEnd
                 shoppingListEditText.setText(it)
                 shoppingListEditText.setSelection(selectionStart, selectionEnd)
+
+                // Tracker l'ouverture de la liste si elle contient du contenu
+                try {
+                    if (it.isNotBlank()) {
+                        val itemsCount = it.lines().count { line -> line.isNotBlank() }
+                        ShooptApplication.instance.analyticsService.trackListOpen(dbRefKey, itemsCount)
+                        createdLists.add(dbRefKey)
+                    }
+                } catch (e: Exception) {
+                    CrashlyticsManager.log("Erreur lors du tracking de l'ouverture de la liste: ${e.message}")
+                }
             }
 
             shoppingListEditText.addTextChangedListener(object : TextWatcher {
@@ -669,7 +699,28 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                     runnable = Runnable {
                         val shoppingListContent = s.toString()
                         CoroutineScope(Dispatchers.IO).launch {
-                            shoppingListRepository.saveShoppingList(dbRefKey, shoppingListContent)
+                            val saveSuccessful = try {
+                                shoppingListRepository.saveShoppingList(dbRefKey, shoppingListContent)
+                            } catch (e: Exception) {
+                                false
+                            }
+
+                            if (saveSuccessful) {
+                                try {
+                                    // Calculer le nombre d'items (lignes non vides)
+                                    val itemsCount = shoppingListContent.lines().count { line -> line.isNotBlank() }
+
+                                    if (shoppingListContent.isNotBlank() && createdLists.add(dbRefKey)) {
+                                        // Premier enregistrement effectif d'une liste non vide -> création
+                                        ShooptApplication.instance.analyticsService.trackListCreate(dbRefKey, itemsCount)
+                                    } else if (shoppingListContent.isBlank() && createdLists.remove(dbRefKey)) {
+                                        // La liste était créée et devient vide -> suppression
+                                        ShooptApplication.instance.analyticsService.trackListDelete(dbRefKey)
+                                    }
+                                } catch (e: Exception) {
+                                    CrashlyticsManager.log("Erreur lors du tracking de la création/suppression de la liste: ${e.message}")
+                                }
+                            }
                         }
                     }
                     handler.postDelayed(runnable, 500) // Delay the update by 500 milliseconds
