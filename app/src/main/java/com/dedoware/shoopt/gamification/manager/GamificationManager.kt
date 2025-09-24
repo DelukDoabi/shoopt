@@ -2,11 +2,12 @@ package com.dedoware.shoopt.gamification.manager
 
 import android.content.Context
 import android.os.Bundle
+import com.dedoware.shoopt.ShooptApplication
+import com.dedoware.shoopt.analytics.AnalyticsService
 import com.dedoware.shoopt.gamification.dao.AchievementDao
 import com.dedoware.shoopt.gamification.dao.UserAchievementDao
 import com.dedoware.shoopt.gamification.dao.UserProfileDao
 import com.dedoware.shoopt.gamification.models.*
-import com.dedoware.shoopt.utils.AnalyticsManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -65,7 +66,7 @@ class GamificationManager(
             putString("event_type", eventType)
             putString("user_id", userId)
         }
-        AnalyticsManager.logCustomEvent("gamification_event", params)
+        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("gamification_event", params)
     }
 
     /**
@@ -229,7 +230,7 @@ class GamificationManager(
                 putInt("xp_reward", achievement.xpReward)
                 putString("user_id", userId)
             }
-            AnalyticsManager.logCustomEvent("achievement_unlocked", params)
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("achievement_unlocked", params)
         }
     }
 
@@ -242,7 +243,7 @@ class GamificationManager(
                 putInt("new_level", newLevel)
                 putString("user_id", userId)
             }
-            AnalyticsManager.logCustomEvent("level_up", params)
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("level_up", params)
         }
     }
 

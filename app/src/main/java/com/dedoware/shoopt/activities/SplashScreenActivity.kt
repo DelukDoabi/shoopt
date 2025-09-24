@@ -6,9 +6,13 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentTransaction
+import androidx.constraintlayout.motion.widget.MotionLayout
 import com.dedoware.shoopt.R
+import com.dedoware.shoopt.analytics.AnalyticsConsentDialogFragment
+import com.dedoware.shoopt.analytics.AnalyticsService
+import com.dedoware.shoopt.ShooptApplication
 import com.dedoware.shoopt.notifications.NotificationPermissionManager
-import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.UpdateCallback
 import com.dedoware.shoopt.utils.UpdateManager
@@ -19,11 +23,13 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 
-class SplashScreenActivity : AppCompatActivity(), UpdateCallback {
+class SplashScreenActivity : AppCompatActivity(), UpdateCallback, AnalyticsConsentDialogFragment.ConsentListener {
 
     private var updateCheckComplete = false
     private var minSplashDurationComplete = false
+    private var splashAnimationComplete = false
     private var updateDialogShowing = false // Variable pour suivre si le dialogue de mise à jour est visible
+    private var analyticsConsentHandled = false // Variable pour suivre si le consentement analytics a été traité
     private val MIN_SPLASH_DURATION_MS = 1500L // Durée minimum du splash screen en millisecondes
     private lateinit var notificationPermissionManager: NotificationPermissionManager
 
@@ -38,7 +44,7 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback {
 
             // Enregistrement de la vue de l'écran de démarrage dans Analytics
             try {
-                AnalyticsManager.logScreenView("SplashScreen", "SplashScreenActivity")
+                AnalyticsService.getInstance(ShooptApplication.instance).trackScreenView("SplashScreen", "SplashScreenActivity")
             } catch (e: Exception) {
                 CrashlyticsManager.log("Erreur lors de l'enregistrement de l'écran dans Analytics: ${e.message ?: "Message non disponible"}")
             }
@@ -53,10 +59,41 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback {
             // Vérification des mises à jour disponibles avec callback
             checkForUpdates()
 
+            // Attacher un listener à la MotionLayout pour savoir quand l'animation est terminée
+            try {
+                val motionLayout = findViewById<MotionLayout>(R.id.splash_motion_layout)
+                motionLayout.setTransitionListener(object : MotionLayout.TransitionListener {
+                    override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {
+                        // pas d'action
+                    }
+
+                    override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {
+                        // pas d'action
+                    }
+
+                    override fun onTransitionCompleted(p0: MotionLayout?, currentId: Int) {
+                        // Marquer que l'animation du splash est terminée et tenter la navigation
+                        splashAnimationComplete = true
+                        tryToNavigateNext()
+                    }
+
+                    override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {
+                        // pas d'action
+                    }
+                })
+            } catch (e: Exception) {
+                // Si le MotionLayout n'existe pas ou que la lecture échoue, on considère l'animation comme terminée
+                CrashlyticsManager.log("Impossible d'attacher le listener MotionLayout: ${e.message ?: "Message non disponible"}")
+                splashAnimationComplete = true
+            }
+
             // Lancer le minuteur pour la durée minimale du splash screen
             Executors.newSingleThreadScheduledExecutor().schedule({
-                minSplashDurationComplete = true
-                tryToNavigateNext()
+                // Exécuter la mise à jour d'état et la tentative de navigation sur le thread UI
+                runOnUiThread {
+                    minSplashDurationComplete = true
+                    tryToNavigateNext()
+                }
             }, MIN_SPLASH_DURATION_MS, TimeUnit.MILLISECONDS)
         } catch (e: Exception) {
             // Capture des erreurs globales dans onCreate
@@ -106,11 +143,10 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback {
 
         // Enregistrer l'action dans Analytics
         try {
-            AnalyticsManager.logUserAction(
-                "update_decision",
-                "update",
-                mapOf("update_accepted" to updateAccepted.toString())
-            )
+            val updateDecisionBundle = android.os.Bundle().apply {
+                putString("update_accepted", updateAccepted.toString())
+            }
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("update_decision", updateDecisionBundle)
         } catch (e: Exception) {
             CrashlyticsManager.log("Erreur lors de l'enregistrement de la décision de mise à jour: ${e.message ?: "Message non disponible"}")
         }
@@ -127,8 +163,9 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback {
         // 1. La vérification de mise à jour est terminée
         // 2. Aucun dialogue de mise à jour n'est actuellement affiché
         // 3. La durée minimale du splash screen est écoulée
-        // 4. L'activité est toujours active
-        if (updateCheckComplete && !updateDialogShowing && minSplashDurationComplete && !isFinishing && !isDestroyed) {
+        // 4. L'animation du splash est terminée
+        // 5. L'activité est toujours active
+        if (updateCheckComplete && !updateDialogShowing && minSplashDurationComplete && splashAnimationComplete && !isFinishing && !isDestroyed) {
             redirectToMainScreen()
         } else {
             // Log pour le débogage
@@ -138,6 +175,8 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback {
                 CrashlyticsManager.log("Navigation retardée: dialogue de mise à jour affiché")
             } else if (!minSplashDurationComplete) {
                 CrashlyticsManager.log("Navigation retardée: durée minimale du splash screen non atteinte")
+            } else if (!splashAnimationComplete) {
+                CrashlyticsManager.log("Navigation retardée: animation du splash non terminée")
             } else {
                 CrashlyticsManager.log("Navigation retardée: activité en cours de fermeture")
             }
@@ -211,25 +250,29 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback {
 
             // Analytics pour le statut de connexion au démarrage
             try {
-                AnalyticsManager.logUserAction(
-                    "app_start",
-                    "session",
-                    mapOf(
-                        "user_status" to if (currentUser != null) "logged_in" else "not_logged_in",
-                        "onboarding_completed" to isOnboardingCompleted.toString(),
-                        "target_screen" to targetActivity.simpleName
-                    )
-                )
+                val appStartParams = Bundle().apply {
+                    putString("action", "app_start")
+                    putString("category", "session")
+                    putString("user_status", if (currentUser != null) "logged_in" else "not_logged_in")
+                    putString("onboarding_completed", isOnboardingCompleted.toString())
+                    putString("target_screen", targetActivity.simpleName)
+                }
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", appStartParams)
             } catch (e: Exception) {
                 CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
             }
 
-            // Transition directe sans délai supplémentaire car nous avons déjà attendu
-            // que l'utilisateur prenne une décision concernant la mise à jour
-            val intent = Intent(this, targetActivity)
-            startActivity(intent)
-            overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
-            finish()
+            // Vérifier si le consentement analytics a déjà été demandé lors d'un précédent lancement
+            // et si on a déjà la réponse de l'utilisateur dans les préférences stockées
+            val hasConsentBeenRequested = UserPreferences.isAnalyticsConsentRequested(this)
+
+            // Vérification et affichage du dialogue de consentement analytics si nécessaire
+            if (!hasConsentBeenRequested && !analyticsConsentHandled) {
+                showAnalyticsConsentDialog()
+            } else {
+                // Si le consentement a déjà été géré, on peut directement démarrer l'activité cible
+                startTargetActivity(targetActivity)
+            }
         } catch (e: Exception) {
             // Capture des erreurs lors de la redirection
             CrashlyticsManager.log("Erreur lors de la redirection vers l'écran principal: ${e.message ?: "Message non disponible"}")
@@ -241,6 +284,72 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback {
         }
     }
 
+    private fun showAnalyticsConsentDialog() {
+        try {
+            // Afficher le dialogue de consentement analytics (utiliser l'API avec FragmentManager pour plus de robustesse)
+            val dialogFragment = AnalyticsConsentDialogFragment.newInstance()
+
+            CrashlyticsManager.log("Splash: registering fragment result listener for analytics_consent")
+             // Enregistrer un listener sur le résultat du fragment afin d'être certain de recevoir
+             // la confirmation même si l'interface n'a pas été liée correctement
+            supportFragmentManager.setFragmentResultListener("analytics_consent", this) { _, bundle ->
+                val confirmed = bundle.getBoolean("confirmed", false)
+                CrashlyticsManager.log("Splash: fragment result listener invoked, confirmed=$confirmed, updateCheckComplete=$updateCheckComplete, minSplashDurationComplete=$minSplashDurationComplete, splashAnimationComplete=$splashAnimationComplete, analyticsConsentHandled=$analyticsConsentHandled")
+
+                // Toujours exécuter la suite sur le thread UI
+                runOnUiThread {
+                    try {
+                        // Retirer le listener pour éviter des répétitions
+                        try {
+                            supportFragmentManager.clearFragmentResultListener("analytics_consent")
+                        } catch (ignore: Exception) {
+                        }
+
+                        if (confirmed && !isFinishing && !isDestroyed) {
+                            CrashlyticsManager.log("Splash: handling analytics consent result on UI thread")
+                            onConsentGiven()
+                        } else {
+                            CrashlyticsManager.log("Splash: cannot handle consent result - activity finishing or destroyed (isFinishing=$isFinishing, isDestroyed=$isDestroyed)")
+                        }
+                    } catch (e: Exception) {
+                        CrashlyticsManager.log("Splash: error while handling fragment result: ${e.message ?: "null"}")
+                    }
+                }
+            }
+
+            try {
+                dialogFragment.show(supportFragmentManager, "analytics_consent_dialog")
+                CrashlyticsManager.log("Splash: analytics consent dialog shown")
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Splash: failed to show analytics dialog: ${e.message ?: "null"}")
+            }
+
+             // Mettre à jour l'état du consentement analytics
+             analyticsConsentHandled = true
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de l'affichage du dialogue de consentement analytics: ${e.message ?: "Message non disponible"}")
+            // En cas d'erreur, on continue quand même
+            // (le consentement sera peut-être redemandé plus tard)
+        }
+    }
+
+    private fun startTargetActivity(targetActivity: Class<*>) {
+        try {
+            // Transition directe sans délai supplémentaire car nous avons déjà attendu
+            // que l'utilisateur prenne une décision concernant la mise à jour
+            val intent = Intent(this, targetActivity)
+            startActivity(intent)
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+            finish()
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Splash: failed to start target activity ${targetActivity.simpleName}: ${e.message ?: "null"}")
+            // En dernier recours, on termine l'activité
+            try {
+                finish()
+            } catch (ignore: Exception) {}
+        }
+    }
+
     private fun navigateToNextScreen() {
         // La vérification des notifications se fera dans MainActivity et non ici
         // pour éviter que l'utilisateur ne soit bloqué au SplashScreen
@@ -249,7 +358,6 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback {
             startActivity(Intent(this, MainActivity::class.java))
         } else {
             // L'utilisateur n'est pas connecté, on le redirige vers le LoginActivity
-            val preferences = UserPreferences.getInstance(this)
             if (UserPreferences.isFirstLaunch(this)) {
                 // Si c'est la première utilisation, on redirige vers l'onboarding
                 startActivity(Intent(this, OnboardingActivity::class.java))
@@ -275,11 +383,11 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback {
                     CrashlyticsManager.log("La mise à jour in-app a échoué.")
                     val bundle = Bundle()
                     bundle.putString("reason", "update_flow_failed")
-                    AnalyticsManager.logEvent("update_failed", bundle)
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("update_failed", bundle)
                 }
                 InstallStatus.CANCELED -> {
                     // L'utilisateur a annulé la mise à jour
-                    AnalyticsManager.logEvent("update_canceled", Bundle())
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("update_canceled", Bundle())
                 }
             }
 
@@ -287,5 +395,42 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback {
             updateCheckComplete = true
             tryToNavigateNext()
         }
+    }
+
+    // Gestion des résultats du dialogue de consentement analytics
+    override fun onConsentGiven() {
+        // L'utilisateur a donné son consentement pour le suivi analytics
+        CrashlyticsManager.log("Consentement analytics accordé par l'utilisateur")
+
+        // On détermine l'activité cible et on lance la navigation
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val isOnboardingCompleted = UserPreferences.isOnboardingCompleted(this)
+
+        val targetActivity = when {
+            !isOnboardingCompleted -> OnboardingActivity::class.java
+            currentUser != null -> MainActivity::class.java
+            else -> LoginActivity::class.java
+        }
+
+        // Lancer la navigation vers l'écran cible
+        startTargetActivity(targetActivity)
+    }
+
+    override fun onConsentDenied() {
+        // L'utilisateur a refusé le consentement pour le suivi analytics
+        CrashlyticsManager.log("Consentement analytics refusé par l'utilisateur")
+
+        // On détermine l'activité cible et on lance la navigation
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val isOnboardingCompleted = UserPreferences.isOnboardingCompleted(this)
+
+        val targetActivity = when {
+            !isOnboardingCompleted -> OnboardingActivity::class.java
+            currentUser != null -> MainActivity::class.java
+            else -> LoginActivity::class.java
+        }
+
+        // Lancer la navigation vers l'écran cible
+        startTargetActivity(targetActivity)
     }
 }

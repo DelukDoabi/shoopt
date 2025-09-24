@@ -490,4 +490,9 @@
     <string name="notifications_disabled_message">Las notificaciones están desactivadas. No recibirás recordatorios de compras.</string>
     <string name="notifications_permission_required">Las notificaciones son necesarias para recibir recordatorios de compras.</string>
     <string name="notifications_enabled_message">¡Genial! Ahora recibirás recordatorios de tus compras.</string>
+    <string name="consent_dialog_title">Mejora tu experiencia en Shoopt</string>
+    <string name="settings_analytics_title">Recopilación de datos de uso</string>
+    <string name="settings_analytics_summary">Permite que Shoopt recopile datos anónimos sobre cómo usas la app</string>
+    <string name="consent_dialog_message_informative">Las estadísticas están activadas por defecto para ayudarnos a mejorar Shoopt. Si prefieres no compartir datos anónimos de uso, puedes desactivar esta opción en cualquier momento desde los ajustes.</string>
+    <string name="consent_dialog_understood">Entendido</string>
 </resources>

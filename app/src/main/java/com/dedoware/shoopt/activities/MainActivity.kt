@@ -17,7 +17,7 @@ import com.dedoware.shoopt.notifications.NotificationPermissionManager
 import com.dedoware.shoopt.persistence.FirebaseProductRepository
 import com.dedoware.shoopt.persistence.IProductRepository
 import com.dedoware.shoopt.persistence.LocalProductRepository
-import com.dedoware.shoopt.utils.AnalyticsManager
+import com.dedoware.shoopt.analytics.AnalyticsService
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.UpdateManager
 import com.dedoware.shoopt.utils.UserPreferences
@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
 
             // Enregistrement de l'écran principal dans Analytics
             try {
-                AnalyticsManager.logScreenView("Main", "MainActivity")
+                AnalyticsService.getInstance(ShooptApplication.instance).trackScreenView("Main", "MainActivity")
             } catch (e: Exception) {
                 CrashlyticsManager.log("Erreur lors de l'enregistrement de l'écran dans Analytics: ${e.message ?: "Message non disponible"}")
             }
@@ -253,7 +253,12 @@ class MainActivity : AppCompatActivity() {
                     }.start()
 
                     // Analytics pour le passage à l'écran de mise à jour de la liste
-                    AnalyticsManager.logSelectContent("navigation", "card", "update_shopping_list")
+                    val paramsUpdate = android.os.Bundle().apply {
+                        putString(com.google.firebase.analytics.FirebaseAnalytics.Param.CONTENT_TYPE, "navigation")
+                        putString(com.google.firebase.analytics.FirebaseAnalytics.Param.ITEM_ID, "card")
+                        putString(com.google.firebase.analytics.FirebaseAnalytics.Param.ITEM_NAME, "update_shopping_list")
+                    }
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent(com.google.firebase.analytics.FirebaseAnalytics.Event.SELECT_CONTENT, paramsUpdate)
                     startActivity(Intent(this, UpdateShoppingListActivity::class.java))
                 } catch (e: Exception) {
                     // Capture des erreurs
@@ -273,7 +278,12 @@ class MainActivity : AppCompatActivity() {
                     }.start()
 
                     // Analytics pour le passage à l'écran d'ajout de produit
-                    AnalyticsManager.logSelectContent("navigation", "card", "add_update_product")
+                    val paramsAdd = android.os.Bundle().apply {
+                        putString(com.google.firebase.analytics.FirebaseAnalytics.Param.CONTENT_TYPE, "navigation")
+                        putString(com.google.firebase.analytics.FirebaseAnalytics.Param.ITEM_ID, "card")
+                        putString(com.google.firebase.analytics.FirebaseAnalytics.Param.ITEM_NAME, "add_update_product")
+                    }
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent(com.google.firebase.analytics.FirebaseAnalytics.Event.SELECT_CONTENT, paramsAdd)
 
                     // Lancer la nouvelle activité de choix de produit avec animation
                     val intent = Intent(this, ProductChoiceActivity::class.java)
@@ -297,7 +307,12 @@ class MainActivity : AppCompatActivity() {
                     }.start()
 
                     // Analytics pour le passage à l'écran de suivi des achats
-                    AnalyticsManager.logSelectContent("navigation", "card", "track_shopping")
+                    val paramsTrack = android.os.Bundle().apply {
+                        putString(com.google.firebase.analytics.FirebaseAnalytics.Param.CONTENT_TYPE, "navigation")
+                        putString(com.google.firebase.analytics.FirebaseAnalytics.Param.ITEM_ID, "card")
+                        putString(com.google.firebase.analytics.FirebaseAnalytics.Param.ITEM_NAME, "track_shopping")
+                    }
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent(com.google.firebase.analytics.FirebaseAnalytics.Event.SELECT_CONTENT, paramsTrack)
                     startActivity(Intent(this, TrackShoppingActivity::class.java))
                 } catch (e: Exception) {
                     // Capture des erreurs
@@ -317,7 +332,12 @@ class MainActivity : AppCompatActivity() {
                     }.start()
 
                     // Analytics pour le passage à l'écran d'analyse
-                    AnalyticsManager.logSelectContent("navigation", "card", "analyse")
+                    val paramsAnalyse = android.os.Bundle().apply {
+                        putString(com.google.firebase.analytics.FirebaseAnalytics.Param.CONTENT_TYPE, "navigation")
+                        putString(com.google.firebase.analytics.FirebaseAnalytics.Param.ITEM_ID, "card")
+                        putString(com.google.firebase.analytics.FirebaseAnalytics.Param.ITEM_NAME, "analyse")
+                    }
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent(com.google.firebase.analytics.FirebaseAnalytics.Event.SELECT_CONTENT, paramsAnalyse)
                     startActivity(Intent(this, AnalyseActivity::class.java))
                 } catch (e: Exception) {
                     // Capture des erreurs
@@ -432,11 +452,12 @@ class MainActivity : AppCompatActivity() {
                     .setOnCompleteListener {
                         // Callback appelé à la fin du tour
                         CrashlyticsManager.log("MainActivity setupSpotlightTour: Spotlight tour completed")
-                        AnalyticsManager.logUserAction(
-                            "spotlight_tour_completed",
-                            "onboarding",
-                            mapOf("screen" to "MainActivity")
-                        )
+                        val spotlightParams = android.os.Bundle().apply {
+                            putString("action", "spotlight_tour_completed")
+                            putString("category", "onboarding")
+                            putString("screen", "AddProductActivity")
+                        }
+                        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", spotlightParams)
                     }
                     .start("MainActivity")
             }
@@ -455,10 +476,11 @@ class MainActivity : AppCompatActivity() {
             .setPositiveButton(getString(R.string.yes)) { _, _ ->
                 try {
                     // Analytics pour déconnexion
-                    AnalyticsManager.logUserAction(
-                        action = "logout",
-                        category = "authentication"
-                    )
+                    val logoutParams = android.os.Bundle().apply {
+                        putString("action", "logout")
+                        putString("category", "authentication")
+                    }
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", logoutParams)
 
                     FirebaseAuth.getInstance().signOut()
                     startActivity(Intent(this, LoginActivity::class.java))
@@ -485,14 +507,21 @@ class MainActivity : AppCompatActivity() {
             val barcodeValue = result.data?.getStringExtra(com.dedoware.shoopt.scanner.BarcodeScannerActivity.BARCODE_RESULT)
             if (barcodeValue != null) {
                 try {
+                    // Tracker le succès du scan
+                    try {
+                        AnalyticsService.getInstance(ShooptApplication.instance).trackScanSuccess("barcode")
+                    } catch (e: Exception) {
+                        CrashlyticsManager.log("Erreur lors du tracking scan success: ${e.message}")
+                    }
+
                     // Vérifier si le produit existe déjà avant de lancer l'activité
                     checkProductExistenceAndNavigate(barcodeValue)
 
                     // Analytics pour le scan de code-barres
-                    val params = Bundle().apply {
+                    val params = android.os.Bundle().apply {
                         putString("barcode_length", barcodeValue.length.toString())
                     }
-                    AnalyticsManager.logCustomEvent("barcode_scanned", params)
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("barcode_scanned", params)
                 } catch (e: Exception) {
                     CrashlyticsManager.log("Erreur lors du traitement du code-barres: ${e.message ?: "Message non disponible"}")
                     CrashlyticsManager.setCustomKey("error_location", "barcode_processing")
@@ -501,8 +530,19 @@ class MainActivity : AppCompatActivity() {
 
                     Toast.makeText(this, getString(R.string.barcode_processing_error), Toast.LENGTH_SHORT).show()
                 }
+            } else {
+                try {
+                    AnalyticsService.getInstance(ShooptApplication.instance).trackScanFailed("barcode", "no_value_returned")
+                } catch (e: Exception) {
+                    CrashlyticsManager.log("Erreur lors du tracking de l'échec du scan (pas de valeur): ${e.message}")
+                }
             }
         } else if (result.resultCode == RESULT_CANCELED) {
+            try {
+                AnalyticsService.getInstance(ShooptApplication.instance).trackScanFailed("barcode", "user_cancelled")
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors du tracking de l'annulation du scan: ${e.message}")
+            }
             Toast.makeText(this, getString(R.string.cancelled), Toast.LENGTH_LONG).show()
         }
     }
@@ -515,10 +555,11 @@ class MainActivity : AppCompatActivity() {
                 .setPositiveButton(getString(R.string.scan_barcode)) { _, _ ->
                     try {
                         // Analytics pour l'utilisation du scanner de code-barres
-                        AnalyticsManager.logUserAction(
-                            action = "open_barcode_scanner",
-                            category = "product_management"
-                        )
+                        val params = android.os.Bundle().apply {
+                            putString("action", "open_barcode_scanner")
+                            putString("category", "product_management")
+                        }
+                        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", params)
 
                         // Utilisation de notre nouvelle implémentation ML Kit au lieu de ZXing
                         val intent = Intent(this, com.dedoware.shoopt.scanner.BarcodeScannerActivity::class.java)
@@ -534,10 +575,11 @@ class MainActivity : AppCompatActivity() {
                 .setNegativeButton(getString(R.string.manual_entry)) { _, _ ->
                     try {
                         // Analytics pour l'ajout manuel de produit
-                        AnalyticsManager.logUserAction(
-                            action = "manual_product_entry",
-                            category = "product_management"
-                        )
+                        val params = android.os.Bundle().apply {
+                            putString("action", "manual_product_entry")
+                            putString("category", "product_management")
+                        }
+                        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", params)
 
                         val intent = Intent(this, AddProductActivity::class.java)
                         startActivity(intent)
@@ -597,21 +639,21 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     // Analytics pour le chargement d'un produit existant
-                    val params = Bundle().apply {
+                    val params = android.os.Bundle().apply {
                         putString("source", "barcode_scan")
                         putString("product_found", "true")
                     }
-                    AnalyticsManager.logCustomEvent("existing_product_loaded", params)
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("existing_product_loaded", params)
                 } else {
                     // Si le produit n'existe pas, simplement passer le code-barres
                     addProductIntent.putExtra("barcode", barcode)
 
                     // Analytics pour la création d'un nouveau produit
-                    val params = Bundle().apply {
+                    val params = android.os.Bundle().apply {
                         putString("source", "barcode_scan")
                         putString("product_found", "false")
                     }
-                    AnalyticsManager.logCustomEvent("new_product_created", params)
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("new_product_created", params)
                 }
 
                 startActivity(addProductIntent)
@@ -689,10 +731,11 @@ class MainActivity : AppCompatActivity() {
             popup.show()
 
             // Analytics pour l'ouverture du menu
-            AnalyticsManager.logUserAction(
-                action = "open_menu_burger",
-                category = "navigation"
-            )
+            val paramsMenuOpen = android.os.Bundle().apply {
+                putString("action", "open_menu_burger")
+                putString("category", "navigation")
+            }
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", paramsMenuOpen)
         } catch (e: Exception) {
             CrashlyticsManager.log("Erreur lors de l'affichage du menu: ${e.message ?: "Message non disponible"}")
             CrashlyticsManager.setCustomKey("error_location", "show_popup_menu")
@@ -714,10 +757,11 @@ class MainActivity : AppCompatActivity() {
                     showNotificationTestDialog()
 
                     // Analytics pour l'accès admin
-                    AnalyticsManager.trackEvent("admin_tests_accessed", mapOf(
-                        "user_email" to (FirebaseAuth.getInstance().currentUser?.email ?: "unknown"),
-                        "access_granted" to "true"
-                    ))
+                    val adminAccessParams = android.os.Bundle().apply {
+                        putString("user_email", FirebaseAuth.getInstance().currentUser?.email ?: "unknown")
+                        putString("access_granted", "true")
+                    }
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("admin_tests_accessed", adminAccessParams)
                 } else {
                     // Accès refusé - proposer d'entrer le code admin (développement uniquement)
                     if (isDebugMode()) {
@@ -725,10 +769,11 @@ class MainActivity : AppCompatActivity() {
                     } else {
                         Toast.makeText(this@MainActivity, getString(R.string.admin_access_denied), Toast.LENGTH_SHORT).show()
 
-                        AnalyticsManager.trackEvent("admin_tests_accessed", mapOf(
-                            "user_email" to (FirebaseAuth.getInstance().currentUser?.email ?: "unknown"),
-                            "access_granted" to "false"
-                        ))
+                        val adminAccessDeniedParams = android.os.Bundle().apply {
+                            putString("user_email", FirebaseAuth.getInstance().currentUser?.email ?: "unknown")
+                            putString("access_granted", "false")
+                        }
+                        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("admin_tests_accessed", adminAccessDeniedParams)
                     }
                 }
             } catch (e: Exception) {
@@ -910,10 +955,15 @@ class MainActivity : AppCompatActivity() {
 
             if (navigateTo == "shopping_list") {
                 // Analytics pour le clic sur la notification de rappel
-                AnalyticsManager.trackEvent("notification_clicked", mapOf(
-                    "source" to (notificationSource ?: "unknown"),
-                    "action" to "open_shopping_list"
-                ))
+                val notificationClickedParams = android.os.Bundle().apply {
+                    putString("source", notificationSource ?: "unknown")
+                    putString("action", "open_shopping_list")
+                }
+                try {
+                    AnalyticsService.getInstance(ShooptApplication.instance).trackNotificationClicked(notificationSource ?: "unknown")
+                } catch (e: Exception) {
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_clicked", notificationClickedParams)
+                }
 
                 // Ouvrir l'activité de liste de courses avec un délai pour laisser l'interface se charger
                 window.decorView.postDelayed({

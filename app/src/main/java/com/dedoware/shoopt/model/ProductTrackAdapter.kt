@@ -3,6 +3,7 @@ package com.dedoware.shoopt.model
 import android.animation.Animator
 import android.animation.AnimatorInflater
 import android.animation.AnimatorListenerAdapter
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dedoware.shoopt.R
+import com.dedoware.shoopt.analytics.AnalyticsService
+import com.dedoware.shoopt.utils.CrashlyticsManager
 
 class ProductTrackAdapter(private val productList: MutableList<CartItem>) :
     RecyclerView.Adapter<ProductTrackAdapter.ProductViewHolder>() {
@@ -23,7 +26,6 @@ class ProductTrackAdapter(private val productList: MutableList<CartItem>) :
         val productName: TextView = itemView.findViewById(R.id.product_name)
         val productQuantity: TextView = itemView.findViewById(R.id.product_quantity)
         val foregroundView: View? = itemView.findViewById(R.id.product_item_foreground)
-        val backgroundView: View? = itemView.findViewById(R.id.swipe_background)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
@@ -68,6 +70,49 @@ class ProductTrackAdapter(private val productList: MutableList<CartItem>) :
         } else {
             // S'assurer que les autres éléments ont un fond normal
             holder.foregroundView?.setBackgroundColor(0xFFF5F5F5.toInt())
+        }
+
+        // Ajouter un écouteur de clic pour marquer l'élément comme acheté / coché
+        holder.itemView.setOnClickListener {
+            try {
+                val key = if (product.id.isNotBlank()) product.id else product.name
+                val currentChecked = (holder.itemView.getTag(R.id.product_name) as? Boolean) ?: false
+                val newChecked = !currentChecked
+                holder.itemView.setTag(R.id.product_name, newChecked)
+
+                // Mise à jour visuelle : barrer le nom si coché
+                if (newChecked) {
+                    holder.productName.paintFlags = holder.productName.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                    holder.productName.alpha = 0.6f
+                } else {
+                    holder.productName.paintFlags = holder.productName.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                    holder.productName.alpha = 1.0f
+                }
+
+                // Tracking analytics
+                try {
+                    AnalyticsService.getInstance(holder.itemView.context).trackPurchaseItemCheck(
+                        key,
+                        product.name,
+                        newChecked
+                    )
+                } catch (e: Exception) {
+                    // Fallback : log raw event
+                    try {
+                        val bundle = android.os.Bundle().apply {
+                            putString("product_id", key)
+                            putString("product_name", product.name)
+                            putBoolean("is_checked", newChecked)
+                        }
+                        AnalyticsService.getInstance(holder.itemView.context).logEvent("purchase_tracking_item_check", bundle)
+                    } catch (_: Exception) {
+                        // ignore
+                    }
+                    CrashlyticsManager.log("Erreur lors du tracking d'un produit coché: ${e.message ?: "Message non disponible"}")
+                }
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors du clic sur un produit: ${e.message ?: "Message non disponible"}")
+            }
         }
     }
 

@@ -525,4 +525,9 @@
     <string name="notifications_disabled_message">Les notifications sont désactivées. Tu ne recevras pas tes rappels de courses.</string>
     <string name="notifications_permission_required">Les notifications sont nécessaires pour recevoir tes rappels de courses.</string>
     <string name="notifications_enabled_message">Super ! Tu recevras maintenant tes rappels de courses.</string>
+    <string name="consent_dialog_title">Améliore ton expérience Shoopt</string>
+    <string name="settings_analytics_title">Collecte de données d’utilisation</string>
+    <string name="settings_analytics_summary">Autorise Shoopt à collecter des données anonymes sur ton utilisation de l’appli</string>
+    <string name="consent_dialog_message_informative">Les statistiques sont activées par défaut pour nous aider à améliorer Shoopt. Si tu préfères ne pas partager de données anonymes, tu peux désactiver cette option à tout moment dans les paramètres.</string>
+    <string name="consent_dialog_understood">J’ai compris</string>
 </resources>

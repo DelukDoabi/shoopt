@@ -1,17 +1,20 @@
 package com.dedoware.shoopt.notifications
 
 import android.app.Activity
-import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
 import android.net.Uri
+import android.view.LayoutInflater
+import android.widget.CheckBox
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
 import com.dedoware.shoopt.R
-import com.dedoware.shoopt.utils.AnalyticsManager
+import com.dedoware.shoopt.ShooptApplication
+import com.dedoware.shoopt.analytics.AnalyticsService
 import com.dedoware.shoopt.utils.UserPreferences
 
 /**
@@ -23,6 +26,7 @@ class NotificationPermissionManager private constructor(private val context: Con
     companion object {
         private const val PERMISSION_REQUEST_CODE = 123
         private const val PREF_DONT_ASK_NOTIFICATIONS = "pref_dont_ask_notifications"
+        private const val PREF_RETURNING_FROM_NOTIFICATION_SETTINGS = "pref_returning_from_notification_settings"
 
         @Volatile
         private var INSTANCE: NotificationPermissionManager? = null
@@ -55,44 +59,60 @@ class NotificationPermissionManager private constructor(private val context: Con
     }
 
     /**
-     * Affiche un dialogue invitant l'utilisateur à activer les notifications
+     * Affiche un dialogue personnalisé invitant l'utilisateur à activer les notifications
      */
     private fun showNotificationPermissionDialog(activity: Activity) {
-        val builder = AlertDialog.Builder(activity)
-            .setTitle(R.string.notifications_permission_title)
-            .setMessage(R.string.notifications_permission_message)
-            .setPositiveButton(R.string.notifications_permission_positive) { _, _ ->
-                // Redirige vers les paramètres de l'application
-                openNotificationSettings(activity)
+        // Création du dialogue avec notre layout personnalisé
+        val dialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_notification_permission, null)
+        val dialog = Dialog(activity)
 
-                // Analytique pour suivre l'acceptation de l'utilisateur
-                AnalyticsManager.trackEvent("notification_permission_accepted", mapOf(
-                    "source" to "dialog",
-                    "app_version" to getAppVersion(context)
-                ))
+        // Configuration du dialogue
+        dialog.setContentView(dialogView)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        // Récupération des éléments du dialogue
+        val btnAccept = dialogView.findViewById<android.widget.Button>(R.id.btn_accept)
+        val btnDecline = dialogView.findViewById<android.widget.Button>(R.id.btn_decline)
+        val dontAskCheckbox = dialogView.findViewById<CheckBox>(R.id.dont_ask_again_checkbox)
+
+        // Configuration des boutons
+        btnAccept.setOnClickListener {
+            // Redirige vers les paramètres de l'application
+            openNotificationSettings(activity)
+
+            // Analytique pour suivre l'acceptation de l'utilisateur
+            val bundle = android.os.Bundle().apply {
+                putString("source", "dialog")
+                putString("app_version", getAppVersion(context))
             }
-            .setNegativeButton(R.string.notifications_permission_negative) { dialog, _ ->
-                dialog.dismiss()
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_permission_accepted", bundle)
 
-                // Analytique pour suivre le refus de l'utilisateur
-                AnalyticsManager.trackEvent("notification_permission_declined", mapOf(
-                    "source" to "dialog",
-                    "app_version" to getAppVersion(context)
-                ))
-            }
-
-        // Ajoute une case à cocher "Ne plus me demander"
-        builder.setNeutralButton(context.getString(R.string.dont_show_again)) { dialog, _ ->
-            UserPreferences.setBooleanPreference(context, PREF_DONT_ASK_NOTIFICATIONS, true)
             dialog.dismiss()
-
-            // Analytique pour suivre le choix de ne plus voir la demande
-            AnalyticsManager.trackEvent("notification_permission_dont_ask", mapOf(
-                "app_version" to getAppVersion(context)
-            ))
         }
 
-        builder.create().show()
+        btnDecline.setOnClickListener {
+            // Analytique pour suivre le refus de l'utilisateur
+            val declineBundle = android.os.Bundle().apply {
+                putString("source", "dialog")
+                putString("app_version", getAppVersion(context))
+            }
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_permission_declined", declineBundle)
+
+            // Sauvegarde du choix "ne plus demander" si coché
+            if (dontAskCheckbox.isChecked) {
+                UserPreferences.setBooleanPreference(context, PREF_DONT_ASK_NOTIFICATIONS, true)
+
+                // Analytique pour suivre le choix de ne plus voir la demande
+                val dontAskBundle = android.os.Bundle().apply {
+                    putString("app_version", getAppVersion(context))
+                }
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_permission_dont_ask", dontAskBundle)
+            }
+
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     /**
@@ -100,6 +120,10 @@ class NotificationPermissionManager private constructor(private val context: Con
      */
     private fun openNotificationSettings(activity: Activity) {
         val intent = Intent()
+
+        // Avant d'ouvrir les paramètres externes, on place un flag pour indiquer
+        // que l'on revient possiblement depuis les paramètres système.
+        UserPreferences.setBooleanPreference(context, PREF_RETURNING_FROM_NOTIFICATION_SETTINGS, true)
 
         // Sur Android 8.0 (API 26) et supérieur, redirige vers les paramètres du canal de notification
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -118,6 +142,13 @@ class NotificationPermissionManager private constructor(private val context: Con
      * Vérifie l'état des notifications après que l'utilisateur revient des paramètres
      */
     fun checkNotificationStatusAfterSettings(activity: Activity) {
+        // Ne rien faire si on n'attend pas un retour depuis les paramètres
+        val returning = UserPreferences.getBooleanPreference(context, PREF_RETURNING_FROM_NOTIFICATION_SETTINGS, false)
+        if (!returning) return
+
+        // Effacer le flag maintenant que nous traitons le retour
+        UserPreferences.setBooleanPreference(context, PREF_RETURNING_FROM_NOTIFICATION_SETTINGS, false)
+
         if (notificationManager.areNotificationsEnabled()) {
             // Les notifications sont désormais activées
             Toast.makeText(
@@ -127,10 +158,11 @@ class NotificationPermissionManager private constructor(private val context: Con
             ).show()
 
             // Analytique pour suivre l'activation réussie des notifications
-            AnalyticsManager.trackEvent("notification_permission_enabled", mapOf(
-                "source" to "settings",
-                "app_version" to getAppVersion(context)
-            ))
+            val bundle = android.os.Bundle().apply {
+                putString("source", "settings")
+                putString("app_version", getAppVersion(context))
+            }
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_permission_enabled", bundle)
         } else {
             // Les notifications sont toujours désactivées
             Toast.makeText(
@@ -140,10 +172,11 @@ class NotificationPermissionManager private constructor(private val context: Con
             ).show()
 
             // Analytique pour suivre que les notifications restent désactivées
-            AnalyticsManager.trackEvent("notification_permission_still_disabled", mapOf(
-                "source" to "settings",
-                "app_version" to getAppVersion(context)
-            ))
+            val bundle = android.os.Bundle().apply {
+                putString("source", "settings")
+                putString("app_version", getAppVersion(context))
+            }
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_permission_still_disabled", bundle)
         }
     }
 

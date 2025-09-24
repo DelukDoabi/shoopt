@@ -7,7 +7,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.scanner.BarcodeScannerActivity
-import com.dedoware.shoopt.utils.AnalyticsManager
+import com.dedoware.shoopt.analytics.AnalyticsService
+import com.dedoware.shoopt.ShooptApplication
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
@@ -60,10 +61,11 @@ class ProductChoiceActivity : AppCompatActivity() {
                 it.startAnimation(scaleAnimation)
 
                 // Analytics pour l'utilisation du scanner de code-barres
-                AnalyticsManager.logUserAction(
-                    action = "open_barcode_scanner",
-                    category = "product_management"
-                )
+                val params = Bundle().apply {
+                    putString("action", "open_barcode_scanner")
+                    putString("category", "product_management")
+                }
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", params)
 
                 // Lancer l'activité de scan de code-barres
                 val intent = Intent(this, BarcodeScannerActivity::class.java)
@@ -87,10 +89,11 @@ class ProductChoiceActivity : AppCompatActivity() {
                 it.startAnimation(scaleAnimation)
 
                 // Analytics pour l'ajout manuel de produit
-                AnalyticsManager.logUserAction(
-                    action = "manual_product_entry",
-                    category = "product_management"
-                )
+                val mParams = Bundle().apply {
+                    putString("action", "manual_product_entry")
+                    putString("category", "product_management")
+                }
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", mParams)
 
                 // Lancer l'activité d'ajout manuel de produit
                 val intent = Intent(this, AddProductActivity::class.java).apply {
@@ -121,11 +124,12 @@ class ProductChoiceActivity : AppCompatActivity() {
             val barcode = result.data?.getStringExtra(com.dedoware.shoopt.scanner.BarcodeScannerActivity.BARCODE_RESULT)
             if (barcode != null) {
                 try {
-                    // Analytics pour le scan réussi
-                    AnalyticsManager.logUserAction(
-                        action = "barcode_scan_success",
-                        category = "product_management"
-                    )
+                    // Tracker le succès du scan
+                    try {
+                        AnalyticsService.getInstance(ShooptApplication.instance).trackScanSuccess("barcode")
+                    } catch (e: Exception) {
+                        CrashlyticsManager.log("Erreur lors du tracking scan success: ${e.message}")
+                    }
 
                     // Vérifier le produit dans la base de données
                     val intent = Intent(this, AddProductActivity::class.java).apply {
@@ -145,6 +149,18 @@ class ProductChoiceActivity : AppCompatActivity() {
 
                     showErrorToast(R.string.product_check_error)
                 }
+            } else {
+                try {
+                    AnalyticsService.getInstance(ShooptApplication.instance).trackScanFailed("barcode", "no_value_returned")
+                } catch (e: Exception) {
+                    CrashlyticsManager.log("Erreur lors du tracking de l'échec du scan (pas de valeur): ${e.message}")
+                }
+            }
+        } else if (result.resultCode == RESULT_CANCELED) {
+            try {
+                AnalyticsService.getInstance(ShooptApplication.instance).trackScanFailed("barcode", "user_cancelled")
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors du tracking de l'annulation du scan: ${e.message}")
             }
         }
     }
@@ -191,11 +207,12 @@ class ProductChoiceActivity : AppCompatActivity() {
             window.decorView.post {
                 startSpotlightTour(spotlightItems) {
                     // Callback appelé à la fin du tour
-                    AnalyticsManager.logUserAction(
-                        "spotlight_tour_completed",
-                        "onboarding",
-                        mapOf("screen" to "ProductChoiceActivity")
-                    )
+                    val spParams = Bundle().apply {
+                        putString("action", "spotlight_tour_completed")
+                        putString("category", "onboarding")
+                        putString("screen", "ProductChoiceActivity")
+                    }
+                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", spParams)
                 }
             }
 

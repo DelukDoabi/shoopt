@@ -2,7 +2,8 @@ package com.dedoware.shoopt.notifications
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.dedoware.shoopt.utils.AnalyticsManager
+import com.dedoware.shoopt.ShooptApplication
+import com.dedoware.shoopt.analytics.AnalyticsService
 
 /**
  * Gestionnaire centralisé des préférences de notification
@@ -49,10 +50,16 @@ class NotificationPreferencesManager private constructor(private val context: Co
             .putBoolean(KEY_NOTIFICATIONS_ENABLED, enabled)
             .apply()
 
-        AnalyticsManager.trackEvent("notification_preference_changed", mapOf(
-            "type" to "global_notifications",
-            "enabled" to enabled.toString()
-        ))
+        // Utiliser la méthode dédiée pour notifier le toggle des notifications
+        try {
+            AnalyticsService.getInstance(ShooptApplication.instance).trackNotificationsToggle(enabled)
+        } catch (e: Exception) {
+            val bundle = android.os.Bundle().apply {
+                putString("type", "global_notifications")
+                putString("enabled", enabled.toString())
+            }
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_preference_changed", bundle)
+        }
 
         // Programmer ou annuler les rappels selon la nouvelle préférence
         val scheduler = ShoppingReminderScheduler.getInstance(context)
@@ -78,10 +85,16 @@ class NotificationPreferencesManager private constructor(private val context: Co
             .putBoolean(KEY_SATURDAY_REMINDERS_ENABLED, enabled)
             .apply()
 
-        AnalyticsManager.trackEvent("notification_preference_changed", mapOf(
-            "type" to "saturday_reminders",
-            "enabled" to enabled.toString()
-        ))
+        try {
+            // On envoie le même événement toggle (notifications) mais on note aussi le type dans un fallback
+            AnalyticsService.getInstance(ShooptApplication.instance).trackNotificationsToggle(enabled)
+        } catch (e: Exception) {
+            val bundle = android.os.Bundle().apply {
+                putString("type", "saturday_reminders")
+                putString("enabled", enabled.toString())
+            }
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_preference_changed", bundle)
+        }
 
         // Reprogrammer les rappels si nécessaire
         val scheduler = ShoppingReminderScheduler.getInstance(context)
@@ -118,11 +131,16 @@ class NotificationPreferencesManager private constructor(private val context: Co
             .putInt(KEY_REMINDER_MINUTE, minute)
             .apply()
 
-        AnalyticsManager.trackEvent("notification_preference_changed", mapOf(
-            "type" to "reminder_time",
-            "hour" to hour.toString(),
-            "minute" to minute.toString()
-        ))
+        try {
+            AnalyticsService.getInstance(ShooptApplication.instance).trackNotificationsToggle(true)
+        } catch (e: Exception) {
+            val bundle = android.os.Bundle().apply {
+                putString("type", "reminder_time")
+                putString("hour", hour.toString())
+                putString("minute", minute.toString())
+            }
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_preference_changed", bundle)
+        }
 
         // Reprogrammer avec la nouvelle heure si les rappels sont activés
         if (areNotificationsEnabled() && areSaturdayRemindersEnabled()) {
@@ -146,10 +164,15 @@ class NotificationPreferencesManager private constructor(private val context: Co
             .putBoolean(KEY_FIRST_SETUP_DONE, true)
             .apply()
 
-        AnalyticsManager.trackEvent("notification_first_setup_completed", mapOf(
-            "reminder_hour" to getReminderHour().toString(),
-            "reminder_minute" to getReminderMinute().toString()
-        ))
+        try {
+            AnalyticsService.getInstance(ShooptApplication.instance).trackNotificationsToggle(true)
+        } catch (e: Exception) {
+            val bundle = android.os.Bundle().apply {
+                putString("reminder_hour", getReminderHour().toString())
+                putString("reminder_minute", getReminderMinute().toString())
+            }
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_first_setup_completed", bundle)
+        }
     }
 
     /**
@@ -185,9 +208,14 @@ class NotificationPreferencesManager private constructor(private val context: Co
             .putBoolean(KEY_FIRST_SETUP_DONE, false)
             .apply()
 
-        AnalyticsManager.trackEvent("notification_preferences_reset", mapOf(
-            "reset_to_defaults" to "true"
-        ))
+        try {
+            AnalyticsService.getInstance(ShooptApplication.instance).trackNotificationsToggle(true)
+        } catch (e: Exception) {
+            val bundle = android.os.Bundle().apply {
+                putString("reset_to_defaults", "true")
+            }
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_preferences_reset", bundle)
+        }
 
         // Reprogrammer les rappels avec les valeurs par défaut
         val scheduler = ShoppingReminderScheduler.getInstance(context)

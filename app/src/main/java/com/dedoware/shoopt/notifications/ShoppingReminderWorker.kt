@@ -4,7 +4,8 @@ import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.dedoware.shoopt.persistence.ShooptRoomDatabase
-import com.dedoware.shoopt.utils.AnalyticsManager
+import com.dedoware.shoopt.ShooptApplication
+import com.dedoware.shoopt.analytics.AnalyticsService
 import kotlinx.coroutines.runBlocking
 
 class ShoppingReminderWorker(
@@ -17,10 +18,11 @@ class ShoppingReminderWorker(
             // Vérifier les conditions avant d'envoyer la notification
             if (!shouldSendReminder()) {
                 // Log pourquoi la notification n'a pas été envoyée
-                AnalyticsManager.trackEvent("notification_skipped", mapOf(
-                    "reason" to getSkipReason(),
-                    "day" to "saturday"
-                ))
+                val skipBundle = android.os.Bundle().apply {
+                    putString("reason", getSkipReason())
+                    putString("day", "saturday")
+                }
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_skipped", skipBundle)
                 return Result.success()
             }
 
@@ -29,20 +31,22 @@ class ShoppingReminderWorker(
             notificationManager.showShoppingReminder()
 
             // Analytics pour tracking
-            AnalyticsManager.trackEvent("notification_sent", mapOf(
-                "type" to "shopping_reminder",
-                "day" to "saturday",
-                "lists_count" to getShoppingListsCount().toString()
-            ))
+            val sentBundle = android.os.Bundle().apply {
+                putString("type", "shopping_reminder")
+                putString("day", "saturday")
+                putString("lists_count", getShoppingListsCount().toString())
+            }
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_sent", sentBundle)
 
             Result.success()
         } catch (e: Exception) {
             e.printStackTrace()
-            AnalyticsManager.trackEvent("notification_error", mapOf(
-                "error" to (e.message ?: "unknown_error"),
-                "day" to "saturday"
-            ))
-            Result.failure()
+            val errorBundle = android.os.Bundle().apply {
+                putString("error", (e.message ?: "unknown_error"))
+                putString("day", "saturday")
+            }
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_error", errorBundle)
+            return Result.failure()
         }
     }
 
@@ -69,9 +73,10 @@ class ShoppingReminderWorker(
                 listsCount > 0
             } catch (e: Exception) {
                 // En cas d'erreur, on considère qu'il n'y a pas de listes pour éviter le spam
-                AnalyticsManager.trackEvent("database_error_in_reminder", mapOf(
-                    "error" to (e.message ?: "unknown_error")
-                ))
+                val dbErrorBundle = android.os.Bundle().apply {
+                    putString("error", (e.message ?: "unknown_error"))
+                }
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("database_error_in_reminder", dbErrorBundle)
                 false
             }
         }

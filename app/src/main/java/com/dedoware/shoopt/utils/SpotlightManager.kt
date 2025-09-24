@@ -8,6 +8,8 @@ import com.dedoware.shoopt.R
 import com.dedoware.shoopt.models.SpotlightItem
 import com.dedoware.shoopt.ui.SpotlightContentView
 import com.dedoware.shoopt.ui.SpotlightView
+import com.dedoware.shoopt.ShooptApplication
+import com.dedoware.shoopt.analytics.AnalyticsService
 
 /**
  * Gestionnaire moderne du système de spotlight pour guider les utilisateurs
@@ -76,14 +78,13 @@ class SpotlightManager private constructor(private val activity: Activity) {
         showCurrentSpotlight()
 
         // Analytics
-        AnalyticsManager.logUserAction(
-            "spotlight_started",
-            "onboarding",
-            mapOf(
-                "screen" to screenKey,
-                "total_items" to spotlightItems.size.toString()
-            )
-        )
+        val params = android.os.Bundle().apply {
+            putString("action", "spotlight_started")
+            putString("category", "onboarding")
+            putString("screen", screenKey)
+            putString("total_items", spotlightItems.size.toString())
+        }
+        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", params)
     }
 
     private fun showCurrentSpotlight() {
@@ -173,11 +174,12 @@ class SpotlightManager private constructor(private val activity: Activity) {
     }
 
     private fun nextSpotlight() {
-        AnalyticsManager.logUserAction(
-            "spotlight_next",
-            "onboarding",
-            mapOf("step_index" to currentIndex.toString())
-        )
+        val params = android.os.Bundle().apply {
+            putString("action", "spotlight_next")
+            putString("category", "onboarding")
+            putString("step_index", currentIndex.toString())
+        }
+        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", params)
 
         currentIndex++
         contentView?.animateOut {
@@ -186,11 +188,12 @@ class SpotlightManager private constructor(private val activity: Activity) {
     }
 
     private fun skipSpotlight() {
-        AnalyticsManager.logUserAction(
-            "spotlight_skip",
-            "onboarding",
-            mapOf("step_index" to currentIndex.toString())
-        )
+        val params = android.os.Bundle().apply {
+            putString("action", "spotlight_skip")
+            putString("category", "onboarding")
+            putString("step_index", currentIndex.toString())
+        }
+        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", params)
 
         complete()
     }
@@ -204,15 +207,14 @@ class SpotlightManager private constructor(private val activity: Activity) {
         val screenKey = activity.javaClass.simpleName
         UserPreferences.markSpotlightSeen(activity, screenKey)
 
-        AnalyticsManager.logUserAction(
-            "spotlight_completed",
-            "onboarding",
-            mapOf(
-                "screen" to screenKey,
-                "completed_steps" to currentIndex.toString(),
-                "total_steps" to spotlightItems.size.toString()
-            )
-        )
+        val params = android.os.Bundle().apply {
+            putString("action", "spotlight_completed")
+            putString("category", "onboarding")
+            putString("screen", screenKey)
+            putString("completed_steps", currentIndex.toString())
+            putString("total_steps", spotlightItems.size.toString())
+        }
+        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", params)
 
         contentView?.animateOut {
             cleanupViews()

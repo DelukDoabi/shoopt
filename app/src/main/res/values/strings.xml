@@ -206,7 +206,7 @@
     <string name="product_add_tips">Product Addition Tips</string>
     <string name="product_analysis">Product Analysis</string>
     <string name="product_check_error">Error checking product</string>
-    <string name="product_deleted">Product deleted</string>
+    <string name="product_deleted">Product %1$s deleted</string>
     <string name="product_screen_open_error">Error opening product screen</string>
     <string name="quick_add">Quick Add</string>
     <string name="quick_add_product">Quick Add Product</string>
@@ -434,5 +434,9 @@
     <string name="notifications_disabled_message">Notifications are turned off. You won’t get shopping reminders.</string>
     <string name="notifications_permission_required">Notifications are required to get your shopping reminders.</string>
     <string name="notifications_enabled_message">Great! You’ll now get reminders for your shopping.</string>
-
+    <string name="consent_dialog_title">Improve your Shoopt experience</string>
+    <string name="consent_dialog_message_informative">Analytics are enabled by default to help improve Shoopt. If you prefer not to share anonymous usage data, you can disable analytics anytime from Settings.</string>
+    <string name="consent_dialog_understood">Understood</string>
+    <string name="settings_analytics_title">Usage data collection</string>
+    <string name="settings_analytics_summary">Allow Shoopt to collect anonymous data about how you use the app</string>
 </resources>

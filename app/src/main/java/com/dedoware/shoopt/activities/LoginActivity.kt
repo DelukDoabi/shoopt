@@ -11,7 +11,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dedoware.shoopt.R
-import com.dedoware.shoopt.utils.AnalyticsManager
+import com.dedoware.shoopt.analytics.AnalyticsService
+import com.dedoware.shoopt.ShooptApplication
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -79,7 +80,7 @@ class LoginActivity : AppCompatActivity() {
                                 putString("login_method", "email")
                                 putBoolean("success", true)
                             }
-                            AnalyticsManager.logCustomEvent("login_attempt", params)
+                            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("login_attempt", params)
                         } catch (e: Exception) {
                             CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement login dans Analytics: ${e.message ?: "Message non disponible"}")
                         }
@@ -102,7 +103,7 @@ class LoginActivity : AppCompatActivity() {
                                 putBoolean("success", false)
                                 // Pas d'informations sur l'erreur qui pourraient contenir des données personnelles
                             }
-                            AnalyticsManager.logCustomEvent("login_attempt", params)
+                            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("login_attempt", params)
                         } catch (e: Exception) {
                             CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement login dans Analytics: ${e.message ?: "Message non disponible"}")
                         }
@@ -147,7 +148,7 @@ class LoginActivity : AppCompatActivity() {
 
         // Suivi de l'écran de connexion
         try {
-            AnalyticsManager.logScreenView("Login", "LoginActivity")
+            AnalyticsService.getInstance(ShooptApplication.instance).trackScreenView("Login", "LoginActivity")
         } catch (e: Exception) {
             CrashlyticsManager.log("Erreur lors de l'enregistrement de l'écran dans Analytics: ${e.message ?: "Message non disponible"}")
         }

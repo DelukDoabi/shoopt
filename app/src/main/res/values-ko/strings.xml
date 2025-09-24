@@ -496,4 +496,9 @@
     <string name="notifications_disabled_message">알림이 꺼져 있어요. 장보기 알림을 받지 못해요.</string>
     <string name="notifications_permission_required">장보기 알림을 받으려면 알림이 필요해요.</string>
     <string name="notifications_enabled_message">좋아요! 이제 장보기 알림을 받을 수 있어요.</string>
+    <string name="consent_dialog_title">Shoopt 경험을 더 좋게 만들자</string>
+    <string name="settings_analytics_title">사용 데이터 수집</string>
+    <string name="settings_analytics_summary">Shoopt가 네 앱 사용에 대한 익명 데이터를 수집하도록 허용하기</string>
+    <string name="consent_dialog_message_informative">Shoopt를 개선하기 위해 기본적으로 분석 기능이 켜져 있어. 익명 데이터를 공유하기 싫다면, 설정에서 언제든지 끌 수 있어.</string>
+    <string name="consent_dialog_understood">알겠어</string>
 </resources>

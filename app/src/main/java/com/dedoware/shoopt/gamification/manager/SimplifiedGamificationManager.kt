@@ -6,7 +6,8 @@ import android.os.Bundle
 import com.dedoware.shoopt.gamification.models.UserProfile
 import com.dedoware.shoopt.gamification.data.DefaultAchievements
 import com.dedoware.shoopt.gamification.models.Achievement
-import com.dedoware.shoopt.utils.AnalyticsManager
+import com.dedoware.shoopt.analytics.AnalyticsService
+import com.dedoware.shoopt.ShooptApplication
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
@@ -76,7 +77,7 @@ class SimplifiedGamificationManager private constructor(context: Context) {
             putString("event_type", eventType)
             putString("user_id", userId)
         }
-        AnalyticsManager.logCustomEvent("gamification_event", params)
+        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("gamification_event", params)
     }
 
     /**

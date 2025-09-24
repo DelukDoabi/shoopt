@@ -5,18 +5,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.adapters.OnboardingAdapter
 import com.dedoware.shoopt.models.OnboardingItem
-import com.dedoware.shoopt.utils.AnalyticsManager
+import com.dedoware.shoopt.analytics.AnalyticsService
+import com.dedoware.shoopt.ShooptApplication
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.UserPreferences
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 
 class OnboardingActivity : AppCompatActivity() {
 
@@ -51,11 +51,24 @@ class OnboardingActivity : AppCompatActivity() {
 
         try {
             // Analytics pour l'ouverture de l'onboarding
-            AnalyticsManager.logScreenView("Onboarding", "OnboardingActivity")
+            AnalyticsService.getInstance(ShooptApplication.instance).trackOnboardingStart()
+            AnalyticsService.getInstance(ShooptApplication.instance).trackScreenView("Onboarding", "OnboardingActivity")
 
             initViews()
             setupViewPager()
             setupClickListeners()
+
+            // Remplacer onBackPressed() par un callback moderne
+            onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (::viewPager.isInitialized && viewPager.currentItem > 0) {
+                        viewPager.currentItem = viewPager.currentItem - 1
+                    } else {
+                        // Si on est sur la première page, fermer l'activité
+                        finish()
+                    }
+                }
+            })
 
         } catch (e: Exception) {
             CrashlyticsManager.log("Erreur dans OnboardingActivity.onCreate: ${e.message}")
@@ -88,13 +101,30 @@ class OnboardingActivity : AppCompatActivity() {
                 updatePageIndicators(position)
 
                 // Analytics pour le changement de page
-                AnalyticsManager.logUserAction(
-                    "onboarding_page_view",
-                    "navigation",
-                    mapOf("page_index" to position.toString())
-                )
+                val pageParams = Bundle().apply {
+                    putString("action", "onboarding_page_view")
+                    putString("category", "navigation")
+                    putString("page_index", position.toString())
+                }
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", pageParams)
+
+                // Utiliser la méthode dédiée pour tracker l'étape d'onboarding
+                try {
+                    val stepName = resources.getString(onboardingItems[position].titleResId)
+                    AnalyticsService.getInstance(ShooptApplication.instance).trackOnboardingStep(stepName)
+                } catch (e: Exception) {
+                    CrashlyticsManager.log("Erreur lors du tracking de l'étape d'onboarding: ${e.message}")
+                }
             }
         })
+
+        // Tracker explicitement la première étape (ViewPager peut ne pas déclencher onPageSelected au démarrage)
+        try {
+            val initialStepName = resources.getString(onboardingItems[0].titleResId)
+            AnalyticsService.getInstance(ShooptApplication.instance).trackOnboardingStep(initialStepName)
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors du tracking de l'étape initiale d'onboarding: ${e.message}")
+        }
     }
 
     private fun setupPageIndicators() {
@@ -132,7 +162,16 @@ class OnboardingActivity : AppCompatActivity() {
 
     private fun setupClickListeners() {
         skipButton.setOnClickListener {
-            AnalyticsManager.logUserAction("onboarding_skip", "button_click", null)
+            // Tracker l'étape courante avant de quitter
+            try {
+                val currentItem = viewPager.currentItem
+                val stepName = resources.getString(onboardingItems[currentItem].titleResId)
+                AnalyticsService.getInstance(ShooptApplication.instance).trackOnboardingStep(stepName)
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur lors du tracking de l'étape d'onboarding sur Skip: ${e.message}")
+            }
+
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", Bundle().apply { putString("action","onboarding_skip"); putString("category","button_click") })
             finishOnboarding()
         }
 
@@ -140,16 +179,22 @@ class OnboardingActivity : AppCompatActivity() {
             val currentItem = viewPager.currentItem
             if (currentItem < onboardingItems.size - 1) {
                 viewPager.currentItem = currentItem + 1
-                AnalyticsManager.logUserAction(
-                    "onboarding_next",
-                    "button_click",
-                    mapOf("from_page" to currentItem.toString())
-                )
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", Bundle().apply { putString("action","onboarding_next"); putString("category","button_click"); putString("from_page", currentItem.toString()) })
+
+                // Tracker l'étape destination lorsque l'utilisateur clique sur Next
+                try {
+                    val newIndex = currentItem + 1
+                    val stepName = resources.getString(onboardingItems[newIndex].titleResId)
+                    AnalyticsService.getInstance(ShooptApplication.instance).trackOnboardingStep(stepName)
+                } catch (e: Exception) {
+                    CrashlyticsManager.log("Erreur lors du tracking de l'étape d'onboarding après Next: ${e.message}")
+                }
             }
         }
 
         getStartedButton.setOnClickListener {
-            AnalyticsManager.logUserAction("onboarding_complete", "button_click", null)
+            // Utiliser la méthode dédiée de l'AnalyticsService pour marquer la complétion
+            AnalyticsService.getInstance(ShooptApplication.instance).trackOnboardingComplete()
             finishOnboarding()
         }
     }
@@ -173,8 +218,8 @@ class OnboardingActivity : AppCompatActivity() {
             // Marquer l'introduction comme terminée
             UserPreferences.setOnboardingCompleted(this, true)
 
-            // Analytics pour la fin de l'onboarding
-            AnalyticsManager.logUserAction("onboarding_introduction_finished", "completion", null)
+            // Analytics pour la fin de l'onboarding (méthode centralisée)
+            AnalyticsService.getInstance(ShooptApplication.instance).trackOnboardingComplete()
 
             // Vérifier si c'est un replay depuis les paramètres
             val isReplay = intent.getBooleanExtra("is_replay", false)
@@ -222,13 +267,4 @@ class OnboardingActivity : AppCompatActivity() {
         finish()
     }
 
-    override fun onBackPressed() {
-        if (viewPager.currentItem == 0) {
-            // Si on est sur la première page, on ferme l'app
-            super.onBackPressed()
-        } else {
-            // Sinon on revient à la page précédente
-            viewPager.currentItem = viewPager.currentItem - 1
-        }
-    }
 }

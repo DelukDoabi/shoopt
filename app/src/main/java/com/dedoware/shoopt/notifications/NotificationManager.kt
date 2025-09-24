@@ -1,5 +1,6 @@
 package com.dedoware.shoopt.notifications
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager as AndroidNotificationManager
 import android.app.PendingIntent
@@ -8,8 +9,10 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.activities.MainActivity
-import com.dedoware.shoopt.utils.AnalyticsManager
+import com.dedoware.shoopt.ShooptApplication
+import com.dedoware.shoopt.analytics.AnalyticsService
 
+@SuppressLint("StaticFieldLeak")
 class NotificationManager private constructor(private val context: Context) {
 
     companion object {
@@ -82,11 +85,19 @@ class NotificationManager private constructor(private val context: Context) {
         notificationManager.notify(NOTIFICATION_ID, notification)
 
         // Analytics pour tracking des notifications affichées
-        AnalyticsManager.trackEvent("notification_displayed", mapOf(
-            "type" to "shopping_reminder",
-            "day" to "saturday",
-            "message_type" to "saturday_9am"
-        ))
+        val bundle = android.os.Bundle().apply {
+            putString("type", "shopping_reminder")
+            putString("day", "saturday")
+            putString("message_type", "saturday_9am")
+        }
+
+        // Utiliser la méthode dédiée pour tracker la réception/affichage
+        try {
+            AnalyticsService.getInstance(ShooptApplication.instance).trackNotificationReceived("shopping_reminder")
+        } catch (_: Exception) {
+            // Fallback: log brut si le track dédié échoue
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_displayed", bundle)
+        }
     }
 
     /**
@@ -123,10 +134,16 @@ class NotificationManager private constructor(private val context: Context) {
 
         notificationManager.notify(NOTIFICATION_ID, notification)
 
-        AnalyticsManager.trackEvent("notification_displayed", mapOf(
-            "type" to "custom_reminder",
-            "title" to title
-        ))
+        val bundle = android.os.Bundle().apply {
+            putString("type", "custom_reminder")
+            putString("title", title)
+        }
+
+        try {
+            AnalyticsService.getInstance(ShooptApplication.instance).trackNotificationReceived("custom_reminder")
+        } catch (_: Exception) {
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("notification_displayed", bundle)
+        }
     }
 
     /**

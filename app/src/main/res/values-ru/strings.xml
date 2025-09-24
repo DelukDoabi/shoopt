@@ -497,4 +497,9 @@
     <string name="notifications_disabled_message">Уведомления выключены. Ты не получишь напоминания о покупках.</string>
     <string name="notifications_permission_required">Уведомления необходимы, чтобы получать напоминания о покупках.</string>
     <string name="notifications_enabled_message">Отлично! Теперь ты будешь получать напоминания о покупках.</string>
+    <string name="consent_dialog_title">Сделай свой опыт с Shoopt лучше</string>
+    <string name="settings_analytics_title">Сбор данных об использовании</string>
+    <string name="settings_analytics_summary">Разреши Shoopt собирать анонимные данные о твоём использовании приложения</string>
+    <string name="consent_dialog_message_informative">Аналитика включена по умолчанию, чтобы сделать Shoopt лучше. Если ты не хочешь делиться анонимными данными, можно отключить аналитику в настройках в любой момент.</string>
+    <string name="consent_dialog_understood">Понял(а)</string>
 </resources>

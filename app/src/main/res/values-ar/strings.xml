@@ -497,4 +497,9 @@
     <string name="notifications_disabled_message">الإشعارات معطلة. لن تستلم تذكيرات التسوق.</string>
     <string name="notifications_permission_required">الإشعارات ضرورية لتستلم تذكيرات التسوق.</string>
     <string name="notifications_enabled_message">رائع! الآن ستستلم تذكيرات لمشترياتك.</string>
+    <string name="consent_dialog_title">✨ حسّن تجربتك مع Shoopt</string>
+    <string name="settings_analytics_title">جمع بيانات الاستخدام</string>
+    <string name="settings_analytics_summary">اسمح لـ Shoopt بجمع بيانات مجهولة عن كيفية استخدامك للتطبيق</string>
+    <string name="consent_dialog_message_informative">يتم تفعيل التحليلات افتراضيًا للمساعدة في تحسين Shoopt. إذا كنت لا تفضل مشاركة بيانات الاستخدام المجهولة، يمكنك إيقافها في أي وقت من الإعدادات.</string>
+    <string name="consent_dialog_understood">مفهوم</string>
 </resources>

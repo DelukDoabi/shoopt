@@ -5,10 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
 import com.dedoware.shoopt.R
+import com.dedoware.shoopt.analytics.AnalyticsService
+import com.dedoware.shoopt.ShooptApplication
 import com.dedoware.shoopt.ui.settings.CurrencySelectionDialog
-import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.CurrencyManager
 import com.dedoware.shoopt.utils.UserPreferences
@@ -17,6 +19,12 @@ class SettingsActivity : AppCompatActivity() {
 
     private lateinit var userPreferences: UserPreferences
     private lateinit var currencyManager: CurrencyManager
+    private lateinit var analyticsService: AnalyticsService
+
+    // Propriété d'extension pour faciliter l'accès à l'état du consentement analytics
+    private var UserPreferences.isAnalyticsEnabled: Boolean
+        get() = UserPreferences.isAnalyticsEnabled(this@SettingsActivity)
+        set(value) = UserPreferences.setAnalyticsEnabled(this@SettingsActivity, value)
 
     // UI Elements
     private lateinit var themeRadioGroup: RadioGroup
@@ -28,6 +36,7 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var saveButton: ImageButton
     private lateinit var backButton: ImageButton
     private lateinit var replayOnboardingCard: CardView
+    private lateinit var analyticsSwitch: SwitchCompat
 
     override fun onCreate(savedInstanceState: Bundle?) {
         try {
@@ -35,18 +44,20 @@ class SettingsActivity : AppCompatActivity() {
             setContentView(R.layout.activity_settings)
 
             // Suivi de la vue d'écran pour l'analyse
-            AnalyticsManager.logScreenView("settings_screen", "SettingsActivity")
+            AnalyticsService.getInstance(ShooptApplication.instance).trackScreenView("settings_screen", "SettingsActivity")
 
             try {
                 userPreferences = UserPreferences.getInstance(this)
                 currencyManager = CurrencyManager.getInstance(this)
+                analyticsService = AnalyticsService.getInstance(this)
             } catch (e: Exception) {
                 // Analytics: suivre l'erreur d'initialisation des préférences
-                AnalyticsManager.logUserAction(
-                    action = "initialization_error",
-                    category = "settings",
-                    additionalParams = mapOf("component" to "user_preferences")
-                )
+                val initErrParams = Bundle().apply {
+                    putString("action", "initialization_error")
+                    putString("category", "settings")
+                    putString("component", "user_preferences")
+                }
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", initErrParams)
 
                 CrashlyticsManager.log("Erreur lors de l'initialisation des préférences utilisateur: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "settings_user_preferences_init")
@@ -64,11 +75,12 @@ class SettingsActivity : AppCompatActivity() {
                 initializeUiElements()
             } catch (e: Exception) {
                 // Analytics: suivre l'erreur d'initialisation UI
-                AnalyticsManager.logUserAction(
-                    action = "initialization_error",
-                    category = "settings",
-                    additionalParams = mapOf("component" to "ui_elements")
-                )
+                val uiInitErrParams = Bundle().apply {
+                    putString("action", "initialization_error")
+                    putString("category", "settings")
+                    putString("component", "ui_elements")
+                }
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", uiInitErrParams)
 
                 CrashlyticsManager.log("Erreur lors de l'initialisation des éléments UI: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "settings_ui_init")
@@ -84,11 +96,12 @@ class SettingsActivity : AppCompatActivity() {
                 loadCurrentPreferences()
             } catch (e: Exception) {
                 // Analytics: suivre l'erreur de chargement des préférences
-                AnalyticsManager.logUserAction(
-                    action = "initialization_error",
-                    category = "settings",
-                    additionalParams = mapOf("component" to "load_preferences")
-                )
+                val loadPrefErrParams = Bundle().apply {
+                    putString("action", "initialization_error")
+                    putString("category", "settings")
+                    putString("component", "load_preferences")
+                }
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", loadPrefErrParams)
 
                 CrashlyticsManager.log("Erreur lors du chargement des préférences: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "settings_load_preferences")
@@ -104,11 +117,12 @@ class SettingsActivity : AppCompatActivity() {
                 setupListeners()
             } catch (e: Exception) {
                 // Analytics: suivre l'erreur de configuration des listeners
-                AnalyticsManager.logUserAction(
-                    action = "initialization_error",
-                    category = "settings",
-                    additionalParams = mapOf("component" to "setup_listeners")
-                )
+                val setupListenersErrParams = Bundle().apply {
+                    putString("action", "initialization_error")
+                    putString("category", "settings")
+                    putString("component", "setup_listeners")
+                }
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", setupListenersErrParams)
 
                 CrashlyticsManager.log("Erreur lors de la configuration des listeners: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "settings_setup_listeners")
@@ -120,11 +134,12 @@ class SettingsActivity : AppCompatActivity() {
             }
         } catch (e: Exception) {
             // Analytics: suivre les erreurs critiques
-            AnalyticsManager.logUserAction(
-                action = "critical_error",
-                category = "app_initialization",
-                additionalParams = mapOf("activity" to "SettingsActivity")
-            )
+            val criticalErrParams = Bundle().apply {
+                putString("action", "critical_error")
+                putString("category", "app_initialization")
+                putString("activity", "SettingsActivity")
+            }
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", criticalErrParams)
 
             // Capture des erreurs globales dans onCreate
             CrashlyticsManager.log("Erreur globale dans SettingsActivity.onCreate: ${e.message ?: "Message non disponible"}")
@@ -148,27 +163,31 @@ class SettingsActivity : AppCompatActivity() {
             saveButton = findViewById(R.id.save_settings_button)
             backButton = findViewById(R.id.back_IB)
             replayOnboardingCard = findViewById(R.id.replay_onboarding_card)
+            analyticsSwitch = findViewById(R.id.analytics_switch)
 
             // Observer les changements de devise depuis le CurrencyManager
             currencyManager.currentCurrency.observe(this) { currency ->
                 currencyValue.text = "${currency.code} - ${currency.name}"
             }
 
+            // Initialiser l'état du switch d'analytics
+            analyticsSwitch.isChecked = userPreferences.isAnalyticsEnabled
+
             // Analytics: suivre les options disponibles
-            AnalyticsManager.logUserAction(
-                action = "available_options",
-                category = "settings",
-                additionalParams = mapOf(
-                    "theme_options" to 3 // light, dark, system
-                )
-            )
+            val availableOptionsParams = Bundle().apply {
+                putString("action", "available_options")
+                putString("category", "settings")
+                putInt("theme_options", 3)
+            }
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", availableOptionsParams)
         } catch (e: Exception) {
             // Log and handle initialization errors
-            AnalyticsManager.logUserAction(
-                action = "ui_initialization_error",
-                category = "settings",
-                additionalParams = mapOf("error" to (e.message ?: "Unknown error"))
-            )
+            val uiInitErr2Params = Bundle().apply {
+                putString("action", "ui_initialization_error")
+                putString("category", "settings")
+                putString("error", e.message ?: "Unknown error")
+            }
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", uiInitErr2Params)
             CrashlyticsManager.log("UI initialization error: ${e.message ?: "Unknown error"}")
             CrashlyticsManager.logException(e)
             Toast.makeText(this, "Erreur lors de l'initialisation de l'interface", Toast.LENGTH_SHORT).show()
@@ -193,14 +212,13 @@ class SettingsActivity : AppCompatActivity() {
         // La devise est automatiquement mise à jour via l'observer du CurrencyManager
 
         // Analytics: suivre les préférences actuelles chargées
-        AnalyticsManager.logUserAction(
-            action = "current_preferences",
-            category = "settings",
-            additionalParams = mapOf(
-                "theme_mode" to themeMode,
-                "currency" to userPreferences.currency
-            )
-        )
+        val currentPrefParams = Bundle().apply {
+            putString("action", "current_preferences")
+            putString("category", "settings")
+            putString("theme_mode", themeMode)
+            putString("currency", userPreferences.currency)
+        }
+        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", currentPrefParams)
     }
 
     private fun setupListeners() {
@@ -208,28 +226,30 @@ class SettingsActivity : AppCompatActivity() {
         saveButton.setOnClickListener {
             try {
                 // Analytics: suivre le clic sur le bouton de sauvegarde
-                AnalyticsManager.logUserAction(
-                    action = "click",
-                    category = "settings",
-                    additionalParams = mapOf("button" to "save_settings")
-                )
+                val saveClickParams = Bundle().apply {
+                    putString("action", "click")
+                    putString("category", "settings")
+                    putString("button", "save_settings")
+                }
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", saveClickParams)
 
                 val startTime = System.currentTimeMillis()
                 savePreferences()
                 val duration = System.currentTimeMillis() - startTime
 
                 // Analytics: suivre la performance de la sauvegarde
-                AnalyticsManager.logPerformanceEvent("settings_save_performance", duration)
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("settings_save_performance", Bundle().apply { putLong("duration_ms", duration) })
 
                 Toast.makeText(this, R.string.settings_saved, Toast.LENGTH_SHORT).show()
                 finish()
             } catch (e: Exception) {
                 // Analytics: suivre l'échec de sauvegarde
-                AnalyticsManager.logUserAction(
-                    action = "save_error",
-                    category = "settings",
-                    additionalParams = mapOf("error_type" to e.javaClass.simpleName)
-                )
+                val saveErrParams = Bundle().apply {
+                    putString("action", "save_error")
+                    putString("category", "settings")
+                    putString("error_type", e.javaClass.simpleName)
+                }
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", saveErrParams)
 
                 CrashlyticsManager.log("Erreur lors de la sauvegarde des préférences: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "settings_save_button_click")
@@ -243,12 +263,12 @@ class SettingsActivity : AppCompatActivity() {
 
         // Bouton de retour
         backButton.setOnClickListener {
-            // Analytics: suivre le clic sur le bouton de retour
-            AnalyticsManager.logUserAction(
-                action = "click",
-                category = "settings",
-                additionalParams = mapOf("button" to "back")
-            )
+            val backClickParams = Bundle().apply {
+                putString("action", "click")
+                putString("category", "settings")
+                putString("button", "back")
+            }
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", backClickParams)
 
             finish()
         }
@@ -257,25 +277,25 @@ class SettingsActivity : AppCompatActivity() {
         currencyContainer.setOnClickListener {
             try {
                 // Analytics: suivre l'ouverture du dialogue de devise
-                AnalyticsManager.logUserAction(
-                    action = "open_currency_dialog",
-                    category = "settings",
-                    additionalParams = mapOf("current_currency" to userPreferences.currency)
-                )
+                val openCurrencyParams = Bundle().apply {
+                    putString("action", "open_currency_dialog")
+                    putString("category", "settings")
+                    putString("current_currency", userPreferences.currency)
+                }
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", openCurrencyParams)
 
                 val currentCurrency = userPreferences.currency ?: "EUR"
                 val dialog = CurrencySelectionDialog.newInstance(currentCurrency)
                 dialog.setOnCurrencySelectedListener(object : CurrencySelectionDialog.OnCurrencySelectedListener {
                     override fun onCurrencySelected(currencyCode: String) {
                         // Analytics: suivre la sélection de devise
-                        AnalyticsManager.logUserAction(
-                            action = "currency_selected",
-                            category = "settings",
-                            additionalParams = mapOf(
-                                "previous_currency" to userPreferences.currency,
-                                "new_currency" to currencyCode
-                            )
-                        )
+                        val currencySelectedParams = Bundle().apply {
+                            putString("action", "currency_selected")
+                            putString("category", "settings")
+                            putString("previous_currency", userPreferences.currency)
+                            putString("new_currency", currencyCode)
+                        }
+                        AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", currencySelectedParams)
 
                         currencyManager.setCurrency(currencyCode)
                     }
@@ -283,11 +303,12 @@ class SettingsActivity : AppCompatActivity() {
                 dialog.show(supportFragmentManager, "CurrencySelectionDialog")
             } catch (e: Exception) {
                 // Analytics: suivre l'erreur d'ouverture du dialogue
-                AnalyticsManager.logUserAction(
-                    action = "currency_dialog_error",
-                    category = "settings",
-                    additionalParams = mapOf("error_type" to e.javaClass.simpleName)
-                )
+                val currencyDialogErrParams = Bundle().apply {
+                    putString("action", "currency_dialog_error")
+                    putString("category", "settings")
+                    putString("error_type", e.javaClass.simpleName)
+                }
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", currencyDialogErrParams)
 
                 CrashlyticsManager.log("Erreur lors de l'ouverture du dialogue de devise: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.logException(e)
@@ -300,11 +321,12 @@ class SettingsActivity : AppCompatActivity() {
         replayOnboardingCard.setOnClickListener {
             try {
                 // Analytics: suivre le clic sur le bouton de replay onboarding
-                AnalyticsManager.logUserAction(
-                    action = "click",
-                    category = "settings",
-                    additionalParams = mapOf("button" to "replay_onboarding")
-                )
+                val replayParams = Bundle().apply {
+                    putString("action", "click")
+                    putString("category", "settings")
+                    putString("button", "replay_onboarding")
+                }
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", replayParams)
 
                 // RESET COMPLET : Réinitialiser TOUT l'état d'onboarding
                 UserPreferences.setOnboardingCompleted(this, false)
@@ -328,11 +350,12 @@ class SettingsActivity : AppCompatActivity() {
 
             } catch (e: Exception) {
                 // Analytics: suivre l'erreur de replay onboarding
-                AnalyticsManager.logUserAction(
-                    action = "replay_onboarding_error",
-                    category = "settings",
-                    additionalParams = mapOf("error_type" to e.javaClass.simpleName)
-                )
+                val replayErrParams = Bundle().apply {
+                    putString("action", "replay_onboarding_error")
+                    putString("category", "settings")
+                    putString("error_type", e.javaClass.simpleName)
+                }
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", replayErrParams)
 
                 CrashlyticsManager.log("Erreur lors du replay de l'onboarding: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "settings_replay_onboarding")
@@ -352,15 +375,42 @@ class SettingsActivity : AppCompatActivity() {
                 else -> "system"
             }
 
-            // Analytics: suivre le changement de thème
-            AnalyticsManager.logUserAction(
-                action = "change_preference",
-                category = "settings",
-                additionalParams = mapOf(
-                    "preference_type" to "theme",
-                    "selected_value" to selectedTheme
-                )
-            )
+            // Analytics: suivre le changement de thème via la méthode dédiée
+            try {
+                val isDark = selectedTheme == "dark"
+                AnalyticsService.getInstance(ShooptApplication.instance).trackDarkModeToggle(isDark)
+            } catch (e: Exception) {
+                val themeChangeParams = Bundle().apply {
+                    putString("action", "change_preference")
+                    putString("category", "settings")
+                    putString("preference_type", "theme")
+                    putString("selected_value", selectedTheme)
+                }
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", themeChangeParams)
+            }
+        }
+
+        // Listener pour le switch d'analytics
+        analyticsSwitch.setOnCheckedChangeListener { _, isChecked ->
+            userPreferences.isAnalyticsEnabled = isChecked
+            if (isChecked) {
+                // Activer le suivi analytics
+                analyticsService.enableTracking()
+                Toast.makeText(this, "Suivi analytics activé", Toast.LENGTH_SHORT).show()
+            } else {
+                // Désactiver le suivi analytics
+                analyticsService.disableTracking()
+                Toast.makeText(this, "Suivi analytics désactivé", Toast.LENGTH_SHORT).show()
+            }
+
+            // Analytics: suivre le changement de préférence de consentement
+            val consentParams = Bundle().apply {
+                putString("action", "change_consent")
+                putString("category", "settings")
+                putString("consent_type", "analytics")
+                putString("granted", isChecked.toString())
+            }
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", consentParams)
         }
     }
 
@@ -382,28 +432,34 @@ class SettingsActivity : AppCompatActivity() {
             // La devise est automatiquement sauvegardée par le CurrencyManager
 
             // Analytics: suivre les préférences sauvegardées
-            AnalyticsManager.logUserAction(
-                action = "save_preferences",
-                category = "settings",
-                additionalParams = mapOf(
-                    "theme_mode" to themeModeString,
-                    "currency" to userPreferences.currency
-                )
-            )
+            val saveParams = Bundle().apply {
+                putString("action", "save_preferences")
+                putString("category", "settings")
+                putString("theme_mode", themeModeString)
+                putString("currency", userPreferences.currency)
+            }
+            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", saveParams)
+
+            // Track language change (current system language) in a dedicated method
+            try {
+                val language = java.util.Locale.getDefault().language
+                AnalyticsService.getInstance(ShooptApplication.instance).trackLanguageChange(language)
+            } catch (e: Exception) {
+                // Fallback: nothing to do, language tracking is non-critical
+            }
 
             // Application immédiate du thème
             try {
                 userPreferences.applyTheme()
             } catch (e: Exception) {
                 // Analytics: suivre l'échec d'application du thème
-                AnalyticsManager.logUserAction(
-                    action = "theme_application_error",
-                    category = "settings",
-                    additionalParams = mapOf(
-                        "theme_mode" to themeModeString,
-                        "error_type" to e.javaClass.simpleName
-                    )
-                )
+                val themeAppErrParams = Bundle().apply {
+                    putString("action", "theme_application_error")
+                    putString("category", "settings")
+                    putString("theme_mode", themeModeString)
+                    putString("error_type", e.javaClass.simpleName)
+                }
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", themeAppErrParams)
 
                 CrashlyticsManager.log("Erreur lors de l'application du thème: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "settings_apply_theme")
@@ -429,6 +485,6 @@ class SettingsActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         // Suivre le temps passé sur l'écran des paramètres
-        AnalyticsManager.logScreenView("settings_screen", "SettingsActivity")
+        AnalyticsService.getInstance(ShooptApplication.instance).trackScreenView("settings_screen", "SettingsActivity")
     }
 }
