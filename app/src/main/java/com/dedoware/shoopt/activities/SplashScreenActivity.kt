@@ -178,8 +178,8 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback {
         try {
             val packageInfo = packageManager.getPackageInfo(packageName, 0)
             val versionName = packageInfo.versionName
-            val versionText = findViewById<TextView>(R.id.version_text)
-            versionText?.text = getString(R.string.version_format, versionName)
+            val versionText = findViewById<TextView>(R.id.shoopt_version_TV)
+            versionText?.text = "v${versionName}"
         } catch (e: Exception) {
             CrashlyticsManager.log("Erreur lors de l'affichage de la version: ${e.message ?: "Message non disponible"}")
         }
