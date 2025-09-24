@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
+import com.dedoware.shoopt.utils.UpdateCallback
 import com.dedoware.shoopt.utils.UpdateManager
 import com.dedoware.shoopt.utils.UserPreferences
 import com.google.android.play.core.install.model.InstallStatus
@@ -17,7 +18,12 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 
-class SplashScreenActivity : AppCompatActivity() {
+class SplashScreenActivity : AppCompatActivity(), UpdateCallback {
+
+    private var updateCheckComplete = false
+    private var minSplashDurationComplete = false
+    private var updateDialogShowing = false // Variable pour suivre si le dialogue de mise à jour est visible
+    private val MIN_SPLASH_DURATION_MS = 1500L // Durée minimum du splash screen en millisecondes
 
     override fun onCreate(savedInstanceState: Bundle?) {
         try {
@@ -36,10 +42,17 @@ class SplashScreenActivity : AppCompatActivity() {
 
             displayVersion()
 
-            // Vérification des mises à jour disponibles
+            // Initialiser le gestionnaire de mises à jour
+            UpdateManager.init(this)
+
+            // Vérification des mises à jour disponibles avec callback
             checkForUpdates()
 
-            redirectToMainScreen()
+            // Lancer le minuteur pour la durée minimale du splash screen
+            Executors.newSingleThreadScheduledExecutor().schedule({
+                minSplashDurationComplete = true
+                tryToNavigateNext()
+            }, MIN_SPLASH_DURATION_MS, TimeUnit.MILLISECONDS)
         } catch (e: Exception) {
             // Capture des erreurs globales dans onCreate
             CrashlyticsManager.log("Erreur globale dans SplashScreenActivity.onCreate: ${e.message ?: "Message non disponible"}")
@@ -54,13 +67,75 @@ class SplashScreenActivity : AppCompatActivity() {
         }
     }
 
-    // Nouvelle méthode pour vérifier les mises à jour
+    // Nouvelle méthode pour vérifier les mises à jour avec callback
     private fun checkForUpdates() {
         try {
             val rootView = findViewById<View>(android.R.id.content)
-            UpdateManager.checkForUpdate(this, rootView)
+            UpdateManager.checkForUpdate(this, rootView, false, this)
         } catch (e: Exception) {
             CrashlyticsManager.log("Erreur lors de la vérification des mises à jour: ${e.message ?: "Message non disponible"}")
+            // En cas d'erreur, on considère que la vérification est terminée
+            updateCheckComplete = true
+            tryToNavigateNext()
+        }
+    }
+
+    // Callbacks de l'interface UpdateCallback
+    override fun onUpdateCheckComplete() {
+        updateCheckComplete = true
+        // Si aucune mise à jour n'est disponible, on peut continuer
+        tryToNavigateNext()
+    }
+
+    override fun onUpdateAvailable() {
+        // Une mise à jour est disponible et affichée à l'utilisateur
+        updateDialogShowing = true
+        // On ne fait rien d'autre ici, car on attend que l'utilisateur prenne une décision
+        CrashlyticsManager.log("Dialogue de mise à jour affiché à l'utilisateur")
+    }
+
+    override fun onUpdateProcessed(updateAccepted: Boolean) {
+        // L'utilisateur a pris une décision concernant la mise à jour
+        updateCheckComplete = true
+        updateDialogShowing = false
+
+        // Enregistrer l'action dans Analytics
+        try {
+            AnalyticsManager.logUserAction(
+                "update_decision",
+                "update",
+                mapOf("update_accepted" to updateAccepted.toString())
+            )
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de l'enregistrement de la décision de mise à jour: ${e.message ?: "Message non disponible"}")
+        }
+
+        // Naviguer vers l'écran suivant si la durée minimale du splash screen est écoulée
+        tryToNavigateNext()
+    }
+
+    /**
+     * Tente de naviguer vers l'écran suivant si toutes les conditions sont remplies.
+     */
+    private fun tryToNavigateNext() {
+        // On ne navigue vers l'écran suivant que si:
+        // 1. La vérification de mise à jour est terminée
+        // 2. Aucun dialogue de mise à jour n'est actuellement affiché
+        // 3. La durée minimale du splash screen est écoulée
+        // 4. L'activité est toujours active
+        if (updateCheckComplete && !updateDialogShowing && minSplashDurationComplete && !isFinishing && !isDestroyed) {
+            redirectToMainScreen()
+        } else {
+            // Log pour le débogage
+            if (!updateCheckComplete) {
+                CrashlyticsManager.log("Navigation retardée: vérification de mise à jour en cours")
+            } else if (updateDialogShowing) {
+                CrashlyticsManager.log("Navigation retardée: dialogue de mise à jour affiché")
+            } else if (!minSplashDurationComplete) {
+                CrashlyticsManager.log("Navigation retardée: durée minimale du splash screen non atteinte")
+            } else {
+                CrashlyticsManager.log("Navigation retardée: activité en cours de fermeture")
+            }
         }
     }
 
@@ -93,15 +168,31 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private fun forceFullScreen() {
-
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
     }
 
+    private fun displayVersion() {
+        try {
+            val packageInfo = packageManager.getPackageInfo(packageName, 0)
+            val versionName = packageInfo.versionName
+            val versionText = findViewById<TextView>(R.id.version_text)
+            versionText?.text = getString(R.string.version_format, versionName)
+        } catch (e: Exception) {
+            CrashlyticsManager.log("Erreur lors de l'affichage de la version: ${e.message ?: "Message non disponible"}")
+        }
+    }
+
     private fun redirectToMainScreen() {
         try {
+            // Double vérification pour s'assurer qu'aucun dialogue de mise à jour n'est affiché
+            if (updateDialogShowing) {
+                CrashlyticsManager.log("Tentative de redirection bloquée: dialogue de mise à jour toujours affiché")
+                return
+            }
+
             val currentUser = FirebaseAuth.getInstance().currentUser
 
             // Vérifier si l'onboarding a été complété
@@ -128,53 +219,20 @@ class SplashScreenActivity : AppCompatActivity() {
                 CrashlyticsManager.log("Erreur lors de l'enregistrement de l'événement Analytics: ${e.message ?: "Message non disponible"}")
             }
 
-            val executor = Executors.newSingleThreadScheduledExecutor()
-            executor.schedule({
-                try {
-                    val intent = Intent(this, targetActivity)
-                    startActivity(intent)
-                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
-                    finish()
-                } catch (e: Exception) {
-                    // Capture des erreurs lors de la redirection
-                    CrashlyticsManager.log("Erreur lors de la redirection vers l'écran principal: ${e.message ?: "Message non disponible"}")
-                    CrashlyticsManager.setCustomKey("error_location", "redirect_main_screen")
-                    CrashlyticsManager.setCustomKey("target_activity", targetActivity.simpleName)
-                    CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
-                    CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
-                    CrashlyticsManager.logException(e)
-
-                    // Tentative de récupération en fermant simplement l'activité
-                    finish()
-                }
-            }, 2000, TimeUnit.MILLISECONDS)
+            // Transition directe sans délai supplémentaire car nous avons déjà attendu
+            // que l'utilisateur prenne une décision concernant la mise à jour
+            val intent = Intent(this, targetActivity)
+            startActivity(intent)
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+            finish()
         } catch (e: Exception) {
-            // Capture des erreurs lors de la vérification de l'état de l'utilisateur ou la création de l'executor
-            CrashlyticsManager.log("Erreur lors de la préparation de la redirection: ${e.message ?: "Message non disponible"}")
-            CrashlyticsManager.setCustomKey("error_location", "prepare_redirection")
-            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
-            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
+            // Capture des erreurs lors de la redirection
+            CrashlyticsManager.log("Erreur lors de la redirection vers l'écran principal: ${e.message ?: "Message non disponible"}")
+            CrashlyticsManager.setCustomKey("error_location", "redirect_main_screen")
             CrashlyticsManager.logException(e)
 
-            // Redirection vers l'écran de connexion en cas d'erreur
-            redirectToLoginOnError()
-        }
-    }
-
-    private fun displayVersion() {
-        try {
-            val versionName = packageManager.getPackageInfo(packageName, 0).versionName
-            val versionTextView: TextView = findViewById(R.id.shoopt_version_TV)
-            versionTextView.text = "Version: $versionName"
-        } catch (e: Exception) {
-            // Capture des erreurs lors de l'affichage de la version
-            CrashlyticsManager.log("Erreur lors de l'affichage de la version: ${e.message ?: "Message non disponible"}")
-            CrashlyticsManager.setCustomKey("error_location", "display_version")
-            CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
-            CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
-            CrashlyticsManager.logException(e)
-
-            // On ne fait rien de particulier, ce n'est pas une erreur critique
+            // Tentative de récupération en fermant simplement l'activité
+            finish()
         }
     }
 
@@ -182,6 +240,9 @@ class SplashScreenActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == UpdateManager.UPDATE_REQUEST_CODE) {
+            // Rétablir l'état du dialogue de mise à jour
+            updateDialogShowing = false
+
             when (resultCode) {
                 InstallStatus.FAILED -> {
                     // La mise à jour a échoué
@@ -195,6 +256,10 @@ class SplashScreenActivity : AppCompatActivity() {
                     AnalyticsManager.logEvent("update_canceled", Bundle())
                 }
             }
+
+            // Essayer de naviguer après la gestion du résultat
+            updateCheckComplete = true
+            tryToNavigateNext()
         }
     }
 }
