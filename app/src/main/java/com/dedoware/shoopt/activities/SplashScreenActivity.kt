@@ -7,6 +7,7 @@ import android.view.WindowManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.dedoware.shoopt.R
+import com.dedoware.shoopt.notifications.NotificationPermissionManager
 import com.dedoware.shoopt.utils.AnalyticsManager
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.UpdateCallback
@@ -24,12 +25,16 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback {
     private var minSplashDurationComplete = false
     private var updateDialogShowing = false // Variable pour suivre si le dialogue de mise à jour est visible
     private val MIN_SPLASH_DURATION_MS = 1500L // Durée minimum du splash screen en millisecondes
+    private lateinit var notificationPermissionManager: NotificationPermissionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         try {
             super.onCreate(savedInstanceState)
 
             setContentView(R.layout.splash_screen)
+
+            // Initialisation du gestionnaire de permissions de notification
+            notificationPermissionManager = NotificationPermissionManager.getInstance(this)
 
             // Enregistrement de la vue de l'écran de démarrage dans Analytics
             try {
@@ -234,6 +239,27 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback {
             // Tentative de récupération en fermant simplement l'activité
             finish()
         }
+    }
+
+    private fun navigateToNextScreen() {
+        // La vérification des notifications se fera dans MainActivity et non ici
+        // pour éviter que l'utilisateur ne soit bloqué au SplashScreen
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            // L'utilisateur est déjà connecté, on le redirige vers le MainActivity
+            startActivity(Intent(this, MainActivity::class.java))
+        } else {
+            // L'utilisateur n'est pas connecté, on le redirige vers le LoginActivity
+            val preferences = UserPreferences.getInstance(this)
+            if (UserPreferences.isFirstLaunch(this)) {
+                // Si c'est la première utilisation, on redirige vers l'onboarding
+                startActivity(Intent(this, OnboardingActivity::class.java))
+                UserPreferences.setFirstLaunch(this, false)
+            } else {
+                // Sinon vers la page de login
+                startActivity(Intent(this, LoginActivity::class.java))
+            }
+        }
+        finish() // On termine l'activité pour qu'elle ne reste pas en arrière-plan
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -489,5 +489,12 @@
     <string name="admin_code_hint">Введите код администратора</string>
     <string name="admin_mode_enabled">Режим администратора включен</string>
     <string name="admin_invalid_code">Неверный код</string>
-
+    <string name="notifications_permission_title">Включи уведомления</string>
+    <string name="notifications_permission_message">Чтобы ты не забывал о покупках, Shoopt должен отправлять тебе уведомления. Включить их?</string>
+    <string name="notifications_permission_positive">Включить</string>
+    <string name="notifications_permission_negative">Позже</string>
+    <string name="notifications_permission_settings">Настройки</string>
+    <string name="notifications_disabled_message">Уведомления выключены. Ты не получишь напоминания о покупках.</string>
+    <string name="notifications_permission_required">Уведомления необходимы, чтобы получать напоминания о покупках.</string>
+    <string name="notifications_enabled_message">Отлично! Теперь ты будешь получать напоминания о покупках.</string>
 </resources>

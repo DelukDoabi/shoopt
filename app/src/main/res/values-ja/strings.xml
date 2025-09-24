@@ -490,5 +490,12 @@
     <string name="admin_code_hint">管理者コードを入力</string>
     <string name="admin_mode_enabled">管理者モード有効</string>
     <string name="admin_invalid_code">無効なコード</string>
-
+    <string name="notifications_permission_title">通知をオンにしよう</string>
+    <string name="notifications_permission_message">買い物を忘れないように、Shooptから通知を送る必要があります。オンにしますか？</string>
+    <string name="notifications_permission_positive">オンにする</string>
+    <string name="notifications_permission_negative">あとで</string>
+    <string name="notifications_permission_settings">設定</string>
+    <string name="notifications_disabled_message">通知はオフになっています。買い物リマインダーは届きません。</string>
+    <string name="notifications_permission_required">買い物リマインダーを受け取るには通知が必要です。</string>
+    <string name="notifications_enabled_message">いいね！これから買い物リマインダーが届きます。</string>
 </resources>

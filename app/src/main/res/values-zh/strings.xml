@@ -488,5 +488,12 @@
     <string name="admin_code_hint">输入管理员代码</string>
     <string name="admin_mode_enabled">管理员模式已启用</string>
     <string name="admin_invalid_code">无效的代码</string>
-
+    <string name="notifications_permission_title">开启通知</string>
+    <string name="notifications_permission_message">为了不让你忘记购物，Shoopt需要给你发送通知。要开启吗？</string>
+    <string name="notifications_permission_positive">开启</string>
+    <string name="notifications_permission_negative">稍后</string>
+    <string name="notifications_permission_settings">设置</string>
+    <string name="notifications_disabled_message">通知已关闭。你将不会收到购物提醒。</string>
+    <string name="notifications_permission_required">需要开启通知才能收到购物提醒。</string>
+    <string name="notifications_enabled_message">太棒了！你现在会收到购物提醒。</string>
 </resources>

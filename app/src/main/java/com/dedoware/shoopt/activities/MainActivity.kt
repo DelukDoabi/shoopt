@@ -13,6 +13,7 @@ import androidx.activity.result.ActivityResult
 import androidx.appcompat.app.AppCompatActivity
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.ShooptApplication
+import com.dedoware.shoopt.notifications.NotificationPermissionManager
 import com.dedoware.shoopt.persistence.FirebaseProductRepository
 import com.dedoware.shoopt.persistence.IProductRepository
 import com.dedoware.shoopt.persistence.LocalProductRepository
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var trackShoppingTextView: TextView
     private lateinit var analyseTextView: TextView
     private lateinit var userPreferences: UserPreferences
+    private lateinit var notificationPermissionManager: NotificationPermissionManager
 
     // Gestionnaire des célébrations d'achievements
     private lateinit var achievementCelebrationManager: AchievementCelebrationManager
@@ -62,6 +64,9 @@ class MainActivity : AppCompatActivity() {
             // Initialiser et appliquer les préférences utilisateur
             userPreferences = UserPreferences.getInstance(this)
             userPreferences.applyTheme()
+
+            // Initialiser le gestionnaire de permissions des notifications
+            notificationPermissionManager = NotificationPermissionManager.getInstance(this)
 
             setContentView(R.layout.activity_main)
 
@@ -97,6 +102,12 @@ class MainActivity : AppCompatActivity() {
                 CrashlyticsManager.setCustomKey("exception_class", e.javaClass.name)
                 CrashlyticsManager.setCustomKey("exception_message", e.message ?: "Message non disponible")
                 CrashlyticsManager.logException(e)
+            }
+
+            // Différer la vérification des permissions de notification pour laisser l'interface se charger
+            findViewById<View>(android.R.id.content).post {
+                // Vérifier si les notifications sont activées
+                notificationPermissionManager.checkNotificationPermission(this)
             }
 
             // Configuration du menu burger
@@ -165,6 +176,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+
+        // Vérifier si les notifications sont activées après retour des paramètres
+        if (::notificationPermissionManager.isInitialized) {
+            notificationPermissionManager.checkNotificationStatusAfterSettings(this)
+        }
+
         // Vérifier si une mise à jour est en attente d'installation
         try {
             val rootView = findViewById<View>(android.R.id.content)

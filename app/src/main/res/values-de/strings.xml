@@ -484,5 +484,12 @@
     <string name="admin_code_hint">Admin-Code eingeben</string>
     <string name="admin_mode_enabled">Administratormodus aktiviert</string>
     <string name="admin_invalid_code">Ungültiger Code</string>
-
+    <string name="notifications_permission_title">Benachrichtigungen aktivieren</string>
+    <string name="notifications_permission_message">Damit du deine Einkäufe nie vergisst, braucht Shoopt die Erlaubnis, dir Benachrichtigungen zu senden. Möchtest du sie aktivieren?</string>
+    <string name="notifications_permission_positive">Aktivieren</string>
+    <string name="notifications_permission_negative">Später</string>
+    <string name="notifications_permission_settings">Einstellungen</string>
+    <string name="notifications_disabled_message">Benachrichtigungen sind deaktiviert. Du erhältst keine Einkaufserinnerungen.</string>
+    <string name="notifications_permission_required">Benachrichtigungen sind notwendig, um Einkaufserinnerungen zu bekommen.</string>
+    <string name="notifications_enabled_message">Super! Ab jetzt bekommst du Einkaufserinnerungen.</string>
 </resources>

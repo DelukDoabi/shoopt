@@ -488,5 +488,12 @@
     <string name="admin_code_hint">관리자 코드를 입력하세요</string>
     <string name="admin_mode_enabled">관리자 모드 활성화됨</string>
     <string name="admin_invalid_code">잘못된 코드</string>
-
+    <string name="notifications_permission_title">알림 켜기</string>
+    <string name="notifications_permission_message">장보기를 잊지 않도록 Shoopt이 알림을 보내야 해요. 지금 켤까요?</string>
+    <string name="notifications_permission_positive">켜기</string>
+    <string name="notifications_permission_negative">나중에</string>
+    <string name="notifications_permission_settings">설정</string>
+    <string name="notifications_disabled_message">알림이 꺼져 있어요. 장보기 알림을 받지 못해요.</string>
+    <string name="notifications_permission_required">장보기 알림을 받으려면 알림이 필요해요.</string>
+    <string name="notifications_enabled_message">좋아요! 이제 장보기 알림을 받을 수 있어요.</string>
 </resources>

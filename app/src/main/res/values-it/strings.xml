@@ -490,5 +490,12 @@
     <string name="admin_code_hint">Inserisci il codice admin</string>
     <string name="admin_mode_enabled">Modalità amministratore attivata</string>
     <string name="admin_invalid_code">Codice non valido</string>
-
+    <string name="notifications_permission_title">Attiva le notifiche</string>
+    <string name="notifications_permission_message">Per non dimenticare mai la spesa, Shoopt deve inviarti notifiche. Vuoi attivarle?</string>
+    <string name="notifications_permission_positive">Attiva</string>
+    <string name="notifications_permission_negative">Più tardi</string>
+    <string name="notifications_permission_settings">Impostazioni</string>
+    <string name="notifications_disabled_message">Le notifiche sono disattivate. Non riceverai promemoria per la spesa.</string>
+    <string name="notifications_permission_required">Le notifiche sono necessarie per ricevere i promemoria della spesa.</string>
+    <string name="notifications_enabled_message">Perfetto! Ora riceverai i promemoria della spesa.</string>
 </resources>

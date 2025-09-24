@@ -12,6 +12,7 @@ class UserPreferences private constructor(context: Context) {
         private const val KEY_ONBOARDING_COMPLETED = "onboarding_completed"
         private const val KEY_ONBOARDING_VERSION = "onboarding_version"
         private const val CURRENT_ONBOARDING_VERSION = 1 // Incrémenter quand l'onboarding change
+        private const val KEY_FIRST_LAUNCH = "is_first_launch"
 
         // Spotlight system constants
         private const val KEY_SPOTLIGHT_PREFIX = "spotlight_seen_"
@@ -57,6 +58,29 @@ class UserPreferences private constructor(context: Context) {
             return INSTANCE ?: synchronized(this) {
                 INSTANCE ?: UserPreferences(context.applicationContext).also { INSTANCE = it }
             }
+        }
+
+        // Méthode générique pour récupérer une préférence booléenne
+        fun getBooleanPreference(context: Context, key: String, defaultValue: Boolean): Boolean {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            return prefs.getBoolean(key, defaultValue)
+        }
+
+        // Méthode générique pour définir une préférence booléenne
+        fun setBooleanPreference(context: Context, key: String, value: Boolean) {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            prefs.edit().putBoolean(key, value).apply()
+        }
+
+        // Méthodes pour la gestion du premier lancement
+        fun isFirstLaunch(context: Context): Boolean {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            return prefs.getBoolean(KEY_FIRST_LAUNCH, true)
+        }
+
+        fun setFirstLaunch(context: Context, isFirstLaunch: Boolean) {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            prefs.edit().putBoolean(KEY_FIRST_LAUNCH, isFirstLaunch).apply()
         }
 
         // Nouvelle méthode statique pour l'onboarding

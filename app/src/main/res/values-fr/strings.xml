@@ -517,4 +517,12 @@
     <string name="admin_code_hint">Entrez le code admin</string>
     <string name="admin_mode_enabled">Mode administrateur activé</string>
     <string name="admin_invalid_code">Code invalide</string>
+    <string name="notifications_permission_title">Active les notifications</string>
+    <string name="notifications_permission_message">Pour ne jamais oublier tes courses, Shoopt a besoin de t’envoyer des notifications. Veux-tu les activer ?</string>
+    <string name="notifications_permission_positive">Activer</string>
+    <string name="notifications_permission_negative">Plus tard</string>
+    <string name="notifications_permission_settings">Paramètres</string>
+    <string name="notifications_disabled_message">Les notifications sont désactivées. Tu ne recevras pas tes rappels de courses.</string>
+    <string name="notifications_permission_required">Les notifications sont nécessaires pour recevoir tes rappels de courses.</string>
+    <string name="notifications_enabled_message">Super ! Tu recevras maintenant tes rappels de courses.</string>
 </resources>
