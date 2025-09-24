@@ -1,12 +1,14 @@
 package com.dedoware.shoopt.notifications
 
 import android.app.Activity
-import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
 import android.net.Uri
+import android.view.LayoutInflater
+import android.widget.CheckBox
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
@@ -55,44 +57,57 @@ class NotificationPermissionManager private constructor(private val context: Con
     }
 
     /**
-     * Affiche un dialogue invitant l'utilisateur à activer les notifications
+     * Affiche un dialogue personnalisé invitant l'utilisateur à activer les notifications
      */
     private fun showNotificationPermissionDialog(activity: Activity) {
-        val builder = AlertDialog.Builder(activity)
-            .setTitle(R.string.notifications_permission_title)
-            .setMessage(R.string.notifications_permission_message)
-            .setPositiveButton(R.string.notifications_permission_positive) { _, _ ->
-                // Redirige vers les paramètres de l'application
-                openNotificationSettings(activity)
+        // Création du dialogue avec notre layout personnalisé
+        val dialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_notification_permission, null)
+        val dialog = Dialog(activity)
 
-                // Analytique pour suivre l'acceptation de l'utilisateur
-                AnalyticsManager.trackEvent("notification_permission_accepted", mapOf(
-                    "source" to "dialog",
-                    "app_version" to getAppVersion(context)
-                ))
-            }
-            .setNegativeButton(R.string.notifications_permission_negative) { dialog, _ ->
-                dialog.dismiss()
+        // Configuration du dialogue
+        dialog.setContentView(dialogView)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-                // Analytique pour suivre le refus de l'utilisateur
-                AnalyticsManager.trackEvent("notification_permission_declined", mapOf(
-                    "source" to "dialog",
-                    "app_version" to getAppVersion(context)
-                ))
-            }
+        // Récupération des éléments du dialogue
+        val btnAccept = dialogView.findViewById<android.widget.Button>(R.id.btn_accept)
+        val btnDecline = dialogView.findViewById<android.widget.Button>(R.id.btn_decline)
+        val dontAskCheckbox = dialogView.findViewById<CheckBox>(R.id.dont_ask_again_checkbox)
 
-        // Ajoute une case à cocher "Ne plus me demander"
-        builder.setNeutralButton(context.getString(R.string.dont_show_again)) { dialog, _ ->
-            UserPreferences.setBooleanPreference(context, PREF_DONT_ASK_NOTIFICATIONS, true)
-            dialog.dismiss()
+        // Configuration des boutons
+        btnAccept.setOnClickListener {
+            // Redirige vers les paramètres de l'application
+            openNotificationSettings(activity)
 
-            // Analytique pour suivre le choix de ne plus voir la demande
-            AnalyticsManager.trackEvent("notification_permission_dont_ask", mapOf(
+            // Analytique pour suivre l'acceptation de l'utilisateur
+            AnalyticsManager.trackEvent("notification_permission_accepted", mapOf(
+                "source" to "dialog",
                 "app_version" to getAppVersion(context)
             ))
+
+            dialog.dismiss()
         }
 
-        builder.create().show()
+        btnDecline.setOnClickListener {
+            // Analytique pour suivre le refus de l'utilisateur
+            AnalyticsManager.trackEvent("notification_permission_declined", mapOf(
+                "source" to "dialog",
+                "app_version" to getAppVersion(context)
+            ))
+
+            // Sauvegarde du choix "ne plus demander" si coché
+            if (dontAskCheckbox.isChecked) {
+                UserPreferences.setBooleanPreference(context, PREF_DONT_ASK_NOTIFICATIONS, true)
+
+                // Analytique pour suivre le choix de ne plus voir la demande
+                AnalyticsManager.trackEvent("notification_permission_dont_ask", mapOf(
+                    "app_version" to getAppVersion(context)
+                ))
+            }
+
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     /**
