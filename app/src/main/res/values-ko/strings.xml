@@ -501,4 +501,8 @@
     <string name="settings_analytics_summary">Shoopt가 네 앱 사용에 대한 익명 데이터를 수집하도록 허용하기</string>
     <string name="consent_dialog_message_informative">Shoopt를 개선하기 위해 기본적으로 분석 기능이 켜져 있어. 익명 데이터를 공유하기 싫다면, 설정에서 언제든지 끌 수 있어.</string>
     <string name="consent_dialog_understood">알겠어</string>
+    <string name="in_app_review_title">Shoopt 마음에 들어?</string>
+    <string name="in_app_review_message">플레이스토어에서 평가를 남겨줘. 다른 사람들이 앱을 발견하는 데 큰 도움이 돼.</string>
+    <string name="in_app_review_positive">리뷰 남기기</string>
+    <string name="in_app_review_negative">나중에</string>
 </resources>

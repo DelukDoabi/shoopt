@@ -34,6 +34,7 @@ class AdminManager private constructor(private val context: Context) {
         // Configuration Firebase Remote Config
         private const val REMOTE_CONFIG_ADMIN_EMAILS = "admin_emails"
         private const val REMOTE_CONFIG_ADMIN_ENABLED = "admin_features_enabled"
+        private const val REMOTE_CONFIG_IN_APP_REVIEW = "in_app_review_enabled"
 
         @Volatile
         private var INSTANCE: AdminManager? = null
@@ -67,6 +68,7 @@ class AdminManager private constructor(private val context: Context) {
         val defaults = mapOf(
             REMOTE_CONFIG_ADMIN_EMAILS to "", // Liste d'emails séparés par des virgules
             REMOTE_CONFIG_ADMIN_ENABLED to true
+            , REMOTE_CONFIG_IN_APP_REVIEW to true
         )
         remoteConfig.setDefaultsAsync(defaults)
 

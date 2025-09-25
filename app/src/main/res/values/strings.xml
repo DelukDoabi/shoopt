@@ -439,4 +439,8 @@
     <string name="consent_dialog_understood">Understood</string>
     <string name="settings_analytics_title">Usage data collection</string>
     <string name="settings_analytics_summary">Allow Shoopt to collect anonymous data about how you use the app</string>
+    <string name="in_app_review_title">Do you like Shoopt?</string>
+    <string name="in_app_review_message">Take a few seconds to leave us a rating on the Play Store. It helps others discover the app.</string>
+    <string name="in_app_review_positive">Leave a review</string>
+    <string name="in_app_review_negative">Not now</string>
 </resources>

@@ -530,4 +530,8 @@
     <string name="settings_analytics_summary">Autorise Shoopt à collecter des données anonymes sur ton utilisation de l’appli</string>
     <string name="consent_dialog_message_informative">Les statistiques sont activées par défaut pour nous aider à améliorer Shoopt. Si tu préfères ne pas partager de données anonymes, tu peux désactiver cette option à tout moment dans les paramètres.</string>
     <string name="consent_dialog_understood">J’ai compris</string>
+    <string name="in_app_review_title">Tu aimes Shoopt ?</string>
+    <string name="in_app_review_message">Prends quelques secondes pour nous laisser une note sur le Play Store. Ça aide d’autres personnes à découvrir l’appli.</string>
+    <string name="in_app_review_positive">Donner un avis</string>
+    <string name="in_app_review_negative">Pas maintenant</string>
 </resources>

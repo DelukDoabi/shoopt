@@ -497,4 +497,8 @@
     <string name="settings_analytics_summary">Erlaube Shoopt, anonyme Daten über deine App-Nutzung zu sammeln</string>
     <string name="consent_dialog_message_informative">Analytics sind standardmäßig aktiviert, um Shoopt zu verbessern. Wenn du keine anonymen Nutzungsdaten teilen möchtest, kannst du Analytics jederzeit in den Einstellungen deaktivieren.</string>
     <string name="consent_dialog_understood">Verstanden</string>
+    <string name="in_app_review_title">Magst du Shoopt?</string>
+    <string name="in_app_review_message">Nimm dir ein paar Sekunden Zeit, um uns im Play Store zu bewerten. So können andere die App leichter entdecken.</string>
+    <string name="in_app_review_positive">Bewertung abgeben</string>
+    <string name="in_app_review_negative">Nicht jetzt</string>
 </resources>

@@ -338,6 +338,15 @@ class SplashScreenActivity : AppCompatActivity(), UpdateCallback, AnalyticsConse
             // Transition directe sans délai supplémentaire car nous avons déjà attendu
             // que l'utilisateur prenne une décision concernant la mise à jour
             val intent = Intent(this, targetActivity)
+
+            // Marquer que l'application a déjà été lancée au moins une fois
+            // (corrige le cas où la méthode isFirstLaunch restait toujours true)
+            try {
+                UserPreferences.setFirstLaunch(this, false)
+            } catch (e: Exception) {
+                CrashlyticsManager.log("Erreur en marquant le premier lancement: ${e.message ?: "null"}")
+            }
+
             startActivity(intent)
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
             finish()

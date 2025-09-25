@@ -502,4 +502,8 @@
     <string name="settings_analytics_summary">Разреши Shoopt собирать анонимные данные о твоём использовании приложения</string>
     <string name="consent_dialog_message_informative">Аналитика включена по умолчанию, чтобы сделать Shoopt лучше. Если ты не хочешь делиться анонимными данными, можно отключить аналитику в настройках в любой момент.</string>
     <string name="consent_dialog_understood">Понял(а)</string>
+    <string name="in_app_review_title">Тебе нравится Shoopt?</string>
+    <string name="in_app_review_message">Потрать пару секунд, чтобы оставить нам оценку в Play Store. Это поможет другим узнать о приложении.</string>
+    <string name="in_app_review_positive">Оставить отзыв</string>
+    <string name="in_app_review_negative">Не сейчас</string>
 </resources>

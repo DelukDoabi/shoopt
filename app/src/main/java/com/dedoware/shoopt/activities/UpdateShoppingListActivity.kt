@@ -51,6 +51,7 @@ import com.dedoware.shoopt.extensions.createSpotlightItem
 import com.dedoware.shoopt.extensions.isSpotlightAvailable
 import com.dedoware.shoopt.models.SpotlightShape
 import com.google.android.material.card.MaterialCardView
+import com.dedoware.shoopt.utils.InAppReviewManager
 
 class UpdateShoppingListActivity : AppCompatActivity() {
     private lateinit var mainShoppingListEditText: TextInputEditText
@@ -713,6 +714,13 @@ class UpdateShoppingListActivity : AppCompatActivity() {
                                     if (shoppingListContent.isNotBlank() && createdLists.add(dbRefKey)) {
                                         // Premier enregistrement effectif d'une liste non vide -> création
                                         ShooptApplication.instance.analyticsService.trackListCreate(dbRefKey, itemsCount)
+
+                                        // Notifier le manager In-App Review pour potentiellement déclencher la demande
+                                        try {
+                                            InAppReviewManager.getInstance(this@UpdateShoppingListActivity).notifyEvent("list_created", this@UpdateShoppingListActivity)
+                                        } catch (e: Exception) {
+                                            CrashlyticsManager.log("Erreur lors de l'appel InAppReview notifyEvent (list_created): ${e.message}")
+                                        }
                                     } else if (shoppingListContent.isBlank() && createdLists.remove(dbRefKey)) {
                                         // La liste était créée et devient vide -> suppression
                                         ShooptApplication.instance.analyticsService.trackListDelete(dbRefKey)
