@@ -502,4 +502,8 @@
     <string name="settings_analytics_summary">اسمح لـ Shoopt بجمع بيانات مجهولة عن كيفية استخدامك للتطبيق</string>
     <string name="consent_dialog_message_informative">يتم تفعيل التحليلات افتراضيًا للمساعدة في تحسين Shoopt. إذا كنت لا تفضل مشاركة بيانات الاستخدام المجهولة، يمكنك إيقافها في أي وقت من الإعدادات.</string>
     <string name="consent_dialog_understood">مفهوم</string>
+    <string name="in_app_review_title">تحب Shoopt؟</string>
+    <string name="in_app_review_message">خُذ بضع ثوانٍ لتترك لنا تقييمًا على متجر Play. هذا يساعد الآخرين على اكتشاف التطبيق.</string>
+    <string name="in_app_review_positive">اترك مراجعة</string>
+    <string name="in_app_review_negative">ليس الآن</string>
 </resources>

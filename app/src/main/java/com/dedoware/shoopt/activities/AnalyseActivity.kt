@@ -28,6 +28,7 @@ import com.dedoware.shoopt.analytics.AnalyticsService
 import com.dedoware.shoopt.utils.CrashlyticsManager
 import com.dedoware.shoopt.utils.UserPreferences
 import com.dedoware.shoopt.utils.getCurrencyManager
+import com.dedoware.shoopt.utils.InAppReviewManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -72,54 +73,6 @@ class AnalyseActivity : AppCompatActivity() {
 
     private val useFirebase = false // This could be a config or user preference
 
-    // Register the launcher for our ML Kit-based scanner
-    private val barcodeScannerLauncher = registerForActivityResult(
-        androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult()
-    ) { result: androidx.activity.result.ActivityResult ->
-        if (result.resultCode == RESULT_OK) {
-            val barcodeValue = result.data?.getStringExtra(com.dedoware.shoopt.scanner.BarcodeScannerActivity.BARCODE_RESULT)
-            if (barcodeValue != null) {
-                try {
-                    // Tracker le succès du scan
-                    try {
-                        AnalyticsService.getInstance(ShooptApplication.instance).trackScanSuccess("barcode")
-                    } catch (e: Exception) {
-                        CrashlyticsManager.log("Erreur lors du tracking scan success: ${e.message}")
-                    }
-
-                    // Vérifier si le produit existe déjà avant de lancer l'activité
-                    checkProductExistenceAndNavigate(barcodeValue)
-
-                    // Analytics pour le scan de code-barres
-                    val params = Bundle().apply {
-                        putString("barcode_length", barcodeValue.length.toString())
-                    }
-                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("barcode_scanned", params)
-                } catch (e: Exception) {
-                    CrashlyticsManager.log("Erreur lors du traitement du code-barres: ${e.message ?: "Message non disponible"}")
-                    CrashlyticsManager.setCustomKey("error_location", "barcode_processing")
-                    CrashlyticsManager.setCustomKey("barcode", barcodeValue)
-                    CrashlyticsManager.logException(e)
-
-                    Toast.makeText(this, getString(R.string.barcode_processing_error), Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                try {
-                    AnalyticsService.getInstance(ShooptApplication.instance).trackScanFailed("barcode", "no_value_returned")
-                } catch (e: Exception) {
-                    CrashlyticsManager.log("Erreur lors du tracking de l'échec du scan (pas de valeur): ${e.message}")
-                }
-            }
-        } else if (result.resultCode == RESULT_CANCELED) {
-            try {
-                AnalyticsService.getInstance(ShooptApplication.instance).trackScanFailed("barcode", "user_cancelled")
-            } catch (e: Exception) {
-                CrashlyticsManager.log("Erreur lors du tracking de l'annulation du scan: ${e.message}")
-            }
-            Toast.makeText(this, getString(R.string.cancelled), Toast.LENGTH_LONG).show()
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         try {
             super.onCreate(savedInstanceState)
@@ -130,6 +83,12 @@ class AnalyseActivity : AppCompatActivity() {
                 AnalyticsService.getInstance(ShooptApplication.instance).trackScreenView("Analyze", "AnalyseActivity")
                 // Utiliser la méthode dédiée pour l'ouverture d'analyse
                 AnalyticsService.getInstance(ShooptApplication.instance).trackAnalysisOpen()
+                try {
+                    // Notifier le manager d'In-App Review pour comptabiliser l'ouverture d'analyse
+                    com.dedoware.shoopt.utils.InAppReviewManager.getInstance(this@AnalyseActivity).notifyEvent("analysis_open", this@AnalyseActivity)
+                } catch (e: Exception) {
+                    CrashlyticsManager.log("Erreur lors de l'appel InAppReview notifyEvent (analysis_open): ${e.message}")
+                }
             } catch (e: Exception) {
                 CrashlyticsManager.log("Erreur lors de l'enregistrement de l'écran dans Analytics: ${e.message ?: "Message non disponible"}")
                 CrashlyticsManager.setCustomKey("error_location", "analytics_screen_log")
@@ -549,59 +508,6 @@ class AnalyseActivity : AppCompatActivity() {
             CrashlyticsManager.log("Erreur lors du lancement de ProductChoiceActivity: ${e.message ?: "Message non disponible"}")
             CrashlyticsManager.logException(e)
             Toast.makeText(this, getString(R.string.add_product_options_error), Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun checkProductExistenceAndNavigate(barcode: String) {
-        CoroutineScope(Dispatchers.Main).launch {
-            try {
-                val barcodeAsLong = barcode.toLongOrNull() ?: 0L
-
-                // Vérifier si le produit existe déjà dans la base de données
-                val existingProduct = withContext(Dispatchers.IO) {
-                    productRepository.getProductByBarcode(barcodeAsLong)
-                }
-
-                if (existingProduct != null) {
-                    // Si le produit existe, ouvrir avec toutes ses informations
-                    openAddProductActivity(existingProduct)
-
-                    // Analytics pour le chargement d'un produit existant
-                    val existingProductParams = Bundle().apply {
-                        putString("source", "barcode_scan")
-                        putString("product_found", "true")
-                    }
-                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("existing_product_loaded", existingProductParams)
-                } else {
-                    // Si le produit n'existe pas, créer un nouveau produit avec le code-barres
-                    // Using the proper constructor instead of trying to assign to val properties
-                    val newProduct = Product(
-                        id = "",
-                        barcode = barcodeAsLong,
-                        timestamp = 0,
-                        name = "",
-                        price = 0.0,
-                        unitPrice = 0.0,
-                        shop = "",
-                        pictureUrl = ""
-                    )
-                    openAddProductActivity(newProduct)
-
-                    // Analytics pour la création d'un nouveau produit
-                    val newProductParams = Bundle().apply {
-                        putString("source", "barcode_scan")
-                        putString("product_found", "false")
-                    }
-                    AnalyticsService.getInstance(ShooptApplication.instance).logEvent("new_product_created", newProductParams)
-                }
-            } catch (e: Exception) {
-                CrashlyticsManager.log("Erreur lors de la vérification du produit: ${e.message ?: "Message non disponible"}")
-                CrashlyticsManager.setCustomKey("error_location", "product_existence_check")
-                CrashlyticsManager.setCustomKey("barcode", barcode)
-                CrashlyticsManager.logException(e)
-
-                Toast.makeText(this@AnalyseActivity, getString(R.string.product_check_error), Toast.LENGTH_SHORT).show()
-            }
         }
     }
 

@@ -95,6 +95,7 @@ import com.dedoware.shoopt.extensions.startSpotlightTour
 import com.dedoware.shoopt.extensions.createSpotlightItem
 import com.dedoware.shoopt.extensions.isSpotlightAvailable
 import com.dedoware.shoopt.models.SpotlightShape
+import com.dedoware.shoopt.utils.InAppReviewManager
 
 
 class AddProductActivity : AppCompatActivity() {
@@ -805,6 +806,13 @@ class AddProductActivity : AppCompatActivity() {
                     putString("barcode_length", barcodeValue.length.toString())
                 }
                 AnalyticsService.getInstance(ShooptApplication.instance).logEvent("barcode_scanned", params)
+
+                // Tentative d'afficher l'In-App Review si éligible
+                try {
+                    InAppReviewManager.getInstance(this@AddProductActivity).notifyEvent("scan_success", this@AddProductActivity)
+                } catch (e: Exception) {
+                    CrashlyticsManager.log("Erreur lors de l'appel InAppReview notifyEvent (scan): ${e.message}")
+                }
 
                 // Tracker le succès du scan
                 try {

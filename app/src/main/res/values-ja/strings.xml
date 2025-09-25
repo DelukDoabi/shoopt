@@ -503,4 +503,8 @@
     <string name="settings_analytics_summary">Shooptにアプリの利用状況に関する匿名データの収集を許可する</string>
     <string name="consent_dialog_message_informative">Shooptを改善するために、デフォルトで利用状況の解析が有効になっています。匿名データを共有したくない場合は、設定からいつでも無効にできます。</string>
     <string name="consent_dialog_understood">了解</string>
+    <string name="in_app_review_title">Shooptは気に入った？</string>
+    <string name="in_app_review_message">数秒だけでOK！Playストアで評価を残してくれると、他の人がアプリを見つけやすくなるよ。</string>
+    <string name="in_app_review_positive">レビューを書く</string>
+    <string name="in_app_review_negative">今はしない</string>
 </resources>

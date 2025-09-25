@@ -501,4 +501,8 @@
     <string name="settings_analytics_summary">Pozwól Shoopt zbierać anonimowe dane o tym, jak korzystasz z aplikacji</string>
     <string name="consent_dialog_message_informative">Statystyki są domyślnie włączone, aby pomóc ulepszyć Shoopt. Jeśli wolisz nie udostępniać anonimowych danych o użyciu, możesz wyłączyć tę opcję w każdej chwili w ustawieniach.</string>
     <string name="consent_dialog_understood">Rozumiem</string>
+    <string name="in_app_review_title">Lubisz Shoopt?</string>
+    <string name="in_app_review_message">Poświęć kilka sekund, aby ocenić nas w Sklepie Play. Dzięki temu inni łatwiej znajdą aplikację.</string>
+    <string name="in_app_review_positive">Dodaj opinię</string>
+    <string name="in_app_review_negative">Nie teraz</string>
 </resources>

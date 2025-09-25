@@ -501,4 +501,8 @@
     <string name="settings_analytics_summary">允许 Shoopt 收集你使用应用的匿名数据</string>
     <string name="consent_dialog_message_informative">为了改进 Shoopt，默认启用了使用分析。如果你不想分享匿名使用数据，可以随时在设置中关闭。</string>
     <string name="consent_dialog_understood">明白了</string>
+    <string name="in_app_review_title">你喜欢 Shoopt 吗？</string>
+    <string name="in_app_review_message">花几秒钟在 Play 商店给我们评分吧，这能帮助更多人发现这个应用。</string>
+    <string name="in_app_review_positive">留下评价</string>
+    <string name="in_app_review_negative">暂时不要</string>
 </resources>

@@ -76,7 +76,13 @@ class UserPreferences private constructor(context: Context) {
         // Méthodes pour la gestion du premier lancement
         fun isFirstLaunch(context: Context): Boolean {
             val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            return prefs.getBoolean(KEY_FIRST_LAUNCH, true)
+            val isFirst = prefs.getBoolean(KEY_FIRST_LAUNCH, true)
+            if (isFirst) {
+                // Marquer immédiatement que l'app a été lancée pour éviter que
+                // d'autres chemins oublient d'appeler setFirstLaunch
+                prefs.edit().putBoolean(KEY_FIRST_LAUNCH, false).apply()
+            }
+            return isFirst
         }
 
         fun setFirstLaunch(context: Context, isFirstLaunch: Boolean) {

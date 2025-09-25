@@ -131,6 +131,9 @@ dependencies {
     implementation 'com.google.android.play:app-update:2.1.0'
     implementation 'com.google.android.play:app-update-ktx:2.1.0'
 
+    // In-App Review (Play Core) - API officielle pour inviter les utilisateurs à noter l'application
+    implementation 'com.google.android.play:review:2.0.1'
+
     // ML Kit pour la détection de codes-barres - mise à jour vers la dernière version
     implementation 'com.google.mlkit:barcode-scanning:17.3.0'
 
