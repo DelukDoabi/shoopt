@@ -506,4 +506,14 @@
     <string name="in_app_review_message">Потрать пару секунд, чтобы оставить нам оценку в Play Store. Это поможет другим узнать о приложении.</string>
     <string name="in_app_review_positive">Оставить отзыв</string>
     <string name="in_app_review_negative">Не сейчас</string>
+    <string name="support_shoopt">Поддержать Shoopt</string>
+    <string name="support_billing_not_ready">Сервис оплаты ещё не готов, попробуй позже.</string>
+    <string name="support_purchase_error">Произошла ошибка при оплате. Не беда, может в следующий раз 😉.</string>
+    <string name="support_purchase_cancelled">Не беда, может в следующий раз 😉.</string>
+    <string name="support_thanks">Огромное спасибо за твою поддержку ❤️! Shoopt растёт благодаря тебе.</string>
+    <string name="support_description">Сделай небольшой добровольный взнос, чтобы поддержать развитие приложения.</string>
+    <string name="support_btn_label_1">☕ Угостить кофе – 1 €</string>
+    <string name="support_btn_label_3">🚀 Супер поддержка – 3 €</string>
+    <string name="support_btn_label_5">🌟 Легендарная поддержка – 5 €</string>
+    <string name="support_thanks_close">Закрыть</string>
 </resources>

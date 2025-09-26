@@ -51,6 +51,7 @@
     <string name="google_sign_in_successful">Google Sign-In Successful</string>
     <string name="currency_selection_info">The selected currency will be used to display all prices in the application.</string>
     <string name="currency">Currency</string>
+    <string name="currency_value_format">%1$s (%2$s) - %3$s</string>
     <string name="save">Save</string>
     <string name="currency_changed">Currency changed to %1$s</string>
     <string name="other_settings">Other settings</string>
@@ -443,4 +444,15 @@
     <string name="in_app_review_message">Take a few seconds to leave us a rating on the Play Store. It helps others discover the app.</string>
     <string name="in_app_review_positive">Leave a review</string>
     <string name="in_app_review_negative">Not now</string>
+    <string name="support_shoopt" translatable="false">Support Shoopt</string>
+    <string name="support_billing_not_ready" translatable="false">Payment service isn’t ready yet, please try again later.</string>
+    <string name="support_purchase_error" translatable="false">Something went wrong with the payment. No worries, maybe next time 😉.</string>
+    <string name="support_purchase_cancelled" translatable="false">No worries, maybe next time 😉.</string>
+    <string name="support_thanks" translatable="false">Thank you so much for your support ❤️! Shoopt is growing thanks to you.</string>
+    <string name="support_description">Offer a small optional donation to support the app’s development.</string>
+    <string name="support_btn_label_1">☕ Buy us a coffee – €1</string>
+    <string name="support_btn_label_3">🚀 Super support – €3</string>
+    <string name="support_btn_label_5">🌟 Legendary support – €5</string>
+    <string name="support_thanks_close">Close</string>
+
 </resources>

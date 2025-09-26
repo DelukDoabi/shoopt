@@ -144,4 +144,7 @@ dependencies {
     implementation "androidx.camera:camera-lifecycle:$camerax_version"
     implementation "androidx.camera:camera-view:$camerax_version"
     implementation "androidx.camera:camera-extensions:$camerax_version"
+
+    // Google Play Billing pour les achats intégrés (Tip Jar)
+    implementation 'com.android.billingclient:billing-ktx:6.0.1'
 }

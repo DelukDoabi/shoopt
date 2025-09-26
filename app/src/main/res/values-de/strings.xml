@@ -501,4 +501,14 @@
     <string name="in_app_review_message">Nimm dir ein paar Sekunden Zeit, um uns im Play Store zu bewerten. So können andere die App leichter entdecken.</string>
     <string name="in_app_review_positive">Bewertung abgeben</string>
     <string name="in_app_review_negative">Nicht jetzt</string>
+    <string name="support_shoopt">Shoopt unterstützen</string>
+    <string name="support_billing_not_ready">Der Zahlungsdienst ist noch nicht bereit. Bitte versuch es später erneut.</string>
+    <string name="support_purchase_error">Beim Bezahlen ist ein Fehler aufgetreten. Kein Problem, vielleicht beim nächsten Mal 😉.</string>
+    <string name="support_purchase_cancelled">Kein Problem, vielleicht beim nächsten Mal 😉.</string>
+    <string name="support_thanks">Vielen Dank für deine Unterstützung ❤️! Shoopt wächst dank dir.</string>
+    <string name="support_description">Mach eine kleine optionale Spende, um die Entwicklung der App zu unterstützen.</string>
+    <string name="support_btn_label_1">☕ Kaffee spendiert – 1 €</string>
+    <string name="support_btn_label_3">🚀 Super Unterstützung – 3 €</string>
+    <string name="support_btn_label_5">🌟 Legendäre Unterstützung – 5 €</string>
+    <string name="support_thanks_close">Schließen</string>
 </resources>

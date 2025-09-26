@@ -83,6 +83,11 @@ class AnalyticsService private constructor(private val context: Context) {
         const val PARAM_NOTIFICATION_TYPE = "notification_type"
         const val PARAM_SESSION_DURATION = "session_duration"
         const val PARAM_SCREEN_NAME = "screen_name"
+
+        // PARAMÈTRES POUR LES DONATIONS
+        const val EVENT_DONATION_SUCCESS = "donation_success"
+        const val EVENT_DONATION_CANCEL = "donation_cancel"
+        const val PARAM_DONATION_AMOUNT_CENTS = "amount_cents"
     }
 
     /**
@@ -316,4 +321,17 @@ class AnalyticsService private constructor(private val context: Context) {
         // Utiliser logEvent pour respecter la préférence de tracking
         logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, params)
     }
+
+    // DONATIONS
+    fun trackDonationSuccess(amountCents: Long?) {
+        val params = Bundle().apply {
+            amountCents?.let { putLong(PARAM_DONATION_AMOUNT_CENTS, it) }
+        }
+        logEvent(EVENT_DONATION_SUCCESS, params)
+    }
+
+    fun trackDonationCancel() {
+        logEvent(EVENT_DONATION_CANCEL, null)
+    }
+
 }
