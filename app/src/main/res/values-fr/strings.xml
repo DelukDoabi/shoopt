@@ -534,6 +534,7 @@
     <string name="in_app_review_message">Prends quelques secondes pour nous laisser une note sur le Play Store. Ça aide d’autres personnes à découvrir l’appli.</string>
     <string name="in_app_review_positive">Donner un avis</string>
     <string name="in_app_review_negative">Pas maintenant</string>
+    <string name="support_shoopt_with_heart">🧡 Soutenir Shoopt</string>
     <string name="support_shoopt">Soutenir Shoopt</string>
     <string name="support_billing_not_ready">Le service de paiement n’est pas encore prêt, réessaie un peu plus tard.</string>
     <string name="support_purchase_error">Oups, une erreur est survenue pendant le paiement. Pas grave, peut-être une prochaine fois 😉.</string>

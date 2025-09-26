@@ -506,6 +506,7 @@
     <string name="in_app_review_message">خُذ بضع ثوانٍ لتترك لنا تقييمًا على متجر Play. هذا يساعد الآخرين على اكتشاف التطبيق.</string>
     <string name="in_app_review_positive">اترك مراجعة</string>
     <string name="in_app_review_negative">ليس الآن</string>
+    <string name="support_shoopt_with_heart">🧡 ادعم Shoopt</string>
     <string name="support_shoopt">ادعم Shoopt</string>
     <string name="support_billing_not_ready">خدمة الدفع غير جاهزة بعد، جرّب لاحقًا.</string>
     <string name="support_purchase_error">حدث خطأ أثناء الدفع. لا بأس، ربما في المرة القادمة 😉.</string>

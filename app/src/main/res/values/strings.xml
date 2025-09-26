@@ -444,6 +444,7 @@
     <string name="in_app_review_message">Take a few seconds to leave us a rating on the Play Store. It helps others discover the app.</string>
     <string name="in_app_review_positive">Leave a review</string>
     <string name="in_app_review_negative">Not now</string>
+    <string name="support_shoopt_with_heart">🧡 Support Shoopt</string>
     <string name="support_shoopt">Support Shoopt</string>
     <string name="support_billing_not_ready">Payment service isn’t ready yet, please try again later.</string>
     <string name="support_purchase_error">Something went wrong with the payment. No worries, maybe next time 😉.</string>

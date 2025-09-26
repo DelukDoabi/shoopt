@@ -506,6 +506,7 @@
     <string name="in_app_review_positive">留下评价</string>
     <string name="in_app_review_negative">暂时不要</string>
     <string name="support_shoopt">支持 Shoopt</string>
+    <string name="support_shoopt_with_heart">🧡 支持 Shoopt</string>
     <string name="support_billing_not_ready">支付服务还没准备好，请稍后再试。</string>
     <string name="support_purchase_error">支付时出错了。没关系，也许下次吧 😉。</string>
     <string name="support_purchase_cancelled">没关系，也许下次吧 😉。</string>

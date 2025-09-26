@@ -506,6 +506,7 @@
     <string name="in_app_review_message">Потрать пару секунд, чтобы оставить нам оценку в Play Store. Это поможет другим узнать о приложении.</string>
     <string name="in_app_review_positive">Оставить отзыв</string>
     <string name="in_app_review_negative">Не сейчас</string>
+    <string name="support_shoopt_with_heart">🧡 Поддержать Shoopt</string>
     <string name="support_shoopt">Поддержать Shoopt</string>
     <string name="support_billing_not_ready">Сервис оплаты ещё не готов, попробуй позже.</string>
     <string name="support_purchase_error">Произошла ошибка при оплате. Не беда, может в следующий раз 😉.</string>

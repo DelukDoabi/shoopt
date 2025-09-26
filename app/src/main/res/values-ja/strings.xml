@@ -507,6 +507,7 @@
     <string name="in_app_review_message">数秒だけでOK！Playストアで評価を残してくれると、他の人がアプリを見つけやすくなるよ。</string>
     <string name="in_app_review_positive">レビューを書く</string>
     <string name="in_app_review_negative">今はしない</string>
+    <string name="support_shoopt_with_heart">🧡 Shooptを応援する</string>
     <string name="support_shoopt">Shooptを応援する</string>
     <string name="support_billing_not_ready">決済サービスはまだ準備中です。後でもう一度試してください。</string>
     <string name="support_purchase_error">決済中にエラーが発生しました。大丈夫、また次の機会に 😉。</string>

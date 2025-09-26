@@ -504,6 +504,7 @@
     <string name="in_app_review_message">Demora só uns segundos a deixar-nos uma avaliação na Play Store. Ajuda outras pessoas a descobrirem a app.</string>
     <string name="in_app_review_positive">Deixar avaliação</string>
     <string name="in_app_review_negative">Agora não</string>
+    <string name="support_shoopt_with_heart">🧡 Apoiar o Shoopt</string>
     <string name="support_shoopt">Apoiar o Shoopt</string>
     <string name="support_billing_not_ready">O serviço de pagamento ainda não está pronto. Tenta de novo mais tarde.</string>
     <string name="support_purchase_error">Ocorreu um erro no pagamento. Sem problema, talvez da próxima vez 😉.</string>

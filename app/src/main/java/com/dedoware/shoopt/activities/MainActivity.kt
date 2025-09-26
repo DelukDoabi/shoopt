@@ -37,6 +37,7 @@ import com.dedoware.shoopt.utils.OnboardingManager
 import com.dedoware.shoopt.gamification.manager.AchievementCelebrationManager
 import com.dedoware.shoopt.admin.AdminManager
 import com.dedoware.shoopt.testing.NotificationTester
+import com.dedoware.shoopt.activities.SupportActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var updateShoppingListImageButton: ImageButton
@@ -719,6 +720,26 @@ class MainActivity : AppCompatActivity() {
                             CrashlyticsManager.logException(e)
 
                             Toast.makeText(this, getString(R.string.settings_open_error), Toast.LENGTH_SHORT).show()
+                        }
+                        true
+                    }
+                    R.id.menu_support -> {
+                        try {
+                            // Analytics pour l'ouverture de l'écran de support
+                            val supportParams = android.os.Bundle().apply {
+                                putString("action", "open_support")
+                                putString("category", "navigation")
+                            }
+                            AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", supportParams)
+
+                            startActivity(Intent(this, SupportActivity::class.java))
+                        } catch (e: Exception) {
+                            CrashlyticsManager.log("Erreur lors du lancement de SupportActivity: ${e.message ?: "Message non disponible"}")
+                            CrashlyticsManager.setCustomKey("error_location", "launch_activity")
+                            CrashlyticsManager.setCustomKey("target_activity", "SupportActivity")
+                            CrashlyticsManager.logException(e)
+
+                            Toast.makeText(this, getString(R.string.support_billing_not_ready), Toast.LENGTH_SHORT).show()
                         }
                         true
                     }

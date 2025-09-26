@@ -499,6 +499,7 @@
     <string name="in_app_review_message">Tómate unos segundos para dejarnos una valoración en Play Store. Ayuda a que más gente descubra la app.</string>
     <string name="in_app_review_positive">Dejar reseña</string>
     <string name="in_app_review_negative">Ahora no</string>
+    <string name="support_shoopt_with_heart">🧡 Apoyar Shoopt</string>
     <string name="support_shoopt">Apoyar Shoopt</string>
     <string name="support_billing_not_ready">El servicio de pago no está listo todavía, inténtalo de nuevo más tarde.</string>
     <string name="support_purchase_error">Hubo un error con el pago. No pasa nada, quizá la próxima vez 😉.</string>

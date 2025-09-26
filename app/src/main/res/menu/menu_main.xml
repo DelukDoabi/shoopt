@@ -19,6 +19,11 @@
         android:visible="false" />
 
     <item
+        android:id="@+id/menu_support"
+        android:icon="@drawable/ic_tip"
+        android:title="@string/support_shoopt_with_heart" />
+
+    <item
         android:id="@+id/menu_logout"
         android:icon="@android:drawable/ic_menu_close_clear_cancel"
         android:title="@string/logout" />

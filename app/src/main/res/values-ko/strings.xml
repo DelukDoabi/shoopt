@@ -505,6 +505,7 @@
     <string name="in_app_review_message">플레이스토어에서 평가를 남겨줘. 다른 사람들이 앱을 발견하는 데 큰 도움이 돼.</string>
     <string name="in_app_review_positive">리뷰 남기기</string>
     <string name="in_app_review_negative">나중에</string>
+    <string name="support_shoopt_with_heart">🧡 Shoopt 응원하기</string>
     <string name="support_shoopt">Shoopt 응원하기</string>
     <string name="support_billing_not_ready">결제 서비스가 아직 준비되지 않았습니다. 나중에 다시 시도해주세요.</string>
     <string name="support_purchase_error">결제 중 오류가 발생했어. 괜찮아, 다음에 다시 해보자 😉.</string>
