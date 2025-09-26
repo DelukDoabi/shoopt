@@ -1,6 +1,7 @@
 package com.dedoware.shoopt.activities
 
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +23,11 @@ class SupportActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private lateinit var billingClient: BillingClient
     private lateinit var analyticsService: AnalyticsService
     private var billingReady: Boolean = false
+    // Map pour garder les ProductDetails récupérés depuis Google Play
+    private val productDetailsMap: MutableMap<String, ProductDetails> = mutableMapOf()
+    // timestamps pour mesurer latences (ms)
+    private val attemptTimestampsMs: MutableMap<String, Long> = mutableMapOf()
+    private val launchTimestampsMs: MutableMap<String, Long> = mutableMapOf()
 
     // IDs des produits définis dans Play Console (à créer: don1, don3, don5)
     private val productDon1 = "don1"
@@ -57,16 +63,29 @@ class SupportActivity : AppCompatActivity(), PurchasesUpdatedListener {
         // Ajout de toasts et logs de debug pour confirmer que les listeners sont bien installés
         btn1.setOnClickListener {
             Log.d(TAG, "click: support_btn_1")
+            // Analytics: utilisateur a tenté de donner (clic sur bouton)
+            // enregistrer le timestamp d'attempt
+            attemptTimestampsMs[productDon1] = SystemClock.elapsedRealtime()
+            val formatted = productDetailsMap[productDon1]?.oneTimePurchaseOfferDetails?.formattedPrice
+            analyticsService.trackDonationAttempt(productDon1, formatted)
             Toast.makeText(this, getString(R.string.support_btn_label_1), Toast.LENGTH_SHORT).show()
             launchPurchase(productDon1)
         }
         btn3.setOnClickListener {
             Log.d(TAG, "click: support_btn_3")
+            // enregistrer le timestamp d'attempt
+            attemptTimestampsMs[productDon3] = SystemClock.elapsedRealtime()
+            val formatted = productDetailsMap[productDon3]?.oneTimePurchaseOfferDetails?.formattedPrice
+            analyticsService.trackDonationAttempt(productDon3, formatted)
             Toast.makeText(this, getString(R.string.support_btn_label_3), Toast.LENGTH_SHORT).show()
             launchPurchase(productDon3)
         }
         btn5.setOnClickListener {
             Log.d(TAG, "click: support_btn_5")
+            // enregistrer le timestamp d'attempt
+            attemptTimestampsMs[productDon5] = SystemClock.elapsedRealtime()
+            val formatted = productDetailsMap[productDon5]?.oneTimePurchaseOfferDetails?.formattedPrice
+            analyticsService.trackDonationAttempt(productDon5, formatted)
             Toast.makeText(this, getString(R.string.support_btn_label_5), Toast.LENGTH_SHORT).show()
             launchPurchase(productDon5)
         }
@@ -85,6 +104,8 @@ class SupportActivity : AppCompatActivity(), PurchasesUpdatedListener {
                         btn5.isEnabled = true
                         // Charger et afficher les prix localisés depuis Google Play Billing
                         loadProductPrices(btn1, btn3, btn5)
+                        // Analytics: billing prêt pour les donations
+                        analyticsService.trackDonationBillingReady()
                     }
                 } else {
                     // Si la configuration échoue, laisser l'utilisateur savoir
@@ -137,7 +158,29 @@ class SupportActivity : AppCompatActivity(), PurchasesUpdatedListener {
             return
         }
 
-        // Utiliser l'API moderne: QueryProductDetailsParams
+        // Si on a déjà ProductDetails en cache, l'utiliser directement
+        val cached = productDetailsMap[productId]
+        if (cached != null) {
+            val pdParams = BillingFlowParams.ProductDetailsParams.newBuilder()
+                .setProductDetails(cached)
+                .build()
+            val flowParams = BillingFlowParams.newBuilder()
+                .setProductDetailsParamsList(listOf(pdParams))
+                .build()
+            Log.d(TAG, "launchBillingFlow: launching flow for productId=$productId (cached)")
+            // timing attempt->launch
+            attemptTimestampsMs[productId]?.let { attemptTs ->
+                val duration = SystemClock.elapsedRealtime() - attemptTs
+                analyticsService.trackDonationTimingAttemptToLaunch(productId, duration)
+            }
+            analyticsService.trackDonationLaunch(productId)
+            // enregistrer timestamp de lancement
+            launchTimestampsMs[productId] = SystemClock.elapsedRealtime()
+            billingClient.launchBillingFlow(this, flowParams)
+            return
+        }
+
+        // Sinon, requêter les ProductDetails puis lancer le flow
         val product = QueryProductDetailsParams.Product.newBuilder()
             .setProductId(productId)
             .setProductType(BillingClient.ProductType.INAPP)
@@ -151,23 +194,31 @@ class SupportActivity : AppCompatActivity(), PurchasesUpdatedListener {
             Log.d(TAG, "queryProductDetailsAsync: code=${billingResult.responseCode} msg=${billingResult.debugMessage} listSize=${productDetailsList.size}")
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && productDetailsList.isNotEmpty()) {
                 val pd = productDetailsList[0]
-                val productDetailsParams = BillingFlowParams.ProductDetailsParams.newBuilder()
+                // mettre en cache
+                productDetailsMap[productId] = pd
+                val pdParams = BillingFlowParams.ProductDetailsParams.newBuilder()
                     .setProductDetails(pd)
                     .build()
-
                 val flowParams = BillingFlowParams.newBuilder()
-                    .setProductDetailsParamsList(listOf(productDetailsParams))
+                    .setProductDetailsParamsList(listOf(pdParams))
                     .build()
-
                 Log.d(TAG, "launchBillingFlow: launching flow for productId=$productId")
+                // timing attempt->launch
+                attemptTimestampsMs[productId]?.let { attemptTs ->
+                    val duration = SystemClock.elapsedRealtime() - attemptTs
+                    analyticsService.trackDonationTimingAttemptToLaunch(productId, duration)
+                }
+                analyticsService.trackDonationLaunch(productId)
+                launchTimestampsMs[productId] = SystemClock.elapsedRealtime()
                 billingClient.launchBillingFlow(this, flowParams)
             } else {
                 Log.w(TAG, "queryProductDetailsAsync: no product details returned for $productId")
+                analyticsService.trackDonationFailure(productId, "no_product_details: ${billingResult.debugMessage}")
                 // Dialog explicite pour indiquer le problème et les actions possibles
                 runOnUiThread {
                     AlertDialog.Builder(this)
                         .setTitle(getString(R.string.support_shoopt))
-                        .setMessage(getString(R.string.support_purchase_error) + "\n\n" + "Vérifiez que le produit '$productId' est créé dans la Play Console et qu'il est disponible pour les tests.")
+                        .setMessage(getString(R.string.support_purchase_error))
                         .setPositiveButton(android.R.string.ok, null)
                         .show()
                 }
@@ -185,9 +236,11 @@ class SupportActivity : AppCompatActivity(), PurchasesUpdatedListener {
             }
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
             Toast.makeText(this, getString(R.string.support_purchase_cancelled), Toast.LENGTH_SHORT).show()
+            analyticsService.trackDonationFailure(null, "user_canceled")
             analyticsService.trackDonationCancel()
         } else {
             Toast.makeText(this, getString(R.string.support_purchase_error), Toast.LENGTH_SHORT).show()
+            analyticsService.trackDonationFailure(null, "billing_error:${billingResult.debugMessage}")
             analyticsService.trackDonationCancel()
         }
     }
@@ -205,11 +258,25 @@ class SupportActivity : AppCompatActivity(), PurchasesUpdatedListener {
                         // Utiliser la propriété moderne 'products' (liste des productIds)
                         val prodId = purchase.products.firstOrNull() ?: ""
                         val amountCents = productIdToAmountCents(prodId)
-                        analyticsService.trackDonationSuccess(if (amountCents > 0) amountCents else null)
+                        // Si on a ProductDetails en cache, récupérer amountMicros réel
+                        val pd = productDetailsMap[prodId]
+                        val realAmountCents = pd?.oneTimePurchaseOfferDetails?.priceAmountMicros?.let { it / 10000L } ?: amountCents
+                        analyticsService.trackDonationConsume(realAmountCents, true, prodId)
+                        analyticsService.trackDonationSuccess(if (realAmountCents > 0) realAmountCents else null)
+                        // timing launch->purchase
+                        launchTimestampsMs[prodId]?.let { launchTs ->
+                            val duration = SystemClock.elapsedRealtime() - launchTs
+                            analyticsService.trackDonationTimingLaunchToPurchase(prodId, duration)
+                        }
                         // afficher dialog + confetti
-                        showThanksDialog(amountCents)
+                        showThanksDialog(realAmountCents)
                     } else {
                         Toast.makeText(this, getString(R.string.support_purchase_error), Toast.LENGTH_SHORT).show()
+                        val prodId = purchase.products.firstOrNull() ?: ""
+                        val pd = productDetailsMap[prodId]
+                        val realAmountCents = pd?.oneTimePurchaseOfferDetails?.priceAmountMicros?.let { it / 10000L }
+                        analyticsService.trackDonationConsume(realAmountCents, false, prodId)
+                        analyticsService.trackDonationFailure(prodId, "consume_failed:${billingResult.debugMessage}")
                         analyticsService.trackDonationCancel()
                     }
                 }
@@ -217,8 +284,16 @@ class SupportActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 // Déjà acknowledged
                 val prodId = purchase.products.firstOrNull() ?: ""
                 val amountCents = productIdToAmountCents(prodId)
-                analyticsService.trackDonationSuccess(if (amountCents > 0) amountCents else null)
-                showThanksDialog(amountCents)
+                val pd = productDetailsMap[prodId]
+                val realAmountCents = pd?.oneTimePurchaseOfferDetails?.priceAmountMicros?.let { it / 10000L } ?: amountCents
+                analyticsService.trackDonationConsume(realAmountCents, true, prodId)
+                analyticsService.trackDonationSuccess(if (realAmountCents > 0) realAmountCents else null)
+                // timing launch->purchase
+                launchTimestampsMs[prodId]?.let { launchTs ->
+                    val duration = SystemClock.elapsedRealtime() - launchTs
+                    analyticsService.trackDonationTimingLaunchToPurchase(prodId, duration)
+                }
+                showThanksDialog(realAmountCents)
             }
         }
     }
@@ -245,7 +320,7 @@ class SupportActivity : AppCompatActivity(), PurchasesUpdatedListener {
             // Mettre à jour le message de remerciement pour inclure le montant si disponible
             if (amountCents != null && amountCents > 0) {
                 val amountStr = String.format(java.util.Locale.getDefault(), "%.2f", amountCents.toDouble() / 100.0)
-                thanksMessage.text = getString(R.string.support_thanks) + " (€$amountStr)"
+                thanksMessage.text = getString(R.string.support_thanks_with_amount, getString(R.string.support_thanks), "$amountStr ${getCurrencyManager().currentCurrency.value?.symbol ?: ""}".trim())
             } else {
                 thanksMessage.text = getString(R.string.support_thanks)
             }
@@ -301,22 +376,32 @@ class SupportActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                         productDon5 -> 5.0
                                         else -> 0.0
                                     }
+                                    // envoyer événement de fallback
+                                    analyticsService.trackDonationPriceFallback(pid, "fallback_to_currency_manager")
                                     this.getCurrencyManager().formatPrice(fallbackAmount)
                                 }
+                            // mettre en cache ProductDetails
+                            productDetailsMap[pid] = pd
+                            // envoyer analytics product details (inclut montant en cents si disponible)
+                            val amountCents = pd.oneTimePurchaseOfferDetails?.priceAmountMicros?.let { it / 10000L }
+                            val currency = pd.oneTimePurchaseOfferDetails?.priceCurrencyCode
+                            analyticsService.trackDonationProductDetails(pid, formatted, currency, amountCents)
                             priceMap[pid] = formatted
                         }
 
                         // Mettre à jour les textes des boutons (conserver le libellé puis afficher le prix local)
-                        priceMap[productDon1]?.let { btn1.text = "${getString(R.string.support_btn_label_1)} - $it" }
-                        priceMap[productDon3]?.let { btn3.text = "${getString(R.string.support_btn_label_3)} - $it" }
-                        priceMap[productDon5]?.let { btn5.text = "${getString(R.string.support_btn_label_5)} - $it" }
+                        priceMap[productDon1]?.let { btn1.text = getString(R.string.support_btn_with_price, getString(R.string.support_btn_label_1), it) }
+                        priceMap[productDon3]?.let { btn3.text = getString(R.string.support_btn_with_price, getString(R.string.support_btn_label_3), it) }
+                        priceMap[productDon5]?.let { btn5.text = getString(R.string.support_btn_with_price, getString(R.string.support_btn_label_5), it) }
                     }
                 } else {
                     Log.w(TAG, "loadProductPrices: billing result not OK or empty list")
+                    analyticsService.trackDonationFailure(null, "product_details_fetch_failed:${billingResult.debugMessage}")
                 }
             }
         } catch (e: Exception) {
             Log.w(TAG, "loadProductPrices: exception ${e.message}")
+            analyticsService.trackDonationFailure(null, "product_details_exception:${e.message}")
         }
     }
 

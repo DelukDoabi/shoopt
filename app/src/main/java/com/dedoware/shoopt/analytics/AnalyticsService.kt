@@ -87,8 +87,20 @@ class AnalyticsService private constructor(private val context: Context) {
         // PARAMÈTRES POUR LES DONATIONS
         const val EVENT_DONATION_SUCCESS = "donation_success"
         const val EVENT_DONATION_CANCEL = "donation_cancel"
-        const val PARAM_DONATION_AMOUNT_CENTS = "amount_cents"
-    }
+        const val EVENT_DONATION_ATTEMPT = "donation_attempt"
+        const val EVENT_DONATION_LAUNCH = "donation_launch"
+        const val EVENT_DONATION_PRODUCT_DETAILS = "donation_product_details"
+        const val EVENT_DONATION_BILLING_READY = "donation_billing_ready"
+        const val EVENT_DONATION_FAILURE = "donation_failure"
+        const val EVENT_DONATION_CONSUME = "donation_consume"
+        const val EVENT_DONATION_PRICE_FALLBACK = "donation_price_fallback"
+        const val EVENT_DONATION_TIMING_ATTEMPT_TO_LAUNCH = "donation_timing_attempt_to_launch"
+        const val EVENT_DONATION_TIMING_LAUNCH_TO_PURCHASE = "donation_timing_launch_to_purchase"
+         const val PARAM_DONATION_AMOUNT_CENTS = "amount_cents"
+         const val PARAM_PRODUCT_PRICE_FORMATTED = "product_price_formatted"
+         const val PARAM_CURRENCY = "currency"
+         const val PARAM_ERROR = "error_reason"
+     }
 
     /**
      * Charge les préférences utilisateur concernant le tracking
@@ -328,10 +340,92 @@ class AnalyticsService private constructor(private val context: Context) {
             amountCents?.let { putLong(PARAM_DONATION_AMOUNT_CENTS, it) }
         }
         logEvent(EVENT_DONATION_SUCCESS, params)
+        // Mettre à jour des propriétés utilisateur utiles pour la segmentation
+        try {
+            setUserProperty("has_donated", "true")
+            amountCents?.let { setUserProperty("last_donation_cents", it.toString()) }
+        } catch (_: Exception) { /* safe fallback */ }
     }
 
     fun trackDonationCancel() {
         logEvent(EVENT_DONATION_CANCEL, null)
+    }
+
+    // DONATION: attempt (user clicked a donate button)
+    fun trackDonationAttempt(productId: String, formattedPrice: String?) {
+        val params = Bundle().apply {
+            putString(PARAM_PRODUCT_ID, productId)
+            formattedPrice?.let { putString(PARAM_PRODUCT_PRICE_FORMATTED, it) }
+        }
+        logEvent(EVENT_DONATION_ATTEMPT, params)
+    }
+
+    // Donation: product details loaded from Play
+    fun trackDonationProductDetails(productId: String, formattedPrice: String?, currency: String?, amountCents: Long?) {
+        val params = Bundle().apply {
+            putString(PARAM_PRODUCT_ID, productId)
+            formattedPrice?.let { putString(PARAM_PRODUCT_PRICE_FORMATTED, it) }
+            currency?.let { putString(PARAM_CURRENCY, it) }
+            amountCents?.let { putLong(PARAM_DONATION_AMOUNT_CENTS, it) }
+        }
+        logEvent(EVENT_DONATION_PRODUCT_DETAILS, params)
+    }
+
+    // Billing ready for donations
+    fun trackDonationBillingReady() {
+        logEvent(EVENT_DONATION_BILLING_READY)
+    }
+
+    // Donation: billing flow launched
+    fun trackDonationLaunch(productId: String) {
+        val params = Bundle().apply { putString(PARAM_PRODUCT_ID, productId) }
+        logEvent(EVENT_DONATION_LAUNCH, params)
+    }
+
+    // Donation failure with reason
+    fun trackDonationFailure(productId: String?, reason: String?) {
+        val params = Bundle().apply {
+            productId?.let { putString(PARAM_PRODUCT_ID, it) }
+            reason?.let { putString(PARAM_ERROR, it) }
+        }
+        logEvent(EVENT_DONATION_FAILURE, params)
+    }
+
+    // Donation consume/acknowledge tracking
+    fun trackDonationConsume(amountCents: Long?, success: Boolean, productId: String?) {
+        val params = Bundle().apply {
+            amountCents?.let { putLong(PARAM_DONATION_AMOUNT_CENTS, it) }
+            productId?.let { putString(PARAM_PRODUCT_ID, it) }
+            putBoolean("success", success)
+        }
+        logEvent(EVENT_DONATION_CONSUME, params)
+    }
+
+    // Track when we used fallback price (Play did not return formatted price)
+    fun trackDonationPriceFallback(productId: String, fallbackSource: String? = null) {
+        val params = Bundle().apply {
+            putString(PARAM_PRODUCT_ID, productId)
+            fallbackSource?.let { putString("fallback_source", it) }
+        }
+        logEvent(EVENT_DONATION_PRICE_FALLBACK, params)
+    }
+
+    // Timing: from user attempt (click) to billing flow launch
+    fun trackDonationTimingAttemptToLaunch(productId: String, durationMs: Long) {
+        val params = Bundle().apply {
+            putString(PARAM_PRODUCT_ID, productId)
+            putLong("duration_ms", durationMs)
+        }
+        logEvent(EVENT_DONATION_TIMING_ATTEMPT_TO_LAUNCH, params)
+    }
+
+    // Timing: from billing flow launch to purchase completion
+    fun trackDonationTimingLaunchToPurchase(productId: String, durationMs: Long) {
+        val params = Bundle().apply {
+            putString(PARAM_PRODUCT_ID, productId)
+            putLong("duration_ms", durationMs)
+        }
+        logEvent(EVENT_DONATION_TIMING_LAUNCH_TO_PURCHASE, params)
     }
 
 }
