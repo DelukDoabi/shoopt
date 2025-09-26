@@ -511,8 +511,8 @@
     <string name="support_purchase_cancelled">没关系，也许下次吧 😉。</string>
     <string name="support_thanks">非常感谢你的支持 ❤️！Shoopt 因为你而不断成长。</string>
     <string name="support_description">通过一笔小额自愿捐赠来支持应用的开发。</string>
-    <string name="support_btn_label_1">☕ 请喝咖啡 – 1 €</string>
-    <string name="support_btn_label_3">🚀 超级支持 – 3 €</string>
-    <string name="support_btn_label_5">🌟 传奇支持 – 5 €</string>
+    <string name="support_btn_label_1">☕ 请喝咖啡</string>
+    <string name="support_btn_label_3">🚀 超级支持</string>
+    <string name="support_btn_label_5">🌟 传奇支持</string>
     <string name="support_thanks_close">关闭</string>
 </resources>

@@ -450,9 +450,9 @@
     <string name="support_purchase_cancelled" translatable="false">No worries, maybe next time 😉.</string>
     <string name="support_thanks" translatable="false">Thank you so much for your support ❤️! Shoopt is growing thanks to you.</string>
     <string name="support_description">Offer a small optional donation to support the app’s development.</string>
-    <string name="support_btn_label_1">☕ Buy us a coffee – €1</string>
-    <string name="support_btn_label_3">🚀 Super support – €3</string>
-    <string name="support_btn_label_5">🌟 Legendary support – €5</string>
+    <string name="support_btn_label_1">☕ Buy us a coffee</string>
+    <string name="support_btn_label_3">🚀 Super support</string>
+    <string name="support_btn_label_5">🌟 Legendary support</string>
     <string name="support_thanks_close">Close</string>
 
 </resources>

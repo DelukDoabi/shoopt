@@ -511,8 +511,8 @@
     <string name="support_purchase_cancelled">괜찮아, 다음에 다시 해보자 😉.</string>
     <string name="support_thanks">응원해줘서 정말 고마워 ❤️! Shoopt는 너 덕분에 성장하고 있어.</string>
     <string name="support_description">앱 개발을 지원하기 위해 작은 후원을 선택할 수 있어요.</string>
-    <string name="support_btn_label_1">☕ 커피 한 잔 – 1 €</string>
-    <string name="support_btn_label_3">🚀 슈퍼 지원 – 3 €</string>
-    <string name="support_btn_label_5">🌟 전설의 지원 – 5 €</string>
+    <string name="support_btn_label_1">☕ 커피 한 잔</string>
+    <string name="support_btn_label_3">🚀 슈퍼 지원</string>
+    <string name="support_btn_label_5">🌟 전설의 지원</string>
     <string name="support_thanks_close">닫기</string>
 </resources>

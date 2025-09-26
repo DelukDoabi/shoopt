@@ -513,8 +513,8 @@
     <string name="support_purchase_cancelled">Nessun problema, magari la prossima volta 😉.</string>
     <string name="support_thanks">Grazie di cuore per il tuo supporto ❤️! Shoopt cresce grazie a te.</string>
     <string name="support_description">Offri una piccola donazione facoltativa per sostenere lo sviluppo dell’app.</string>
-    <string name="support_btn_label_1">☕ Caffè offerto – 1 €</string>
-    <string name="support_btn_label_3">🚀 Super supporto – 3 €</string>
-    <string name="support_btn_label_5">🌟 Supporto leggendario – 5 €</string>
+    <string name="support_btn_label_1">☕ Caffè offerto</string>
+    <string name="support_btn_label_3">🚀 Super supporto</string>
+    <string name="support_btn_label_5">🌟 Supporto leggendario</string>
     <string name="support_thanks_close">Chiudi</string>
 </resources>

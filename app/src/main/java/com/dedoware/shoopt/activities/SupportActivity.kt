@@ -13,6 +13,7 @@ import com.android.billingclient.api.*
 import com.dedoware.shoopt.R
 import com.dedoware.shoopt.ShooptApplication
 import com.dedoware.shoopt.analytics.AnalyticsService
+import com.dedoware.shoopt.utils.getCurrencyManager
 
 class SupportActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
@@ -82,6 +83,8 @@ class SupportActivity : AppCompatActivity(), PurchasesUpdatedListener {
                         btn1.isEnabled = true
                         btn3.isEnabled = true
                         btn5.isEnabled = true
+                        // Charger et afficher les prix localisés depuis Google Play Billing
+                        loadProductPrices(btn1, btn3, btn5)
                     }
                 } else {
                     // Si la configuration échoue, laisser l'utilisateur savoir
@@ -256,6 +259,64 @@ class SupportActivity : AppCompatActivity(), PurchasesUpdatedListener {
         } catch (_: Exception) {
             // Fallback: afficher un Toast si le dialog échoue
             Toast.makeText(this, getString(R.string.support_thanks), Toast.LENGTH_LONG).show()
+        }
+    }
+
+    /**
+     * Interroge Google Play Billing pour récupérer les ProductDetails (et leurs prix formatés)
+     * et met à jour les textes des boutons correspondants.
+     */
+    private fun loadProductPrices(btn1: Button, btn3: Button, btn5: Button) {
+        try {
+            if (!::billingClient.isInitialized || !billingClient.isReady || !billingReady) {
+                // on ne peut pas interroger les ProductDetails si le client Billing n'est pas prêt
+                return
+            }
+
+            val productList = listOf(productDon1, productDon3, productDon5).map { prodId ->
+                QueryProductDetailsParams.Product.newBuilder()
+                    .setProductId(prodId)
+                    .setProductType(BillingClient.ProductType.INAPP)
+                    .build()
+            }
+
+            val params = QueryProductDetailsParams.newBuilder()
+                .setProductList(productList)
+                .build()
+
+            billingClient.queryProductDetailsAsync(params) { billingResult, productDetailsList ->
+                Log.d(TAG, "loadProductPrices: code=${billingResult.responseCode} count=${productDetailsList.size}")
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && productDetailsList.isNotEmpty()) {
+                    runOnUiThread {
+                        // Map productId -> formatted price (local) ou fallback
+                        val priceMap = mutableMapOf<String, String>()
+                        for (pd in productDetailsList) {
+                            val pid = pd.productId
+                            val formatted = pd.oneTimePurchaseOfferDetails?.formattedPrice
+                                ?: run {
+                                    // fallback : formatter le montant fixe (1/3/5 EUR) via CurrencyManager
+                                    val fallbackAmount = when (pid) {
+                                        productDon1 -> 1.0
+                                        productDon3 -> 3.0
+                                        productDon5 -> 5.0
+                                        else -> 0.0
+                                    }
+                                    this.getCurrencyManager().formatPrice(fallbackAmount)
+                                }
+                            priceMap[pid] = formatted
+                        }
+
+                        // Mettre à jour les textes des boutons (conserver le libellé puis afficher le prix local)
+                        priceMap[productDon1]?.let { btn1.text = "${getString(R.string.support_btn_label_1)} - $it" }
+                        priceMap[productDon3]?.let { btn3.text = "${getString(R.string.support_btn_label_3)} - $it" }
+                        priceMap[productDon5]?.let { btn5.text = "${getString(R.string.support_btn_label_5)} - $it" }
+                    }
+                } else {
+                    Log.w(TAG, "loadProductPrices: billing result not OK or empty list")
+                }
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "loadProductPrices: exception ${e.message}")
         }
     }
 

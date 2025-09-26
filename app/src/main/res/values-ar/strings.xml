@@ -512,8 +512,8 @@
     <string name="support_purchase_cancelled">لا بأس، ربما في المرة القادمة 😉.</string>
     <string name="support_thanks">شكرًا جزيلًا على دعمك ❤️! Shoopt يكبر بفضلك.</string>
     <string name="support_description">قدّم تبرعًا صغيرًا اختياريًا لدعم تطوير التطبيق.</string>
-    <string name="support_btn_label_1">☕ قهوة مهداة – 1 €</string>
-    <string name="support_btn_label_3">🚀 دعم رائع – 3 €</string>
-    <string name="support_btn_label_5">🌟 دعم أسطوري – 5 €</string>
+    <string name="support_btn_label_1">☕ قهوة مهداة</string>
+    <string name="support_btn_label_3">🚀 دعم رائع</string>
+    <string name="support_btn_label_5">🌟 دعم أسطوري</string>
     <string name="support_thanks_close">إغلاق</string>
 </resources>

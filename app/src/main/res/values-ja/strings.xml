@@ -513,8 +513,8 @@
     <string name="support_purchase_cancelled">大丈夫、また次の機会に 😉.</string>
     <string name="support_thanks">応援してくれて本当にありがとう ❤️！Shooptはあなたのおかげで成長しています。</string>
     <string name="support_description">アプリ開発を応援するために、小さな任意の寄付をお願いします。</string>
-    <string name="support_btn_label_1">☕ コーヒーをごちそう – 1 €</string>
-    <string name="support_btn_label_3">🚀 スーパーサポート – 3 €</string>
-    <string name="support_btn_label_5">🌟 伝説のサポート – 5 €</string>
+    <string name="support_btn_label_1">☕ コーヒーをごちそう</string>
+    <string name="support_btn_label_3">🚀 スーパーサポート</string>
+    <string name="support_btn_label_5">🌟 伝説のサポート</string>
     <string name="support_thanks_close">閉じる</string>
 </resources>
