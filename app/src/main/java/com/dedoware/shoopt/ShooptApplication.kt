@@ -17,6 +17,10 @@ class ShooptApplication : Application() {
             private set
     }
 
+    // Flag en mémoire indiquant si le toast de bienvenue a été affiché durant ce démarrage de l'application
+    @Volatile
+    var welcomeToastShown: Boolean = false
+
     // Base de données Room pour l'application
     val database by lazy { ShooptRoomDatabase.getDatabase(this) }
 

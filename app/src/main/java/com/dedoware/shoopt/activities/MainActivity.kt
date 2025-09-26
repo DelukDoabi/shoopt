@@ -87,12 +87,18 @@ class MainActivity : AppCompatActivity() {
 
             // Check if the user is signed in
             try {
-                val currentUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
-                currentUser?.let {
-                    val username = it.displayName
-                    if (username != null) {
-                        val toast = Toast.makeText(this, getString(R.string.welcome_user, username), Toast.LENGTH_LONG)
-                        toast.show()
+                // Afficher le toast de bienvenue une seule fois par démarrage de l'application
+                // (flag en mémoire dans ShooptApplication). Ainsi il réapparaît après un restart
+                // complet de l'application mais pas lors de simples retours d'activité.
+                val app = ShooptApplication.instance
+                if (!app.welcomeToastShown) {
+                    val currentUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+                    currentUser?.let {
+                        val username = it.displayName
+                        if (!username.isNullOrBlank()) {
+                            Toast.makeText(this, getString(R.string.welcome_user, username), Toast.LENGTH_LONG).show()
+                            app.welcomeToastShown = true
+                        }
                     }
                 }
             } catch (e: Exception) {
