@@ -100,6 +100,8 @@ class ProductChoiceActivity : AppCompatActivity() {
                     // Ajouter des flags pour revenir à MainActivity après la sauvegarde
                     addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT)
                     addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    // Indiquer que l'UI d'autocompletion doit être désactivée pour cette session
+                    putExtra("disable_autocompletion_ui", true)
                 }
                 startActivity(intent)
                 // Terminer cette activité pour qu'elle ne reste pas dans la pile

@@ -1521,6 +1521,10 @@ class AddProductActivity : AppCompatActivity() {
      */
     private fun setupAutocompletionSwitch() {
         try {
+            // Check if this activity was launched in "manual entry" mode and we should
+            // disable the autocompletion UI without touching stored preferences.
+            val disableAutocompletionUi = intent?.getBooleanExtra("disable_autocompletion_ui", false) ?: false
+
             // Initialiser l'etat du switch base sur les preferences actuelles
             val isAiEnabled = UserPreferences.isAiAutocompletionEnabled(this)
             val isMapsEnabled = UserPreferences.isMapsAutocompletionEnabled(this)
@@ -1531,6 +1535,18 @@ class AddProductActivity : AppCompatActivity() {
             // Mettre à jour le texte de statut et l'apparence initiale
             updateAutocompletionStatusText()
             updateAutocompletionCardAppearance(autocompletionSwitch.isChecked)
+
+            // If requested by the launcher, force the UI into a disabled (off) state
+            // without changing the saved user preferences or installing the preference-writing listener.
+            if (disableAutocompletionUi) {
+                // Visual state: show as unchecked/disabled
+                autocompletionSwitch.isChecked = false
+
+                // Update status text and card appearance to match disabled state
+                val statusTextView = findViewById<TextView>(R.id.autocompletion_status_text)
+                statusTextView?.text = getString(R.string.autocompletion_disabled_message)
+                 updateAutocompletionCardAppearance(false)
+            }
 
             // Configurer le listener pour les changements d'etat
             autocompletionSwitch.setOnCheckedChangeListener { _, isChecked ->
