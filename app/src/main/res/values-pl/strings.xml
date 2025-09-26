@@ -505,4 +505,14 @@
     <string name="in_app_review_message">Poświęć kilka sekund, aby ocenić nas w Sklepie Play. Dzięki temu inni łatwiej znajdą aplikację.</string>
     <string name="in_app_review_positive">Dodaj opinię</string>
     <string name="in_app_review_negative">Nie teraz</string>
+    <string name="support_shoopt">Wesprzyj Shoopt</string>
+    <string name="support_billing_not_ready">Usługa płatności nie jest jeszcze gotowa. Spróbuj ponownie później.</string>
+    <string name="support_purchase_error">Wystąpił błąd podczas płatności. Spokojnie, może następnym razem 😉.</string>
+    <string name="support_purchase_cancelled">Spokojnie, może następnym razem 😉.</string>
+    <string name="support_thanks">Dziękujemy za twoje wsparcie ❤️! Shoopt rozwija się dzięki tobie.</string>
+    <string name="support_description">Wesprzyj rozwój aplikacji drobną, opcjonalną darowizną.</string>
+    <string name="support_btn_label_1">☕ Postaw kawę – 1 €</string>
+    <string name="support_btn_label_3">🚀 Super wsparcie – 3 €</string>
+    <string name="support_btn_label_5">🌟 Legendarne wsparcie – 5 €</string>
+    <string name="support_thanks_close">Zamknij</string>
 </resources>

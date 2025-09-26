@@ -506,4 +506,14 @@
     <string name="in_app_review_message">خُذ بضع ثوانٍ لتترك لنا تقييمًا على متجر Play. هذا يساعد الآخرين على اكتشاف التطبيق.</string>
     <string name="in_app_review_positive">اترك مراجعة</string>
     <string name="in_app_review_negative">ليس الآن</string>
+    <string name="support_shoopt">ادعم Shoopt</string>
+    <string name="support_billing_not_ready">خدمة الدفع غير جاهزة بعد، جرّب لاحقًا.</string>
+    <string name="support_purchase_error">حدث خطأ أثناء الدفع. لا بأس، ربما في المرة القادمة 😉.</string>
+    <string name="support_purchase_cancelled">لا بأس، ربما في المرة القادمة 😉.</string>
+    <string name="support_thanks">شكرًا جزيلًا على دعمك ❤️! Shoopt يكبر بفضلك.</string>
+    <string name="support_description">قدّم تبرعًا صغيرًا اختياريًا لدعم تطوير التطبيق.</string>
+    <string name="support_btn_label_1">☕ قهوة مهداة – 1 €</string>
+    <string name="support_btn_label_3">🚀 دعم رائع – 3 €</string>
+    <string name="support_btn_label_5">🌟 دعم أسطوري – 5 €</string>
+    <string name="support_thanks_close">إغلاق</string>
 </resources>

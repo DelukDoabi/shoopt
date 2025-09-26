@@ -37,6 +37,7 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var backButton: ImageButton
     private lateinit var replayOnboardingCard: CardView
     private lateinit var analyticsSwitch: SwitchCompat
+    private lateinit var supportCard: CardView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         try {
@@ -163,6 +164,7 @@ class SettingsActivity : AppCompatActivity() {
             saveButton = findViewById(R.id.save_settings_button)
             backButton = findViewById(R.id.back_IB)
             replayOnboardingCard = findViewById(R.id.replay_onboarding_card)
+            supportCard = findViewById(R.id.support_shoopt_card)
             analyticsSwitch = findViewById(R.id.analytics_switch)
 
             // Observer les changements de devise depuis le CurrencyManager
@@ -364,6 +366,24 @@ class SettingsActivity : AppCompatActivity() {
                 CrashlyticsManager.logException(e)
 
                 Toast.makeText(this, "Erreur lors du redémarrage de l'onboarding", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // Carte Soutenir Shoopt - ouvre l'activité de support
+        supportCard.setOnClickListener {
+            try {
+                val intent = Intent(this, SupportActivity::class.java)
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", Bundle().apply {
+                    putString("action", "open_support")
+                    putString("category", "settings")
+                })
+                startActivity(intent)
+            } catch (e: Exception) {
+                AnalyticsService.getInstance(ShooptApplication.instance).logEvent("user_action", Bundle().apply {
+                    putString("action", "open_support_error")
+                    putString("category", "settings")
+                })
+                Toast.makeText(this, "Erreur lors de l'ouverture du soutien", Toast.LENGTH_SHORT).show()
             }
         }
 

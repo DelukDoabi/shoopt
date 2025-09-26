@@ -507,4 +507,14 @@
     <string name="in_app_review_message">数秒だけでOK！Playストアで評価を残してくれると、他の人がアプリを見つけやすくなるよ。</string>
     <string name="in_app_review_positive">レビューを書く</string>
     <string name="in_app_review_negative">今はしない</string>
+    <string name="support_shoopt">Shooptを応援する</string>
+    <string name="support_billing_not_ready">決済サービスはまだ準備中です。後でもう一度試してください。</string>
+    <string name="support_purchase_error">決済中にエラーが発生しました。大丈夫、また次の機会に 😉。</string>
+    <string name="support_purchase_cancelled">大丈夫、また次の機会に 😉.</string>
+    <string name="support_thanks">応援してくれて本当にありがとう ❤️！Shooptはあなたのおかげで成長しています。</string>
+    <string name="support_description">アプリ開発を応援するために、小さな任意の寄付をお願いします。</string>
+    <string name="support_btn_label_1">☕ コーヒーをごちそう – 1 €</string>
+    <string name="support_btn_label_3">🚀 スーパーサポート – 3 €</string>
+    <string name="support_btn_label_5">🌟 伝説のサポート – 5 €</string>
+    <string name="support_thanks_close">閉じる</string>
 </resources>
