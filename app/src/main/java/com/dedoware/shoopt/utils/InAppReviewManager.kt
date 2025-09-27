@@ -83,10 +83,6 @@ class InAppReviewManager private constructor(private val context: Context) {
     fun requestReviewIfEligible(activity: Activity) {
         if (!canRequestReview()) return
 
-        // Mark last shown timestamp early to avoid multiple parallel calls
-        prefs.edit().putLong(KEY_LAST_SHOWN_TS, System.currentTimeMillis()).apply()
-        prefs.edit().putInt(KEY_REQUEST_COUNT, prefs.getInt(KEY_REQUEST_COUNT, 0) + 1).apply()
-
         // Track that a request was attempted
         try {
             val bundle = Bundle().apply { putString("trigger_activity", activity::class.java.simpleName) }
@@ -97,25 +93,43 @@ class InAppReviewManager private constructor(private val context: Context) {
 
         CoroutineScope(Dispatchers.Main).launch {
             try {
+                android.util.Log.d("InAppReview", "Début requestReviewFlow")
+                android.widget.Toast.makeText(activity, "Début demande avis...", android.widget.Toast.LENGTH_SHORT).show()
                 val manager = ReviewManagerFactory.create(activity)
                 val request = manager.requestReviewFlow()
                 request.addOnCompleteListener { task ->
                     if (task.isSuccessful) {
+                        android.util.Log.d("InAppReview", "requestReviewFlow success")
                         val reviewInfo = task.result
+                        if (reviewInfo == null) {
+                            android.util.Log.e("InAppReview", "reviewInfo est null")
+                            android.widget.Toast.makeText(activity, "reviewInfo null", android.widget.Toast.LENGTH_SHORT).show()
+                        } else {
+                            android.util.Log.d("InAppReview", "reviewInfo non null, lancement du flow")
+                            android.widget.Toast.makeText(activity, "Lancement du prompt Google...", android.widget.Toast.LENGTH_SHORT).show()
+                        }
                         val flow = manager.launchReviewFlow(activity, reviewInfo)
                         flow.addOnCompleteListener { _ ->
-                            // The API does not provide the user's rating; if user completed the flow we track click
+                            android.util.Log.d("InAppReview", "Fin du flow Play Core (prompt affiché ou non)")
+                            android.widget.Toast.makeText(activity, "Fin du flow Play Core", android.widget.Toast.LENGTH_SHORT).show()
+                            // Marquer la date d'affichage seulement si le flow a été lancé
+                            prefs.edit().putLong(KEY_LAST_SHOWN_TS, System.currentTimeMillis()).apply()
+                            prefs.edit().putInt(KEY_REQUEST_COUNT, prefs.getInt(KEY_REQUEST_COUNT, 0) + 1).apply()
                             try {
                                 ShooptApplication.instance.analyticsService.logEvent("in_app_review_completed", null)
                             } catch (e: Exception) {}
                             // Note: We don't know if user left a rating. Play Core doesn't expose that.
                         }
                     } else {
+                        android.util.Log.e("InAppReview", "requestReviewFlow failed: ${task.exception}")
+                        android.widget.Toast.makeText(activity, "Erreur Play Core: ${task.exception?.message}", android.widget.Toast.LENGTH_LONG).show()
                         // Fallback: request failed - do not penalize the user; clear last_shown so we can retry later
                         prefs.edit().putLong(KEY_LAST_SHOWN_TS, 0L).apply()
                     }
                 }
             } catch (e: Exception) {
+                android.util.Log.e("InAppReview", "Exception globale: $e")
+                android.widget.Toast.makeText(activity, "Exception: ${e.message}", android.widget.Toast.LENGTH_LONG).show()
                 // En cas d'erreur, rollback timestamp pour permettre un nouvel essai
                 try { prefs.edit().putLong(KEY_LAST_SHOWN_TS, 0L).apply() } catch (_: Exception) {}
             }
